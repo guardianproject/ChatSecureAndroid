@@ -46,7 +46,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.java.otr4j.session.SessionID;
 import net.java.otr4j.session.SessionStatus;
 
 import org.jivesoftware.smack.packet.Packet;
@@ -137,25 +136,37 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     private void initOtrChatSession ()
     {
-
-        mDataHandler = new OtrDataHandler(mChatSession);
-        mDataHandlerListener = new DataHandlerListenerImpl();
-        mDataHandler.setDataListener(mDataHandlerListener);
+        try
+        {
+            if (mConnection != null)
+            {
+                mDataHandler = new OtrDataHandler(mChatSession);
+                mDataHandlerListener = new DataHandlerListenerImpl();
+                mDataHandler.setDataListener(mDataHandlerListener);
+                
+                String localUser = mConnection.getLoginUser().getAddress().getAddress();
+                String remoteUser = mChatSession.getParticipant().getAddress().getAddress();
         
-        String localUser = mConnection.getLoginUser().getAddress().getAddress();
-        String remoteUser = mChatSession.getParticipant().getAddress().getAddress();
-
-        OtrChatManager cm = service.getOtrChatManager();
-        
-        mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, service.getOtrChatManager());
-    
-        // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
-        mChatSession.setMessageListener(new OtrChatListener(service.getOtrChatManager(), mListenerAdapter));
-        mChatSession.setOtrChatManager(service.getOtrChatManager());
+                OtrChatManager cm = service.getOtrChatManager();
+                
+                mOtrChatSession = new OtrChatSessionAdapter(localUser, remoteUser, cm);
+            
+                // add OtrChatListener as the intermediary to mListenerAdapter so it can filter OTR msgs
+                mChatSession.setMessageListener(new OtrChatListener(cm, mListenerAdapter));
+                mChatSession.setOtrChatManager(cm);
+            }
+        }
+        catch (NullPointerException npe)
+        {
+            Log.e(ImApp.LOG_TAG,"error init OTR session",npe);
+        }
     }
 
     public synchronized IOtrChatSession getOtrChatSession() {
 
+        if (mOtrChatSession == null)
+            initOtrChatSession();
+        
         return mOtrChatSession;
     }
 
@@ -586,7 +597,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     Uri insertMessageInDb(String contact, String body, long time, int type, int errCode, String id) {
         boolean isEncrypted = true;
         try {
-            isEncrypted = mOtrChatSession.isChatEncrypted();
+            isEncrypted = getOtrChatSession().isChatEncrypted();
         } catch (RemoteException e) {
             // Leave it as encrypted so it gets stored in memory
             // FIXME(miron)
@@ -882,7 +893,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                     
                     try
                     {
-                        boolean isVerified = mOtrChatSession.isKeyVerified(from);
+                        boolean isVerified = getOtrChatSession().isKeyVerified(from);
             
                         int type = isVerified ? Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED : Imps.MessageType.INCOMING_ENCRYPTED;
                         
