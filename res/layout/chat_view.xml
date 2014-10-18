@@ -80,9 +80,9 @@
         android:paddingBottom="5sp"
         android:src="@drawable/smiley_smile" />
     
-      <EditText android:id="@+id/composeMessage"
-            android:layout_width="0dip"
-           
+      <org.ironrabbit.type.CustomTypefaceEditText
+           android:id="@+id/composeMessage"
+            android:layout_width="0dip"           
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:inputType="textShortMessage|textAutoCorrect|textCapSentences|textMultiLine|textImeMultiLine"

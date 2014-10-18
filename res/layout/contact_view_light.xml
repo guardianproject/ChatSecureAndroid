@@ -34,7 +34,7 @@
         android:orientation="vertical"
         >
         
-                <TextView
+                <org.ironrabbit.type.CustomTypefaceTextView
                     android:id="@+id/line1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     android:layout_marginTop="6dp"
                      />
        
-                  <TextView
+                  <org.ironrabbit.type.CustomTypefaceTextView
                 android:id="@+id/line2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"         

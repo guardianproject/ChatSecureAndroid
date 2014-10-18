@@ -34,8 +34,8 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.otr.app.im.ui.SecureCameraActivity;
 import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
-import info.guardianproject.util.XmppUriHelper;
 import info.guardianproject.util.SystemServices.FileInfo;
+import info.guardianproject.util.XmppUriHelper;
 
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +48,9 @@ import java.util.UUID;
 
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionStatus;
+
+import org.ironrabbit.type.CustomTypefaceManager;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -96,10 +99,10 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -166,6 +169,8 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);  
 //        requestWindowFeature(Window.FEATURE_PROGRESS);  
 
+        checkCustomFont ();
+        
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
 
@@ -302,7 +307,15 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         });
     }
     
-    
+    private void checkCustomFont ()
+    {
+        if (CustomTypefaceManager.getCurrentTypeface(this)==null)
+        {
+            
+            CustomTypefaceManager.loadFromKeyboard(this);
+            
+        }
+    }
     
     /*
      * We must have been thawed and the service was not previously connected, so our ChatViews are showing nothing.
