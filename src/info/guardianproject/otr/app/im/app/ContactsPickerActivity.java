@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.SearchManager;
 import android.content.ContentResolver;
@@ -27,8 +28,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.ResourceCursorAdapter;
 import android.support.v7.app.ActionBarActivity;
@@ -55,6 +58,14 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     private int REQUEST_CODE_ADD_CONTACT = 9999;
     
     private ContactAdapter mAdapter;
+
+    private MyLoaderCallbacks mLoaderCallbacks;
+
+    private ContactListListener mListener = null;
+    private final static Uri mUri = Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+    
+    private Handler mHandler = new Handler();
+    
     private String mExcludeClause;
     Uri mData;
     
@@ -80,9 +91,9 @@ public class ContactsPickerActivity extends ActionBarActivity  {
 
         setContentView(R.layout.contacts_picker_activity);
 
-        mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
+        
         mListView = (ListView)findViewById(R.id.contactsList);
-        mListView.setAdapter(mAdapter);
+        
         
         mListView.setOnItemClickListener(new OnItemClickListener ()
         {
@@ -223,14 +234,10 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     public void doFilterAsync (final String query)
     {
 
-        if (mCursor != null)
-            mCursor.close();
-        
-        new Thread(new Runnable () { public void run () {
             doFilter(query);
-        }}).start();
     }
     
+    /*
     public void doFilter(String filterString) {
         mSearchString = filterString;
         
@@ -264,8 +271,42 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         mCursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
         
-        mHandlerCursorUpdater.sendEmptyMessage(0);
         
+        
+    }*/
+    
+    boolean mAwaitingUpdate = false;
+    
+    public synchronized void doFilter(String filterString) {
+        
+        mSearchString = filterString;
+        
+        if (mAdapter == null) {
+            
+            mAdapter = new ContactAdapter(ContactsPickerActivity.this, R.layout.contact_view);
+
+           mListView.setAdapter(mAdapter);
+        
+            mLoaderCallbacks = new MyLoaderCallbacks();
+            getSupportLoaderManager().initLoader(LOADER_ID, null, mLoaderCallbacks);
+        } else {
+            
+            if (!mAwaitingUpdate)
+            {
+                mAwaitingUpdate = true;
+                mHandler.postDelayed(new Runnable ()
+                {
+                    
+                    public void run ()
+                    {
+                        
+                        getSupportLoaderManager().restartLoader(LOADER_ID, null, mLoaderCallbacks);
+                        mAwaitingUpdate = false;
+                    }
+                },1000);
+            }
+            
+        }
     }
     
     private Cursor mCursor;
@@ -274,7 +315,10 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     protected void onDestroy() {
         super.onDestroy();
         
-        mAdapter.getCursor().close();
+        if (mCursor != null && (!mCursor.isClosed()))
+            mCursor.close();
+        
+        
     }
 
     private class ContactAdapter extends ResourceCursorAdapter {
@@ -319,14 +363,61 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         }
     }
     
-
-    private Handler mHandlerCursorUpdater = new Handler ()
-    {
+    
+    class MyLoaderCallbacks implements LoaderCallbacks<Cursor> {
         @Override
-        public void handleMessage(Message msg) {
-            mAdapter.changeCursor(mCursor);
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            StringBuilder buf = new StringBuilder();
 
-        }    
-    };
+            if (mSearchString != null) {
+                
+                buf.append('(');
+                buf.append(Imps.Contacts.NICKNAME);
+                buf.append(" LIKE ");
+                android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+                buf.append(" OR ");
+                buf.append(Imps.Contacts.USERNAME);
+                buf.append(" LIKE ");
+                android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
+                buf.append(')');
+                buf.append(" AND ");
+            }
+            
+            //normal types not temporary
+            buf.append(Imps.Contacts.TYPE).append('=').append(Imps.Contacts.TYPE_NORMAL);
+            
+           
+            if(mHideOffline)
+            {
+                buf.append(" AND ");
+                buf.append(Imps.Contacts.PRESENCE_STATUS).append("!=").append(Imps.Presence.OFFLINE);
+               
+            }
+            
+            CursorLoader loader = new CursorLoader(ContactsPickerActivity.this, mUri, ContactView.CONTACT_PROJECTION,
+                    buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+            loader.setUpdateThrottle(50L);
+            return loader;
+        }
+
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
+            mAdapter.swapCursor(newCursor);
+            
+           
+            
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            
+            mAdapter.swapCursor(null);
+            
+            
+           
+        }
+        
+    }
+
    
 }
