@@ -184,7 +184,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     @Override
     public void sendHeartbeat() throws RemoteException {
         
-        if (mConnection != null && mConnection.getState() == ImConnection.LOGGED_IN)
+        if (mConnection != null)
             mConnection.sendHeartbeat(mService.getHeartbeatInterval());
         
     }

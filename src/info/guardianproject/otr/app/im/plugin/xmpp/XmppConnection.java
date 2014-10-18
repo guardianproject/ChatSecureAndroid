@@ -843,6 +843,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         } catch (XMPPException e) {
             debug(TAG, "exception thrown on connection",e);
 
+            
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER, e.getMessage());
             mRetryLogin = true; // our default behavior is to retry
             
@@ -866,6 +867,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     debug(TAG, "not authorized - will not retry");
                     info = new ImErrorInfo(ImErrorInfo.INVALID_USERNAME, "invalid user/password");
                     mRetryLogin = false;
+                    mNeedReconnect = false;
                 }
             } 
             
@@ -886,6 +888,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             debug(TAG, "login failed",e);
             mRetryLogin = true;
+            mNeedReconnect = true;
+            
             debug(TAG, "will retry");
             ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, "keymanagement exception");
             setState(LOGGING_IN, info);
@@ -2520,9 +2524,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     debug(TAG, "reconnection on network change failed: " + mUser.getAddress().getAddress());
 
                     mConnection = null;
-                    mNeedReconnect = true;
+                    mNeedReconnect = false;
                     setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, null));
-                    do_login();
+                    
+                    while (mNeedReconnect)
+                        do_login();
                     
                 }
             } catch (Exception e) {
@@ -2532,19 +2538,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mConnection = null;
                 debug(TAG, "reconnection attempt failed", e);
                 // Smack incorrectly notified us that reconnection was successful, reset in case it fails
-                mNeedReconnect = true;
+                mNeedReconnect = false;
                 setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
-                do_login();
+                
+                while (mNeedReconnect)
+                    do_login();
                 
             }
         } else {
-            mNeedReconnect = true;
+            mNeedReconnect = false;
             mConnection = null;
             debug(TAG, "reconnection on network change failed");
 
             setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
                     "reconnection on network change failed"));
-            do_login();
+            
+            while (mNeedReconnect)
+                do_login();
             
         }
     }
