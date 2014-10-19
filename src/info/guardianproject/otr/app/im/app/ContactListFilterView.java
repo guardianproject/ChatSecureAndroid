@@ -224,7 +224,9 @@ public class ContactListFilterView extends LinearLayout {
         doFilter(filterString);
     }
 
-    public void doFilter(String filterString) {
+    boolean mAwaitingUpdate = false;
+    
+    public synchronized void doFilter(String filterString) {
         
         mSearchString = filterString;
         
@@ -237,7 +239,21 @@ public class ContactListFilterView extends LinearLayout {
             mLoaderCallbacks = new MyLoaderCallbacks();
             mLoaderManager.initLoader(mLoaderId, null, mLoaderCallbacks);
         } else {
-            mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
+            
+            if (!mAwaitingUpdate)
+            {
+                mAwaitingUpdate = true;
+                mHandler.postDelayed(new Runnable ()
+                {
+                    
+                    public void run ()
+                    {
+                        
+                        mLoaderManager.restartLoader(mLoaderId, null, mLoaderCallbacks);
+                        mAwaitingUpdate = false;
+                    }
+                },1000);
+            }
             
         }
     }
