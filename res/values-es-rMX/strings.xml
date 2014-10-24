@@ -54,7 +54,7 @@ La app apoya qualquier servicio de chat que utilizca Jabber o el protocolo XMPP,
   <string name="account_select_type">Tipo de Cuenta</string>
   <string name="account_wizard_host_body">Por favor inicia or edita tu nombre de servidor de chat jabber/xmpp y número de puerto (5222 es el estándar).</string>
   <string name="menu_cancel_signin">Cancelar inicio de sesión</string>
-  <string name="signing_in_wait">Iniciando sesión...</string>
+  <string name="signing_in_wait">Iniciando sesión…</string>
   <!--Views: Settings: Account-->
   <string name="xmpp_resource_prio_summary">Mensajes a clientes con multiples recursos activos irán al recurso con alta prioridad. </string>
   <!--Views: Contact list-->
@@ -114,7 +114,7 @@ La app apoya qualquier servicio de chat que utilizca Jabber o el protocolo XMPP,
   <string name="invitation_sent_prompt">La invitación se ha enviado a &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="accept_invitation">Aceptar</string>
   <string name="decline_invitation">Rechazar</string>
-  <string name="menu_invite_contact">Invitar a...</string>
+  <string name="menu_invite_contact">Invitar a…</string>
   <string name="contacts_picker_title">Seleccionar contacto(s) para invitar</string>
   <string name="contact_filter_hint">Escribir para buscar contacto</string>
   <string name="subscription_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; te ha invitado a estar en su lista de contactos.</string>
@@ -125,8 +125,8 @@ La app apoya qualquier servicio de chat que utilizca Jabber o el protocolo XMPP,
   <!--Security: OTR-->
   <string name="menu_otr_start">Iniciar Encripción</string>
   <string name="menu_otr_stop">Parar Encripción</string>
-  <string name="starting_otr_chat">Iniciando sesión de chat encriptado...</string>
-  <string name="stopping_otr_chat">Terminando sesión de chat encriptado...</string>
+  <string name="starting_otr_chat">Iniciando sesión de chat encriptado…</string>
+  <string name="stopping_otr_chat">Terminando sesión de chat encriptado…</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
   <string name="menu_fingerprint">Tus Huellas</string>

@@ -110,8 +110,8 @@
   <string name="account_setup_advanced_enc_auto">可能な場合は、自動的にチャットを暗号化</string>
   <string name="account_setup_advanced_enc_req">要求した時に、チャットを暗号化</string>
   <string name="account_setup_advanced_enc_off">チャットの暗号化を無効にする</string>
-  <string name="account_setup_signin_a">信用証明書を照合中...</string>
-  <string name="account_setup_signin_b">鍵ペア生成中...</string>
+  <string name="account_setup_signin_a">信用証明書を照合中…</string>
+  <string name="account_setup_signin_b">鍵ペア生成中…</string>
   <string name="account_setup_signin_c">ログイン中..</string>
   <string name="account_wizard_setup_title">アカウントウィザード</string>
   <string name="account_wizard_account_title">アカウントIDを</string>
@@ -126,7 +126,7 @@
   <string name="registering_new_account_">新しいアカウントを登録しています…</string>
   <string name="signing_in_to">予定を取得しています…</string>
   <string name="menu_cancel_signin">ログインをキャンセル</string>
-  <string name="signing_in_wait">ログインしています...</string>
+  <string name="signing_in_wait">ログインしています…</string>
   <string name="signing_out_wait">ログアウトしています\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">SRV ルックアップ</string>
@@ -238,7 +238,7 @@
   <string name="menu_new_group_chat">グループチャット</string>
   <string name="create_or_join_group_chat">グループチャットを作成または参加</string>
   <string name="connecting_to_group_chat_">グループチャットに接続しています…</string>
-  <string name="menu_invite_contact">招待...</string>
+  <string name="menu_invite_contact">招待…</string>
   <string name="contacts_picker_title">招待する連絡先を選択してください</string>
   <string name="contact_filter_hint">入力して、連絡先を検索</string>
   <string name="empty_contact_list">連絡先が見つかりません。\n\n招待するにはタップしてください。</string>

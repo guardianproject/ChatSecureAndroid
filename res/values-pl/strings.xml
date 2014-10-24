@@ -51,7 +51,7 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <string name="setup_passphrase_label1">Wyrażenie hasłowe:</string>
   <string name="setup_passphrase_label2">Wyrażenie hasłowe (powtórz):</string>
   <string name="rekey_message">Proszę wpisać *nowe* wyrażenie hasłowe. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
-  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości...)</string>
+  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości…)</string>
   <string name="enter_pass">Wprowadź twoje wyrażenie hasłowe:</string>
   <string name="new_pass">Witamy! Wprowadź mocne wyrażenie hasłowe aby zabezpiecznyć twoje rozmowy. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
   <string name="pass_err_length">Twoje wyrażenie hasłowe nie jest wystarczająco długie (minimum 6 znaków)</string>
@@ -115,9 +115,9 @@ No to zaczynamy!</string>
   <string name="account_setup_advanced_enc_auto">Kiedy możliwe, szyfruj rozmowy automatycznie</string>
   <string name="account_setup_advanced_enc_req">Szyfruj rozmowy jak zażądane</string>
   <string name="account_setup_advanced_enc_off">Wyłącz szyfrowanie rozmów</string>
-  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń...</string>
-  <string name="account_setup_signin_b">Generowanie klucza...</string>
-  <string name="account_setup_signin_c">Trwa logowanie...</string>
+  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń…</string>
+  <string name="account_setup_signin_b">Generowanie klucza…</string>
+  <string name="account_setup_signin_c">Trwa logowanie…</string>
   <string name="account_wizard_setup_title">Czarodziej Konta</string>
   <string name="account_wizard_account_title">ID twojego konta</string>
   <string name="account_wizard_host_title">Skonfiguruj serwer</string>
@@ -128,8 +128,8 @@ No to zaczynamy!</string>
   <string name="account_wizard_ready_body">ChatSecure został skonfigurowany i tym samym przyszedł czas na połączenie się z Twoim serwisem i rozpoczęciem bezpiecznych, prywatnych rozmów!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Wybierz domenę</string>
-  <string name="registering_new_account_">Rejestrowanie nowego konta...</string>
-  <string name="signing_in_to">Włączam ChatSecure...</string>
+  <string name="registering_new_account_">Rejestrowanie nowego konta…</string>
+  <string name="signing_in_to">Włączam ChatSecure…</string>
   <string name="menu_cancel_signin">Anuluj logowanie</string>
   <string name="signing_in_wait">Trwa logowanie…</string>
   <string name="signing_out_wait">Wylogowywanie\u2026</string>
@@ -237,7 +237,7 @@ Kliknij aby dodać konto.</string>
   <string name="decline_invitation">Odmów</string>
   <string name="menu_new_group_chat">Rozmowa grupowa</string>
   <string name="create_or_join_group_chat">Stwórz albo dołącz do Rozmow grupowej</string>
-  <string name="connecting_to_group_chat_">Podłączanie do grupy czat...</string>
+  <string name="connecting_to_group_chat_">Podłączanie do grupy czat…</string>
   <string name="menu_invite_contact">Zaproś…</string>
   <string name="contacts_picker_title">Wybierz kontakty do zaproszenia</string>
   <string name="contact_filter_hint">Wpisz, aby znaleźć kontakt</string>
@@ -252,8 +252,8 @@ Kliknij aby zaprosić.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Rozpocznij szyfrowanie</string>
   <string name="menu_otr_stop">Zakończ szyfrowanie</string>
-  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy...</string>
-  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy...</string>
+  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy…</string>
+  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy…</string>
   <string name="label_fingerprint_remote">Klucz bezpieczeństwa</string>
   <string name="label_fingerprint_local">Klucz bezpieczeństwa</string>
   <string name="menu_sign_in">Zaloguj</string>
@@ -262,7 +262,7 @@ Kliknij aby zaprosić.</string>
   <string name="otr_session_status_encrypted">Szyfrowanie jest włączone (Kliknij aby zweryfikować)</string>
   <string name="otr_session_status_finished">Twój kontakt zakończył szyfrowaną rozmowę.</string>
   <string name="otr_session_status_verified">Zaszyfrownano i zweryfikowano!</string>
-  <string name="otr_gen_key">Generowanie nowego klucza OTR...</string>
+  <string name="otr_gen_key">Generowanie nowego klucza OTR…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Dostrzegliśmy zbiór kluczy OTR do importowania. Chcesz teraz zeskanować hasło QR?</string>
   <string name="menu_import_keys">Aktywuj KeySync</string>
@@ -345,7 +345,7 @@ Kliknij aby zaprosić.</string>
   <string name="newMessages_label">Nowe wiadomości &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Zaproszenie do czatu grupowego</string>
   <string name="new_messages_notify">Nowa/e wiadomość/i od</string>
-  <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure…</string>
   <string name="app_unlocked">Aktywowany &amp; odblokowany</string>
   <!--Alerts: Exceptions-->
   <string name="error">Uwaga</string>

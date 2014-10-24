@@ -77,16 +77,16 @@
   <string name="account_setup_personal_sub">Osobní (volitelné)</string>
   <string name="account_setup_personal_alias_title">Alias účtu (vaše jméno)</string>
   <string name="account_setup_personal_profile_title">Profil</string>
-  <string name="account_setup_signin_b">Generování dvojice klíčů ...</string>
-  <string name="account_setup_signin_c">Podepisování ...</string>
+  <string name="account_setup_signin_b">Generování dvojice klíčů …</string>
+  <string name="account_setup_signin_c">Podepisování …</string>
   <string name="account_wizard_setup_title">Průvodce účtem</string>
   <string name="account_wizard_account_title">ID vašeho účtu</string>
   <string name="account_wizard_host_title">Nastavit server</string>
   <string name="account_wizard_ready_title">Jste připraveni?</string>
   <string name="account_wizard_account_body">Prosím zadejte svůj ID účtu (uživatel@jménohosta):</string>
   <string name="menu_cancel_signin">Zrušit přihlašování</string>
-  <string name="signing_in_wait">Přihlašování...</string>
-  <string name="signing_out_wait">Odhlašování...</string>
+  <string name="signing_in_wait">Přihlašování…</string>
+  <string name="signing_out_wait">Odhlašování…</string>
   <!--Views: Settings: Account-->
   <string name="verify_that_the_certificate_is_trusted">Ověřte, zda certifikát je důvěryhodný</string>
   <string name="tls_verification">TLS ověření</string>
@@ -164,7 +164,7 @@
   <string name="invitation_sent_prompt">Uživateli &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byla zaslána pozvánka.</string>
   <string name="accept_invitation">Přijmout</string>
   <string name="decline_invitation">Odmítnout</string>
-  <string name="menu_invite_contact">Pozvat...</string>
+  <string name="menu_invite_contact">Pozvat…</string>
   <string name="contacts_picker_title">Vyberte kontakty, které chcete pozvat</string>
   <string name="contact_filter_hint">Zadejte hledaný kontakt</string>
   <string name="empty_contact_list">Žádné kontakty nenalezeny
@@ -178,8 +178,8 @@ Klikněte pro pozvání.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Začátek šifrování</string>
   <string name="menu_otr_stop">Konec šifrování</string>
-  <string name="starting_otr_chat">Zahájení šifrované relace chatu ...</string>
-  <string name="stopping_otr_chat">Ukončení šifrované relace chatu ...</string>
+  <string name="starting_otr_chat">Zahájení šifrované relace chatu …</string>
+  <string name="stopping_otr_chat">Ukončení šifrované relace chatu …</string>
   <string name="menu_sign_in">Přihlásit</string>
   <string name="menu_gen_key">Přegenerovat klíč</string>
   <!--Security: OTR: Keyring-->

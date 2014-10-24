@@ -69,12 +69,12 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="account_setup_advanced_enc_auto">Kun mahdollista, salaa keskustelut automaattisesti</string>
   <string name="account_setup_advanced_enc_req">Salaa keskustelut pyyntöjen mukaisesti</string>
   <string name="account_setup_advanced_enc_off">Poista keskustelun salaus</string>
-  <string name="account_setup_signin_a">Tietoja tarkistetaan...</string>
-  <string name="account_setup_signin_b">Luodaan avainparia...</string>
-  <string name="account_setup_signin_c">Kirjaudutaan sisään...</string>
+  <string name="account_setup_signin_a">Tietoja tarkistetaan…</string>
+  <string name="account_setup_signin_b">Luodaan avainparia…</string>
+  <string name="account_setup_signin_c">Kirjaudutaan sisään…</string>
   <string name="select_domain_new_account">Valitse domain</string>
-  <string name="registering_new_account_">Rekisteröidään uutta tiliä...</string>
-  <string name="signing_in_to">alustetaan ChatSecure toimintakuntoon...</string>
+  <string name="registering_new_account_">Rekisteröidään uutta tiliä…</string>
+  <string name="signing_in_to">alustetaan ChatSecure toimintakuntoon…</string>
   <string name="menu_cancel_signin">Peruuta sisäänkirjautuminen</string>
   <string name="signing_in_wait">Kirjaudutaan sisään\u2026</string>
   <string name="signing_out_wait">Kirjautuu ulos\u2026</string>
@@ -148,7 +148,7 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="decline_invitation">Hylkää</string>
   <string name="menu_new_group_chat">Ryhmäkeskustelu</string>
   <string name="create_or_join_group_chat">Luo tai liity ryhmäkeskusteluu</string>
-  <string name="connecting_to_group_chat_">Yhdistetään ryhmäkeskusteluun...</string>
+  <string name="connecting_to_group_chat_">Yhdistetään ryhmäkeskusteluun…</string>
   <string name="menu_invite_contact">Kutsu\u2026</string>
   <string name="contacts_picker_title">Valitse kutsuttava(t) henkilöt</string>
   <string name="contact_filter_hint">Kirjoita etsiäksesi henkilöitä</string>
@@ -218,7 +218,7 @@ Klikkaa kutsuaksesi.</string>
   <string name="prompt_create_new_account_">Luo uusi tili?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Luo uusi keskustelutili käyttäjänimellä \'%1$s\'?</string>
   <!--Alerts: Notifications-->
-  <string name="starting_the_chatsecure_service_">Käynnistetään ChatSecure-palvelua...</string>
+  <string name="starting_the_chatsecure_service_">Käynnistetään ChatSecure-palvelua…</string>
   <string name="app_unlocked">Aktivoitu &amp; lukitsematon</string>
   <!--Alerts: Exceptions-->
   <string name="general_error">Virhekoodi &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>

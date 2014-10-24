@@ -93,8 +93,8 @@
   <string name="account_setup_advanced_enc_auto">一旦有可能, 聊天就自動加密</string>
   <string name="account_setup_advanced_enc_req">當被要求時加密聊天</string>
   <string name="account_setup_advanced_enc_off">停止聊天加密</string>
-  <string name="account_setup_signin_a">憑據驗證中...</string>
-  <string name="account_setup_signin_b">產生識別碼字串中...</string>
+  <string name="account_setup_signin_a">憑據驗證中…</string>
+  <string name="account_setup_signin_b">產生識別碼字串中…</string>
   <string name="account_setup_signin_c">登入中…</string>
   <string name="account_wizard_setup_title">帳戶精靈</string>
   <string name="account_wizard_account_title">識別帳戶</string>

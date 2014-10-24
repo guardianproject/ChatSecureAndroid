@@ -47,7 +47,7 @@
   <string name="setup_passphrase_label1">Parola:</string>
   <string name="setup_passphrase_label2">Parola (tekrar):</string>
   <string name="rekey_message">*Yeni* bir parola giriniz. Parolanız en az bir büyük harf, bir küçük harf ve bir numara barındırmalı ve 6 karakterden daha uzun olmalıdır.</string>
-  <string name="do_rekey">Varolan notlarınızı yeni parola ile şifreliyoruz (lütfen bekleyiniz...)</string>
+  <string name="do_rekey">Varolan notlarınızı yeni parola ile şifreliyoruz (lütfen bekleyiniz…)</string>
   <string name="enter_pass">Parolanızı girin:</string>
   <string name="new_pass">Hoşgeldiniz! Notlarınızı koruma altına almak için güçlü bir parola oluşturun. Parolanız en az bir büyük harf, bir küçük harf ve bir numara barındırmalı ve 6 karakterden daha uzun olmalıdır.</string>
   <string name="pass_err_length">Parolanız yeterince uzun değil.</string>
@@ -105,9 +105,9 @@
   <string name="account_setup_advanced_enc_auto">Mümkün olduğunda sohbetleri otomatik olarak şifrele</string>
   <string name="account_setup_advanced_enc_req">Sohbetleri talep edildiğinde şifrele</string>
   <string name="account_setup_advanced_enc_off">Sohbetleri şifrelemeyi kaldır</string>
-  <string name="account_setup_signin_a">Giriş bilgileri doğrulanıyor...</string>
-  <string name="account_setup_signin_b">Anahtar çifti oluşturuluyor...</string>
-  <string name="account_setup_signin_c">Giriş yapılıyor...</string>
+  <string name="account_setup_signin_a">Giriş bilgileri doğrulanıyor…</string>
+  <string name="account_setup_signin_b">Anahtar çifti oluşturuluyor…</string>
+  <string name="account_setup_signin_c">Giriş yapılıyor…</string>
   <string name="account_wizard_setup_title">Hesap Sihirbazı</string>
   <string name="account_wizard_account_title">Hesabınızın ID\'si</string>
   <string name="account_wizard_host_title">Sunucu Yapılandır</string>
@@ -118,10 +118,10 @@
   <string name="account_wizard_ready_body">ChatSecure ayarlarınız yapıldı, şimdi servise bağlanıp güvenli ve gizli sohbet edebilirsiniz!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Alan adı seçin</string>
-  <string name="registering_new_account_">Yeni hesap kaydediliyor...</string>
-  <string name="signing_in_to">ChatSecure açılıyor...</string>
+  <string name="registering_new_account_">Yeni hesap kaydediliyor…</string>
+  <string name="signing_in_to">ChatSecure açılıyor…</string>
   <string name="menu_cancel_signin">Oturum açmayı iptal et</string>
-  <string name="signing_in_wait">Oturum açılıyor...</string>
+  <string name="signing_in_wait">Oturum açılıyor…</string>
   <string name="signing_out_wait">Oturum kapatılıyor\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">SRV sorgulaması yap</string>
@@ -225,8 +225,8 @@ Eklemek için basın!</string>
   <string name="decline_invitation">Reddet</string>
   <string name="menu_new_group_chat">Grup Sohbet</string>
   <string name="create_or_join_group_chat">Grup Sohbet Oluştur ya da Katıl</string>
-  <string name="connecting_to_group_chat_">Grup sohbete bağlanılıyor...</string>
-  <string name="menu_invite_contact">Davet et...</string>
+  <string name="connecting_to_group_chat_">Grup sohbete bağlanılıyor…</string>
+  <string name="menu_invite_contact">Davet et…</string>
   <string name="contacts_picker_title">Davet edilecek kişileri seç</string>
   <string name="contact_filter_hint">Kişiyi bulmak üzere yazın</string>
   <string name="empty_contact_list">Hiçbir kişi bulunamadı.
@@ -240,8 +240,8 @@ Davet etmek için buraya basın.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Şifrelemeyi Başlat</string>
   <string name="menu_otr_stop">Şifrelemeyi Durdur</string>
-  <string name="starting_otr_chat">Şifrelenmiş sohbet oturumu başlatılıyor...</string>
-  <string name="stopping_otr_chat">Şifrelenmiş sohbet oturumu durduruluyor...</string>
+  <string name="starting_otr_chat">Şifrelenmiş sohbet oturumu başlatılıyor…</string>
+  <string name="stopping_otr_chat">Şifrelenmiş sohbet oturumu durduruluyor…</string>
   <string name="label_fingerprint_remote">Parmak İzi Güvenliği</string>
   <string name="label_fingerprint_local">Parmak İzi Güvenliği</string>
   <string name="menu_sign_in">Giriş Yap</string>
@@ -250,7 +250,7 @@ Davet etmek için buraya basın.</string>
   <string name="otr_session_status_encrypted">Şifreleme Açık (Kontrol etmek için basın)</string>
   <string name="otr_session_status_finished">Karşı taraf şifreli görüşmeyi durdurdu.</string>
   <string name="otr_session_status_verified">Şifrelendi ve doğrulandı!</string>
-  <string name="otr_gen_key">Yeni OTR anahtar çifti oluşturuluyor...</string>
+  <string name="otr_gen_key">Yeni OTR anahtar çifti oluşturuluyor…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Bir OTR anahtarı algılandı. QR parolasını şimdi taramak ister misiniz?</string>
   <string name="menu_import_keys">KeySync Etkinleştir</string>
@@ -333,7 +333,7 @@ Davet etmek için buraya basın.</string>
   <string name="newMessages_label">Yeni &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; iletileri</string>
   <string name="notify_groupchat_label">Grup sohbeti davetiyeleri</string>
   <string name="new_messages_notify">Gelen yeni ileti(ler)</string>
-  <string name="starting_the_chatsecure_service_">ChatSecure servisi başlatılıyor...</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure servisi başlatılıyor…</string>
   <string name="app_unlocked">Etkinleştirildi &amp; kilidi açıldı</string>
   <!--Alerts: Exceptions-->
   <string name="error">Dikkat</string>

@@ -50,7 +50,7 @@ Tillåt applikationer att skriva data till IM innehållsleverantör.
   <string name="setup_passphrase_label1">Lösenord:</string>
   <string name="setup_passphrase_label2">Lösenord (igen):</string>
   <string name="rekey_message">Skriv in ett *nytt* lösenord. Det måste innehålla minst en stor bokstav, en liten bokstav, och en siffra, och vara längre än sex karaktärer.</string>
-  <string name="do_rekey">Krypterar dina existerande noteringar med det nya lösenordet (tålamod...)</string>
+  <string name="do_rekey">Krypterar dina existerande noteringar med det nya lösenordet (tålamod…)</string>
   <string name="enter_pass">Skriv in ditt lösenord:</string>
   <string name="new_pass">Välkommen! Skriv in ett starkt lösenord för att säkra dina noteringar. Det måste innehålla minst en stor bokstav, en liten bokstav, en siffra, och vara längre än sex karaktärer.</string>
   <string name="pass_err_length">Ditt lösenord var inte långt nog</string>
@@ -114,9 +114,9 @@ Låt oss börja!</string>
   <string name="account_setup_advanced_enc_auto">Kryptera chatt automatiskt när det är möjligt</string>
   <string name="account_setup_advanced_enc_req">Kryptera chatter vid begäran</string>
   <string name="account_setup_advanced_enc_off">Inaktivera chattkryptering</string>
-  <string name="account_setup_signin_a">Validerar referenser...</string>
-  <string name="account_setup_signin_b">Genererar nyckelpar...</string>
-  <string name="account_setup_signin_c">Loggar in...</string>
+  <string name="account_setup_signin_a">Validerar referenser…</string>
+  <string name="account_setup_signin_b">Genererar nyckelpar…</string>
+  <string name="account_setup_signin_c">Loggar in…</string>
   <string name="account_wizard_setup_title">Kontoguide</string>
   <string name="account_wizard_account_title">Ditt konto ID</string>
   <string name="account_wizard_host_title">Konfigurera server</string>
@@ -127,7 +127,7 @@ Låt oss börja!</string>
   <string name="account_wizard_ready_body">ChatSecure har konfigurerats och nu är det dags att ansluta till din service, och börja chatta säkert och privat!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Välj en domän</string>
-  <string name="registering_new_account_">Registrerar nytt konto...</string>
+  <string name="registering_new_account_">Registrerar nytt konto…</string>
   <string name="signing_in_to">startar upp ChatSecure</string>
   <string name="menu_cancel_signin">Avbryt inloggning</string>
   <string name="signing_in_wait">Loggar in…</string>
@@ -236,7 +236,7 @@ Tappa här för att lägga till ett!</string>
   <string name="decline_invitation">Avvisa</string>
   <string name="menu_new_group_chat">Gruppchatt</string>
   <string name="create_or_join_group_chat">Skapa eller gå med i gruppchatt</string>
-  <string name="connecting_to_group_chat_">Ansluter till gruppchatt...</string>
+  <string name="connecting_to_group_chat_">Ansluter till gruppchatt…</string>
   <string name="menu_invite_contact">Bjud in…</string>
   <string name="contacts_picker_title">Välj vilka kontakter du vill bjuda in</string>
   <string name="contact_filter_hint">Skriv för att hitta kontakt</string>
@@ -251,8 +251,8 @@ Klicka för att bjuda in.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Starta kryptering</string>
   <string name="menu_otr_stop">Stoppa kryptering</string>
-  <string name="starting_otr_chat">Startar krypterad chattsession...</string>
-  <string name="stopping_otr_chat">Stoppar krypterad chattsession...</string>
+  <string name="starting_otr_chat">Startar krypterad chattsession…</string>
+  <string name="stopping_otr_chat">Stoppar krypterad chattsession…</string>
   <string name="label_fingerprint_remote">Säkerhetsfingeravtryck</string>
   <string name="label_fingerprint_local">Säkerhetsfingeravtryck</string>
   <string name="menu_sign_in">Logga in</string>
@@ -261,7 +261,7 @@ Klicka för att bjuda in.</string>
   <string name="otr_session_status_encrypted">Kryptering är på (Knacka för att verifiera)</string>
   <string name="otr_session_status_finished">Din kontakt har stoppat den krypterade chatten.</string>
   <string name="otr_session_status_verified">Krypterad och verifierad!</string>
-  <string name="otr_gen_key">Genererar nytt OTR nyckelpar...</string>
+  <string name="otr_gen_key">Genererar nytt OTR nyckelpar…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Vi har upptäckt en OTR keystore för import. Vill du skanna QR lösenordet nu?</string>
   <string name="menu_import_keys">Aktivera KeySync</string>
@@ -345,7 +345,7 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
   <string name="newMessages_label">Nya meddelanden från &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Inbjudan till gruppchatt</string>
   <string name="new_messages_notify">Nytt meddelande(n) från</string>
-  <string name="starting_the_chatsecure_service_">Startar ChatSecure service...</string>
+  <string name="starting_the_chatsecure_service_">Startar ChatSecure service…</string>
   <string name="app_unlocked">Aktiverad &amp; olåst</string>
   <!--Alerts: Exceptions-->
   <string name="error">Obs!</string>

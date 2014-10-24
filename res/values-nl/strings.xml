@@ -51,7 +51,7 @@
   <string name="setup_passphrase_label1">Toegangscode:</string>
   <string name="setup_passphrase_label2">Toegangscode (opnieuw):</string>
   <string name="rekey_message">Vul een nieuw wachtwoord in. Het moet ten minste één hoofdletter, één gewone letter en één nummer bevatten. Het wachtwoord moet meer dan zes karakters hebben.</string>
-  <string name="do_rekey">Jouw bestaande berichten worden met het nieuwe wachtwoord versleuteld (geduld...)</string>
+  <string name="do_rekey">Jouw bestaande berichten worden met het nieuwe wachtwoord versleuteld (geduld…)</string>
   <string name="enter_pass">Voer wachtwoord in:</string>
   <string name="new_pass">Welkom! Vul een sterk wachtwoord in om uw berichten te beveiligen.  Het moet ten minste één hoofdletter, één gewone letter en één nummer bevatten. Het wachtwoord moet meer dan zes karakters hebben.</string>
   <string name="pass_err_length">Uw wachtwoord was niet lang genoeg</string>
@@ -115,9 +115,9 @@ Aan de slag!</string>
   <string name="account_setup_advanced_enc_auto">Wanneer mogelijk, automatisch chats versleutelen</string>
   <string name="account_setup_advanced_enc_req">Versleutel chats op verzoek</string>
   <string name="account_setup_advanced_enc_off">Chat versleuteling uitschakelen</string>
-  <string name="account_setup_signin_a">Referenties aan het valideren...</string>
-  <string name="account_setup_signin_b">Sleutelpaar aan het genereren...</string>
-  <string name="account_setup_signin_c">In aan het loggen...</string>
+  <string name="account_setup_signin_a">Referenties aan het valideren…</string>
+  <string name="account_setup_signin_b">Sleutelpaar aan het genereren…</string>
+  <string name="account_setup_signin_c">In aan het loggen…</string>
   <string name="account_wizard_setup_title">Account Wizard</string>
   <string name="account_wizard_account_title">Uw Gebruikersnaam</string>
   <string name="account_wizard_host_title">Server Instellen</string>
@@ -128,10 +128,10 @@ Aan de slag!</string>
   <string name="account_wizard_ready_body">ChatSecure is nu ingesteld. Het is tijd om verbinding te maken met uw chatservice om versleuteld, veilig en privé te chatten!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Kies een domein</string>
-  <string name="registering_new_account_">Registreer een nieuwe account...</string>
-  <string name="signing_in_to">ChatSecure aan het initialiseren...</string>
+  <string name="registering_new_account_">Registreer een nieuwe account…</string>
+  <string name="signing_in_to">ChatSecure aan het initialiseren…</string>
   <string name="menu_cancel_signin">Aanmelding annuleren</string>
-  <string name="signing_in_wait">Aanmelden...</string>
+  <string name="signing_in_wait">Aanmelden…</string>
   <string name="signing_out_wait">Logt uit\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Check SRV</string>
@@ -237,8 +237,8 @@ Klik hier om er één toe te voegen!</string>
   <string name="decline_invitation">Afwijzen</string>
   <string name="menu_new_group_chat">Groepchat</string>
   <string name="create_or_join_group_chat">Creëer of treed toe tot een GroepsChat</string>
-  <string name="connecting_to_group_chat_">Connecteerd naar group chat...</string>
-  <string name="menu_invite_contact">Uitnodigen...</string>
+  <string name="connecting_to_group_chat_">Connecteerd naar group chat…</string>
+  <string name="menu_invite_contact">Uitnodigen…</string>
   <string name="contacts_picker_title">Contacten selecteren om uit te nodigen</string>
   <string name="contact_filter_hint">Typ om een contact te vinden</string>
   <string name="empty_contact_list">Geen contacten gevonden.
@@ -252,8 +252,8 @@ Klik hier om uit te nodigen.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Start Versleuteling</string>
   <string name="menu_otr_stop">Stop Versleuteling</string>
-  <string name="starting_otr_chat">Versleutelde chat sessie aan het starten...</string>
-  <string name="stopping_otr_chat">Versleutelde chat sessie aan het stoppen...</string>
+  <string name="starting_otr_chat">Versleutelde chat sessie aan het starten…</string>
+  <string name="stopping_otr_chat">Versleutelde chat sessie aan het stoppen…</string>
   <string name="label_fingerprint_remote">Beveiligingsvingerafdruk.</string>
   <string name="label_fingerprint_local">Beveiligingsvingerafdruk.</string>
   <string name="menu_sign_in">Log In</string>
@@ -262,7 +262,7 @@ Klik hier om uit te nodigen.</string>
   <string name="otr_session_status_encrypted">Encryptie staat aan (klik om te bevestigen)</string>
   <string name="otr_session_status_finished">Je contact heeft de beveiligde chat beëindigd.</string>
   <string name="otr_session_status_verified">Geëncrypteerd en geverifieerd!</string>
-  <string name="otr_gen_key">Nieuw OTR sleutelpaar aan het genereren...</string>
+  <string name="otr_gen_key">Nieuw OTR sleutelpaar aan het genereren…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">We hebben een OTR keystore gevonden om te importeren. Wil je het QR paswoord meteen inscannen?</string>
   <string name="menu_import_keys">Activeer KeySync</string>
@@ -345,7 +345,7 @@ Klik hier om uit te nodigen.</string>
   <string name="newMessages_label">Nieuwe berichten van &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Uitnodiging voor groepchat</string>
   <string name="new_messages_notify">Nieuw(e) bericht(en) van</string>
-  <string name="starting_the_chatsecure_service_">De ChatSecure service wordt gestart...</string>
+  <string name="starting_the_chatsecure_service_">De ChatSecure service wordt gestart…</string>
   <string name="app_unlocked">Geactiveerd &amp; ontgrendeld</string>
   <!--Alerts: Exceptions-->
   <string name="error">Aandacht vereist</string>

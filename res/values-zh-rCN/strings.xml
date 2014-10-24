@@ -110,8 +110,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="account_setup_advanced_enc_auto">如果可能的话，会自动加密聊天</string>
   <string name="account_setup_advanced_enc_req">按要求加密聊天</string>
   <string name="account_setup_advanced_enc_off">禁用聊天加密</string>
-  <string name="account_setup_signin_a">验证凭据...</string>
-  <string name="account_setup_signin_b">生成密钥对...</string>
+  <string name="account_setup_signin_a">验证凭据…</string>
+  <string name="account_setup_signin_b">生成密钥对…</string>
   <string name="account_setup_signin_c">登入中..</string>
   <string name="account_wizard_setup_title">帐户向导</string>
   <string name="account_wizard_account_title">您的帐户ID</string>
@@ -338,7 +338,7 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="newMessages_label">来自&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;的新消息</string>
   <string name="notify_groupchat_label">群聊邀请</string>
   <string name="new_messages_notify">有新消息</string>
-  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务...</string>
+  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务…</string>
   <string name="app_unlocked">激活的 &amp; 已解锁的</string>
   <!--Alerts: Exceptions-->
   <string name="error">注意</string>

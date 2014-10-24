@@ -47,7 +47,7 @@
   <string name="setup_passphrase_label1">كلمة السر:</string>
   <string name="setup_passphrase_label2">أدخل كلمة السر مرة أخرى:</string>
   <string name="rekey_message">أدخل عبارة سرية جديدة. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
-  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة...</string>
+  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة…</string>
   <string name="enter_pass">أدخل كلمة السر:</string>
   <string name="new_pass">مرحباً! أدخل عبارة سرية قوية لتشفير دفتر ملاحظاتك. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
   <string name="pass_err_length">عبارتك السرية ليست طويلة بما يكفي.</string>
@@ -109,9 +109,9 @@
   <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، قم بتشفير محادثاتي</string>
   <string name="account_setup_advanced_enc_req">قم بتشفير المحادثات حسب الطلب</string>
   <string name="account_setup_advanced_enc_off">تعطيل تشفير المحادثات</string>
-  <string name="account_setup_signin_a">التحقق من صحة البيانات...</string>
-  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية...</string>
-  <string name="account_setup_signin_c">تسجيل الدخول...</string>
+  <string name="account_setup_signin_a">التحقق من صحة البيانات…</string>
+  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية…</string>
+  <string name="account_setup_signin_c">تسجيل الدخول…</string>
   <string name="account_wizard_setup_title">المساعدة بإعداد الحساب</string>
   <string name="account_wizard_account_title">رقم حسابك</string>
   <string name="account_wizard_host_title">إعداد الموقع</string>
@@ -122,7 +122,7 @@
   <string name="account_wizard_ready_body">تم إعداد شات سيكيور (ChatSecure)، و حان الوقت للاتصال بالخدمة و التمتع بالمحادثة بكل أمان و سرية!</string>
   <string name="_via_orbot">اوربوت/Orbot (تور/Tor)</string>
   <string name="select_domain_new_account">اختر اسم نطاق</string>
-  <string name="registering_new_account_">جاري تسجيل حساب جديد...</string>
+  <string name="registering_new_account_">جاري تسجيل حساب جديد…</string>
   <string name="signing_in_to">انطلق يا شات سيكيور!</string>
   <string name="menu_cancel_signin">إلغاء تسجيل الدخول</string>
   <string name="signing_in_wait">يتم تسجيل الدخول الآن</string>
@@ -230,7 +230,7 @@
   <string name="decline_invitation">انخفاض</string>
   <string name="menu_new_group_chat">دردشة المجموعات</string>
   <string name="create_or_join_group_chat">أنشأ أو انضم لدردشة مجموعة.</string>
-  <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية...</string>
+  <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية…</string>
   <string name="menu_invite_contact">دعوة</string>
   <string name="contacts_picker_title">حدد جهات الاتصال ليتم دعوتها</string>
   <string name="contact_filter_hint">اكتب اسم جهة الاتصال</string>
@@ -245,8 +245,8 @@
   <!--Security: OTR-->
   <string name="menu_otr_start">بدء التشفير</string>
   <string name="menu_otr_stop">وقف التشفير</string>
-  <string name="starting_otr_chat">البدء بالتشفير...</string>
-  <string name="stopping_otr_chat">ايقاف التشفير...</string>
+  <string name="starting_otr_chat">البدء بالتشفير…</string>
+  <string name="stopping_otr_chat">ايقاف التشفير…</string>
   <string name="label_fingerprint_remote">بصمة المفتاح</string>
   <string name="label_fingerprint_local">بصمة المفتاح</string>
   <string name="menu_sign_in">تسجيل الدخول</string>
@@ -338,7 +338,7 @@
   <string name="newMessages_label">رسائل جديدة من &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">دعوة لمحادثة جماعية</string>
   <string name="new_messages_notify">رسالة جديدة من</string>
-  <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure…</string>
   <string name="app_unlocked">تم التفعيل و فتح القفل</string>
   <!--Alerts: Exceptions-->
   <string name="error">انتباه</string>

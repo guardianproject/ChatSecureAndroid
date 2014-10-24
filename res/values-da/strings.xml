@@ -51,7 +51,7 @@ Tillader applikationer at skrive data til IM-indholdsleverandøren.</string>
   <string name="setup_passphrase_label1">Adgangsfrase:</string>
   <string name="setup_passphrase_label2">Adgangsfrase (bekræftelse):</string>
   <string name="rekey_message">Skriv en *ny* adgangsfrase. Den skal indeholde mindst et stort bogstav, et lille bogstav, et tal og skal være længere end seks karakterer.</string>
-  <string name="do_rekey">Krypterer eksisterende noter med den nye adgangsfrase (vær tålmodig...)</string>
+  <string name="do_rekey">Krypterer eksisterende noter med den nye adgangsfrase (vær tålmodig…)</string>
   <string name="enter_pass">Skriv din adgangsfrase:</string>
   <string name="new_pass">Velkommen! Skriv en stærk adgangsfrase for at sikre dine noter. Den skal indeholde et stort bogstav, et lille bogstav, et tal og skal være længere end seks karakterer.</string>
   <string name="pass_err_length">Din adgangsfrase var ikke lang nok</string>
@@ -116,8 +116,8 @@ Lad os så komme i gang!</string>
   <string name="account_setup_advanced_enc_req">Krypter samtaler som anmodet</string>
   <string name="account_setup_advanced_enc_off">Deaktiver samtalekryptering</string>
   <string name="account_setup_signin_a">Validerer brugerlogin..</string>
-  <string name="account_setup_signin_b">Genererer nøglepar...</string>
-  <string name="account_setup_signin_c">Logger ind...</string>
+  <string name="account_setup_signin_b">Genererer nøglepar…</string>
+  <string name="account_setup_signin_c">Logger ind…</string>
   <string name="account_wizard_setup_title">Konto-guide</string>
   <string name="account_wizard_account_title">Dit konto-ID</string>
   <string name="account_wizard_host_title">Konfigurer server</string>
@@ -128,10 +128,10 @@ Lad os så komme i gang!</string>
   <string name="account_wizard_ready_body">ChatSecure er nu konfigureret, og det er tid til at forbinde til din service og begynde at samtale sikkert og privat!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Vælg et domæne</string>
-  <string name="registering_new_account_">Registrerer ny konto...</string>
-  <string name="signing_in_to">sætter gang i ChatSecure...</string>
+  <string name="registering_new_account_">Registrerer ny konto…</string>
+  <string name="signing_in_to">sætter gang i ChatSecure…</string>
   <string name="menu_cancel_signin">Annuller login</string>
-  <string name="signing_in_wait">Logger ind ...</string>
+  <string name="signing_in_wait">Logger ind …</string>
   <string name="signing_out_wait">Logger ud\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Brug SRV-opslag</string>
@@ -238,7 +238,7 @@ Tryk her for at tilføje!</string>
   <string name="menu_new_group_chat">Gruppesamtale</string>
   <string name="create_or_join_group_chat">Opret eller deltag i gruppesamtale</string>
   <string name="connecting_to_group_chat_">Forbinder til gruppesamtale</string>
-  <string name="menu_invite_contact">Inviter ...</string>
+  <string name="menu_invite_contact">Inviter …</string>
   <string name="contacts_picker_title">Vælg kontakt(er), der skal inviteres</string>
   <string name="contact_filter_hint">Indtast for at finde kontakt</string>
   <string name="empty_contact_list">Ingen kontakter fundet.
@@ -252,8 +252,8 @@ Rør skærm for at invitere.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Start Kryptering</string>
   <string name="menu_otr_stop">Stop Kryptering</string>
-  <string name="starting_otr_chat">Starter krypteret samtale...</string>
-  <string name="stopping_otr_chat">Stopper krypteret samtale...</string>
+  <string name="starting_otr_chat">Starter krypteret samtale…</string>
+  <string name="stopping_otr_chat">Stopper krypteret samtale…</string>
   <string name="label_fingerprint_remote">Sikkerhedsfingeraftryk</string>
   <string name="label_fingerprint_local">Sikkerhedsfingeraftryk</string>
   <string name="menu_sign_in">Log ind</string>
@@ -262,7 +262,7 @@ Rør skærm for at invitere.</string>
   <string name="otr_session_status_encrypted">Kryptering er aktiveret (rør for at verificere)</string>
   <string name="otr_session_status_finished">Din kontakt har abrudt den krypterede samtale.</string>
   <string name="otr_session_status_verified">Krypteret og verificeret!</string>
-  <string name="otr_gen_key">Genererer nyt OTR-nøglepar...</string>
+  <string name="otr_gen_key">Genererer nyt OTR-nøglepar…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Vi kan se der eksisterer et OTR-nøglelager der kan importeres. Vil du scanne QR-adgangskoden nu?</string>
   <string name="menu_import_keys">Aktiver KeySync</string>
@@ -345,7 +345,7 @@ Rør skærm for at invitere.</string>
   <string name="newMessages_label">Nye &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;-beskeder</string>
   <string name="notify_groupchat_label">Gruppechatinvitation</string>
   <string name="new_messages_notify">Ny(e) besked(er) fra</string>
-  <string name="starting_the_chatsecure_service_">Starter ChatSecure servicen...</string>
+  <string name="starting_the_chatsecure_service_">Starter ChatSecure servicen…</string>
   <string name="app_unlocked">Aktiveret &amp; låst op</string>
   <!--Alerts: Exceptions-->
   <string name="error">Bemærk</string>

@@ -77,9 +77,9 @@
   <string name="account_setup_advanced_enc_auto">هرزمان که ممکن است، گفتگو را بطور خودکار رمز گذاری کن</string>
   <string name="account_setup_advanced_enc_req">رمزگذاری گفتگو بر اساس درخواست</string>
   <string name="account_setup_advanced_enc_off">غیرفعال کردن رمزگذاری گفتگو</string>
-  <string name="account_setup_signin_a">تایید اعتبارنامه ها...</string>
-  <string name="account_setup_signin_b">درحال تولید یک جفت کلید...</string>
-  <string name="account_setup_signin_c">درحال ورود...</string>
+  <string name="account_setup_signin_a">تایید اعتبارنامه ها…</string>
+  <string name="account_setup_signin_b">درحال تولید یک جفت کلید…</string>
+  <string name="account_setup_signin_c">درحال ورود…</string>
   <string name="account_wizard_setup_title">ویزارد حساب کاربری</string>
   <string name="account_wizard_account_title">شناسه حساب کاربری شما</string>
   <string name="account_wizard_host_title">پیکربندی سرور</string>
@@ -182,11 +182,11 @@
   <!--Security: OTR-->
   <string name="menu_otr_start">شروع رمزگذاری</string>
   <string name="menu_otr_stop">توقف رمزگذاری</string>
-  <string name="starting_otr_chat">شروع رمزگذاری جلسه گفتگو...</string>
-  <string name="stopping_otr_chat">توقف رمزگذاری جلسه گفتگو...</string>
+  <string name="starting_otr_chat">شروع رمزگذاری جلسه گفتگو…</string>
+  <string name="stopping_otr_chat">توقف رمزگذاری جلسه گفتگو…</string>
   <string name="menu_sign_in">ورود</string>
   <string name="menu_gen_key">تولید دوباره کلید</string>
-  <string name="otr_gen_key">درحال تولید یک جفت کلید OTR...</string>
+  <string name="otr_gen_key">درحال تولید یک جفت کلید OTR…</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
   <string name="menu_fingerprint">اثر انگشت شما</string>

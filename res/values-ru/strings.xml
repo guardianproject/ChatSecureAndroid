@@ -111,8 +111,8 @@
   <string name="account_setup_advanced_enc_auto">Когда это возможно, шифровать чаты автоматически</string>
   <string name="account_setup_advanced_enc_req">Шифрование чатов с просьбой</string>
   <string name="account_setup_advanced_enc_off">Не шифровать чаты</string>
-  <string name="account_setup_signin_a">Проверка полномочий ...</string>
-  <string name="account_setup_signin_b">Создание пары ключей ...</string>
+  <string name="account_setup_signin_a">Проверка полномочий …</string>
+  <string name="account_setup_signin_b">Создание пары ключей …</string>
   <string name="account_setup_signin_c">Подписание дюйма ..</string>
   <string name="account_wizard_setup_title">Мастер учетных записей</string>
   <string name="account_wizard_account_title">Ваш аккаунт ID</string>
@@ -124,11 +124,11 @@
   <string name="account_wizard_ready_body">ChatSecure была настроена, и теперь пришло время для подключения к вашим услугам, и начинайте общаться безопасно, надежно и конфиденциально!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Выбрать домен</string>
-  <string name="registering_new_account_">Создание новой учетной записи...</string>
-  <string name="signing_in_to">запуск ChatSecure...</string>
+  <string name="registering_new_account_">Создание новой учетной записи…</string>
+  <string name="signing_in_to">запуск ChatSecure…</string>
   <string name="menu_cancel_signin">Отмена входа</string>
-  <string name="signing_in_wait">Выполняется вход...</string>
-  <string name="signing_out_wait">Выполняется выход...\u2026</string>
+  <string name="signing_in_wait">Выполняется вход…</string>
+  <string name="signing_out_wait">Выполняется выход…\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Поиск SRV записи</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Использовать DNS SRV для определения XMPP из доменного имени</string>
@@ -233,8 +233,8 @@
   <string name="decline_invitation">Отклонить</string>
   <string name="menu_new_group_chat">Групповой чат</string>
   <string name="create_or_join_group_chat">Создать или присоединиться к групповому чату</string>
-  <string name="connecting_to_group_chat_">Подключение к групповому чату...</string>
-  <string name="menu_invite_contact">Пригласить пользователя...</string>
+  <string name="connecting_to_group_chat_">Подключение к групповому чату…</string>
+  <string name="menu_invite_contact">Пригласить пользователя…</string>
   <string name="contacts_picker_title">Выберите пользователя(ей), которого вы хотите пригласить</string>
   <string name="contact_filter_hint">Введите текст для поиска контакта</string>
   <string name="empty_contact_list">Контактов не найдено.⏎
@@ -341,7 +341,7 @@
   <string name="newMessages_label">Новые сообщения пользователя: &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Приглашение в групповой чат</string>
   <string name="new_messages_notify">Новое сообщение(я) от</string>
-  <string name="starting_the_chatsecure_service_">Запуск ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Запуск ChatSecure…</string>
   <string name="app_unlocked">Активировано &amp; Разблокировано</string>
   <!--Alerts: Exceptions-->
   <string name="error">Внимание</string>

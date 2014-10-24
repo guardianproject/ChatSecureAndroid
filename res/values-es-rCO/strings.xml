@@ -53,7 +53,7 @@ Permite a las aplicaciones escribir datos en el proveedor de contenidos de mensa
   <string name="setup_passphrase_label1">Contraseña:</string>
   <string name="setup_passphrase_label2">Contraseña (de nuevo):</string>
   <string name="rekey_message">Ingrese una *nueva* contraseña. Esta debe tener al menos una letra mayúscula, una minúscula y un número, y tener más de seis caracteres.</string>
-  <string name="do_rekey">Cifrando sus notas con la nueva contraseña (paciencia...)</string>
+  <string name="do_rekey">Cifrando sus notas con la nueva contraseña (paciencia…)</string>
   <string name="enter_pass">Ingrese su contraseña:</string>
   <string name="new_pass">¡Bienvenido! Ingrese una contraseña fuerte para asegurar sus notas. Esta debe contener al menos una letra mayúscula, una minúscula y un número, y tener más de seis caracteres de longitud.</string>
   <string name="pass_err_length">Su contraseña no es lo suficientemente larga</string>
@@ -115,7 +115,7 @@ La aplicación soporta cualquier servicio de chat que utilice los protocolos Jab
   <string name="account_setup_advanced_enc_off">Deshabilitar cifrado de chat</string>
   <string name="account_setup_signin_a">Validando credenciales</string>
   <string name="account_setup_signin_b">Generando par de claves</string>
-  <string name="account_setup_signin_c">Iniciando sesión...</string>
+  <string name="account_setup_signin_c">Iniciando sesión…</string>
   <string name="account_wizard_setup_title">Asistente de cuenta</string>
   <string name="account_wizard_account_title">Su ID de cuenta</string>
   <string name="account_wizard_host_title">Configurar servidor</string>
@@ -126,7 +126,7 @@ La aplicación soporta cualquier servicio de chat que utilice los protocolos Jab
   <string name="account_wizard_ready_body">ChatSecure ha sido configurado, y ahora es tiempo de conectarse a su servicio, y empezar a chatear de forma segura, ¡Segura y privada! </string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Elija un dominio</string>
-  <string name="signing_in_to">poniendo en marcha ChatSecure...</string>
+  <string name="signing_in_to">poniendo en marcha ChatSecure…</string>
   <string name="menu_cancel_signin">Cancelar inicio de sesión</string>
   <string name="signing_in_wait">Iniciando sesión\u2026 </string>
   <!--Views: Settings: Account-->
@@ -238,8 +238,8 @@ Toque para invitar.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Iniciar cifrado</string>
   <string name="menu_otr_stop">Detener cifrado</string>
-  <string name="starting_otr_chat">Iniciando sesión de chat cifrado...</string>
-  <string name="stopping_otr_chat">Finalizando la sesión de chat cifrado...</string>
+  <string name="starting_otr_chat">Iniciando sesión de chat cifrado…</string>
+  <string name="stopping_otr_chat">Finalizando la sesión de chat cifrado…</string>
   <string name="label_fingerprint_remote">Huella de seguridad</string>
   <string name="label_fingerprint_local">Huella de seguridad</string>
   <string name="menu_sign_in">Iniciar sesión</string>
@@ -248,7 +248,7 @@ Toque para invitar.</string>
   <string name="otr_session_status_encrypted">Cifrado está encendido (Tocar para verificar)</string>
   <string name="otr_session_status_finished">Su contacto ha detenido el chat cifrado.</string>
   <string name="otr_session_status_verified">¡Cifrado y verificado!</string>
-  <string name="otr_gen_key">Generando nuevo par de claves OTR...</string>
+  <string name="otr_gen_key">Generando nuevo par de claves OTR…</string>
   <!--Security: OTR: Keyring-->
   <string name="menu_import_keys">Activar </string>
   <string name="successfully_imported_otr_keyring">Llavero OTR importado satisfactoriamente</string>
@@ -320,7 +320,7 @@ Es necesario tener conexión a la red de datos (incluyendo datos en segundo plan
   <string name="newMessages_label">Nuevos mensajes de &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Invitación a chat de grupo</string>
   <string name="new_messages_notify">Nuevo mensaje(s) de</string>
-  <string name="starting_the_chatsecure_service_">Arrancando el servicio ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Arrancando el servicio ChatSecure…</string>
   <!--Alerts: Exceptions-->
   <string name="error">Atención</string>
   <string name="general_error">Código de error &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>

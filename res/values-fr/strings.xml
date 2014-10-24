@@ -112,9 +112,9 @@ Allons-y !</string>
   <string name="account_setup_advanced_enc_auto">Lorsque cela est possible, chiffrer automatiquement les conversations</string>
   <string name="account_setup_advanced_enc_req">Chiffrer les conversations sur demande</string>
   <string name="account_setup_advanced_enc_off">Désactiver le chiffrement des conversations</string>
-  <string name="account_setup_signin_a">Validation des certificats ...</string>
-  <string name="account_setup_signin_b">Génération de la paire de clés ...</string>
-  <string name="account_setup_signin_c">Connexion ...</string>
+  <string name="account_setup_signin_a">Validation des certificats …</string>
+  <string name="account_setup_signin_b">Génération de la paire de clés …</string>
+  <string name="account_setup_signin_c">Connexion …</string>
   <string name="account_wizard_setup_title">Account Wizard</string>
   <string name="account_wizard_account_title">ID de votre compte</string>
   <string name="account_wizard_host_title">Configurer le serveur</string>
@@ -125,10 +125,10 @@ Allons-y !</string>
   <string name="account_wizard_ready_body">ChatSecure est configuré, il est donc temps de se connecter au service, et de commencer à discuter, de façon sécurisée et privée!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Sélectionnez un domaine</string>
-  <string name="registering_new_account_">Enregistrement du nouveau compte...</string>
-  <string name="signing_in_to">Démarrage de ChatSecure...</string>
+  <string name="registering_new_account_">Enregistrement du nouveau compte…</string>
+  <string name="signing_in_to">Démarrage de ChatSecure…</string>
   <string name="menu_cancel_signin">Annuler la connexion</string>
-  <string name="signing_in_wait">Connexion...</string>
+  <string name="signing_in_wait">Connexion…</string>
   <string name="signing_out_wait">Déconnexion\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Vérifier le SRV</string>
@@ -235,8 +235,8 @@ Appuyez ici pour en ajouter un !</string>
   <string name="decline_invitation">Refuser</string>
   <string name="menu_new_group_chat">Discussion de groupe</string>
   <string name="create_or_join_group_chat">Créer ou rejoindre une discussion de groupe</string>
-  <string name="connecting_to_group_chat_">Connexion au chat de groupe...</string>
-  <string name="menu_invite_contact">Inviter...</string>
+  <string name="connecting_to_group_chat_">Connexion au chat de groupe…</string>
+  <string name="menu_invite_contact">Inviter…</string>
   <string name="contacts_picker_title">Sélectionnez les contacts à inviter</string>
   <string name="contact_filter_hint">Saisissez le nom du contact à rechercher</string>
   <string name="empty_contact_list">Aucun contact trouvé.⏎
@@ -250,8 +250,8 @@ Appuyez pour inviter.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Chiffrer</string>
   <string name="menu_otr_stop">Arrêter le chiffrement</string>
-  <string name="starting_otr_chat">Démarrage de la conversation chiffrée...</string>
-  <string name="stopping_otr_chat">Arrêt du chiffrement de la conversation...</string>
+  <string name="starting_otr_chat">Démarrage de la conversation chiffrée…</string>
+  <string name="stopping_otr_chat">Arrêt du chiffrement de la conversation…</string>
   <string name="label_fingerprint_remote">Sécurité de l\'empreinte</string>
   <string name="label_fingerprint_local">Sécurité de l\'empreinte</string>
   <string name="menu_sign_in">Se connecter</string>
@@ -260,7 +260,7 @@ Appuyez pour inviter.</string>
   <string name="otr_session_status_encrypted">Le chiffrement est activité (Appuyez pour vérifier)</string>
   <string name="otr_session_status_finished">Votre contact a arrêté le chat chiffré.</string>
   <string name="otr_session_status_verified">Chiffré et vérifié !</string>
-  <string name="otr_gen_key">Génération d\'une nouvelle paire de clés OTR...</string>
+  <string name="otr_gen_key">Génération d\'une nouvelle paire de clés OTR…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Nous avons détecté une base de stockage de clés OTR à importer. Voulez-vous scanner le mot de passe QR maintenant?</string>
   <string name="menu_import_keys">Activer KeySync</string>
@@ -343,7 +343,7 @@ Appuyez pour inviter.</string>
   <string name="newMessages_label">Nouveaux messages de &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Invitation à un chat en groupe</string>
   <string name="new_messages_notify">Nouveau(x) message(s) de</string>
-  <string name="starting_the_chatsecure_service_">Lancement du service ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Lancement du service ChatSecure…</string>
   <string name="app_unlocked">Activé &amp; déverrouillé</string>
   <!--Alerts: Exceptions-->
   <string name="error">Avertissement</string>

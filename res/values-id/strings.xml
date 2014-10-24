@@ -52,7 +52,7 @@
   <string name="setup_passphrase_label1">Passphrase:</string>
   <string name="setup_passphrase_label2">Passphrase (lagi):</string>
   <string name="rekey_message">Masukkan sebuah passphrase yang *baru*. Passphrase tersebut harus memiliki paling sedikit satu huruf besar, satu huruf kecil dan satu angka, juga minimal memiliki 7 karakter.</string>
-  <string name="do_rekey">Mengenkripsi catatan anda yang ada dengan passphrase yang baru (harap sabar...)</string>
+  <string name="do_rekey">Mengenkripsi catatan anda yang ada dengan passphrase yang baru (harap sabar…)</string>
   <string name="enter_pass">Masukkan Passphrase anda:</string>
   <string name="new_pass">Selamat Datang! Masukkna sebuah passphrase yang kuat untuk mengamankan catatan anda. Passphrase tersebut harus memiliki paling sedikit satu huruf besar, satu huruf kecil dan satu angka, juga lebih panjang dari 6 karakter.</string>
   <string name="pass_err_length">Passphrase anda tidak cukup panjang</string>
@@ -116,9 +116,9 @@ Mari kita mulai!</string>
   <string name="account_setup_advanced_enc_auto">Jika memungkinkan, otomatis enkripsi percakapan</string>
   <string name="account_setup_advanced_enc_req">Enkripsi percakapan ketika diminta</string>
   <string name="account_setup_advanced_enc_off">Non aktifkan enkripsi percakapan</string>
-  <string name="account_setup_signin_a">Memeriksa pengenal...</string>
-  <string name="account_setup_signin_b">Membangkitkan keypair...</string>
-  <string name="account_setup_signin_c">Melakukan Sign In...</string>
+  <string name="account_setup_signin_a">Memeriksa pengenal…</string>
+  <string name="account_setup_signin_b">Membangkitkan keypair…</string>
+  <string name="account_setup_signin_c">Melakukan Sign In…</string>
   <string name="account_wizard_setup_title">Wizard Akun</string>
   <string name="account_wizard_account_title">ID Akun Anda</string>
   <string name="account_wizard_host_title">Konfigurasi Server</string>
@@ -129,8 +129,8 @@ Mari kita mulai!</string>
   <string name="account_wizard_ready_body">ChatSecure telah dikonfigurasi, dan sekarang waktunya untuk terhubung ke layanan anda, dan memulai percakapan yang aman, terjamin secara privat!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Pilih sebuah domain</string>
-  <string name="registering_new_account_">Mendaftarkan akun baru...</string>
-  <string name="signing_in_to">membuat ChatSecure akan...</string>
+  <string name="registering_new_account_">Mendaftarkan akun baru…</string>
+  <string name="signing_in_to">membuat ChatSecure akan…</string>
   <string name="menu_cancel_signin">Batalkan sign in</string>
   <string name="signing_in_wait">Melakukan Sign In\u2026</string>
   <string name="signing_out_wait">Melakukan Sign Out\u2026</string>
@@ -237,7 +237,7 @@ Ketuk di sini untuk menambah!</string>
   <string name="decline_invitation">Tolak</string>
   <string name="menu_new_group_chat">Percakapan Grup</string>
   <string name="create_or_join_group_chat">Buat atau Bergabung ke Percakapan Grup</string>
-  <string name="connecting_to_group_chat_">Menghubungi percakapan grup...</string>
+  <string name="connecting_to_group_chat_">Menghubungi percakapan grup…</string>
   <string name="menu_invite_contact">Mengundang\u2026</string>
   <string name="contacts_picker_title">Pilih kontak untuk diundang</string>
   <string name="contact_filter_hint">Ketik untuk mencari kontak</string>
@@ -252,8 +252,8 @@ Sentuh untuk mengundang.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Mulai Enkripsi</string>
   <string name="menu_otr_stop">Hentikan Enkripsi</string>
-  <string name="starting_otr_chat">Memulai enkripsi sesi percakapan...</string>
-  <string name="stopping_otr_chat">Menghentikan enkripsi sesi percakapan...</string>
+  <string name="starting_otr_chat">Memulai enkripsi sesi percakapan…</string>
+  <string name="stopping_otr_chat">Menghentikan enkripsi sesi percakapan…</string>
   <string name="label_fingerprint_remote">Fingerprint Keamanan</string>
   <string name="label_fingerprint_local">Fingerprint Keamanan</string>
   <string name="menu_sign_in">Sign In</string>
@@ -262,7 +262,7 @@ Sentuh untuk mengundang.</string>
   <string name="otr_session_status_encrypted">Enkripsi hidup (Sentuh untuk verifikasi)</string>
   <string name="otr_session_status_finished">Kontak anda telah menghentikan percakapan terenkripsi.</string>
   <string name="otr_session_status_verified">Terenkripsi dan disahkan!</string>
-  <string name="otr_gen_key">Membangkitkan OTR keypair yang baru ...</string>
+  <string name="otr_gen_key">Membangkitkan OTR keypair yang baru …</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Kami mendeteksi sebuah OTR keystore yang bisa diimpor. Apakah anda mau memindai password QR sekarang?</string>
   <string name="menu_import_keys">Aktifkan KeySync</string>
@@ -345,7 +345,7 @@ Sentuh untuk mengundang.</string>
   <string name="newMessages_label">Terdapat &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; pesan baru</string>
   <string name="notify_groupchat_label">Undangan percakapan grup</string>
   <string name="new_messages_notify">Pesan baru dari</string>
-  <string name="starting_the_chatsecure_service_">Memulai layanan ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Memulai layanan ChatSecure…</string>
   <string name="app_unlocked">Diaktifkan &amp; tak terkunci</string>
   <!--Alerts: Exceptions-->
   <string name="error">Perhatian</string>

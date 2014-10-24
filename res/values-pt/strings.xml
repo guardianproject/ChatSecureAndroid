@@ -81,17 +81,17 @@ A aplicação suporta qualquer serviço de chat que uso o Jabber ou XMPP protoco
   <string name="account_setup_advanced_enc_auto">Quando possível, encriptar a conversa automaticamente</string>
   <string name="account_setup_advanced_enc_req">Encripta conversas como solicitado</string>
   <string name="account_setup_advanced_enc_off">Desactivar encriptação de conversa </string>
-  <string name="account_setup_signin_a">A validar credencias...</string>
-  <string name="account_setup_signin_b">A gerar chave...</string>
-  <string name="account_setup_signin_c">A ligar...</string>
+  <string name="account_setup_signin_a">A validar credencias…</string>
+  <string name="account_setup_signin_b">A gerar chave…</string>
+  <string name="account_setup_signin_c">A ligar…</string>
   <string name="account_wizard_setup_title">Assistente de Conta</string>
   <string name="account_wizard_account_title">A sua ID da Conta</string>
   <string name="account_wizard_host_title">Configure o Servidor</string>
   <string name="account_wizard_ready_title">Está Preparado?</string>
   <string name="account_wizard_account_body">Por favor introduza o seu ID da conta (utilizador@domínio):</string>
-  <string name="signing_in_to">obtendo ConversaSegura...</string>
+  <string name="signing_in_to">obtendo ConversaSegura…</string>
   <string name="menu_cancel_signin">Cancelar login</string>
-  <string name="signing_in_wait">Fazendo login...</string>
+  <string name="signing_in_wait">Fazendo login…</string>
   <!--Views: Settings: Account-->
   <string name="verify_that_the_certificate_is_trusted">Verifica que o certificado é de confiança</string>
   <!--Views: Contact list-->
@@ -171,8 +171,8 @@ Clique para convidar.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Iniciar Criptografia</string>
   <string name="menu_otr_stop">Interromper Criptografia</string>
-  <string name="starting_otr_chat">A iniciar conversa encriptada...</string>
-  <string name="stopping_otr_chat">A para conversa encriptada... </string>
+  <string name="starting_otr_chat">A iniciar conversa encriptada…</string>
+  <string name="stopping_otr_chat">A para conversa encriptada… </string>
   <string name="menu_sign_in">Iniciar Sessão</string>
   <string name="menu_gen_key">Regenerar Chave</string>
   <string name="otr_session_status_plaintext">Encriptação desligada</string>

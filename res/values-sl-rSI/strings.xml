@@ -84,9 +84,9 @@
   <string name="account_setup_advanced_enc_auto">Ko je možno, šifriraj klepete samodejno</string>
   <string name="account_setup_advanced_enc_req">Šifriraj pogovore, če je tako določeno</string>
   <string name="account_setup_advanced_enc_off">Onemogoči šifriranje pogovorov</string>
-  <string name="account_setup_signin_a">Preverjanje poverilnice ...</string>
-  <string name="account_setup_signin_b">Generiram par ključev ...</string>
-  <string name="account_setup_signin_c">Prijavljanje ...</string>
+  <string name="account_setup_signin_a">Preverjanje poverilnice …</string>
+  <string name="account_setup_signin_b">Generiram par ključev …</string>
+  <string name="account_setup_signin_c">Prijavljanje …</string>
   <string name="account_wizard_setup_title">Čarovnik za račun</string>
   <string name="account_wizard_account_title">ID vašega računa</string>
   <string name="account_wizard_host_title">Nastavi strežnik</string>
@@ -191,8 +191,8 @@ Dotaknite se tu in ga dodajte!</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Začni šifriranje</string>
   <string name="menu_otr_stop">Končaj šifriranje</string>
-  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje ...</string>
-  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje ...</string>
+  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje …</string>
+  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje …</string>
   <string name="label_fingerprint_remote">Varnostni prstni odtis</string>
   <string name="label_fingerprint_local">Varnostni prstni odtis</string>
   <string name="menu_sign_in">Prijavi se</string>
@@ -200,7 +200,7 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="otr_session_status_plaintext">Šifriranje je izklopljeno</string>
   <string name="otr_session_status_encrypted">Šifriranje je vklopljeno (preveri z dotikom)</string>
   <string name="otr_session_status_verified">Šifrirano in preverjeno!</string>
-  <string name="otr_gen_key">Generiram nov par OTR ključev ...</string>
+  <string name="otr_gen_key">Generiram nov par OTR ključev …</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
   <string name="menu_scan">Odčitaj QR</string>
@@ -258,7 +258,7 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="newMessages_label">Nova &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; sporočila</string>
   <string name="notify_groupchat_label">Povabilo v skupinski klepet</string>
   <string name="new_messages_notify">Novo sporočilo od</string>
-  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja ...</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja …</string>
   <!--Alerts: Exceptions-->
   <string name="error">Pozor</string>
   <string name="general_error">Koda napake &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>

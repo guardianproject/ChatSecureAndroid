@@ -53,7 +53,7 @@
   <string name="setup_passphrase_label1">Passord.</string>
   <string name="setup_passphrase_label2">Passord (igjen):</string>
   <string name="rekey_message">Opprett et *nytt* passord. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
-  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig...)</string>
+  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig…)</string>
   <string name="enter_pass">Oppgi passord ditt:</string>
   <string name="new_pass">Velkommen! Opprett et sterkt passord for å sikre notatene dine. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
   <string name="pass_err_length">Passordet ditt var ikke langt nok</string>
@@ -118,9 +118,9 @@ La oss begynne!</string>
   <string name="account_setup_advanced_enc_auto">Om mulig, kryptér chat automatisk</string>
   <string name="account_setup_advanced_enc_req">Krypter chatten som forespurt</string>
   <string name="account_setup_advanced_enc_off">Deaktiver chatkryptering</string>
-  <string name="account_setup_signin_a">Validerer legitimasjon...</string>
-  <string name="account_setup_signin_b">Genererer nøkkelpar...</string>
-  <string name="account_setup_signin_c">Logger inn...</string>
+  <string name="account_setup_signin_a">Validerer legitimasjon…</string>
+  <string name="account_setup_signin_b">Genererer nøkkelpar…</string>
+  <string name="account_setup_signin_c">Logger inn…</string>
   <string name="account_wizard_setup_title">Kontoveiviser</string>
   <string name="account_wizard_account_title">Din Konto-ID</string>
   <string name="account_wizard_host_title">Konfigurér Server</string>
@@ -131,8 +131,8 @@ La oss begynne!</string>
   <string name="account_wizard_ready_body">ChatSecure ble konfigurert og det er nå tid for å koble til tjenesten og begynne å chatte trygt, sikkert og privat!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Velg domene</string>
-  <string name="registering_new_account_">Registrer ny konto...</string>
-  <string name="signing_in_to">starter opp ChatSecure...</string>
+  <string name="registering_new_account_">Registrer ny konto…</string>
+  <string name="signing_in_to">starter opp ChatSecure…</string>
   <string name="menu_cancel_signin">Avbryt pålogging</string>
   <string name="signing_in_wait">Logger på…</string>
   <string name="signing_out_wait">Logger ut\u2026</string>
@@ -252,7 +252,7 @@ Trykk her for å legge til én!</string>
   <string name="decline_invitation">Avslå</string>
   <string name="menu_new_group_chat">Gruppesludder</string>
   <string name="create_or_join_group_chat">Start eller ta del i gruppesludder</string>
-  <string name="connecting_to_group_chat_">Kolber til gruppesludder...</string>
+  <string name="connecting_to_group_chat_">Kolber til gruppesludder…</string>
   <string name="menu_invite_contact">Inviter…</string>
   <string name="contacts_picker_title">Velg kontakt(er) som skal inviteres</string>
   <string name="contact_filter_hint">Skriv for å finne kontakter</string>
@@ -267,8 +267,8 @@ Trykk for å invitere.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Start Kryptering</string>
   <string name="menu_otr_stop">Stopp Kryptering</string>
-  <string name="starting_otr_chat">Starter kryptert chat...</string>
-  <string name="stopping_otr_chat">Stopper kryptert chat...</string>
+  <string name="starting_otr_chat">Starter kryptert chat…</string>
+  <string name="stopping_otr_chat">Stopper kryptert chat…</string>
   <string name="label_fingerprint_remote">Fingeravtrykk for sikkerhet</string>
   <string name="label_fingerprint_local">Fingeravtrykk for sikkerhet</string>
   <string name="menu_sign_in">Logg inn</string>
@@ -277,7 +277,7 @@ Trykk for å invitere.</string>
   <string name="otr_session_status_encrypted">Kryptering på (trykk for å kontrollere)</string>
   <string name="otr_session_status_finished">Din samtalepartner har stoppet krypteringen på sludringen.</string>
   <string name="otr_session_status_verified">Kryptert og bekreftet!</string>
-  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar...</string>
+  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Vi har funnet et OTR-nøkkelknippe som kan importeres. Vil du skanne inn QR-passordet nå?</string>
   <string name="menu_import_keys">Aktiver KeySync</string>
@@ -373,7 +373,7 @@ Trykk for å invitere.</string>
   <string name="newMessages_label">Nye &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;-meldinger</string>
   <string name="notify_groupchat_label">Invitasjon til gruppesamtale</string>
   <string name="new_messages_notify">Ny melding(er) fra</string>
-  <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten...</string>
+  <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten…</string>
   <string name="app_unlocked">Aktivert &amp; låst opp</string>
   <string name="toast_chat_copied_to_clipboard">melding kopiert til utklippstavle</string>
   <!--Alerts: Exceptions-->
@@ -451,7 +451,7 @@ Trykk for å invitere.</string>
   <string name="contacts">Kontakter</string>
   <string name="mtm_accept_cert">Godta tjener-sertifikat?</string>
   <string name="menu_sidebar_qr">Fingeravtrykk</string>
-  <string name="loading">laster...</string>
+  <string name="loading">laster…</string>
   <!--Other-->
   <string name="about_link">Om Chatsecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

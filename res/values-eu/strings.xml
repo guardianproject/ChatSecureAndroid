@@ -50,7 +50,7 @@ Aplikazioek BM eduki hornitzailean irakurtzea baimentzen du.</string>
   <string name="setup_passphrase_label1">Pasaesaldia:</string>
   <string name="setup_passphrase_label2">Pasaesaldia (berriz):</string>
   <string name="rekey_message">Sartu pasaesaldi *berri* bat. Gutxienez legra larri bat, letra xehe bat eta zenbaki bat izan behar ditu, eta sei karaktere baino gehiagokoa izan behar du.</string>
-  <string name="do_rekey">Zure notak pasaesaldi berriarekin zifratzen (pazientzia...)</string>
+  <string name="do_rekey">Zure notak pasaesaldi berriarekin zifratzen (pazientzia…)</string>
   <string name="enter_pass">Sartu zure pasaesaldia:</string>
   <string name="new_pass">Ongi etorri! Sartu pasaesaldi sendo bat zure notak babesteko. Gutxienez letra larri bat, letra xehe bat eta zenbaki bat izan behar ditu, eta sei karaktere baino gehiagokoa izan behar du.</string>
   <string name="pass_err_length">Zure pasaesaldia ez du luzera nahikorik</string>
@@ -114,9 +114,9 @@ Goazen aurrera!</string>
   <string name="account_setup_advanced_enc_auto">Aukera dagoenean berriketak automatikoki zifratu</string>
   <string name="account_setup_advanced_enc_req">Eskatzen denean berriketak zifratu</string>
   <string name="account_setup_advanced_enc_off">Berriketa zifratzea ezgaitu</string>
-  <string name="account_setup_signin_a">Kredentzialak balioztatzen...</string>
-  <string name="account_setup_signin_b">Gako bikotea sortzen...</string>
-  <string name="account_setup_signin_c">Saioa hasten...</string>
+  <string name="account_setup_signin_a">Kredentzialak balioztatzen…</string>
+  <string name="account_setup_signin_b">Gako bikotea sortzen…</string>
+  <string name="account_setup_signin_c">Saioa hasten…</string>
   <string name="account_wizard_setup_title">Kontu Laguntzailea</string>
   <string name="account_wizard_account_title">Zure kontuaren IDa</string>
   <string name="account_wizard_host_title">Zerbitzaria konfiguratu</string>
@@ -127,8 +127,8 @@ Goazen aurrera!</string>
   <string name="account_wizard_ready_body">ChatSecure konfiguratuta dago. Orain zure zerbitzura konektatzeko garaia da, salbu, seguru eta pribatuki berriketa egiteko!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Domeinua hautatu</string>
-  <string name="registering_new_account_">Kontu berria erregistratzen...</string>
-  <string name="signing_in_to">ChatSecure martxan jartzen...</string>
+  <string name="registering_new_account_">Kontu berria erregistratzen…</string>
+  <string name="signing_in_to">ChatSecure martxan jartzen…</string>
   <string name="menu_cancel_signin">Saio hasiera kantzelatu</string>
   <string name="signing_in_wait">Saioa hasi\u2026</string>
   <string name="signing_out_wait">Saioa bukatzen\u2026</string>
@@ -236,7 +236,7 @@ Hemen ikutu  bat gehitzeko!</string>
   <string name="decline_invitation">Ukatu</string>
   <string name="menu_new_group_chat">Talde berriketa</string>
   <string name="create_or_join_group_chat">Talde berriketa sortu edo sartu</string>
-  <string name="connecting_to_group_chat_">Talde berriketara konektatzen...</string>
+  <string name="connecting_to_group_chat_">Talde berriketara konektatzen…</string>
   <string name="menu_invite_contact">Gonbidatu\u2026</string>
   <string name="contacts_picker_title">Gonbidatzeko kontaktua(k) hautatu</string>
   <string name="contact_filter_hint">Idatzy kontaktua bilatzeko</string>
@@ -251,8 +251,8 @@ Ikutu gonbidatzeko.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Enkriptazioa hasi</string>
   <string name="menu_otr_stop">Enkriptazioa gelditu</string>
-  <string name="starting_otr_chat">Berriketa zifratuko saioa hasten...</string>
-  <string name="stopping_otr_chat">Berriketa zifratuko saioa bukatzen...</string>
+  <string name="starting_otr_chat">Berriketa zifratuko saioa hasten…</string>
+  <string name="stopping_otr_chat">Berriketa zifratuko saioa bukatzen…</string>
   <string name="label_fingerprint_remote">Segurtazun hatzmarka</string>
   <string name="label_fingerprint_local">Segurtazun hatzmarka</string>
   <string name="menu_sign_in">Saioa hasi</string>
@@ -261,7 +261,7 @@ Ikutu gonbidatzeko.</string>
   <string name="otr_session_status_encrypted">Zifratzea gaituta (Ikutu egiaztatzeko)</string>
   <string name="otr_session_status_finished">Zure kontaktuak berriketa zifratua gelditu du.</string>
   <string name="otr_session_status_verified">Zifratuta eta egiaztatuta!</string>
-  <string name="otr_gen_key">OTR gako bikote berria sortzen...</string>
+  <string name="otr_gen_key">OTR gako bikote berria sortzen…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Inportatzeko OTR gako biltegi bat topatuta. QR pasahitza orain eskaneatu nahi duzu?</string>
   <string name="menu_import_keys">Gako Sinkronizazioa gaitu</string>
@@ -347,7 +347,7 @@ Sareko datuen konektibitatea (baita atzeko planoko datuena) beharrezkoa da aplik
   <string name="newMessages_label">&lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; mezu berriak</string>
   <string name="notify_groupchat_label">Talde txat gonbidapena</string>
   <string name="new_messages_notify">Mezu berria(k):</string>
-  <string name="starting_the_chatsecure_service_">ChatSecure zerbitzua hasten...</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure zerbitzua hasten…</string>
   <string name="app_unlocked">Gaituta eta desblokeatuta</string>
   <!--Alerts: Exceptions-->
   <string name="error">Arreta</string>

@@ -47,7 +47,7 @@
   <string name="setup_passphrase_label1">Codice segreto:</string>
   <string name="setup_passphrase_label2">Codice segreto (di nuovo) :</string>
   <string name="rekey_message">Inserisci un *nuovo* codice segreto. Deve contenere almeno una lettera maiuscola, una minuscola e un numero, e deve essere più lunga di sei caratteri.</string>
-  <string name="do_rekey">Crittografando le tue note esistenti con il nuovo codice segreto (pazienta...)</string>
+  <string name="do_rekey">Crittografando le tue note esistenti con il nuovo codice segreto (pazienta…)</string>
   <string name="enter_pass">Inserisci il tuo codice segreto:</string>
   <string name="new_pass">Benvenuto! Inserisci un codice segreto robusto per mettere in sicurezza le tue note. Deve contenere almeno una lettera maiuscola, una minuscola e un numero, e deve essere più lungo di sei caratteri.</string>
   <string name="pass_err_length">Il tuo codice segreto non era lungo abbastanza</string>
@@ -111,9 +111,9 @@ Iniziamo!</string>
   <string name="account_setup_advanced_enc_auto">Quando possibile, crittografa le chat automaticamente</string>
   <string name="account_setup_advanced_enc_req">Cifra chat come richiesto</string>
   <string name="account_setup_advanced_enc_off">Disabilita la crittografia della chat</string>
-  <string name="account_setup_signin_a">Convalida delle credenziali...</string>
-  <string name="account_setup_signin_b">Generazione coppia di chiavi...</string>
-  <string name="account_setup_signin_c">Connettendo...</string>
+  <string name="account_setup_signin_a">Convalida delle credenziali…</string>
+  <string name="account_setup_signin_b">Generazione coppia di chiavi…</string>
+  <string name="account_setup_signin_c">Connettendo…</string>
   <string name="account_wizard_setup_title">Configurazione Guidata Account</string>
   <string name="account_wizard_account_title">Il tuo account ID</string>
   <string name="account_wizard_host_title">Configura server</string>
@@ -124,11 +124,11 @@ Iniziamo!</string>
   <string name="account_wizard_ready_body">ChatSecure è stato configurato, ed ora è il momento di connettersi al servizio, e iniziare a chattare in modo sicuro, sicuro e riservato!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Scegli un dominio</string>
-  <string name="registering_new_account_">Registrazione nuovo account...</string>
-  <string name="signing_in_to">avviando ChatSecure...</string>
+  <string name="registering_new_account_">Registrazione nuovo account…</string>
+  <string name="signing_in_to">avviando ChatSecure…</string>
   <string name="menu_cancel_signin">Annulla accesso</string>
-  <string name="signing_in_wait">Accesso...</string>
-  <string name="signing_out_wait">Disconnessione...</string>
+  <string name="signing_in_wait">Accesso…</string>
+  <string name="signing_out_wait">Disconnessione…</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Fare Lookup SRV</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Utilizzare DNS SRV per trovare il server XMPP dal nome di dominio</string>
@@ -232,8 +232,8 @@ Tocca qui per aggiungerne uno!</string>
   <string name="decline_invitation">Rifiuto</string>
   <string name="menu_new_group_chat">Chat di Gruppo</string>
   <string name="create_or_join_group_chat">Crea o entra in una chat di gruppo</string>
-  <string name="connecting_to_group_chat_">Connessione alla chat di gruppo...</string>
-  <string name="menu_invite_contact">Invita...</string>
+  <string name="connecting_to_group_chat_">Connessione alla chat di gruppo…</string>
+  <string name="menu_invite_contact">Invita…</string>
   <string name="contacts_picker_title">Seleziona contatti da invitare</string>
   <string name="contact_filter_hint">Digita per trovare contatti</string>
   <string name="empty_contact_list">Nessun contatto trovato.
@@ -247,8 +247,8 @@ Tocca per invitare qualcuno.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Avvio di crittografia</string>
   <string name="menu_otr_stop">Stop di crittografia</string>
-  <string name="starting_otr_chat">Inizio chat crittografata...</string>
-  <string name="stopping_otr_chat">Fine chat crittografata...</string>
+  <string name="starting_otr_chat">Inizio chat crittografata…</string>
+  <string name="stopping_otr_chat">Fine chat crittografata…</string>
   <string name="label_fingerprint_remote">Sicurezza Impronta Digitale</string>
   <string name="label_fingerprint_local">Sicurezza Impronta Digitale</string>
   <string name="menu_sign_in">Entra</string>
@@ -257,7 +257,7 @@ Tocca per invitare qualcuno.</string>
   <string name="otr_session_status_encrypted">Crittografia abilitata (Tocca per verificare)</string>
   <string name="otr_session_status_finished">Il tuo interlocutore ha disabilitato la chat criptata.</string>
   <string name="otr_session_status_verified">Crittografata e verificata!</string>
-  <string name="otr_gen_key">Generazione di una nuova coppia di chiavi OTR...</string>
+  <string name="otr_gen_key">Generazione di una nuova coppia di chiavi OTR…</string>
   <!--Security: OTR: Keyring-->
   <string name="menu_import_keys">Attiva KeySync</string>
   <string name="successfully_imported_otr_keyring">Keyring OTR importato con successo</string>
@@ -337,7 +337,7 @@ Tocca per invitare qualcuno.</string>
   <string name="newMessages_label">Nuovi messaggi &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Invito a conversazione di gruppo</string>
   <string name="new_messages_notify">Nuovo messaggio(i) da</string>
-  <string name="starting_the_chatsecure_service_">Avviamento servizio ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Avviamento servizio ChatSecure…</string>
   <string name="app_unlocked">Attivato &amp; sbloccato</string>
   <!--Alerts: Exceptions-->
   <string name="error">Attenzione</string>
