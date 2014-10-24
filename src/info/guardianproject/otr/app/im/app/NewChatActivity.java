@@ -51,6 +51,7 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.ironrabbit.type.CustomTypefaceManager;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -66,6 +67,7 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -2530,9 +2532,10 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         
         
     }
-    
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void doHardShutdown() {
-        
+
         for (IImConnection conn : mApp.getActiveConnections())
         {
                try {
@@ -2548,7 +2551,9 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         // Request lock
         intent.putExtra("doLock", true);
         // Clear the backstack
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 11)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         
    }

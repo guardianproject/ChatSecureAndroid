@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -50,6 +51,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
 import android.text.Spannable;
@@ -324,6 +326,7 @@ public class MessageView extends FrameLayout {
      * @param mimeType
      * @param body
      */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
         
         if (IocVfs.isVfsScheme(mediaUri.getScheme())) {
@@ -374,8 +377,10 @@ public class MessageView extends FrameLayout {
             }
             
             Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-          
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (Build.VERSION.SDK_INT >= 11)
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
             //set a general mime type not specific
             if (mimeType != null)
             {

@@ -40,7 +40,6 @@ import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Hashtable;
@@ -52,6 +51,7 @@ import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrKeyManagerListener;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -61,6 +61,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.NetworkInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -828,11 +829,15 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         //this method does nothing!
        // Log.d(TAG,"OTR session status changed: " + sessionID.getRemoteUserId());
     }
-    
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
     public void onTaskRemoved(Intent rootIntent) {
         Debug.recordTrail(this, LAST_SWIPE_TRAIL_TAG, new Date());
         Intent intent = new Intent(this, DummyActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 11)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 }
