@@ -144,7 +144,7 @@
   <string name="contact_offline">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je offline</string>
   <string name="contact_joined">Uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se připojil</string>
   <string name="contact_left">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; odešel</string>
-  <string name="time_stamp" format="date">'Posláno v' &lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt;:&lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; ' ' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Posláno v\' &lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt;:&lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \' \' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Poslat fotku</string>
   <string name="menu_send_file">Poslat soubor</string>
   <string name="menu_send_audio">Poslat audio</string>

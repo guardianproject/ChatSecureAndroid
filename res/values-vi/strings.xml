@@ -208,7 +208,7 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="contact_offline">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; offline</string>
   <string name="contact_joined">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã tham gia kết nối</string>
   <string name="contact_left">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã rời khỏi phần chat</string>
-  <string name="time_stamp" format="date">'Được gửi vào lúc' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'bằng' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Được gửi vào lúc\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'bằng\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Gửi hình</string>
   <string name="menu_send_file">Gửi tập tin</string>
   <string name="menu_send_audio">Gửi tập tin âm thanh</string>

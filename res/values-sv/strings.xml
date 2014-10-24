@@ -209,7 +209,7 @@ Tappa här för att lägga till ett!</string>
   <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är offline</string>
   <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; är med</string>
   <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har lämnat chatten</string>
-  <string name="time_stamp" format="date">'Skickat' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'on' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Skickat\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'on\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Skicka foto</string>
   <string name="menu_send_file">Skicka fil</string>
   <string name="menu_send_audio">Skicka ljud</string>

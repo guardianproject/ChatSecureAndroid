@@ -196,7 +196,7 @@
   <string name="contact_offline">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; βρίσκεται εκτός σύνδεσης</string>
   <string name="contact_joined">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; συνδέθηκε</string>
   <string name="contact_left">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; αποχώρησε</string>
-  <string name="time_stamp" format="date">'Σταλμένο στις' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'το' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Σταλμένο στις\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'το\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Αποστολή Φωτογραφίας</string>
   <string name="menu_send_file">Αποστολή αρχείου</string>
   <string name="menu_send_audio">Αποστολή Ήχου</string>

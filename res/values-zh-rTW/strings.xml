@@ -170,7 +170,7 @@
   <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; 顯示離線</string>
   <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; 已加入</string>
   <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; 已離開</string>
-  <string name="time_stamp" format="date">'傳送時間：'&lt;xliff:g id="HOUR"&gt;hh&lt;/xliff:g&gt;':'&lt;xliff:g id="MINUTE"&gt;mm&lt;/xliff:g&gt;' '&lt;xliff:g id="AMPM"&gt;a&lt;/xliff:g&gt;'，'&lt;xliff:g id="DATE"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'傳送時間：\'&lt;xliff:g id="HOUR"&gt;hh&lt;/xliff:g&gt;\':\'&lt;xliff:g id="MINUTE"&gt;mm&lt;/xliff:g&gt;\' \'&lt;xliff:g id="AMPM"&gt;a&lt;/xliff:g&gt;\'，\'&lt;xliff:g id="DATE"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="send">傳送</string>
   <string name="menu_resend">從新傳送</string>
   <string name="menu_end_conversation">結束即時通訊</string>

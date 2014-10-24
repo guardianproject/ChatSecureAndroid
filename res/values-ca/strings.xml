@@ -29,7 +29,7 @@
   <string name="menu_sign_out_all">Surt del tot</string>
   <string name="signout_all_confirm_message">Voleu sortir de tots els serveis?</string>
   <string name="signed_out_prompt">Heu tancat la sessió &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
-  <string name="signed_out_prompt_with_error">S'ha tancat la vostra sessió &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; per &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt_with_error">S\'ha tancat la vostra sessió &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; per &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="welcome_first">El primer cop que empreu ChatSecure?</string>
   <string name="welcome_skip">No podeu esperar per començar?</string>
   <string name="welcome_about">Comenceu</string>
@@ -121,7 +121,7 @@
   <!--Views: Contact list-->
   <string name="title_chats">Converses</string>
   <string name="menu_view_blocked">Bloquejat</string>
-  <string name="confirm_delete_contact">S'eliminarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="confirm_delete_contact">S\'eliminarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
   <string name="confirm_block_contact">Es blocarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
   <string name="confirm_unblock_contact">Es desblocarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
   <string name="menu_new_chat">Nou xat</string>

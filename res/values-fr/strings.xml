@@ -207,7 +207,7 @@ Appuyez ici pour en ajouter un !</string>
   <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; est hors ligne</string>
   <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; a rejoint la conversation</string>
   <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; a quitté la conversation</string>
-  <string name="time_stamp" format="date">'Envoyé à' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'le' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Envoyé à\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'le\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Envoyer une photo</string>
   <string name="menu_send_file">Envoyez un fichier</string>
   <string name="menu_send_audio">Envoyer du son</string>
@@ -333,7 +333,7 @@ Appuyez pour inviter.</string>
   <string name="pref_debug_summary">Afficher journal de l\'application sur la sortie standard / logcat pour déboguage</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Données d\'arrière-plan désactivées</string>
-  <string name="bg_data_prompt_message">Les données d'arrière-plan sont requises pour l'activation de &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="bg_data_prompt_message">Les données d'arrière-plan sont requises pour l\'activation de &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="bg_data_prompt_ok">Activer</string>
   <string name="bg_data_prompt_cancel">Quitter</string>
   <string name="signout_kill_confirm_message">Voulez-vous vous déconnecter de tous les services ET tuer tous les processus (hard exit) ?</string>

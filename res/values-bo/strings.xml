@@ -208,7 +208,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; དྲ་ཐོག་ཏུ་མེད་།</string>
   <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;ཞུགས་སོང་།</string>
   <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;ཐོན་ཟིན་འདུག</string>
-  <string name="time_stamp" format="date">&lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'on' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;་ལ་ཐོངས། </string>
+  <string name="time_stamp" format="date">&lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'on\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;་ལ་ཐོངས། </string>
   <string name="menu_send_image">འདྲ་པར་ཐོངས། </string>
   <string name="menu_send_file">ཡིག་ཆ་ཐོངས། </string>
   <string name="menu_send_audio">སྐད་འཕྲིན་ཞིག་ཐོངས། </string>

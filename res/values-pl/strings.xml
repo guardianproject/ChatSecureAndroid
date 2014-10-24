@@ -210,7 +210,7 @@ Kliknij aby dodać konto.</string>
   <string name="contact_offline">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; jest niedostępny</string>
   <string name="contact_joined">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; dołączył do czatu</string>
   <string name="contact_left">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; opuścił czat</string>
-  <string name="time_stamp" format="date">'Wysłane o' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'w dniu' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Wysłane o\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'w dniu\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Wyślij Zdjęcie</string>
   <string name="menu_send_file">Wyślij plik</string>
   <string name="menu_send_audio">Wyślij Audio</string>

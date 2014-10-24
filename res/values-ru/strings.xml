@@ -206,7 +206,7 @@
   <string name="contact_offline">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; не в сети</string>
   <string name="contact_joined">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; присоединился к чату</string>
   <string name="contact_left">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; покинул чат</string>
-  <string name="time_stamp" format="date">'Отправлено в' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'на' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Отправлено в\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'на\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Отправить Фото</string>
   <string name="menu_send_file">Отправить файл</string>
   <string name="menu_send_audio">Отправить Аудио</string>

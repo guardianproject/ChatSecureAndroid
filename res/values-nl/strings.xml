@@ -210,7 +210,7 @@ Klik hier om er één toe te voegen!</string>
   <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; is offline</string>
   <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; is online gekomen</string>
   <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; is weggegaan</string>
-  <string name="time_stamp" format="date">'Verstuurd op' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'te' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Verstuurd op\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'te\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Verzend foto</string>
   <string name="menu_send_file">Verzend bestand</string>
   <string name="menu_send_audio">Verzend audio</string>

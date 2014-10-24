@@ -123,7 +123,7 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; on offline</string>
   <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; on liittynyt</string>
   <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; on poistunut</string>
-  <string name="time_stamp" format="date">'Lähetetty' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
+  <string name="time_stamp" format="date">\'Lähetetty\' &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Lähetä kuva</string>
   <string name="menu_send_file">Lähetä tiedosto</string>
   <string name="menu_send_audio">Lähetä ääntä</string>
