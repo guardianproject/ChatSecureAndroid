@@ -2,6 +2,7 @@ bin/
 gen/
 local.properties
 proguard.cfg
+proguard-project.txt
 assets/chatsecure.properties
 releases
 docs

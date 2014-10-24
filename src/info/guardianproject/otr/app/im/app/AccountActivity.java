@@ -62,6 +62,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -307,6 +308,7 @@ public class AccountActivity extends ActionBarActivity {
     
     private void setupUIPre ()
     {
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.account_activity);
         
         mIsNewAccount = getIntent().getBooleanExtra("register", false);
@@ -397,6 +399,7 @@ public class AccountActivity extends ActionBarActivity {
         mBtnSignIn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setSupportProgressBarIndeterminateVisibility(true);
 
                 checkUserChanged();
                 

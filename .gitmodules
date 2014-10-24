@@ -19,6 +19,6 @@
 [submodule "external/ViewPagerIndicator"]
 	path = external/ViewPagerIndicator
 	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
-[submodule "external/IOCipher"]
-	path = external/IOCipher
-	url = https://github.com/guardianproject/IOCipher.git
+[submodule "external/bho"]
+	path = external/bho
+	url = https://code.google.com/p/bho/
