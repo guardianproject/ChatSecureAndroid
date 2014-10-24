@@ -165,7 +165,7 @@
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> está desconectado</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> se ha unido a la conversación</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> se ha desconectado</string>
-  <string name="time_stamp" format="date">\'Enviado a las\' <xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g> \'el\'<xliff:g id="DATE">EEEE</xliff:g></string>
+
   <string name="send">Enviar</string>
   <string name="compose_hint">Escriba el texto aquí</string>
   <string name="menu_resend">Reenviar</string>

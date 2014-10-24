@@ -101,7 +101,7 @@ La app apoya qualquier servicio de chat que utilizca Jabber o el protocolo XMPP,
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> está desconectado</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> se ha unido</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> se ha ido</string>
-  <string name="time_stamp" format="date">\'Enviado el\' <xliff:g id="DATE">EEEE</xliff:g> \'a las\' <xliff:g id="HOUR">hh</xliff:g><xliff:g id="MINUTE">mm</xliff:g><xliff:g id="AMPM">a</xliff:g></string>
+
   <string name="send">Enviar</string>
   <string name="menu_resend">Reenviar</string>
   <string name="menu_end_conversation">Finalizar chat</string>

@@ -204,7 +204,7 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>处于离线状态</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>已加入</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>已离开</string>
-  <string name="time_stamp" format="date">\'已发送在\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">发送照片</string>
   <string name="menu_send_file">发送文件</string>
   <string name="menu_send_audio">发送音频</string>

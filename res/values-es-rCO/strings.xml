@@ -200,7 +200,7 @@ cuentas configuradas.
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> está desconectado</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> se ha unido</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> se ha ido</string>
-  <string name="time_stamp" format="date">\'Enviado a las\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'el\' <xliff:g id="date">EEEE</xliff:g> </string>
+
   <string name="menu_send_file">Enviar archivo</string>
   <string name="file_transfer">Transferencia de archivos</string>
   <string name="transfer_complete">Transferencia completa</string>

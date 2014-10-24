@@ -209,7 +209,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> не е вписан</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> се присъедини</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> напусна</string>
-  <string name="time_stamp" format="date">\'Изпратен в\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'на\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">Изпрати Снимка</string>
   <string name="menu_send_file">Изпрати Файл</string>
   <string name="menu_send_audio">Изпрати Аудио</string>

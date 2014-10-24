@@ -215,7 +215,7 @@ Hier antippen um eines hinzuzufügen!</string>
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> is getrennt</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> ist beigetreten</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> hat die Unterhaltung verlassen</string>
-  <string name="time_stamp" format="date">\'Am\' <xliff:g id="date">EEEE</xliff:g> <xliff:g id="hour">hh</xliff:g>.<xliff:g id="minute">mm</xliff:g> Uhr <xliff:g id="ampm">a</xliff:g> \'gesendet\'</string>
+
   <string name="menu_send_image">Bild senden</string>
   <string name="menu_send_file">Datei senden</string>
   <string name="menu_send_audio">Ton senden</string>

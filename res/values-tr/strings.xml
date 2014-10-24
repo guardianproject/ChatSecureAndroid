@@ -198,7 +198,7 @@ Eklemek için basın!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> çevrimdışı</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> katıldı</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> ayrıldı</string>
-  <string name="time_stamp" format="date">\'Şu tarih ve saatte gönderildi: \'<xliff:g id="DATE">EEEE</xliff:g>\' \'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g></string>
+
   <string name="menu_send_image">Fotoğraf Gönder</string>
   <string name="menu_send_file">Dosya Gönder</string>
   <string name="menu_send_audio">Ses Gönder</string>

@@ -209,7 +209,7 @@ Hemen ikutu  bat gehitzeko!</string>
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> lineaz kanpo dago</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> etorri da</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> joan da</string>
-  <string name="time_stamp" format="date"><xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> ordutan, <xliff:g id="date">EEEE</xliff:g> datan bidalita.</string>
+
   <string name="menu_send_image">Argazkia bidali</string>
   <string name="menu_send_file">Fitxategia bidali</string>
   <string name="menu_send_audio">Audioa bidali</string>

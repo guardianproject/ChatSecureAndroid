@@ -157,7 +157,7 @@
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> روی خط نیست</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> پیوست</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> ترک کرد</string>
-  <string name="time_stamp" format="date">\'فرستاده شده\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'در\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="send">ارسال</string>
   <string name="menu_resend">ارسال دوباره</string>
   <string name="menu_end_conversation">پایان گفتگو</string>

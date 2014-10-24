@@ -144,7 +144,7 @@
   <string name="contact_offline">uživatel <xliff:g id="USER">%1$s</xliff:g> je offline</string>
   <string name="contact_joined">Uživatel <xliff:g id="USER">%1$s</xliff:g> se připojil</string>
   <string name="contact_left">uživatel <xliff:g id="USER">%1$s</xliff:g> odešel</string>
-  <string name="time_stamp" format="date">\'Posláno v\' <xliff:g id="minute">mm</xliff:g>:<xliff:g id="hour">hh</xliff:g> <xliff:g id="ampm">a</xliff:g> \' \' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">Poslat fotku</string>
   <string name="menu_send_file">Poslat soubor</string>
   <string name="menu_send_audio">Poslat audio</string>

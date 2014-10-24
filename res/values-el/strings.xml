@@ -196,7 +196,7 @@
   <string name="contact_offline">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> βρίσκεται εκτός σύνδεσης</string>
   <string name="contact_joined">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> συνδέθηκε</string>
   <string name="contact_left">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> αποχώρησε</string>
-  <string name="time_stamp" format="date">\'Σταλμένο στις\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'το\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">Αποστολή Φωτογραφίας</string>
   <string name="menu_send_file">Αποστολή αρχείου</string>
   <string name="menu_send_audio">Αποστολή Ήχου</string>

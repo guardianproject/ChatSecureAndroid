@@ -205,7 +205,7 @@ Tocca qui per aggiungerne uno!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> è offline</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> è entrato</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> è uscito</string>
-  <string name="time_stamp" format="date">\'Inviato alle\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'il\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">Invia Immagine</string>
   <string name="menu_send_file">Invia File</string>
   <string name="menu_send_audio">Invia Audio</string>

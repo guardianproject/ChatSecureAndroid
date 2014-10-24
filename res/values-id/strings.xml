@@ -210,7 +210,7 @@ Ketuk di sini untuk menambah!</string>
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> sedang offline</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> telah bergabung</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> telah keluar</string>
-  <string name="time_stamp" format="date">\'Terkirim pada\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'di\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">Kirim Foto</string>
   <string name="menu_send_file">Kirim File</string>
   <string name="menu_send_audio">Kirim Audio</string>

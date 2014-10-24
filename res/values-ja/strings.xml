@@ -197,7 +197,7 @@
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>さんはオフラインです</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>さんが参加しました</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>さんが退出しました</string>
-  <string name="time_stamp" format="date"><xliff:g id="DATE">EEEE</xliff:g>\' \'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g>\'送信\'</string>
+
   <string name="menu_send_image">写真を送信</string>
   <string name="menu_send_file">ファイルを送信</string>
   <string name="menu_send_audio">オーディオを送信</string>

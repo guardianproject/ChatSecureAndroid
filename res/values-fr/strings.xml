@@ -207,7 +207,7 @@ Appuyez ici pour en ajouter un !</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> est hors ligne</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> a rejoint la conversation</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> a quitté la conversation</string>
-  <string name="time_stamp" format="date">\'Envoyé à\' <xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'le\' <xliff:g id="date">EEEE</xliff:g></string>
+
   <string name="menu_send_image">Envoyer une photo</string>
   <string name="menu_send_file">Envoyez un fichier</string>
   <string name="menu_send_audio">Envoyer du son</string>
