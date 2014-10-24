@@ -328,7 +328,7 @@ Tocca per invitare qualcuno.</string>
   <string name="pref_debug_title">Attiva Registri di Debug</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Dati in background disattivati</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> richiede l'attivazione dei dati in background.</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> richiede l\'attivazione dei dati in background.</string>
   <string name="bg_data_prompt_ok">Attiva</string>
   <string name="bg_data_prompt_cancel">Esci</string>
   <string name="signout_kill_confirm_message">Vuoi uscire E uccidere tutti i processi (hard exit)?</string>

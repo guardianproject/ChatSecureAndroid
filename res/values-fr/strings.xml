@@ -333,7 +333,7 @@ Appuyez pour inviter.</string>
   <string name="pref_debug_summary">Afficher journal de l\'application sur la sortie standard / logcat pour déboguage</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Données d\'arrière-plan désactivées</string>
-  <string name="bg_data_prompt_message">Les données d'arrière-plan sont requises pour l\'activation de <xliff:g id="PROVIDER">%1$s</xliff:g>.</string>
+  <string name="bg_data_prompt_message">Les données d\'arrière-plan sont requises pour l\'activation de <xliff:g id="PROVIDER">%1$s</xliff:g>.</string>
   <string name="bg_data_prompt_ok">Activer</string>
   <string name="bg_data_prompt_cancel">Quitter</string>
   <string name="signout_kill_confirm_message">Voulez-vous vous déconnecter de tous les services ET tuer tous les processus (hard exit) ?</string>
