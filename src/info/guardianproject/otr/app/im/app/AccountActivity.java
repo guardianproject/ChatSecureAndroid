@@ -478,6 +478,7 @@ public class AccountActivity extends ActionBarActivity {
                     if (isSignedIn) {
                         signOut();
                         isSignedIn = false;
+                        setSupportProgressBarIndeterminateVisibility(false);
                     } else {
                         setAccountKeepSignedIn(rememberPass);
                         
