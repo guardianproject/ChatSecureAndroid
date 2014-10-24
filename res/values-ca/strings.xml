@@ -23,13 +23,13 @@
   <!--Views: Setup-->
   <string name="landing_page_title">Trieu un compte</string>
   <string name="choose_account_title">Trieu un compte</string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="add_account">Afegeix el compte &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Afegeix el compte <xliff:g id="account">%1$s</xliff:g></string>
   <string name="menu_about">Quan a</string>
   <string name="menu_sign_out_all">Surt del tot</string>
   <string name="signout_all_confirm_message">Voleu sortir de tots els serveis?</string>
-  <string name="signed_out_prompt">Heu tancat la sessió &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
-  <string name="signed_out_prompt_with_error">S\'ha tancat la vostra sessió &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; per &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt">Heu tancat la sessió <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">S\'ha tancat la vostra sessió <xliff:g id="account">%1$s</xliff:g> per <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">El primer cop que empreu ChatSecure?</string>
   <string name="welcome_skip">No podeu esperar per començar?</string>
   <string name="welcome_about">Comenceu</string>
@@ -121,14 +121,14 @@
   <!--Views: Contact list-->
   <string name="title_chats">Converses</string>
   <string name="menu_view_blocked">Bloquejat</string>
-  <string name="confirm_delete_contact">S\'eliminarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
-  <string name="confirm_block_contact">Es blocarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
-  <string name="confirm_unblock_contact">Es desblocarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="confirm_delete_contact">S\'eliminarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="confirm_block_contact">Es blocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="confirm_unblock_contact">Es desblocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <string name="menu_new_chat">Nou xat</string>
   <string name="menu_search_contacts">Cerca contactes</string>
   <string name="menu_start_chat">Inicia un xat</string>
-  <string name="ongoing_conversation">Xats actius (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; en línia</string>
+  <string name="ongoing_conversation">Xats actius (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> en línia</string>
   <string name="subscriptions">Invitacions d\'amics</string>
   <string name="unknown_contact">(<i>Desconegut</i>) </string>
   <string name="empty_contact_group">Buit</string>
@@ -143,12 +143,12 @@
   <string name="label_client_type">Tipus de client:</string>
   <string name="client_type_computer">Ordinador</string>
   <string name="client_type_mobile">Mòbil</string>
-  <string name="blocked_list_title">Contactes blocats - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="blocked_list_title">Contactes blocats - <xliff:g id="user">%1$s</xliff:g></string>
   <string name="no_blocked_contact">No teniu bloquejat cap contacte.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Xategeu amb &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="chat_with">Xategeu amb <xliff:g id="user">%1$s</xliff:g></string>
   <string name="me">Jo</string>
-  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; és en línia</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> és en línia</string>
   <string name="send">Envia</string>
   <string name="menu_resend">Torna a enviar</string>
   <string name="menu_end_conversation">Finalitza el xat</string>

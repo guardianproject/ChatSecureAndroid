@@ -117,7 +117,7 @@
   <string name="menu_plus">Menu + \"</string>
   <string name="select_link_title">Vyberte odkaz</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_sent_prompt">Pozvánka bola zaslaná&lt;xliff:g id="user"&gt;% 1 $ s&lt;/xliff:g&gt;.</string>
+  <string name="invitation_sent_prompt">Pozvánka bola zaslaná<xliff:g id="user">% 1 $ s</xliff:g>.</string>
   <string name="accept_invitation">Prijať</string>
   <string name="decline_invitation">Pokles</string>
   <string name="menu_invite_contact">Prizvať\u2026</string>

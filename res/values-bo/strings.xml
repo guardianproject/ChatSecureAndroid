@@ -35,13 +35,13 @@
   <!--Views: Setup-->
   <string name="landing_page_title">ཐོ་བྱང་ཞིག་འདེམས། </string>
   <string name="choose_account_title">ཐོ་བྱང་ཞིག་འདེམས། </string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="add_account">ཐོ་བྱང་&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;ཡི་ཁར་སྣོན། </string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">ཐོ་བྱང་<xliff:g id="account">%1$s</xliff:g>ཡི་ཁར་སྣོན། </string>
   <string name="menu_about">དེའི་སྐོར།</string>
   <string name="menu_sign_out_all">ཚང་མ་ནས་ཕྱིར་ཐོན། </string>
   <string name="signout_all_confirm_message">ཁྱེད་རང་འཕྲིན་ཐུང་ཡོ་ཆས་ཚང་མ་ནས་ཕྱིར་ཐོན་གི་ཡིན་ནམ། </string>
-  <string name="signed_out_prompt">ཁྱེད་རང་&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;ནས་ཕྱིར་ཕུད་འདུག </string>
-  <string name="signed_out_prompt_with_error">ཁྱེད་རང་&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;ནས་ཕྱིར་ཕུད་འདུག  རྒྱུ་མཚན་ནི་&lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt">ཁྱེད་རང་<xliff:g id="account">%1$s</xliff:g>ནས་ཕྱིར་ཕུད་འདུག </string>
+  <string name="signed_out_prompt_with_error">ཁྱེད་རང་<xliff:g id="account">%1$s</xliff:g>ནས་ཕྱིར་ཕུད་འདུག  རྒྱུ་མཚན་ནི་<xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">ཐེངས་དང་པོར་ཉེན་སྲུང་གླེང་མོལ་བེད་སྤྱོད་གཏོང་གི་ཡོད་དམ། </string>
   <string name="welcome_skip">འགོ་འཛུགས་པར་རྔམས་ཀྱི་འདུག</string>
   <string name="welcome_about">འགོ་བཙུགས་།</string>
@@ -159,26 +159,26 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
 ⏎འདི་ནས་གཅིག་འགོ་ཚུགས། </string>
   <string name="empty_account_message">ཁྱོད་ལ་སྡེབ་སྒྲིག་ཟིན་པའི་ཐོ་མཛོད་མི་འདུག⏎
 ⏎འདི་ནས་གཅིག་བསྣོན། </string>
-  <string name="buddy_list_title">འབྲེལ་མིང་ཐོ་གཞུང་། &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="buddy_list_title">འབྲེལ་མིང་ཐོ་གཞུང་། <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_add_contact">འབྲེལ་གཏུགས་སྣོན། </string>
   <string name="menu_remove_contact">འབྲེལ་མིང་གསུབ། </string>
   <string name="menu_block_contact">འབྲེལ་མིང་བཀག</string>
   <string name="menu_contact_nickname">འབྲེལ་གཏུགས་ཀྱི་སྙུག་མིང་། </string>
   <string name="menu_view_blocked">བཀག་ཟིན།</string>
-  <string name="confirm_delete_contact">འབྲེལ་མིང་འདི་"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"གསུབ་ཀྱི་རེད།</string>
-  <string name="confirm_block_contact">འབྲེལ་མིང་འདི་"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" བཀག་གི་རེད།</string>
-  <string name="confirm_unblock_contact">འབྲེལ་གཏུགས"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"ཁ་ཕྱེས་གི་རེད་། </string>
-  <string name="add_contact_success">འབྲེལ་མིང་ "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" བསྣན་ཟིན། </string>
-  <string name="delete_contact_success">འབྲེལ་མིང་ "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" གསུབ་ཟིན།</string>
-  <string name="block_contact_success">འབྲེལ་མིང་ "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" བཀག་ཟིན།</string>
-  <string name="unblock_contact_success">འབྲེལ་མིང་"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"ཁ་ཕྱེས་ཟིན། </string>
+  <string name="confirm_delete_contact">འབྲེལ་མིང་འདི་"<xliff:g id="user">%1$s</xliff:g>"གསུབ་ཀྱི་རེད།</string>
+  <string name="confirm_block_contact">འབྲེལ་མིང་འདི་"<xliff:g id="user">%1$s</xliff:g>" བཀག་གི་རེད།</string>
+  <string name="confirm_unblock_contact">འབྲེལ་གཏུགས"<xliff:g id="user">%1$s</xliff:g>"ཁ་ཕྱེས་གི་རེད་། </string>
+  <string name="add_contact_success">འབྲེལ་མིང་ "<xliff:g id="user">%1$s</xliff:g>" བསྣན་ཟིན། </string>
+  <string name="delete_contact_success">འབྲེལ་མིང་ "<xliff:g id="user">%1$s</xliff:g>" གསུབ་ཟིན།</string>
+  <string name="block_contact_success">འབྲེལ་མིང་ "<xliff:g id="user">%1$s</xliff:g>" བཀག་ཟིན།</string>
+  <string name="unblock_contact_success">འབྲེལ་མིང་"<xliff:g id="user">%1$s</xliff:g>"ཁ་ཕྱེས་ཟིན། </string>
   <string name="menu_new_chat">གླེང་མོལ་གསར་བ།</string>
   <string name="menu_search_contacts">འབྲེལ་མིང་འཚོལ།</string>
   <string name="menu_start_chat">གླེང་མོལ་འགོ་འཛུགས།</string>
   <string name="menu_view_profile">ངོ་སྤྲོད་ལ་གཟིགས། </string>
   <string name="menu_verify">ལྡེ་མིག་ར་སྤྲོད་བྱོས། </string>
-  <string name="ongoing_conversation">ད་ལྟ་གླེང་མོལ་བྱེད་བཞིན་པ། (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; དྲ་ཐོག་ཏུ་ཡོད། </string>
+  <string name="ongoing_conversation">ད་ལྟ་གླེང་མོལ་བྱེད་བཞིན་པ། (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> དྲ་ཐོག་ཏུ་ཡོད། </string>
   <string name="subscriptions">ངོ་ཤེས་ཀྱི་མགྲོན་འབོད།</string>
   <string name="unknown_contact">(<i> རྒྱུས་མེད།</i>)</string>
   <string name="empty_contact_group"> སྟོང་པ།</string>
@@ -197,18 +197,18 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="label_client_type">དོ་བདག་གི་རིགས།</string>
   <string name="client_type_computer">རྩིས་འཁོར།</string>
   <string name="client_type_mobile">ལག་འཁྱེར་ཁ་པར།</string>
-  <string name="blocked_list_title">འབྲེལ་མིང་བཀག་པ་རྣམས། - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="blocked_list_title">འབྲེལ་མིང་བཀག་པ་རྣམས། - <xliff:g id="user">%1$s</xliff:g></string>
   <string name="no_blocked_contact">འབྲེལ་མིང་བཀག་པ་མི་འདུག</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; དང་ལྷན་དུ་གླེང་མོལ་བྱེད།</string>
+  <string name="chat_with"><xliff:g id="user">%1$s</xliff:g> དང་ལྷན་དུ་གླེང་མོལ་བྱེད།</string>
   <string name="me">ངས།</string>
-  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; དྲ་ཐོག་ཏུ་ཡོད་།</string>
-  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ད་ལྟ་འདིར་མེད།</string>
-  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ལ་ད་ལྟ་བྲེལ་བའདུག</string>
-  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; དྲ་ཐོག་ཏུ་མེད་།</string>
-  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;ཞུགས་སོང་།</string>
-  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;ཐོན་ཟིན་འདུག</string>
-  <string name="time_stamp" format="date">&lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;:&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; \'on\' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;་ལ་ཐོངས། </string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> དྲ་ཐོག་ཏུ་ཡོད་།</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> ད་ལྟ་འདིར་མེད།</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> ལ་ད་ལྟ་བྲེལ་བའདུག</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> དྲ་ཐོག་ཏུ་མེད་།</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g>ཞུགས་སོང་།</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g>ཐོན་ཟིན་འདུག</string>
+  <string name="time_stamp" format="date"><xliff:g id="hour">hh</xliff:g>:<xliff:g id="minute">mm</xliff:g> <xliff:g id="ampm">a</xliff:g> \'on\' <xliff:g id="date">EEEE</xliff:g>་ལ་ཐོངས། </string>
   <string name="menu_send_image">འདྲ་པར་ཐོངས། </string>
   <string name="menu_send_file">ཡིག་ཆ་ཐོངས། </string>
   <string name="menu_send_audio">སྐད་འཕྲིན་ཞིག་ཐོངས། </string>
@@ -233,8 +233,8 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="keep">ཉོར།</string>
   <string name="end_chat_title">གླེང་མོལ་མཚམས་བཞག་གི་ཡིན་ནམ།</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ཡིས་ཁྱེད་རང་མཉམ་འདུས་གླེང་མོལ་ལ་མགྲོན་འབོད་བཏང་ཟིན། </string>
-  <string name="invitation_sent_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ལ་མགྲོན་འབོད་བཏང་ཟིན།</string>
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> ཡིས་ཁྱེད་རང་མཉམ་འདུས་གླེང་མོལ་ལ་མགྲོན་འབོད་བཏང་ཟིན། </string>
+  <string name="invitation_sent_prompt"><xliff:g id="user">%1$s</xliff:g> ལ་མགྲོན་འབོད་བཏང་ཟིན།</string>
   <string name="accept_invitation">མོས་མཐུན་ཡོད།</string>
   <string name="decline_invitation">མོས་མཐུན་མེད། </string>
   <string name="menu_new_group_chat">མཉམ་འདུས་གླེང་མོལ། </string>
@@ -246,11 +246,11 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="empty_contact_list">འབྲེལ་མིང་ཅི་ཡང་རྙེད་མ་སོང་།⏎
 ⏎
 མགྲོན་འབོད་བྱེད་རྒྱུའི་འབྲེལ་མིང་དག་གདམ།</string>
-  <string name="subscription_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ནས་ཁྱེད་རང་ཁོང་ཚོའི་འབྲེལ་ཐོའི་ནང་མགྲོན་འབོད་བྱས་འདུག </string>
+  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> ནས་ཁྱེད་རང་ཁོང་ཚོའི་འབྲེལ་ཐོའི་ནང་མགྲོན་འབོད་བྱས་འདུག </string>
   <string name="approve_subscription">མོས་མཐུན་ཡོད།</string>
   <string name="decline_subscription"> མོས་མཐུན་མེད། </string>
-  <string name="approve_subscription_error">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;  ཡི་མངགས་ཆ་དེར་བཀའ་འཁྲོལ་ཐུབ་མ་སོང་། སྐུ་མཁྱེན། རྗེས་སུ་ཚོད་ལྟ་བྱེད་རོགས།</string>
-  <string name="decline_subscription_error">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;  ཡི་མངགས་ཆ་དེ་ཕྱིར་འཐེན་བྱེད་ཐུབ་མ་སོང་། སྐུ་མཁྱེན། རྗེས་སུ་ཚོད་ལྟ་བྱེད་རོགས།</string>
+  <string name="approve_subscription_error"><xliff:g id="user">%1$s</xliff:g>  ཡི་མངགས་ཆ་དེར་བཀའ་འཁྲོལ་ཐུབ་མ་སོང་། སྐུ་མཁྱེན། རྗེས་སུ་ཚོད་ལྟ་བྱེད་རོགས།</string>
+  <string name="decline_subscription_error"><xliff:g id="user">%1$s</xliff:g>  ཡི་མངགས་ཆ་དེ་ཕྱིར་འཐེན་བྱེད་ཐུབ་མ་སོང་། སྐུ་མཁྱེན། རྗེས་སུ་ཚོད་ལྟ་བྱེད་རོགས།</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">གསང་སྡོམ་འགོ་རྩོམ། </string>
   <string name="menu_otr_stop">གསང་སྡོམ་མཚམས་འཇོག</string>
@@ -344,14 +344,14 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="prompt_create_new_account_">ཐོ་བྱང་གསར་བ་ཞིག་བཟོ་གི་ཡིན་ནམ། </string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">%1$s\'་ཡི་མིང་ཐོག་ལ་གླེང་མོལ་ཐོ་བྱང་གསར་བ་ཞིག་བཟོ་གི་ཡིན་ནམ། </string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">འཕྲིན་ཐུང་གསར་པ &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; </string>
+  <string name="newMessages_label">འཕྲིན་ཐུང་གསར་པ <xliff:g id="provider">%1$s</xliff:g> </string>
   <string name="notify_groupchat_label">མཉམ་འདུས་གླེང་མོལ་མགྲོན་འབོད་།</string>
   <string name="new_messages_notify">ནས་འཕྲིན་ཐུང་(རྣམས)གསར་པ། </string>
   <string name="starting_the_chatsecure_service_">ཉེན་སྲུང་གླེང་མོལ་གྱི་ཞབས་ཞུ་འགོ་ཚུགས། </string>
   <string name="app_unlocked">&amp; ནུས་ཅན་བཟོས་ཚར། སྒོ་ཕྱེས་ཡོད། </string>
   <!--Alerts: Exceptions-->
   <string name="error">དོ་སྣང་བྱོས། </string>
-  <string name="general_error">ཨང་ཚབ་ནོར་བ། &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="general_error">ཨང་ཚབ་ནོར་བ། <xliff:g id="code">%1$d</xliff:g></string>
   <string name="add_list_failed">ཐོ་གཞུང་དེ་བསྣན་མི་འདུག</string>
   <string name="block_contact_failed">འབྲེལ་མིང་དེ་བཀག་མེད།</string>
   <string name="unblock_contact_failed">བཀག་ཟིན་པའི་འབྲེལ་མིང་དེ་མུ་མཐུད་དུ་བཀག་ཡོད། </string>
@@ -361,8 +361,8 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="service_error">ཞབས་ཞུའི་ནོར་འཁྲུལ།</string>
   <string name="load_contact_list_failed">འབྲེལ་མིང་ཐོ་གཞུང་དེ་སྣོན་འཇུག་བྱས་མི་འདུག</string>
   <string name="cant_connect_to_server">དྲ་ཐོག་ཞབས་ཞུར་སྦྲེལ་ཐུབ་གི་མི་འདུག སྐུ་མཁྱེན། དྲ་འབྲེལ་ལ་བལྟ་རོགས།</string>
-  <string name="contact_already_exist">"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" སྔོན་ཚུད་ནས་ཁྱོད་ཀྱི་འབྲེལ་ཐོའི་ནང་འདུག</string>
-  <string name="contact_blocked">འབྲེལ་མིང་ "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" བཀག་ཟིན་འདུག</string>
+  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" སྔོན་ཚུད་ནས་ཁྱོད་ཀྱི་འབྲེལ་ཐོའི་ནང་འདུག</string>
+  <string name="contact_blocked">འབྲེལ་མིང་ "<xliff:g id="user">%1$s</xliff:g>" བཀག་ཟིན་འདུག</string>
   <string name="contact_not_loaded">ཁྱེད་ཀྱི་འབྲེལ་ཐོ་་སྣོན་འཇུག་བྱེད་པའི་སྐབས་སུ་སྒུག་རོགས།</string>
   <string name="network_error">དྲ་ལམ་གྱི་སྐྱོན་ཞིག་བྱུང་སོང་།</string>
   <string name="wifi_not_connected_error">དྲ་འབྲེལ་འདི་ལ་ WiFi དགོས་ངེས་རེད། </string>
@@ -403,8 +403,8 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="otr_keysync_warning_message">སྐུ་མཁྱེན། མཐེབ་གཞུང་གི་OtrFileConverter་ཡོ་ཆས་ནས་ཡིག་ཆ་\'otr_keystore.ofcaes\'དེ་ཁྱོད་ཀྱི་ཡོ་བྱད་ཀྱི་མཛོད་ཁང་གི་ཐོ་གཞུང་ཨ་མ་དེར་འདྲ་བཤུས་བྱོས། </string>
   <string name="msg_sent_failed">འཕྲིན་ཐུང་འདི་བཏང་མི་ཐུབ།</string>
   <string name="disconnected_warning">བསྐྱར་མཐུད་བྱུང་མཚམས་འཕྲིན་ཐུང་དེ་གཏོང་གི་རེད། </string>
-  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;དྲ་ཐོག་ཏུ་མི་འདུག ཁྱེད་ནས་བཏང་བའི་འཕྲིན་ཐུང་དེ་།&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; དྲ་ལམ་དུ་སླེབས་པ་དང་སྐྱེལ་ཐུབ།</string>
-  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;ཁྱེད་ཀྱི་འབྲེལ་ཐོའི་ནང་མི་འདུག</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g>དྲ་ཐོག་ཏུ་མི་འདུག ཁྱེད་ནས་བཏང་བའི་འཕྲིན་ཐུང་དེ་།<xliff:g id="user">%1$s</xliff:g> དྲ་ལམ་དུ་སླེབས་པ་དང་སྐྱེལ་ཐུབ།</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g>ཁྱེད་ཀྱི་འབྲེལ་ཐོའི་ནང་མི་འདུག</string>
   <string name="account_settings_title">ཐོ་བྱང་སྒྲིག་བཟོ།</string>
   <string name="pref_default_locale">སྒེ་ཧྥི་ལོ་ཁུ།</string>
   <string name="warning_alpha">ཉེན་བརྡ། འདི་ནི་ཉེན་སྲུང་གླེང་མོལ་ཕྱིར་བསྒྲགས་སྔ་མའི་གྲས་ཡིན་པས། འདི་ལ་ད་དུང་ཉེན་སྲུང་གི་དཀའ་ངལ་དང་ནོར་འཁྲུལ་སོགས་ཡོད་སྲིད། </string>

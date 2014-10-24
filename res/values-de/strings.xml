@@ -38,13 +38,13 @@ Erlaubt es Anwendungen, Daten zum Sofortnachrichtinhalteanbieter zu schreiben.
   <!--Views: Setup-->
   <string name="landing_page_title">Konto auswählen</string>
   <string name="choose_account_title">Konto auswählen</string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="add_account">&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;-Konto hinzufügen</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account"><xliff:g id="account">%1$s</xliff:g>-Konto hinzufügen</string>
   <string name="menu_about">Über</string>
   <string name="menu_sign_out_all">Alle abmelden</string>
   <string name="signout_all_confirm_message">Von allen Diensten abmelden?</string>
-  <string name="signed_out_prompt">Sie wurden von &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; abgemeldet.</string>
-  <string name="signed_out_prompt_with_error">Sie wurden aus folgendem Grund von &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; abgemeldet: &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt">Sie wurden von <xliff:g id="account">%1$s</xliff:g> abgemeldet.</string>
+  <string name="signed_out_prompt_with_error">Sie wurden aus folgendem Grund von <xliff:g id="account">%1$s</xliff:g> abgemeldet: <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">Benutzen Sie ChatSecure das erste Mal?</string>
   <string name="welcome_skip">Endlich beginnen?</string>
   <string name="welcome_about">Einführung</string>
@@ -165,27 +165,27 @@ Hier antippen, um welche zu beginnen!</string>
 Konten konfiguriert.
 
 Hier antippen um eines hinzuzufügen!</string>
-  <string name="buddy_list_title">Kontaktliste - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="buddy_list_title">Kontaktliste - <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_add_contact">Kontakt hinzufügen</string>
   <string name="menu_remove_contact">Kontakt löschen</string>
   <string name="menu_block_contact">Kontakt sperren</string>
   <string name="menu_contact_nickname">Spitzname des Kontaktes</string>
   <string name="menu_view_blocked">Gesperrt</string>
-  <string name="confirm_delete_contact">Kontakt »&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;« wird gelöscht.</string>
-  <string name="confirm_block_contact">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« wird gesperrt.</string>
-  <string name="confirm_unblock_contact">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« wird nicht mehr gesperrt.</string>
-  <string name="add_contact_success">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« hinzugefügt.</string>
-  <string name="delete_contact_success">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« gelöscht.</string>
-  <string name="block_contact_success">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« gesperrt.</string>
-  <string name="unblock_contact_success">Sperrung des Kontakts »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« aufgehoben.</string>
+  <string name="confirm_delete_contact">Kontakt »<xliff:g id="USER">%1$s</xliff:g>« wird gelöscht.</string>
+  <string name="confirm_block_contact">Kontakt »<xliff:g id="user">%1$s</xliff:g>« wird gesperrt.</string>
+  <string name="confirm_unblock_contact">Kontakt »<xliff:g id="user">%1$s</xliff:g>« wird nicht mehr gesperrt.</string>
+  <string name="add_contact_success">Kontakt »<xliff:g id="user">%1$s</xliff:g>« hinzugefügt.</string>
+  <string name="delete_contact_success">Kontakt »<xliff:g id="user">%1$s</xliff:g>« gelöscht.</string>
+  <string name="block_contact_success">Kontakt »<xliff:g id="user">%1$s</xliff:g>« gesperrt.</string>
+  <string name="unblock_contact_success">Sperrung des Kontakts »<xliff:g id="user">%1$s</xliff:g>« aufgehoben.</string>
   <string name="menu_new_chat">Neue Unterhaltung</string>
   <string name="menu_search_contacts">Kontakte suchen</string>
   <string name="menu_show_grid">Raster anzeigen</string>
   <string name="menu_start_chat">Unterhaltung starten</string>
   <string name="menu_view_profile">Profil ansehen</string>
   <string name="menu_verify">Schlüssel überprüfen</string>
-  <string name="ongoing_conversation">Derzeit ausgeführte Unterhaltungen (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; verbunden</string>
+  <string name="ongoing_conversation">Derzeit ausgeführte Unterhaltungen (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> verbunden</string>
   <string name="subscriptions">Freundschaftseinladungen</string>
   <string name="unknown_contact">(<i>Unbekannt</i>)</string>
   <string name="empty_contact_group">Leer</string>
@@ -204,18 +204,18 @@ Hier antippen um eines hinzuzufügen!</string>
   <string name="label_client_type">Clienttyp:</string>
   <string name="client_type_computer">Computer</string>
   <string name="client_type_mobile">Mobil</string>
-  <string name="blocked_list_title">Gesperrte Kontakte - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="blocked_list_title">Gesperrte Kontakte - <xliff:g id="USER">%1$s</xliff:g></string>
   <string name="no_blocked_contact">Keine gesperrten Kontakte.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Mit &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; unterhalten</string>
+  <string name="chat_with">Mit <xliff:g id="USER">%1$s</xliff:g> unterhalten</string>
   <string name="me">Ich</string>
-  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is verbunden</string>
-  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist abwesend</string>
-  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist beschäftigt</string>
-  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; is getrennt</string>
-  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist beigetreten</string>
-  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; hat die Unterhaltung verlassen</string>
-  <string name="time_stamp" format="date">'Am' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt; &lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt;.&lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt; Uhr &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; 'gesendet'</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> is verbunden</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> ist abwesend</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> ist beschäftigt</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> is getrennt</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> ist beigetreten</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> hat die Unterhaltung verlassen</string>
+  <string name="time_stamp" format="date">'Am' <xliff:g id="date">EEEE</xliff:g> <xliff:g id="hour">hh</xliff:g>.<xliff:g id="minute">mm</xliff:g> Uhr <xliff:g id="ampm">a</xliff:g> 'gesendet'</string>
   <string name="menu_send_image">Bild senden</string>
   <string name="menu_send_file">Datei senden</string>
   <string name="menu_send_audio">Ton senden</string>
@@ -242,8 +242,8 @@ Hier antippen um eines hinzuzufügen!</string>
   <string name="export">Export</string>
   <string name="export_media">Mediendatei exportieren?</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; hat Sie zu einer Gruppenunterhaltung eingeladen.</string>
-  <string name="invitation_sent_prompt">Einladung wurde an &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; gesendet.</string>
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> hat Sie zu einer Gruppenunterhaltung eingeladen.</string>
+  <string name="invitation_sent_prompt">Einladung wurde an <xliff:g id="USER">%1$s</xliff:g> gesendet.</string>
   <string name="accept_invitation">Annehmen</string>
   <string name="decline_invitation">Ablehnen</string>
   <string name="menu_new_group_chat">Gruppenunterhaltung</string>
@@ -255,11 +255,11 @@ Hier antippen um eines hinzuzufügen!</string>
   <string name="empty_contact_list">Keine Kontakte gefunden.
 
 Zum Einladen antippen.</string>
-  <string name="subscription_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; möchte Sie in die Kontaktliste aufnehmen.</string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> möchte Sie in die Kontaktliste aufnehmen.</string>
   <string name="approve_subscription">Annehmen</string>
   <string name="decline_subscription">Ablehnen</string>
-  <string name="approve_subscription_error">Anmeldung von &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; kann nicht genehmigt werden. Bitte versuchen Sie es später erneut.</string>
-  <string name="decline_subscription_error">Anmeldung von &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; kann nicht abgelehnt werden. Bitte versuchen Sie es später erneut.</string>
+  <string name="approve_subscription_error">Anmeldung von <xliff:g id="USER">%1$s</xliff:g> kann nicht genehmigt werden. Bitte versuchen Sie es später erneut.</string>
+  <string name="decline_subscription_error">Anmeldung von <xliff:g id="USER">%1$s</xliff:g> kann nicht abgelehnt werden. Bitte versuchen Sie es später erneut.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Verschlüsselung starten</string>
   <string name="menu_otr_stop">Verschlüsselung stoppen</string>
@@ -363,8 +363,8 @@ Für die Anmeldung wird eine Datenverbindung (inklusive Hintergrunddaten) benöt
   <string name="dialog_settings_choose_background_title">Hintergrund auswählen</string>
   <string name="dialog_settings_choose_background_picker">Bild auswählen</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Neue &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; Nachrichten</string>
-  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; ungelesene Chats</string>
+  <string name="newMessages_label">Neue <xliff:g id="PROVIDER">%1$s</xliff:g> Nachrichten</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> ungelesene Chats</string>
   <string name="notify_groupchat_label">Einladung zur Gruppenunterhaltung</string>
   <string name="new_messages_notify">Neue Nachricht(en) von</string>
   <string name="starting_the_chatsecure_service_">Den ChatSecure Dienst starten …</string>
@@ -373,8 +373,8 @@ Für die Anmeldung wird eine Datenverbindung (inklusive Hintergrunddaten) benöt
   <!--Alerts: Exceptions-->
   <string name="error">Achtung</string>
   <string name="error_prefix">Fehler: </string>
-  <string name="general_error">Fehlercode &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
-  <string name="login_service_failed">Anmeldung beim &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;-Service nicht möglich. Bitte versuchen Sie es später erneut."\n"(Details: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="general_error">Fehlercode <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed">Anmeldung beim <xliff:g id="SERVICE">%1$s</xliff:g>-Service nicht möglich. Bitte versuchen Sie es später erneut."\n"(Details: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">Die Liste wurde nicht hinzugefügt.</string>
   <string name="block_contact_failed">Kontakt wurde nicht gesperrt.</string>
   <string name="unblock_contact_failed">Sperrung des Kontakts wurde nicht aufgehoben.</string>
@@ -384,8 +384,8 @@ Für die Anmeldung wird eine Datenverbindung (inklusive Hintergrunddaten) benöt
   <string name="service_error">Dienstfehler!</string>
   <string name="load_contact_list_failed">Kontaktliste wurde nicht geladen.</string>
   <string name="cant_connect_to_server">Verbindung zum Server kann nicht hergestellt werden. Überprüfen Sie die Verbindung.</string>
-  <string name="contact_already_exist">»&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;« ist bereits in der Kontaktliste vorhanden.</string>
-  <string name="contact_blocked">Kontakt »&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;« wurde gesperrt.</string>
+  <string name="contact_already_exist">»<xliff:g id="USER">%1$s</xliff:g>« ist bereits in der Kontaktliste vorhanden.</string>
+  <string name="contact_blocked">Kontakt »<xliff:g id="user">%1$s</xliff:g>« wurde gesperrt.</string>
   <string name="contact_not_loaded">Kontaktliste wird geladen, bitte warten.</string>
   <string name="network_error">Ein Netzwerkfehler ist aufgetreten.</string>
   <string name="wifi_not_connected_error">Für diese Verbindung ist WLAN notwendig.</string>
@@ -426,8 +426,8 @@ Für die Anmeldung wird eine Datenverbindung (inklusive Hintergrunddaten) benöt
   <string name="otr_keysync_warning_message">Bitte die Datei \'otr_keystore.ofcaes\' vom Programm OtrFileConverter in das Stammverzeichnis des Gerätespeichers kopieren</string>
   <string name="msg_sent_failed">Die Nachricht konnte nicht gesendet werden.</string>
   <string name="disconnected_warning">Nachrichten werden nach Wiederherstellung der Verbindung gesendet</string>
-  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ist getrennt. Von Ihnen gesendete Nachrichten werden zugestellt sobald &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; verbunden ist.</string>
-  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; ist nicht in Ihrer Kontaktliste enthalten.</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> ist getrennt. Von Ihnen gesendete Nachrichten werden zugestellt sobald <xliff:g id="user">%1$s</xliff:g> verbunden ist.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> ist nicht in Ihrer Kontaktliste enthalten.</string>
   <string name="error_chat_file_transfer_title">Übertragungsfehler</string>
   <string name="account_settings_title">Kontoeinstellungen</string>
   <string name="pref_default_locale">defLoc</string>
