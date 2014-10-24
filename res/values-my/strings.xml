@@ -221,8 +221,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">ပြောနေတဲ့ စကားဝိုင်း မရှိ</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် စနေပါသည်...</string>
-  <string name="stopping_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် ရပ်နေပါသည်...</string>
+  <string name="starting_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် စနေပါသည်…</string>
+  <string name="stopping_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် ရပ်နေပါသည်…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">အဆက်အသွယ်ပေါင်းထည့်</string>
@@ -454,9 +454,9 @@ The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin
   <string name="account_setup_advanced_enc_req">တောင်းဆိုသည့်အတိုင်း စာကားဝိုင်းများကို ဝှက်</string>
   <string name="account_setup_advanced_enc_off">စကားဝိုင်းဝှက်ခြင်းကို ပိတ်ပါ</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">အချက်အလက်များကို စစ်ဆေးအတည်ပြုနေပါတယ်...</string>
-  <string name="account_setup_signin_b">ကီးတွဲများ ဖန်တီနေပါတယ်...</string>
-  <string name="account_setup_signin_c">ဝင်နေသည်...</string>
+  <string name="account_setup_signin_a">အချက်အလက်များကို စစ်ဆေးအတည်ပြုနေပါတယ်…</string>
+  <string name="account_setup_signin_b">ကီးတွဲများ ဖန်တီနေပါတယ်…</string>
+  <string name="account_setup_signin_c">ဝင်နေသည်…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="menu_sign_in">ဝင်</string>
   <string name="menu_gen_key">ကီး ပြန်ဖန်တီးရန်</string>
@@ -474,7 +474,7 @@ The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin
   <string name="pref_default_locale">defLoc</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">အဖွဲ့များ</string>
-  <string name="otr_gen_key">OTR ကီးတွဲသစ် ဖန်တီးနေပါတယ်...</string>
+  <string name="otr_gen_key">OTR ကီးတွဲသစ် ဖန်တီးနေပါတယ်…</string>
   <string name="search_label">အဆက်အသွယ်</string>
   <string name="search_hint">စကားပြောဆိုမည့် အဆက်အသွယ်၏ အမည်ရိုက်ရန်</string>
   <string name="search_button_text">သွားရန်</string>

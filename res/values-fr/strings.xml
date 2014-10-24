@@ -85,7 +85,7 @@ Permet aux applications d\'écrire des données au fournisseur de contenu de mes
   <string name="menu_view_contact_list">Liste de contacts</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Inviter...</string>
+  <string name="menu_invite_contact">Inviter…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Changer de conversation</string>
@@ -147,9 +147,9 @@ Permet aux applications d\'écrire des données au fournisseur de contenu de mes
   <string name="sign_in">Se connecter</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">Démarrage de ChatSecure...</string>
+  <string name="signing_in_to">Démarrage de ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Connexion...</string>
+  <string name="signing_in_wait">Connexion…</string>
   <string name="signing_out_wait">Déconnexion\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
@@ -256,8 +256,8 @@ Appuyez pour inviter.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Aucune conversation active.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Démarrage de la conversation chiffrée...</string>
-  <string name="stopping_otr_chat">Arrêt du chiffrement de la conversation...</string>
+  <string name="starting_otr_chat">Démarrage de la conversation chiffrée…</string>
+  <string name="stopping_otr_chat">Arrêt du chiffrement de la conversation…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Ajouter un contact</string>
@@ -528,9 +528,9 @@ Allons-y !</string>
   <string name="account_setup_advanced_enc_req">Chiffrer les conversations sur demande</string>
   <string name="account_setup_advanced_enc_off">Désactiver le chiffrement des conversations</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Validation des certificats ...</string>
-  <string name="account_setup_signin_b">Génération de la paire de clés ...</string>
-  <string name="account_setup_signin_c">Connexion ...</string>
+  <string name="account_setup_signin_a">Validation des certificats …</string>
+  <string name="account_setup_signin_b">Génération de la paire de clés …</string>
+  <string name="account_setup_signin_c">Connexion …</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">Erreur lors de la validation du nom d\'utilisateur ou mot de passe - veuillez les vérifier et recommencer</string>
   <string name="account_setup_error_keypair">Erreur lors de la création des clés publique/privée</string>
@@ -562,7 +562,7 @@ Allons-y !</string>
   <string name="warning_alpha">ATTENTION: ceci est une édition anticipée de ChatSecure qui contient peut-être des failles de sécurité ou des bogues.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groupes</string>
-  <string name="otr_gen_key">Génération d\'une nouvelle paire de clés OTR...</string>
+  <string name="otr_gen_key">Génération d\'une nouvelle paire de clés OTR…</string>
   <string name="search_label">Contact</string>
   <string name="search_hint">Tappez le nom d\'un contact avec qui discuter</string>
   <string name="search_button_text">Go</string>
@@ -666,7 +666,7 @@ Appuyez ici pour en ajouter un !</string>
   <string name="mtm_accept_cert">Accepter le certificat serveur ?</string>
   <string name="sorry_we_cannot_share_that_file_type">Désolé, vous ne pouvez pas partager ce type de fichier</string>
   <string name="err_otr_share_no_encryption">Vous devez lancer le chiffrement pour partager des fichiers</string>
-  <string name="starting_the_chatsecure_service_">Lancement du service ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Lancement du service ChatSecure…</string>
   <string name="menu_sidebar_qr">Empreinte</string>
   <string name="fingerprint_for_you">Votre empreinte</string>
   <string name="fingerprint_for_">Empreinte pour</string>
@@ -684,8 +684,8 @@ Appuyez ici pour en ajouter un !</string>
   <string name="app_unlocked">Activé &amp; déverrouillé</string>
   <string name="prompt_create_new_account_">Créer un nouveau compte ?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Créer un nouveau compte de chat pour \'%1$s\'?</string>
-  <string name="registering_new_account_">Enregistrement du nouveau compte...</string>
-  <string name="connecting_to_group_chat_">Connexion au chat de groupe...</string>
+  <string name="registering_new_account_">Enregistrement du nouveau compte…</string>
+  <string name="connecting_to_group_chat_">Connexion au chat de groupe…</string>
   <string name="btn_create_account">Créer un compte</string>
   <string name="pref_debug_title">Activer journal de déboguage</string>
   <string name="pref_debug_summary">Afficher journal de l\'application sur la sortie standard / logcat pour déboguage</string>

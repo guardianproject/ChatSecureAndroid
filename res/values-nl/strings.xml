@@ -88,7 +88,7 @@
   <string name="menu_view_contact_list">Lijst met contacten</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Uitnodigen...</string>
+  <string name="menu_invite_contact">Uitnodigen…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Schakelen tussen chats</string>
@@ -150,9 +150,9 @@
   <string name="sign_in">Aanmelden</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">ChatSecure aan het initialiseren...</string>
+  <string name="signing_in_to">ChatSecure aan het initialiseren…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Aanmelden...</string>
+  <string name="signing_in_wait">Aanmelden…</string>
   <string name="signing_out_wait">Logt uit\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
@@ -259,8 +259,8 @@ Klik hier om uit te nodigen.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Geen actieve chats.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Versleutelde chat sessie aan het starten...</string>
-  <string name="stopping_otr_chat">Versleutelde chat sessie aan het stoppen...</string>
+  <string name="starting_otr_chat">Versleutelde chat sessie aan het starten…</string>
+  <string name="stopping_otr_chat">Versleutelde chat sessie aan het stoppen…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Contact toevoegen</string>
@@ -530,9 +530,9 @@ Aan de slag!</string>
   <string name="account_setup_advanced_enc_req">Versleutel chats op verzoek</string>
   <string name="account_setup_advanced_enc_off">Chat versleuteling uitschakelen</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Referenties aan het valideren...</string>
-  <string name="account_setup_signin_b">Sleutelpaar aan het genereren...</string>
-  <string name="account_setup_signin_c">In aan het loggen...</string>
+  <string name="account_setup_signin_a">Referenties aan het valideren…</string>
+  <string name="account_setup_signin_b">Sleutelpaar aan het genereren…</string>
+  <string name="account_setup_signin_c">In aan het loggen…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure trof een fout aan bij het valideren van uw gebruikersnaam en wachtwoord - controleert u ze alstublieft en probeer opnieuw.</string>
   <string name="account_setup_error_keypair">ChatSecure trof een fout aan tijdens het genereren van een sleutelpaar.</string>
@@ -564,7 +564,7 @@ Aan de slag!</string>
   <string name="warning_alpha">LET OP: Dit is een prille versie van ChatSecure die beveiligingslekken of fouten kan bevatten.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groepen</string>
-  <string name="otr_gen_key">Nieuw OTR sleutelpaar aan het genereren...</string>
+  <string name="otr_gen_key">Nieuw OTR sleutelpaar aan het genereren…</string>
   <string name="search_label">Contact</string>
   <string name="search_hint">typ de naam van een contact om mee te chatten</string>
   <string name="search_button_text">Ok</string>
@@ -626,7 +626,7 @@ Klik hier om er één toe te voegen!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Wilt u uitloggen bij alle services EN alle processen stopzetten (ruwe stopzetting)?</string>
   <string name="rekey_message">Vul een nieuw wachtwoord in. Het moet ten minste één hoofdletter, één gewone letter en één nummer bevatten. Het wachtwoord moet meer dan zes karakters hebben.</string>
-  <string name="do_rekey">Jouw bestaande berichten worden met het nieuwe wachtwoord versleuteld (geduld...)</string>
+  <string name="do_rekey">Jouw bestaande berichten worden met het nieuwe wachtwoord versleuteld (geduld…)</string>
   <string name="enter_pass">Voer wachtwoord in:</string>
   <string name="new_pass">Welkom! Vul een sterk wachtwoord in om uw berichten te beveiligen.  Het moet ten minste één hoofdletter, één gewone letter en één nummer bevatten. Het wachtwoord moet meer dan zes karakters hebben.</string>
   <string name="pass_err_length">Uw wachtwoord was niet lang genoeg</string>
@@ -668,7 +668,7 @@ Klik hier om er één toe te voegen!</string>
   <string name="mtm_accept_cert">Aanvaard Server Certificaat?</string>
   <string name="sorry_we_cannot_share_that_file_type">Sorry, we kunnen dit bestandstype niet delen</string>
   <string name="err_otr_share_no_encryption">Je moet encryptie inschakelen om bestanden te delen</string>
-  <string name="starting_the_chatsecure_service_">De ChatSecure service wordt gestart...</string>
+  <string name="starting_the_chatsecure_service_">De ChatSecure service wordt gestart…</string>
   <string name="menu_sidebar_qr">Vingerafdruk</string>
   <string name="fingerprint_for_you">Vingerafdruk voor jou</string>
   <string name="fingerprint_for_">Vingerafdruk voor</string>
@@ -687,8 +687,8 @@ ChatSecure zal waarschijnlijk crashen. Gebruik in de plaats a.u.b. het \"Log all
   <string name="app_unlocked">Geactiveerd &amp; ontgrendeld</string>
   <string name="prompt_create_new_account_">Nieuwe account aanmaken?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Nieuwe chat account aanmaken voor gebruikersnaam \'%1$s\'?</string>
-  <string name="registering_new_account_">Registreer een nieuwe account...</string>
-  <string name="connecting_to_group_chat_">Connecteerd naar group chat...</string>
+  <string name="registering_new_account_">Registreer een nieuwe account…</string>
+  <string name="connecting_to_group_chat_">Connecteerd naar group chat…</string>
   <string name="btn_create_account">Maak account aan</string>
   <string name="pref_debug_title">Zet Debug Logs aan</string>
   <string name="pref_debug_summary">Output app log data naar standard out / logcat voor debuggen</string>

@@ -143,7 +143,7 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="sign_in">Kirjaudu sisään</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">alustetaan ChatSecure toimintakuntoon...</string>
+  <string name="signing_in_to">alustetaan ChatSecure toimintakuntoon…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Kirjaudutaan sisään\u2026</string>
   <string name="signing_out_wait">Kirjautuu ulos\u2026</string>
@@ -412,9 +412,9 @@ Klikkaa kutsuaksesi.</string>
   <string name="account_setup_advanced_enc_req">Salaa keskustelut pyyntöjen mukaisesti</string>
   <string name="account_setup_advanced_enc_off">Poista keskustelun salaus</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Tietoja tarkistetaan...</string>
-  <string name="account_setup_signin_b">Luodaan avainparia...</string>
-  <string name="account_setup_signin_c">Kirjaudutaan sisään...</string>
+  <string name="account_setup_signin_a">Tietoja tarkistetaan…</string>
+  <string name="account_setup_signin_b">Luodaan avainparia…</string>
+  <string name="account_setup_signin_c">Kirjaudutaan sisään…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure kohtasi virheen varmistaessaan käyttäjänimeäsi tai salasanaasi. Tarkista ne ja yritä uudelleen.</string>
   <string name="account_setup_error_keypair">ChatSecure kohtasi virheen luodessaan avainparia.</string>
@@ -463,7 +463,7 @@ Klikkaa kutsuaksesi.</string>
   <string name="mtm_accept_cert">Hyväksy palvelinsertifikaatti?</string>
   <string name="sorry_we_cannot_share_that_file_type">Valitan, kyseistä tiedostotyyppiä ei voi jakaa</string>
   <string name="err_otr_share_no_encryption">Salauksen on oltava päällä tiedostoja jaettaessa</string>
-  <string name="starting_the_chatsecure_service_">Käynnistetään ChatSecure-palvelua...</string>
+  <string name="starting_the_chatsecure_service_">Käynnistetään ChatSecure-palvelua…</string>
   <string name="menu_sidebar_qr">Sormenjälki</string>
   <string name="fingerprint_for_you">Sormenjälkesi</string>
   <string name="fingerprint_for_">Sormenjälki käyttäjälle</string>
@@ -481,8 +481,8 @@ Klikkaa kutsuaksesi.</string>
   <string name="app_unlocked">Aktivoitu &amp; lukitsematon</string>
   <string name="prompt_create_new_account_">Luo uusi tili?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Luo uusi keskustelutili käyttäjänimellä \'%1$s\'?</string>
-  <string name="registering_new_account_">Rekisteröidään uutta tiliä...</string>
-  <string name="connecting_to_group_chat_">Yhdistetään ryhmäkeskusteluun...</string>
+  <string name="registering_new_account_">Rekisteröidään uutta tiliä…</string>
+  <string name="connecting_to_group_chat_">Yhdistetään ryhmäkeskusteluun…</string>
   <string name="btn_create_account">Luo tili</string>
   <string name="pref_debug_title">Laita Debug-log päälle</string>
   <string name="pref_debug_summary">Tulosta ohjelman logitiedot oletuskohteeseen/logcatiin debuggausta varten</string>

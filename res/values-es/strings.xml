@@ -244,8 +244,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">No hay ninguna conversación activa.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Comenzando conversación cifrada...</string>
-  <string name="stopping_otr_chat">Deteniendo conversación cifrada...</string>
+  <string name="starting_otr_chat">Comenzando conversación cifrada…</string>
+  <string name="stopping_otr_chat">Deteniendo conversación cifrada…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Añadir contacto</string>
@@ -501,9 +501,9 @@
   <string name="account_setup_advanced_enc_req">Cifrar conversaciones si se solicita</string>
   <string name="account_setup_advanced_enc_off">Inhabilitar el cifrado en las conversaciones</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Validando credenciales ...</string>
-  <string name="account_setup_signin_b">Generando un par de claves ...</string>
-  <string name="account_setup_signin_c">Iniciando sesión...</string>
+  <string name="account_setup_signin_a">Validando credenciales …</string>
+  <string name="account_setup_signin_b">Generando un par de claves …</string>
+  <string name="account_setup_signin_c">Iniciando sesión…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure encontró un error al intentar validar su nombre de usuario o contraseña - por favor, compruebe que son correctos y vuelva a intentarlo.</string>
   <string name="account_setup_error_keypair">ChatSecure encontró un error al generar un par de claves.</string>
@@ -536,7 +536,7 @@
   <string name="warning_alpha">ADVERTENCIA: Esta es una versión anticipada de ChatSecure que puede contener vulnerabilidades de seguridad o errores.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupos</string>
-  <string name="otr_gen_key">Generando un nuevo par de claves OTR...</string>
+  <string name="otr_gen_key">Generando un nuevo par de claves OTR…</string>
   <string name="search_label">Contacto</string>
   <string name="search_hint">escriba el nombre del contacto para comenzar una conversación</string>
   <string name="search_button_text">Ir</string>

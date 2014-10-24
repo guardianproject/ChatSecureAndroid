@@ -145,7 +145,7 @@ Permite a las aplicaciones escribir datos en el proveedor de contenidos de mensa
   <string name="sign_in">Iniciar sesión</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">poniendo en marcha ChatSecure...</string>
+  <string name="signing_in_to">poniendo en marcha ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Iniciando sesión\u2026 </string>
   <!--Dialog title-->
@@ -254,8 +254,8 @@ Toque para invitar.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">No hay chats activos.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Iniciando sesión de chat cifrado...</string>
-  <string name="stopping_otr_chat">Finalizando la sesión de chat cifrado...</string>
+  <string name="starting_otr_chat">Iniciando sesión de chat cifrado…</string>
+  <string name="stopping_otr_chat">Finalizando la sesión de chat cifrado…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Agregar contacto</string>
@@ -525,7 +525,7 @@ La aplicación soporta cualquier servicio de chat que utilice los protocolos Jab
   <!--Account Setup: First Sign In-->
   <string name="account_setup_signin_a">Validando credenciales</string>
   <string name="account_setup_signin_b">Generando par de claves</string>
-  <string name="account_setup_signin_c">Iniciando sesión...</string>
+  <string name="account_setup_signin_c">Iniciando sesión…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure encontró un error mientras validaba su nombre o contraseña - por favor revise los datos e intente de nuevo.</string>
   <string name="account_setup_error_keypair">ChatSecure encontró un error mientras generaba un par de claves.</string>
@@ -557,7 +557,7 @@ La aplicación soporta cualquier servicio de chat que utilice los protocolos Jab
   <string name="warning_alpha">ADVERTENCIA: Esta es una versión temprana de ChatSecure que todavía podría tener fallos de seguridad o bugs.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupos</string>
-  <string name="otr_gen_key">Generando nuevo par de claves OTR...</string>
+  <string name="otr_gen_key">Generando nuevo par de claves OTR…</string>
   <string name="search_label">Contacto</string>
   <string name="search_hint">escriba el nombre de un contacto para chatear</string>
   <string name="search_button_text">Ir</string>
@@ -615,7 +615,7 @@ cuentas configuradas.
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">¿Quiere cerrar sesión en todos los servicios Y detener todos los procesos (salida forzada)?</string>
   <string name="rekey_message">Ingrese una *nueva* contraseña. Esta debe tener al menos una letra mayúscula, una minúscula y un número, y tener más de seis caracteres.</string>
-  <string name="do_rekey">Cifrando sus notas con la nueva contraseña (paciencia...)</string>
+  <string name="do_rekey">Cifrando sus notas con la nueva contraseña (paciencia…)</string>
   <string name="enter_pass">Ingrese su contraseña:</string>
   <string name="new_pass">¡Bienvenido! Ingrese una contraseña fuerte para asegurar sus notas. Esta debe contener al menos una letra mayúscula, una minúscula y un número, y tener más de seis caracteres de longitud.</string>
   <string name="pass_err_length">Su contraseña no es lo suficientemente larga</string>
@@ -655,7 +655,7 @@ cuentas configuradas.
   <string name="mtm_accept_cert">¿Aceptar certificado del servidor?</string>
   <string name="sorry_we_cannot_share_that_file_type">Lo sentimos, no podemos compartir ese tipo de archivo</string>
   <string name="err_otr_share_no_encryption">Debe habilitar el cifrado para compartir archivos</string>
-  <string name="starting_the_chatsecure_service_">Arrancando el servicio ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Arrancando el servicio ChatSecure…</string>
   <string name="menu_sidebar_qr">Huella digital</string>
   <string name="fingerprint_for_you">Huella digital para usted</string>
   <string name="fingerprint_for_">Huella digital para</string>

@@ -149,7 +149,7 @@
   <string name="sign_in">Sign In</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">membuat ChatSecure akan...</string>
+  <string name="signing_in_to">membuat ChatSecure akan…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Melakukan Sign In\u2026</string>
   <string name="signing_out_wait">Melakukan Sign Out\u2026</string>
@@ -260,8 +260,8 @@ Sentuh untuk mengundang.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Tidak ada percakapan yang aktif.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Memulai enkripsi sesi percakapan...</string>
-  <string name="stopping_otr_chat">Menghentikan enkripsi sesi percakapan...</string>
+  <string name="starting_otr_chat">Memulai enkripsi sesi percakapan…</string>
+  <string name="stopping_otr_chat">Menghentikan enkripsi sesi percakapan…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Tambah kontak</string>
@@ -540,9 +540,9 @@ Mari kita mulai!</string>
   <string name="account_setup_advanced_enc_req">Enkripsi percakapan ketika diminta</string>
   <string name="account_setup_advanced_enc_off">Non aktifkan enkripsi percakapan</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Memeriksa pengenal...</string>
-  <string name="account_setup_signin_b">Membangkitkan keypair...</string>
-  <string name="account_setup_signin_c">Melakukan Sign In...</string>
+  <string name="account_setup_signin_a">Memeriksa pengenal…</string>
+  <string name="account_setup_signin_b">Membangkitkan keypair…</string>
+  <string name="account_setup_signin_c">Melakukan Sign In…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure mengalami masalah ketika memastikan username atau password anda - silahkan cek dan coba lagi.</string>
   <string name="account_setup_error_keypair">ChatSecure mengalami masalah ketika membangkitkan keypair.</string>
@@ -574,7 +574,7 @@ Mari kita mulai!</string>
   <string name="warning_alpha">PERINGATAN: Ini adalah rilis awal dari ChatSecure yang mungkin masih memiliki lubang keamanan dan bug.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grup</string>
-  <string name="otr_gen_key">Membangkitkan OTR keypair yang baru ...</string>
+  <string name="otr_gen_key">Membangkitkan OTR keypair yang baru …</string>
   <string name="search_label">Kontak</string>
   <string name="search_hint">ketika nama kontak dengan siapa anda ingin mengobrol</string>
   <string name="search_button_text">Mulai</string>
@@ -636,7 +636,7 @@ Ketuk di sini untuk menambah!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Apakah anda ingin melakukan Sign Out semua layanan dan menghentikan semua proses (hard exit)?</string>
   <string name="rekey_message">Masukkan sebuah passphrase yang *baru*. Passphrase tersebut harus memiliki paling sedikit satu huruf besar, satu huruf kecil dan satu angka, juga minimal memiliki 7 karakter.</string>
-  <string name="do_rekey">Mengenkripsi catatan anda yang ada dengan passphrase yang baru (harap sabar...)</string>
+  <string name="do_rekey">Mengenkripsi catatan anda yang ada dengan passphrase yang baru (harap sabar…)</string>
   <string name="enter_pass">Masukkan Passphrase anda:</string>
   <string name="new_pass">Selamat Datang! Masukkna sebuah passphrase yang kuat untuk mengamankan catatan anda. Passphrase tersebut harus memiliki paling sedikit satu huruf besar, satu huruf kecil dan satu angka, juga lebih panjang dari 6 karakter.</string>
   <string name="pass_err_length">Passphrase anda tidak cukup panjang</string>
@@ -678,7 +678,7 @@ Ketuk di sini untuk menambah!</string>
   <string name="mtm_accept_cert">Terima Certificate Server?</string>
   <string name="sorry_we_cannot_share_that_file_type">Maaf kami tidak dapat berbagi menggunakan tipe file seperti itu</string>
   <string name="err_otr_share_no_encryption">Anda harus mengaktifkan enkripsi untuk berbagi file</string>
-  <string name="starting_the_chatsecure_service_">Memulai layanan ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Memulai layanan ChatSecure…</string>
   <string name="menu_sidebar_qr">Fingerprint</string>
   <string name="fingerprint_for_you">Fingerprint untuk anda</string>
   <string name="fingerprint_for_">Fingerprint untuk</string>
@@ -696,6 +696,6 @@ Ketuk di sini untuk menambah!</string>
   <string name="app_unlocked">Diaktifkan &amp; tak terkunci</string>
   <string name="prompt_create_new_account_">Buat akun baru?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Buar sebuah akun percakapan baru untuk username \'%1$s\'?</string>
-  <string name="registering_new_account_">Mendaftarkan akun baru...</string>
-  <string name="connecting_to_group_chat_">Menghubungi percakapan grup...</string>
+  <string name="registering_new_account_">Mendaftarkan akun baru…</string>
+  <string name="connecting_to_group_chat_">Menghubungi percakapan grup…</string>
 </resources>

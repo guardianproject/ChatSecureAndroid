@@ -148,7 +148,7 @@
   <string name="sign_in">Впиши ме</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">подготвяне на ChatSecure...</string>
+  <string name="signing_in_to">подготвяне на ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Вписване\u2026</string>
   <string name="signing_out_wait">Отписване\u2026</string>
@@ -258,8 +258,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Няма текущи чатове.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Стартиране на шифрован чат...</string>
-  <string name="stopping_otr_chat">Спиране на шифрован чат...</string>
+  <string name="starting_otr_chat">Стартиране на шифрован чат…</string>
+  <string name="stopping_otr_chat">Спиране на шифрован чат…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Добави контакт</string>
@@ -534,9 +534,9 @@ OTR протоколът е съвместим с други приложени�
   <string name="account_setup_advanced_enc_req">Шифровай съобщенията, когато това бъде поискано</string>
   <string name="account_setup_advanced_enc_off">Изключи шифроването на съобщенията</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Удостоверяване на самоличността...</string>
-  <string name="account_setup_signin_b">Генериране на ключ...</string>
-  <string name="account_setup_signin_c">Вписване...</string>
+  <string name="account_setup_signin_a">Удостоверяване на самоличността…</string>
+  <string name="account_setup_signin_b">Генериране на ключ…</string>
+  <string name="account_setup_signin_c">Вписване…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure се натъкна на грешка при проверката на потребителското име или паролата - провери ги и опитай отново.</string>
   <string name="account_setup_error_keypair">ChatSecure се натъкна на проблем при генерирането на ключ.</string>
@@ -568,7 +568,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="warning_alpha">ВНИМАНИЕ: Тази стара версия на ChatSecure може да има бъгове или да не сигурна.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Групи</string>
-  <string name="otr_gen_key">Генериране на нов OTR ключ...</string>
+  <string name="otr_gen_key">Генериране на нов OTR ключ…</string>
   <string name="search_label">Контакт</string>
   <string name="search_hint">въведи името на контакта, с когото искаш да си пишеш</string>
   <string name="search_button_text">Давай</string>
@@ -630,7 +630,7 @@ OTR протоколът е съвместим с други приложени�
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Искаш ли да се отпишеш от всички профили И да спреш всички процеси(твърд изход)?</string>
   <string name="rekey_message">Въведи *нова* парола. Тя трябва да се състои от поне една главна буква, една малка буква и една цифра, и да е по-дълга от 6 символа.</string>
-  <string name="do_rekey">Зашифроване на съществуващите белeжки с новата парола (търпение...)</string>
+  <string name="do_rekey">Зашифроване на съществуващите белeжки с новата парола (търпение…)</string>
   <string name="enter_pass">Въведи паролата:</string>
   <string name="new_pass">Добре дошъл! Въведи сложна парола, за да подсигуриш бележките си. Тя трябва да се състои от поне една главна буква, една малка буква и една цифра, и да бъде по-дълга от 6 символа.</string>
   <string name="pass_err_length">Паролата не е достатъчно дълга</string>
@@ -672,7 +672,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="mtm_accept_cert">Приеми Сертификата на Сървъра?</string>
   <string name="sorry_we_cannot_share_that_file_type">Съжаляваме, но не можем да споделим този тип файл</string>
   <string name="err_otr_share_no_encryption">Трябва да разрешиш шифроването, за да споделяш файлове</string>
-  <string name="starting_the_chatsecure_service_">Стартиране на ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Стартиране на ChatSecure…</string>
   <string name="menu_sidebar_qr">Електронен Отпечатък</string>
   <string name="fingerprint_for_you">Електронен отпечатък за теб</string>
   <string name="fingerprint_for_">Електронен отпечатък за</string>
@@ -690,8 +690,8 @@ OTR протоколът е съвместим с други приложени�
   <string name="app_unlocked">Активиран &amp; отключен</string>
   <string name="prompt_create_new_account_">Създай нов профил?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Създай нов чат профил за потребител \'%1$s\'?</string>
-  <string name="registering_new_account_">Регистрирване на нов профил...</string>
-  <string name="connecting_to_group_chat_">Свързване към групов чат...</string>
+  <string name="registering_new_account_">Регистрирване на нов профил…</string>
+  <string name="connecting_to_group_chat_">Свързване към групов чат…</string>
   <string name="btn_create_account">Създай Профил</string>
   <string name="pref_debug_title">Разреши Дебъг Докладите</string>
   <string name="pref_debug_summary">Препращай информацията от логът към стандартния изход / логкат при дебъгване</string>

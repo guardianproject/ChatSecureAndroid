@@ -26,7 +26,7 @@
     <string msgid="5883288134525529119" name="menu_view_profile">"Ver perfil"</string>
     <string msgid="3556567768336552622" name="menu_end_conversation">"Terminar chat"</string>
     <string msgid="4630377976475003130" name="menu_view_contact_list">"Lista de contactos"</string>
-    <string msgid="4669830812552484236" name="menu_invite_contact">"Convidar..."</string>
+    <string msgid="4669830812552484236" name="menu_invite_contact">"Convidar…"</string>
     <string msgid="5113455126377025717" name="menu_switch_chats">"Trocar chats"</string>
     <string msgid="2555290958985391105" name="menu_insert_smiley">"Inserir sorriso"</string>
     <string msgid="5000617247235760106" name="menu_plus">"Menu+"</string>
@@ -50,7 +50,7 @@
     <string msgid="308461891031463647" name="check_auto_sign_in">"Esta opção inicia a sessão automaticamente sempre que abrir esta aplicação. Para desactivar a opção, termine a sessão e desmarque a caixa de verificação \"Iniciar sessão automaticamente\"."</string>
     <string msgid="6204326200860136567" name="sign_in">"Iniciar sessão"</string>
     <string msgid="2689649632858697221" name="signing_in_to">"A iniciar sessão no <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
-    <string msgid="987357161364666888" name="signing_in_wait">"A iniciar sessão..."</string>
+    <string msgid="987357161364666888" name="signing_in_wait">"A iniciar sessão…"</string>
     <string msgid="4861800723853178111" name="bg_data_prompt_title">"Dados de fundo desactivados"</string>
     <string msgid="2343305645142823544" name="bg_data_prompt_message">"O <xliff:g id="PROVIDER">%1$s</xliff:g> precisa que os dados de fundo sejam activados."</string>
     <string msgid="3443385427882751532" name="bg_data_prompt_ok">"Activar"</string>
@@ -273,8 +273,8 @@
     <string name="account_setup_advanced_enc_auto">Quando possível, chats criptografar automaticamente</string>
     <string name="account_setup_advanced_enc_req">Criptografar chats, conforme solicitado</string>
     <string name="account_setup_advanced_enc_off">Desativar bate-papo de criptografia</string>
-    <string name="account_setup_signin_a">Validando credenciais ...</string>
-    <string name="account_setup_signin_b">Gerar par de chaves ...</string>
+    <string name="account_setup_signin_a">Validando credenciais …</string>
+    <string name="account_setup_signin_b">Gerar par de chaves …</string>
     <string name="account_setup_signin_c">Assinatura polegadas ..</string>
     <string name="account_setup_error_validating">ChatSecure encontrou um erro ao validar o seu nome de usuário e senha - verifique-os e tente novamente.</string>
     <string name="account_setup_error_keypair">ChatSecure encontrou um erro ao gerar um par de chaves.</string>

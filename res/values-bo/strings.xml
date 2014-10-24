@@ -536,7 +536,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="account_setup_advanced_enc_off">གླེང་མོལ་གསང་སྡོམ་བཤིག</string>
   <!--Account Setup: First Sign In-->
   <string name="account_setup_signin_a">རྒྱབ་ལྗོངས་ནུས་ལྡན་བཟོ་བཞིན་པ། </string>
-  <string name="account_setup_signin_b">ལྡེ་མིག་གི་ཆ་བསྐྲུན་གྱི་ཡོད།...</string>
+  <string name="account_setup_signin_b">ལྡེ་མིག་གི་ཆ་བསྐྲུན་གྱི་ཡོད།…</string>
   <string name="account_setup_signin_c">ནང་དུ་ཞུགས་བཞིན་ཡོད།</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ཁྱོད་ཀྱི་མིང་དང་གསང་ཚིག་གཉིས་ཁྲིམས་མཐུན་བཟོ་བའི་སྐབས་སུ། ཉེན་སྲུང་གླེང་མོལ་ལ་དཀའ་ངལ་ཞིག་འཕྲད་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱེད་རོགས། </string>
@@ -629,7 +629,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">ཁྱེད་ཀྱིས་ཞབས་ཞུ་ཚང་མ་སྒོ་བརྒྱབ་ནས་བརྒྱུད་རིམ་ཚང་མ་མེད་པར་གཏོང་འདོད་དམ། (hard exit)?</string>
   <string name="rekey_message">གསང་ཚིག་གསར་བ་ནང་འཇུག་བྱོས། དེ་ལ་ཉུང་མཐར་ཡང་། ཡིག་ཆེན་གཅིག་དང་ཡིག་ཆུང་གཅིག ཨང་ཀི་གཅིག ཡི་གེ་དྲུག་ལས་མང་བ་བཅས་དགོས། </string>
-  <string name="do_rekey">གསང་ཚིག་གསར་བ་དེ་དང་ལྷན་དུ། ཁྱོད་ཀྱི་ད་ཡོད་ཟིན་ཐོ་ཁག་གསང་སྡོམ་བྱོས།(བཟོད་སྒོམ...)</string>
+  <string name="do_rekey">གསང་ཚིག་གསར་བ་དེ་དང་ལྷན་དུ། ཁྱོད་ཀྱི་ད་ཡོད་ཟིན་ཐོ་ཁག་གསང་སྡོམ་བྱོས།(བཟོད་སྒོམ…)</string>
   <string name="enter_pass">ཁྱོད་ཀྱི་གསང་ཚིག་ནང་འཇུག་བྱོས། </string>
   <string name="new_pass">ཁྱེད་རང་གི་ཟིན་བྲིས་ཉེན་སྲུང་བྱེད་པ་ལ་གསང་ཚིག་གསར་བ་ནང་འཇུག་བྱོས། དེ་ལ་ཉུང་མཐར་ཡང་། ཡིག་ཆེན་གཅིག་དང་ཡིག་ཆུང་གཅིག ཨང་ཀི་གཅིག ཡི་གེ་དྲུག་ལས་མང་བ་བཅས་དགོས། </string>
   <string name="pass_err_length">ཁྱོད་ཀྱི་གསང་ཚིག་དེ་རིང་པོ་རེད་མི་འདུག </string>

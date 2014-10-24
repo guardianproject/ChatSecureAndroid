@@ -149,7 +149,7 @@ Permitir a las aplicaciones escribir en el proveedor de contenido de mensajería
   <string name="sign_in">Iniciar sesión</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">iniciando ChatSecure...</string>
+  <string name="signing_in_to">iniciando ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Iniciando sesión</string>
   <string name="signing_out_wait">Cerrar sesión\u2026</string>
@@ -258,8 +258,8 @@ Tocá para invitar.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">No hay ninguna conversación activa.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Comenzando conversación cifrada...</string>
-  <string name="stopping_otr_chat">Deteniendo conversación cifrada...</string>
+  <string name="starting_otr_chat">Comenzando conversación cifrada…</string>
+  <string name="stopping_otr_chat">Deteniendo conversación cifrada…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Añadir contacto</string>
@@ -532,9 +532,9 @@ El protocolo OTR es compatible con clientes de escritorio como Adium y Pidgin.</
   <string name="account_setup_advanced_enc_req">Cifrar conversaciones si se solicita</string>
   <string name="account_setup_advanced_enc_off">Inhabilitar el cifrado en las conversaciones</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Validando credenciales ...</string>
-  <string name="account_setup_signin_b">Generando un par de claves ...</string>
-  <string name="account_setup_signin_c">Iniciando sesión...</string>
+  <string name="account_setup_signin_a">Validando credenciales …</string>
+  <string name="account_setup_signin_b">Generando un par de claves …</string>
+  <string name="account_setup_signin_c">Iniciando sesión…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure encontró un error mientras se validaba su nombre de usuario o su contraseña - por favor, revíselos y pruebe de nuevo.</string>
   <string name="account_setup_error_keypair">ChatSecure encontró un error mientras generaba un par de claves.</string>
@@ -566,7 +566,7 @@ El protocolo OTR es compatible con clientes de escritorio como Adium y Pidgin.</
   <string name="warning_alpha">Advertencia: Esta es una primera versión de ChatSecure y puede que aun contenga fallos de seguridad y errores.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupos</string>
-  <string name="otr_gen_key">Generando un nuevo par de claves OTR...</string>
+  <string name="otr_gen_key">Generando un nuevo par de claves OTR…</string>
   <string name="search_label">Contacto</string>
   <string name="search_hint">escriba el nombre del contacto para comenzar una conversación</string>
   <string name="search_button_text">Ir</string>
@@ -628,7 +628,7 @@ Apretame para añadir una!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">¿Quiere cerrar sesión y acabar con todos los procesos?</string>
   <string name="rekey_message">Introduzca una *nueva* contraseña. Debe está formada al menos por una mayúscula, una minúscula y un número. Además debe tener más de 6 caracteres.</string>
-  <string name="do_rekey">Cifrando sus notas con la nueva contraseña (tenga paciencia...)</string>
+  <string name="do_rekey">Cifrando sus notas con la nueva contraseña (tenga paciencia…)</string>
   <string name="enter_pass">Introduzca su contraseña:</string>
   <string name="new_pass">¡Bienvenido! Introduzca una contraseña fuerte para asegurar sus notas. Debe contener al menos una mayúscula, una minúscula y un número además de tener más de seis caracteres.</string>
   <string name="pass_err_length">Su contraseña no es lo suficientemente larga</string>
@@ -670,7 +670,7 @@ Apretame para añadir una!</string>
   <string name="mtm_accept_cert">¿Aceptar certificado del servidor?</string>
   <string name="sorry_we_cannot_share_that_file_type">Perdón, pero no podemos compartir ese tipo de archivo</string>
   <string name="err_otr_share_no_encryption">Debe activar el cifrado para compartir archivos</string>
-  <string name="starting_the_chatsecure_service_">Comenzando el servicio de ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Comenzando el servicio de ChatSecure…</string>
   <string name="menu_sidebar_qr">Huella digital</string>
   <string name="fingerprint_for_you">Identificador algorítmico (\'fingerprint\') para usted</string>
   <string name="fingerprint_for_">Identificador algorítmico (\'fingerprint\') para</string>
@@ -688,8 +688,8 @@ Apretame para añadir una!</string>
   <string name="app_unlocked">Activado y desclausurado</string>
   <string name="prompt_create_new_account_">¿Crear nueva cuenta?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">¿Crear una nueva cuenta de chat con el nombre de usuario \'%1$s\'?</string>
-  <string name="registering_new_account_">Registrando nueva cuenta...</string>
-  <string name="connecting_to_group_chat_">Conectando a grupo de chat...</string>
+  <string name="registering_new_account_">Registrando nueva cuenta…</string>
+  <string name="connecting_to_group_chat_">Conectando a grupo de chat…</string>
   <string name="btn_create_account">Crear cuenta</string>
   <string name="pref_debug_title">Habilitar registros (\'logs\') de depuración</string>
   <string name="pref_debug_summary">Datos de registro (\'log\') de salida de la aplicación a la salida estándar / logcat para depuración</string>

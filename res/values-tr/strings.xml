@@ -84,7 +84,7 @@
   <string name="menu_view_contact_list">Kişi listesi</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Davet et...</string>
+  <string name="menu_invite_contact">Davet et…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Sohbetler arasında geçiş yap</string>
@@ -146,9 +146,9 @@
   <string name="sign_in">Oturum aç</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">ChatSecure açılıyor...</string>
+  <string name="signing_in_to">ChatSecure açılıyor…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Oturum açılıyor...</string>
+  <string name="signing_in_wait">Oturum açılıyor…</string>
   <string name="signing_out_wait">Oturum kapatılıyor\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
@@ -255,8 +255,8 @@ Davet etmek için buraya basın.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Etkin sohbet yok.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Şifrelenmiş sohbet oturumu başlatılıyor...</string>
-  <string name="stopping_otr_chat">Şifrelenmiş sohbet oturumu durduruluyor...</string>
+  <string name="starting_otr_chat">Şifrelenmiş sohbet oturumu başlatılıyor…</string>
+  <string name="stopping_otr_chat">Şifrelenmiş sohbet oturumu durduruluyor…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Kişi ekle</string>
@@ -521,9 +521,9 @@ Davet etmek için buraya basın.</string>
   <string name="account_setup_advanced_enc_req">Sohbetleri talep edildiğinde şifrele</string>
   <string name="account_setup_advanced_enc_off">Sohbetleri şifrelemeyi kaldır</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Giriş bilgileri doğrulanıyor...</string>
-  <string name="account_setup_signin_b">Anahtar çifti oluşturuluyor...</string>
-  <string name="account_setup_signin_c">Giriş yapılıyor...</string>
+  <string name="account_setup_signin_a">Giriş bilgileri doğrulanıyor…</string>
+  <string name="account_setup_signin_b">Anahtar çifti oluşturuluyor…</string>
+  <string name="account_setup_signin_c">Giriş yapılıyor…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure kullanıcı adınızı veya parolanızı onaylarken bir sorunla karşılaştı - lütfen kontrol edip yeniden deneyin.</string>
   <string name="account_setup_error_keypair">ChatSecure anahtar eşi oluştururken bir sorunla karşılaştı.</string>
@@ -555,7 +555,7 @@ Davet etmek için buraya basın.</string>
   <string name="warning_alpha">DİKKAT: ChatSecure\'ün bu eski sürümü güvenlik açıkları barındırıyor olabilir.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruplar</string>
-  <string name="otr_gen_key">Yeni OTR anahtar çifti oluşturuluyor...</string>
+  <string name="otr_gen_key">Yeni OTR anahtar çifti oluşturuluyor…</string>
   <string name="search_label">Kişi</string>
   <string name="search_hint">Sohbet edilecek bağlantının ismini yazın</string>
   <string name="search_button_text">Git</string>
@@ -615,7 +615,7 @@ Eklemek için basın!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Tüm servislerden çıkmak ve tüm işlemleri durdurmak mı istiyorsunuz (hard exit)?</string>
   <string name="rekey_message">*Yeni* bir parola giriniz. Parolanız en az bir büyük harf, bir küçük harf ve bir numara barındırmalı ve 6 karakterden daha uzun olmalıdır.</string>
-  <string name="do_rekey">Varolan notlarınızı yeni parola ile şifreliyoruz (lütfen bekleyiniz...)</string>
+  <string name="do_rekey">Varolan notlarınızı yeni parola ile şifreliyoruz (lütfen bekleyiniz…)</string>
   <string name="enter_pass">Parolanızı girin:</string>
   <string name="new_pass">Hoşgeldiniz! Notlarınızı koruma altına almak için güçlü bir parola oluşturun. Parolanız en az bir büyük harf, bir küçük harf ve bir numara barındırmalı ve 6 karakterden daha uzun olmalıdır.</string>
   <string name="pass_err_length">Parolanız yeterince uzun değil.</string>
@@ -657,7 +657,7 @@ Eklemek için basın!</string>
   <string name="mtm_accept_cert">Sunucu Sertifikası Kabul Et?</string>
   <string name="sorry_we_cannot_share_that_file_type">Üzgünüz, bu dosya türü paylaşılamaz</string>
   <string name="err_otr_share_no_encryption">Dosyaları paylaşmak için şifreleme etkinleştirmeniz gerekir</string>
-  <string name="starting_the_chatsecure_service_">ChatSecure servisi başlatılıyor...</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure servisi başlatılıyor…</string>
   <string name="menu_sidebar_qr">Parmak İzi</string>
   <string name="fingerprint_for_you">Senin için parmak izi</string>
   <string name="fingerprint_for_">Parmak izi için</string>
@@ -675,8 +675,8 @@ Eklemek için basın!</string>
   <string name="app_unlocked">Etkinleştirildi &amp; kilidi açıldı</string>
   <string name="prompt_create_new_account_">Yeni hesap oluştur?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">\'%1$s\' kullanıcısı için yeni bir sohbet hesabı oluşturulsun mu?</string>
-  <string name="registering_new_account_">Yeni hesap kaydediliyor...</string>
-  <string name="connecting_to_group_chat_">Grup sohbete bağlanılıyor...</string>
+  <string name="registering_new_account_">Yeni hesap kaydediliyor…</string>
+  <string name="connecting_to_group_chat_">Grup sohbete bağlanılıyor…</string>
   <string name="btn_create_account">Hesap Oluştur</string>
   <string name="pref_debug_title">Hata Ayıklama günlüğünü etkinleştir</string>
   <string name="pref_debug_summary">Uygulama çıkış kayıt verisini hata ayıklama için standart çıkışa / logcat\'e</string>

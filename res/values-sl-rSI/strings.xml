@@ -239,8 +239,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Brez aktivnih klepetov.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje ...</string>
-  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje ...</string>
+  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje …</string>
+  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje …</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Dodaj kontakt</string>
@@ -494,9 +494,9 @@ Novo povabilo prijatelja od &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
   <string name="account_setup_advanced_enc_req">Šifriraj pogovore, če je tako določeno</string>
   <string name="account_setup_advanced_enc_off">Onemogoči šifriranje pogovorov</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Preverjanje poverilnice ...</string>
-  <string name="account_setup_signin_b">Generiram par ključev ...</string>
-  <string name="account_setup_signin_c">Prijavljanje ...</string>
+  <string name="account_setup_signin_a">Preverjanje poverilnice …</string>
+  <string name="account_setup_signin_b">Generiram par ključev …</string>
+  <string name="account_setup_signin_c">Prijavljanje …</string>
   <!--Account Setup: Sign In Errors-->
   <string name="label_fingerprint_remote">Varnostni prstni odtis</string>
   <string name="menu_sign_in">Prijavi se</string>
@@ -518,7 +518,7 @@ Novo povabilo prijatelja od &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
   <string name="pref_default_locale">defLoc</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupine</string>
-  <string name="otr_gen_key">Generiram nov par OTR ključev ...</string>
+  <string name="otr_gen_key">Generiram nov par OTR ključev …</string>
   <string name="search_label">Stik</string>
   <string name="search_hint">vpiši ime stika, s katerim želiš začeti pogovor</string>
   <string name="search_button_text">Išči</string>
@@ -581,6 +581,6 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="mtm_accept_cert">Želite sprejeti digitalno potrdilo strežnika?</string>
   <string name="sorry_we_cannot_share_that_file_type">Ne morete delite te vrste datotek</string>
   <string name="err_otr_share_no_encryption">Morate omogočiti šifriranje, da boste lahko delili datoteke</string>
-  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja ...</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja …</string>
   <string name="menu_sidebar_qr">Prstni odtis</string>
 </resources>

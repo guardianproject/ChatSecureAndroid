@@ -417,8 +417,8 @@
   <string name="account_setup_advanced_enc_req">Šifrovať chaty ako to žiadala</string>
   <string name="account_setup_advanced_enc_off">Zakázať chat šifrovanie</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Overovanie poverovacích listín ...</string>
-  <string name="account_setup_signin_b">Generovanie páru kľúčov ...</string>
+  <string name="account_setup_signin_a">Overovanie poverovacích listín …</string>
+  <string name="account_setup_signin_b">Generovanie páru kľúčov …</string>
   <string name="account_setup_signin_c">Podpisovanie v. ..</string>
   <!--Account Setup: Sign In Errors-->
   <string name="menu_sign_in">Prihlásiť sa</string>
@@ -435,7 +435,7 @@
   <string name="account_settings_title">Nastavenia účtu</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupiny</string>
-  <string name="otr_gen_key">Generuje sa nový pár OTR kľúčov...</string>
+  <string name="otr_gen_key">Generuje sa nový pár OTR kľúčov…</string>
   <string name="search_label">Kontakt</string>
   <string name="search_hint">zadajte meno kontaktu s ktorým chcete zahájiť komunikáciu</string>
   <string name="search_button_text">Ísť</string>

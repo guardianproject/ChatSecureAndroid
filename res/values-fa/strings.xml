@@ -237,8 +237,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">گفتگوی فعالی نیست</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">شروع رمزگذاری جلسه گفتگو...</string>
-  <string name="stopping_otr_chat">توقف رمزگذاری جلسه گفتگو...</string>
+  <string name="starting_otr_chat">شروع رمزگذاری جلسه گفتگو…</string>
+  <string name="stopping_otr_chat">توقف رمزگذاری جلسه گفتگو…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">افزودن تماس</string>
@@ -488,9 +488,9 @@
   <string name="account_setup_advanced_enc_req">رمزگذاری گفتگو بر اساس درخواست</string>
   <string name="account_setup_advanced_enc_off">غیرفعال کردن رمزگذاری گفتگو</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">تایید اعتبارنامه ها...</string>
-  <string name="account_setup_signin_b">درحال تولید یک جفت کلید...</string>
-  <string name="account_setup_signin_c">درحال ورود...</string>
+  <string name="account_setup_signin_a">تایید اعتبارنامه ها…</string>
+  <string name="account_setup_signin_b">درحال تولید یک جفت کلید…</string>
+  <string name="account_setup_signin_c">درحال ورود…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="menu_sign_in">ورود</string>
   <string name="menu_gen_key">تولید دوباره کلید</string>
@@ -509,7 +509,7 @@
 </string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">گروه ها</string>
-  <string name="otr_gen_key">درحال تولید یک جفت کلید OTR...</string>
+  <string name="otr_gen_key">درحال تولید یک جفت کلید OTR…</string>
   <string name="search_label">تماس</string>
   <string name="search_hint">برای گفتگو، نام ارتباط مورد نظر را بنویسید.</string>
   <string name="search_button_text">برو</string>

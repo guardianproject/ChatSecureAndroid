@@ -259,8 +259,8 @@ Klicka för att bjuda in.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Ingen aktiv chatt.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Startar krypterad chattsession...</string>
-  <string name="stopping_otr_chat">Stoppar krypterad chattsession...</string>
+  <string name="starting_otr_chat">Startar krypterad chattsession…</string>
+  <string name="stopping_otr_chat">Stoppar krypterad chattsession…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Lägg till kontakt</string>
@@ -531,9 +531,9 @@ Låt oss börja!</string>
   <string name="account_setup_advanced_enc_req">Kryptera chatter vid begäran</string>
   <string name="account_setup_advanced_enc_off">Inaktivera chattkryptering</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Validerar referenser...</string>
-  <string name="account_setup_signin_b">Genererar nyckelpar...</string>
-  <string name="account_setup_signin_c">Loggar in...</string>
+  <string name="account_setup_signin_a">Validerar referenser…</string>
+  <string name="account_setup_signin_b">Genererar nyckelpar…</string>
+  <string name="account_setup_signin_c">Loggar in…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure stötte på ett fel vid validering av ditt användernamn och lösenord - var vänlig kolla dem och försök igen.</string>
   <string name="account_setup_error_keypair">ChatSecure stötte på ett fel vid generering av ett nyckelpar.</string>
@@ -565,7 +565,7 @@ Låt oss börja!</string>
   <string name="warning_alpha">VARNING: Detta är en tidig release av ChatSecure som fortfarande kan innehålla säkerhetshål eller buggar.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>
-  <string name="otr_gen_key">Genererar nytt OTR nyckelpar...</string>
+  <string name="otr_gen_key">Genererar nytt OTR nyckelpar…</string>
   <string name="search_label">Kontakt</string>
   <string name="search_hint">skriv namnet på en kontakt du vill chatta med</string>
   <string name="search_button_text">Börja</string>
@@ -627,7 +627,7 @@ Tappa här för att lägga till ett!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Vill du logga ut ur alla tjänster OCH döda alla processer (hård avslutning)?</string>
   <string name="rekey_message">Skriv in ett *nytt* lösenord. Det måste innehålla minst en stor bokstav, en liten bokstav, och en siffra, och vara längre än sex karaktärer.</string>
-  <string name="do_rekey">Krypterar dina existerande noteringar med det nya lösenordet (tålamod...)</string>
+  <string name="do_rekey">Krypterar dina existerande noteringar med det nya lösenordet (tålamod…)</string>
   <string name="enter_pass">Skriv in ditt lösenord:</string>
   <string name="new_pass">Välkommen! Skriv in ett starkt lösenord för att säkra dina noteringar. Det måste innehålla minst en stor bokstav, en liten bokstav, en siffra, och vara längre än sex karaktärer.</string>
   <string name="pass_err_length">Ditt lösenord var inte långt nog</string>
@@ -669,7 +669,7 @@ Tappa här för att lägga till ett!</string>
   <string name="mtm_accept_cert">Acceptera servercertifikat?</string>
   <string name="sorry_we_cannot_share_that_file_type">Vi kan tyvärr inte dela denna filtyp</string>
   <string name="err_otr_share_no_encryption">Du måste aktivera kryptering för att dela filer</string>
-  <string name="starting_the_chatsecure_service_">Startar ChatSecure service...</string>
+  <string name="starting_the_chatsecure_service_">Startar ChatSecure service…</string>
   <string name="menu_sidebar_qr">Fingeravtryck</string>
   <string name="fingerprint_for_you">Fingeravtryck för dig</string>
   <string name="fingerprint_for_">Fingeravtryck för</string>
@@ -687,8 +687,8 @@ Tappa här för att lägga till ett!</string>
   <string name="app_unlocked">Aktiverad &amp; olåst</string>
   <string name="prompt_create_new_account_">Skapa nytt konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Skapa nytt chattkonto för användarnamn \'%1$s\'?</string>
-  <string name="registering_new_account_">Registrerar nytt konto...</string>
-  <string name="connecting_to_group_chat_">Ansluter till gruppchatt...</string>
+  <string name="registering_new_account_">Registrerar nytt konto…</string>
+  <string name="connecting_to_group_chat_">Ansluter till gruppchatt…</string>
   <string name="btn_create_account">Skapa konto</string>
   <string name="pref_debug_title">Aktivera debuggloggar</string>
   <string name="pref_debug_summary">Skicka loggdata för appen till standard out / logcat för debuggning</string>

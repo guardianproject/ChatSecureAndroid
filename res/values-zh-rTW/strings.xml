@@ -476,8 +476,8 @@
   <string name="account_setup_advanced_enc_req">當被要求時加密聊天</string>
   <string name="account_setup_advanced_enc_off">停止聊天加密</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">憑據驗證中...</string>
-  <string name="account_setup_signin_b">產生識別碼字串中...</string>
+  <string name="account_setup_signin_a">憑據驗證中…</string>
+  <string name="account_setup_signin_b">產生識別碼字串中…</string>
   <string name="account_setup_signin_c">登入中…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">當驗證你的使用者名稱和密碼時,純淨會晤遭逢一個錯誤-請檢查並且重試一次.</string>

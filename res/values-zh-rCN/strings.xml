@@ -524,8 +524,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="account_setup_advanced_enc_req">按要求加密聊天</string>
   <string name="account_setup_advanced_enc_off">禁用聊天加密</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">验证凭据...</string>
-  <string name="account_setup_signin_b">生成密钥对...</string>
+  <string name="account_setup_signin_a">验证凭据…</string>
+  <string name="account_setup_signin_b">生成密钥对…</string>
   <string name="account_setup_signin_c">登入中..</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure在验证您的用户或密码的时候遇到了错误，请检查并重试。</string>
@@ -661,7 +661,7 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="mtm_accept_cert">是否接受服务器证书？</string>
   <string name="sorry_we_cannot_share_that_file_type">对不起，我们无法共享此类文件类型</string>
   <string name="err_otr_share_no_encryption">你必须启用加密才能共享文件</string>
-  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务...</string>
+  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务…</string>
   <string name="menu_sidebar_qr">指纹</string>
   <string name="fingerprint_for_you">指纹为您</string>
   <string name="fingerprint_for_">指纹为</string>

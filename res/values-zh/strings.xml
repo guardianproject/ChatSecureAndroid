@@ -30,7 +30,7 @@
   <string name="menu_clear_chat">清除聊天</string>
   <string name="menu_end_conversation">结束聊天</string>
   <string name="menu_view_contact_list">联系人列表</string>
-  <string name="menu_invite_contact">邀请...</string>
+  <string name="menu_invite_contact">邀请…</string>
   <string name="menu_switch_chats">切换聊天</string>
   <string name="menu_insert_smiley">插入表情符</string>
   <string name="menu_scan">扫描指纹</string>
@@ -58,7 +58,7 @@
   <string name="check_auto_sign_in">启用该选项后，您每次打开此应用程序时都会自动登录。要停用该选项，请退出，然后取消选中“自动登录”复选框。</string>
   <string name="sign_in">登录</string>
   <string name="signing_in_to">正在登录 <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
-  <string name="signing_in_wait">正在登录...</string>
+  <string name="signing_in_wait">正在登录…</string>
   <string name="bg_data_prompt_title">已停用背景数据</string>
   <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> 需要启用背景数据。</string>
   <string name="bg_data_prompt_ok">启用</string>
@@ -296,8 +296,8 @@
   <string name="account_setup_advanced_enc_auto">如果可能的话，会自动加密聊天</string>
   <string name="account_setup_advanced_enc_req">按要求加密聊天</string>
   <string name="account_setup_advanced_enc_off">禁用聊天加密</string>
-  <string name="account_setup_signin_a">验证凭据...</string>
-  <string name="account_setup_signin_b">生成密钥对...</string>
+  <string name="account_setup_signin_a">验证凭据…</string>
+  <string name="account_setup_signin_b">生成密钥对…</string>
   <string name="account_setup_signin_c">登入中..</string>
   <string name="account_setup_error_validating">ChatSecure遇到了一个错误在验证您的用户名和密码 - 请检查并再试一次。</string>
   <string name="account_setup_error_keypair">ChatSecure遇到了一个错误，而生成一个密钥对。</string>
@@ -327,7 +327,7 @@
    <string name="account_settings_title">Account Settings</string>
   <string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
   <string name="menu_view_groups">Groups</string>
-  <string name="otr_gen_key">Generating new OTR keypair...</string>
+  <string name="otr_gen_key">Generating new OTR keypair…</string>
   <string name="search_label">Contact</string>
   <string name="search_hint">type the name of a contact to chat with</string>
   <string name="search_button_text">Go</string>

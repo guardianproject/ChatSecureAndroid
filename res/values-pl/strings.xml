@@ -150,7 +150,7 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <string name="sign_in">Zaloguj</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">Włączam ChatSecure...</string>
+  <string name="signing_in_to">Włączam ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Trwa logowanie…</string>
   <string name="signing_out_wait">Wylogowywanie\u2026</string>
@@ -259,8 +259,8 @@ Kliknij aby zaprosić.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Brak aktywnych czatów.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy...</string>
-  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy...</string>
+  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy…</string>
+  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Dodaj kontakt</string>
@@ -531,9 +531,9 @@ No to zaczynamy!</string>
   <string name="account_setup_advanced_enc_req">Szyfruj rozmowy jak zażądane</string>
   <string name="account_setup_advanced_enc_off">Wyłącz szyfrowanie rozmów</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń...</string>
-  <string name="account_setup_signin_b">Generowanie klucza...</string>
-  <string name="account_setup_signin_c">Trwa logowanie...</string>
+  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń…</string>
+  <string name="account_setup_signin_b">Generowanie klucza…</string>
+  <string name="account_setup_signin_c">Trwa logowanie…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure napotkał błąd w trakcie logowania - sprawdź ponownie nazwę użytkownika i hasło</string>
   <string name="account_setup_error_keypair">ChatSecure napotkał błąd w trakcie generowania pary kluczy.</string>
@@ -565,7 +565,7 @@ No to zaczynamy!</string>
   <string name="warning_alpha">Ostrzeżenie: To jest wczesna wersja Bezpiecznego komunikatora = ChatSecure więc może posiadać luki bezpieczeństwa.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupy</string>
-  <string name="otr_gen_key">Generowanie nowego klucza OTR...</string>
+  <string name="otr_gen_key">Generowanie nowego klucza OTR…</string>
   <string name="search_label">Kontakt</string>
   <string name="search_hint">Wpisz osobę z którą chcesz rozpocząć rozmowę</string>
   <string name="search_button_text">Idź</string>
@@ -627,7 +627,7 @@ Kliknij aby dodać konto.</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Czy chcesz wylogować się z serwisu i zakończyć wszystkie procesy (tzw. twarde wyłącznie) ?</string>
   <string name="rekey_message">Proszę wpisać *nowe* wyrażenie hasłowe. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
-  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości...)</string>
+  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości…)</string>
   <string name="enter_pass">Wprowadź twoje wyrażenie hasłowe:</string>
   <string name="new_pass">Witamy! Wprowadź mocne wyrażenie hasłowe aby zabezpiecznyć twoje rozmowy. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
   <string name="pass_err_length">Twoje wyrażenie hasłowe nie jest wystarczająco długie (minimum 6 znaków)</string>
@@ -669,7 +669,7 @@ Kliknij aby dodać konto.</string>
   <string name="mtm_accept_cert">Zaakceptować Certyfikat Serwera?</string>
   <string name="sorry_we_cannot_share_that_file_type">Niestety nie możemy udostępnić tego typu plik</string>
   <string name="err_otr_share_no_encryption">Musisz włączyć szyfrowanie do udostępniania plików</string>
-  <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure…</string>
   <string name="menu_sidebar_qr">Klucz</string>
   <string name="fingerprint_for_you">Klucz dla Ciebie</string>
   <string name="fingerprint_for_">Klucz dla</string>
@@ -687,8 +687,8 @@ Kliknij aby dodać konto.</string>
   <string name="app_unlocked">Aktywowany &amp; odblokowany</string>
   <string name="prompt_create_new_account_">Utwórz nowe konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Utwórz nowe konto czat dla użytkownika \'%1$s\'?</string>
-  <string name="registering_new_account_">Rejestrowanie nowego konta...</string>
-  <string name="connecting_to_group_chat_">Podłączanie do grupy czat...</string>
+  <string name="registering_new_account_">Rejestrowanie nowego konta…</string>
+  <string name="connecting_to_group_chat_">Podłączanie do grupy czat…</string>
   <string name="btn_create_account">Utwórz konto</string>
   <string name="pref_debug_title">Włącz Logi Debugowania</string>
   <string name="pref_debug_summary">Dane wyjściowe logu aplikacji na standardowe wyjście / LogCat do debugowania</string>

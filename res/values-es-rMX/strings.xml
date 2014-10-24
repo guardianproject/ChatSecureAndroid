@@ -75,7 +75,7 @@ Deja que las aplicaciones escriban datos al proveedor de contenido MI. </string>
   <string name="menu_view_contact_list">Lista de contactos</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Invitar a...</string>
+  <string name="menu_invite_contact">Invitar a…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Modificar chats</string>
@@ -134,7 +134,7 @@ Deja que las aplicaciones escriban datos al proveedor de contenido MI. </string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Iniciando sesión...</string>
+  <string name="signing_in_wait">Iniciando sesión…</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -233,8 +233,8 @@ Deja que las aplicaciones escriban datos al proveedor de contenido MI. </string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">No hay chats activos.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Iniciando sesión de chat encriptado...</string>
-  <string name="stopping_otr_chat">Terminando sesión de chat encriptado...</string>
+  <string name="starting_otr_chat">Iniciando sesión de chat encriptado…</string>
+  <string name="stopping_otr_chat">Terminando sesión de chat encriptado…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Agregar contacto</string>

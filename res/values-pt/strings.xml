@@ -140,9 +140,9 @@ Permite que aplicativos enviem dados para o provedor de mensagens instantâneas<
   <string name="sign_in">Fazer login</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">obtendo ConversaSegura...</string>
+  <string name="signing_in_to">obtendo ConversaSegura…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Fazendo login...</string>
+  <string name="signing_in_wait">Fazendo login…</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -247,8 +247,8 @@ Clique para convidar.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Nenhum bate-papo ativo.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">A iniciar conversa encriptada...</string>
-  <string name="stopping_otr_chat">A para conversa encriptada... </string>
+  <string name="starting_otr_chat">A iniciar conversa encriptada…</string>
+  <string name="stopping_otr_chat">A para conversa encriptada… </string>
   <!--Add contact screen-->                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Adicionar contato</string>
@@ -496,9 +496,9 @@ A aplicação suporta qualquer serviço de chat que uso o Jabber ou XMPP protoco
   <string name="account_setup_advanced_enc_req">Encripta conversas como solicitado</string>
   <string name="account_setup_advanced_enc_off">Desactivar encriptação de conversa </string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">A validar credencias...</string>
-  <string name="account_setup_signin_b">A gerar chave...</string>
-  <string name="account_setup_signin_c">A ligar...</string>
+  <string name="account_setup_signin_a">A validar credencias…</string>
+  <string name="account_setup_signin_b">A gerar chave…</string>
+  <string name="account_setup_signin_c">A ligar…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="menu_sign_in">Iniciar Sessão</string>
   <string name="menu_gen_key">Regenerar Chave</string>

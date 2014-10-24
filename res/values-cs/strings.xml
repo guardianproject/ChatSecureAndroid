@@ -88,7 +88,7 @@
   <string name="menu_view_contact_list">Seznam kontaktů</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Pozvat...</string>
+  <string name="menu_invite_contact">Pozvat…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Přepnout chat</string>
@@ -151,8 +151,8 @@
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Přihlašování...</string>
-  <string name="signing_out_wait">Odhlašování...</string>
+  <string name="signing_in_wait">Přihlašování…</string>
+  <string name="signing_out_wait">Odhlašování…</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -258,8 +258,8 @@ Klikněte pro pozvání.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Neprobíhá žádný chat.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Zahájení šifrované relace chatu ...</string>
-  <string name="stopping_otr_chat">Ukončení šifrované relace chatu ...</string>
+  <string name="starting_otr_chat">Zahájení šifrované relace chatu …</string>
+  <string name="stopping_otr_chat">Ukončení šifrované relace chatu …</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Přidat kontakt</string>
@@ -504,8 +504,8 @@ Klikněte pro pozvání.</string>
   <string name="account_setup_personal_profile_title">Profil</string>
   <!--Account Setup: Advanced-->
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_b">Generování dvojice klíčů ...</string>
-  <string name="account_setup_signin_c">Podepisování ...</string>
+  <string name="account_setup_signin_b">Generování dvojice klíčů …</string>
+  <string name="account_setup_signin_c">Podepisování …</string>
   <!--Account Setup: Sign In Errors-->
   <string name="menu_sign_in">Přihlásit</string>
   <string name="menu_gen_key">Přegenerovat klíč</string>

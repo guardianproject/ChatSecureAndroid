@@ -148,7 +148,7 @@ Cho phép ứng dụng viết/thêm dữ liệu vào dịch vụ chat.</string>
   <string name="sign_in">Đăng nhập</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">đang khởi động ChatSecure...</string>
+  <string name="signing_in_to">đang khởi động ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Đang đăng nhập\u2026</string>
   <string name="signing_out_wait">Đang đăng xuất\u2026</string>
@@ -259,8 +259,8 @@ Chạm vào để mời kết nối.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Hiện không có phần chat nào đang hoạt động.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Đang bắt đầu mã hoá nội dung chat này...</string>
-  <string name="stopping_otr_chat">Ngưng lại thao tác mã hóa nội dung chat...</string>
+  <string name="starting_otr_chat">Đang bắt đầu mã hoá nội dung chat này…</string>
+  <string name="stopping_otr_chat">Ngưng lại thao tác mã hóa nội dung chat…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Thêm bạn chat</string>
@@ -537,9 +537,9 @@ Hãy bắt đầu trải nghiệm đi nào!</string>
   <string name="account_setup_advanced_enc_req">Buộc phải mã hóa nội dung chat</string>
   <string name="account_setup_advanced_enc_off">Vô hiệu hóa tính năng mã hóa khi chat</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Đang xác nhận thông tin cá nhân...</string>
+  <string name="account_setup_signin_a">Đang xác nhận thông tin cá nhân…</string>
   <string name="account_setup_signin_b">Đang tạo ra bộ khoá mã hoá</string>
-  <string name="account_setup_signin_c">Đang đăng nhập vào...</string>
+  <string name="account_setup_signin_c">Đang đăng nhập vào…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure đã gặp lỗi khi đang xác nhận tên dùng và mật khẩu của bạn, xin hay xem và thử lại.</string>
   <string name="account_setup_error_keypair">ChatSecure đã gặp lỗi khi đang tạo ra chì khoá mã hoá</string>
@@ -633,7 +633,7 @@ Hãy chạm vào đây để thêm vào!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Bạn muốn rời khỏi mọi dịch vụ VÀ hủy tất cả quá trình đang chạy (rời hoàn toàn)?</string>
   <string name="rekey_message">Điền vào các ký tự cho phần mật khẩu, nên nhớ, ký tự mật khẩu được hiển thị sẽ ở dạng *. Phần mật khẩu của bạn ít nhất phải có độ dài tối thiểu là 6 ký tự, trong đó có ít nhất một chữ cái được in hoa, một chữ cái in thường và một con số kèm theo. Việc làm này nhằm tăng tính bảo mật của mật khẩu.</string>
-  <string name="do_rekey">Đang mã hóa các ghi chú hiện có của bạn với các cụm từ mới (hãy kiên nhẫn đợi trong giây lát...)</string>
+  <string name="do_rekey">Đang mã hóa các ghi chú hiện có của bạn với các cụm từ mới (hãy kiên nhẫn đợi trong giây lát…)</string>
   <string name="enter_pass">Đánh vào cụm từ mật khẩu:</string>
   <string name="new_pass">Chào bạn! Hãy điền vào các cụm từ bảo mật để giúp cho ghi chú của bạn được an toàn hơn. Các cụm từ này ít nhất phải có độ dài tối thiểu là 6 ký tự, trong đó có ít nhất một chữ cái được in hoa, một chữ cái in thường và một con số kèm theo.</string>
   <string name="pass_err_length">Cụm từ bảo mật không đạt yêu cầu về độ dài ký tự</string>
@@ -675,7 +675,7 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="mtm_accept_cert">Chấp nhận chứng chỉ từ phía máy chủ?</string>
   <string name="sorry_we_cannot_share_that_file_type">Rất tiếc chúng tôi không thể chia sẻ loại tập tin đó</string>
   <string name="err_otr_share_no_encryption">Bạn phải bật tính năng mã hóa để chia sẻ tập tin</string>
-  <string name="starting_the_chatsecure_service_">Đang bắt đầu dịch vụ ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Đang bắt đầu dịch vụ ChatSecure…</string>
   <string name="menu_sidebar_qr">Vân tay</string>
   <string name="fingerprint_for_you">Vân tay dành cho bạn</string>
   <string name="fingerprint_for_">Vân tay dành cho</string>
@@ -694,7 +694,7 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="prompt_create_new_account_">Tạo Tài Khoản Mới</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Tạo một tài khoản chat mới cho \'%1$s\'?</string>
   <string name="registering_new_account_">Đăng ký tài khoản mới</string>
-  <string name="connecting_to_group_chat_">Đang kết nối tới nhóm chat ...</string>
+  <string name="connecting_to_group_chat_">Đang kết nối tới nhóm chat …</string>
   <string name="btn_create_account">Tạo Tài Khoản</string>
   <string name="pref_debug_title">Cho Phép Ghi Thông Tin Gỡ Rối</string>
   <string name="pref_debug_summary">Hiển thị thông tin này trên thiết bị chuẩn hoặc trên thiết bị chuyên dụng cho việc gỡ rối</string>

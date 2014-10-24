@@ -73,7 +73,7 @@
   <string name="menu_view_contact_list">連絡先リスト</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">招待...</string>
+  <string name="menu_invite_contact">招待…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">チャットを切り替え</string>
@@ -132,7 +132,7 @@
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">ログインしています...</string>
+  <string name="signing_in_wait">ログインしています…</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -449,8 +449,8 @@
   <string name="account_setup_advanced_enc_req">要求した時に、チャットを暗号化</string>
   <string name="account_setup_advanced_enc_off">チャットの暗号化を無効にする</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">信用証明書を照合中...</string>
-  <string name="account_setup_signin_b">鍵ペア生成中...</string>
+  <string name="account_setup_signin_a">信用証明書を照合中…</string>
+  <string name="account_setup_signin_b">鍵ペア生成中…</string>
   <string name="account_setup_signin_c">ログイン中..</string>
   <!--Account Setup: Sign In Errors-->
   <string name="menu_sign_in">サインイン</string>

@@ -86,7 +86,7 @@
   <string name="menu_view_contact_list">Список контактов</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Пригласить пользователя...</string>
+  <string name="menu_invite_contact">Пригласить пользователя…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Сменить чат</string>
@@ -148,10 +148,10 @@
   <string name="sign_in">Вход</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">запуск ChatSecure...</string>
+  <string name="signing_in_to">запуск ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Выполняется вход...</string>
-  <string name="signing_out_wait">Выполняется выход...\u2026</string>
+  <string name="signing_in_wait">Выполняется вход…</string>
+  <string name="signing_out_wait">Выполняется выход…\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -527,8 +527,8 @@
   <string name="account_setup_advanced_enc_req">Шифрование чатов с просьбой</string>
   <string name="account_setup_advanced_enc_off">Не шифровать чаты</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Проверка полномочий ...</string>
-  <string name="account_setup_signin_b">Создание пары ключей ...</string>
+  <string name="account_setup_signin_a">Проверка полномочий …</string>
+  <string name="account_setup_signin_b">Создание пары ключей …</string>
   <string name="account_setup_signin_c">Подписание дюйма ..</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">Произошла ошибка при проверке ваше имя пользователя или ваше пароль - пожалуйста проверьте и попробуйте снова.</string>
@@ -665,7 +665,7 @@
   <string name="mtm_accept_cert">Принять сертификат сервера?</string>
   <string name="sorry_we_cannot_share_that_file_type">Извините, Вы не можете передавать этот тип файла</string>
   <string name="err_otr_share_no_encryption">Для передачи файлов должно быть включено шифрование</string>
-  <string name="starting_the_chatsecure_service_">Запуск ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Запуск ChatSecure…</string>
   <string name="menu_sidebar_qr">Отпечаток пальца</string>
   <string name="fingerprint_for_you">Отпечатка пальца для вас</string>
   <string name="fingerprint_for_">Отпечатка пальца для</string>
@@ -683,8 +683,8 @@
   <string name="app_unlocked">Активировано &amp; Разблокировано</string>
   <string name="prompt_create_new_account_">Создать новую учетную запись?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Создать новую учетную запись чата для пользователя \'%1$s\'?</string>
-  <string name="registering_new_account_">Создание новой учетной записи...</string>
-  <string name="connecting_to_group_chat_">Подключение к групповому чату...</string>
+  <string name="registering_new_account_">Создание новой учетной записи…</string>
+  <string name="connecting_to_group_chat_">Подключение к групповому чату…</string>
   <string name="btn_create_account">Создать аккаунт</string>
   <string name="pref_debug_title">Включить протоколирование работы.</string>
   <string name="pref_debug_summary">Показывать протокол работы  в стандартный вывод / использовать logcat  для ведения протокола.</string>

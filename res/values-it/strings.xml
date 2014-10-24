@@ -83,7 +83,7 @@
   <string name="menu_view_contact_list">Elenco contatti</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Invita...</string>
+  <string name="menu_invite_contact">Invita…</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Cambia conversazione</string>
@@ -145,10 +145,10 @@
   <string name="sign_in">Accedi</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">avviando ChatSecure...</string>
+  <string name="signing_in_to">avviando ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Accesso...</string>
-  <string name="signing_out_wait">Disconnessione...</string>
+  <string name="signing_in_wait">Accesso…</string>
+  <string name="signing_out_wait">Disconnessione…</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
     to enable the background data if it is disabled when launch the IM app-->
@@ -254,8 +254,8 @@ Tocca per invitare qualcuno.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Nessuna conversazione attiva.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Inizio chat crittografata...</string>
-  <string name="stopping_otr_chat">Fine chat crittografata...</string>
+  <string name="starting_otr_chat">Inizio chat crittografata…</string>
+  <string name="stopping_otr_chat">Fine chat crittografata…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Aggiungi contatto</string>
@@ -526,9 +526,9 @@ Iniziamo!</string>
   <string name="account_setup_advanced_enc_req">Cifra chat come richiesto</string>
   <string name="account_setup_advanced_enc_off">Disabilita la crittografia della chat</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Convalida delle credenziali...</string>
-  <string name="account_setup_signin_b">Generazione coppia di chiavi...</string>
-  <string name="account_setup_signin_c">Connettendo...</string>
+  <string name="account_setup_signin_a">Convalida delle credenziali…</string>
+  <string name="account_setup_signin_b">Generazione coppia di chiavi…</string>
+  <string name="account_setup_signin_c">Connettendo…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure ha incontrato un errore durante la convalida del nome utente o della password - si prega di verificare e riprovare.</string>
   <string name="account_setup_error_keypair">ChatSecure ha incontrato un errore durante la generazione di una coppia di chiavi.</string>
@@ -560,7 +560,7 @@ Iniziamo!</string>
   <string name="warning_alpha">ATTENZIONE: Questa versione prematura di ChatSecure che può contenere falle o bug di sicurezza.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruppi</string>
-  <string name="otr_gen_key">Generazione di una nuova coppia di chiavi OTR...</string>
+  <string name="otr_gen_key">Generazione di una nuova coppia di chiavi OTR…</string>
   <string name="search_label">Contatti</string>
   <string name="search_hint">inserisci il nome del contatto con cui chattare</string>
   <string name="search_button_text">Vai</string>
@@ -622,7 +622,7 @@ Tocca qui per aggiungerne uno!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Vuoi uscire E uccidere tutti i processi (hard exit)?</string>
   <string name="rekey_message">Inserisci un *nuovo* codice segreto. Deve contenere almeno una lettera maiuscola, una minuscola e un numero, e deve essere più lunga di sei caratteri.</string>
-  <string name="do_rekey">Crittografando le tue note esistenti con il nuovo codice segreto (pazienta...)</string>
+  <string name="do_rekey">Crittografando le tue note esistenti con il nuovo codice segreto (pazienta…)</string>
   <string name="enter_pass">Inserisci il tuo codice segreto:</string>
   <string name="new_pass">Benvenuto! Inserisci un codice segreto robusto per mettere in sicurezza le tue note. Deve contenere almeno una lettera maiuscola, una minuscola e un numero, e deve essere più lungo di sei caratteri.</string>
   <string name="pass_err_length">Il tuo codice segreto non era lungo abbastanza</string>
@@ -662,7 +662,7 @@ Tocca qui per aggiungerne uno!</string>
   <string name="mtm_accept_cert">Accettare il certificato del server?</string>
   <string name="sorry_we_cannot_share_that_file_type">Spiacenti, non possiamo condividere quel tipo di file</string>
   <string name="err_otr_share_no_encryption">Devi abilitare la crittografia per condividere i file</string>
-  <string name="starting_the_chatsecure_service_">Avviamento servizio ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Avviamento servizio ChatSecure…</string>
   <string name="menu_sidebar_qr">Impronta Digitale</string>
   <string name="fingerprint_for_you">Impronta digitale per te</string>
   <string name="fingerprint_for_">Impronta digitale per</string>
@@ -678,8 +678,8 @@ Tocca qui per aggiungerne uno!</string>
   <string name="button_yes_accept_all">Sì, Accetta Tutti</string>
   <string name="app_unlocked">Attivato &amp; sbloccato</string>
   <string name="prompt_create_new_account_">Creare un nuovo account?</string>
-  <string name="registering_new_account_">Registrazione nuovo account...</string>
-  <string name="connecting_to_group_chat_">Connessione alla chat di gruppo...</string>
+  <string name="registering_new_account_">Registrazione nuovo account…</string>
+  <string name="connecting_to_group_chat_">Connessione alla chat di gruppo…</string>
   <string name="btn_create_account">Crea Account</string>
   <string name="pref_debug_title">Attiva Registri di Debug</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Nessun visualizzatore disponibile per questo formato</string>

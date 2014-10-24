@@ -255,8 +255,8 @@
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">لا توجد محادثات حالياً.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">البدء بالتشفير...</string>
-  <string name="stopping_otr_chat">ايقاف التشفير...</string>
+  <string name="starting_otr_chat">البدء بالتشفير…</string>
+  <string name="stopping_otr_chat">ايقاف التشفير…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">إضافة اسم</string>
@@ -526,9 +526,9 @@
   <string name="account_setup_advanced_enc_req">قم بتشفير المحادثات حسب الطلب</string>
   <string name="account_setup_advanced_enc_off">تعطيل تشفير المحادثات</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">التحقق من صحة البيانات...</string>
-  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية...</string>
-  <string name="account_setup_signin_c">تسجيل الدخول...</string>
+  <string name="account_setup_signin_a">التحقق من صحة البيانات…</string>
+  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية…</string>
+  <string name="account_setup_signin_c">تسجيل الدخول…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">واجه جيبربوت خطاً أثناء محاولة التحقق من البيانات، تأكد من صحتها ثم حاول مرة أخرى</string>
   <string name="account_setup_error_keypair">حصل خطأ أثناء توليد زوج المفاتيح السرية.</string>
@@ -621,7 +621,7 @@
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات و إغلاق جميع العمليات (hard exit)؟</string>
   <string name="rekey_message">أدخل عبارة سرية جديدة. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
-  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة...</string>
+  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة…</string>
   <string name="enter_pass">أدخل كلمة السر:</string>
   <string name="new_pass">مرحباً! أدخل عبارة سرية قوية لتشفير دفتر ملاحظاتك. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
   <string name="pass_err_length">عبارتك السرية ليست طويلة بما يكفي.</string>
@@ -663,7 +663,7 @@
   <string name="mtm_accept_cert">قبول شهادة التشفير من السيرفر؟</string>
   <string name="sorry_we_cannot_share_that_file_type">عذراً، لا يمكن مشاركة هذا النوع من الملفات.</string>
   <string name="err_otr_share_no_encryption">يجب عليك تفعيل التشفير للتمكن من مشاركة الملفات</string>
-  <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure…</string>
   <string name="menu_sidebar_qr">بصمة المفتاح</string>
   <string name="fingerprint_for_you">بصمة مفتاحك</string>
   <string name="fingerprint_for_">بصمة المفتاح ل</string>
@@ -681,8 +681,8 @@
   <string name="app_unlocked">تم التفعيل و فتح القفل</string>
   <string name="prompt_create_new_account_">إنشاء حساب جديد؟</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">إنشاء حساب محادثة جديد للمستخدم \'%1$s\' ؟</string>
-  <string name="registering_new_account_">جاري تسجيل حساب جديد...</string>
-  <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية...</string>
+  <string name="registering_new_account_">جاري تسجيل حساب جديد…</string>
+  <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية…</string>
   <string name="btn_create_account">إنشاء حساب</string>
   <string name="pref_debug_title">تفعيل سجلات التنقيح</string>
   <string name="pref_debug_summary">إخراج بيانات سجل التطبيق نحو الخرْج القياسي أو نحو logcat للتنقيح</string>

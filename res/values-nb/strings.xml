@@ -150,7 +150,7 @@
   <string name="sign_in">Logg på</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">starter opp ChatSecure...</string>
+  <string name="signing_in_to">starter opp ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Logger på…</string>
   <string name="signing_out_wait">Logger ut\u2026</string>
@@ -261,8 +261,8 @@ Trykk for å invitere.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Ingen aktive samtaler.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Starter kryptert chat...</string>
-  <string name="stopping_otr_chat">Stopper kryptert chat...</string>
+  <string name="starting_otr_chat">Starter kryptert chat…</string>
+  <string name="stopping_otr_chat">Stopper kryptert chat…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Legg til kontakt</string>
@@ -534,9 +534,9 @@ La oss begynne!</string>
   <string name="account_setup_advanced_enc_req">Krypter chatten som forespurt</string>
   <string name="account_setup_advanced_enc_off">Deaktiver chatkryptering</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">Validerer legitimasjon...</string>
-  <string name="account_setup_signin_b">Genererer nøkkelpar...</string>
-  <string name="account_setup_signin_c">Logger inn...</string>
+  <string name="account_setup_signin_a">Validerer legitimasjon…</string>
+  <string name="account_setup_signin_b">Genererer nøkkelpar…</string>
+  <string name="account_setup_signin_c">Logger inn…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure støtte på en feil under verifisering av brukernavnet og passordet ditt - vennligst sjekk dem og prøv igjen.</string>
   <string name="account_setup_error_keypair">ChatSecure støtte på en feil under opprettelse av et nøkkelpar.</string>
@@ -568,7 +568,7 @@ La oss begynne!</string>
   <string name="warning_alpha">ADVARSEL: Dette er en tidlig utgave av ChatSecure som fortsatt kan inneholde sikkerhetshull og feil.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>
-  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar...</string>
+  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar…</string>
   <string name="search_label">Kontakt</string>
   <string name="search_hint">oppgi navnet på kontakten du ønsker å chatte med</string>
   <string name="search_button_text">Gå</string>
@@ -630,7 +630,7 @@ Trykk her for å legge til én!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Vil du logge ut av alle tjenester OG avslutte alle prosessene (hard exit)?</string>
   <string name="rekey_message">Opprett et *nytt* passord. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
-  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig...)</string>
+  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig…)</string>
   <string name="enter_pass">Oppgi passord ditt:</string>
   <string name="new_pass">Velkommen! Opprett et sterkt passord for å sikre notatene dine. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
   <string name="pass_err_length">Passordet ditt var ikke langt nok</string>
@@ -672,7 +672,7 @@ Trykk her for å legge til én!</string>
   <string name="mtm_accept_cert">Godta tjener-sertifikat?</string>
   <string name="sorry_we_cannot_share_that_file_type">Beklager, vi kan ikke dele den filtypen</string>
   <string name="err_otr_share_no_encryption">Du må skru på kryptering for å dele filer</string>
-  <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten...</string>
+  <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten…</string>
   <string name="menu_sidebar_qr">Fingeravtrykk</string>
   <string name="fingerprint_for_you">Fingeravtrykk av deg</string>
   <string name="fingerprint_for_">Fingeravtrykk for</string>
@@ -690,8 +690,8 @@ Trykk her for å legge til én!</string>
   <string name="app_unlocked">Aktivert &amp; låst opp</string>
   <string name="prompt_create_new_account_">Opprett ny konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Opprett ny sludre-konto for brukernavnet \'%1$s\'?</string>
-  <string name="registering_new_account_">Registrer ny konto...</string>
-  <string name="connecting_to_group_chat_">Kolber til gruppesludder...</string>
+  <string name="registering_new_account_">Registrer ny konto…</string>
+  <string name="connecting_to_group_chat_">Kolber til gruppesludder…</string>
   <string name="btn_create_account">Lag konto</string>
   <string name="pref_debug_title">Skru på loggføring av feilsøkingsinformasjon</string>
   <string name="pref_debug_summary">Skriv programloggdata til standard utdata / logcat for feilsøking</string>

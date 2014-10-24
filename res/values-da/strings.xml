@@ -87,7 +87,7 @@ Tillader applikationer at skrive data til IM-indholdsleverandøren.</string>
   <string name="menu_view_contact_list">Kontaktliste</string>
   <!--Screen menu item on the chat screen to invite another contact to join the chat.
     Currently not supported.-->
-  <string name="menu_invite_contact">Inviter ...</string>
+  <string name="menu_invite_contact">Inviter …</string>
   <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
     switch between chats. May be overrided by the plugin.-->
   <string name="menu_switch_chats">Skift til chat</string>
@@ -149,9 +149,9 @@ Tillader applikationer at skrive data til IM-indholdsleverandøren.</string>
   <string name="sign_in">Log ind</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">sætter gang i ChatSecure...</string>
+  <string name="signing_in_to">sætter gang i ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Logger ind ...</string>
+  <string name="signing_in_wait">Logger ind …</string>
   <string name="signing_out_wait">Logger ud\u2026</string>
   <!--Dialog title-->
   <!--This is the title for the background data prompt dialog, asking the user whether
@@ -258,8 +258,8 @@ Rør skærm for at invitere.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">Der er ingen aktive chats.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Starter krypteret samtale...</string>
-  <string name="stopping_otr_chat">Stopper krypteret samtale...</string>
+  <string name="starting_otr_chat">Starter krypteret samtale…</string>
+  <string name="stopping_otr_chat">Stopper krypteret samtale…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Tilføj kontakt</string>
@@ -531,8 +531,8 @@ Lad os så komme i gang!</string>
   <string name="account_setup_advanced_enc_off">Deaktiver samtalekryptering</string>
   <!--Account Setup: First Sign In-->
   <string name="account_setup_signin_a">Validerer brugerlogin..</string>
-  <string name="account_setup_signin_b">Genererer nøglepar...</string>
-  <string name="account_setup_signin_c">Logger ind...</string>
+  <string name="account_setup_signin_b">Genererer nøglepar…</string>
+  <string name="account_setup_signin_c">Logger ind…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure stødte på en fejl under validering af brugernavn eller adgangskode - kontroller dem og prøv igen.</string>
   <string name="account_setup_error_keypair">ChatSecure stødte på en fejl under generering af nøglepar.</string>
@@ -564,7 +564,7 @@ Lad os så komme i gang!</string>
   <string name="warning_alpha">ADVARSEL: Dette er en tidlig udgave af ChatSecure som kan indeholde sikkerhedshuller eller andre fejl.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>
-  <string name="otr_gen_key">Genererer nyt OTR-nøglepar...</string>
+  <string name="otr_gen_key">Genererer nyt OTR-nøglepar…</string>
   <string name="search_label">Kontakt</string>
   <string name="search_hint">skriv navnet på en kontakt at chatte med</string>
   <string name="search_button_text">Udfør</string>
@@ -626,7 +626,7 @@ Tryk her for at tilføje!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Vil du logge ud af alle services OG afslutte alle kørende processer (hård afslutning)?</string>
   <string name="rekey_message">Skriv en *ny* adgangsfrase. Den skal indeholde mindst et stort bogstav, et lille bogstav, et tal og skal være længere end seks karakterer.</string>
-  <string name="do_rekey">Krypterer eksisterende noter med den nye adgangsfrase (vær tålmodig...)</string>
+  <string name="do_rekey">Krypterer eksisterende noter med den nye adgangsfrase (vær tålmodig…)</string>
   <string name="enter_pass">Skriv din adgangsfrase:</string>
   <string name="new_pass">Velkommen! Skriv en stærk adgangsfrase for at sikre dine noter. Den skal indeholde et stort bogstav, et lille bogstav, et tal og skal være længere end seks karakterer.</string>
   <string name="pass_err_length">Din adgangsfrase var ikke lang nok</string>
@@ -668,7 +668,7 @@ Tryk her for at tilføje!</string>
   <string name="mtm_accept_cert">Accepter servercertifikat?</string>
   <string name="sorry_we_cannot_share_that_file_type">Beklager, vi kan ikke dele filer af denne type</string>
   <string name="err_otr_share_no_encryption">Du skal aktivere kryptering for at dele filer</string>
-  <string name="starting_the_chatsecure_service_">Starter ChatSecure servicen...</string>
+  <string name="starting_the_chatsecure_service_">Starter ChatSecure servicen…</string>
   <string name="menu_sidebar_qr">Fingeraftryk</string>
   <string name="fingerprint_for_you">Dit fingeraftryk </string>
   <string name="fingerprint_for_">Fingeraftryk for </string>
@@ -686,7 +686,7 @@ Tryk her for at tilføje!</string>
   <string name="app_unlocked">Aktiveret &amp; låst op</string>
   <string name="prompt_create_new_account_">Opret ny konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Opret en ny chat-konto for brugernavn \'%1$s\'?</string>
-  <string name="registering_new_account_">Registrerer ny konto...</string>
+  <string name="registering_new_account_">Registrerer ny konto…</string>
   <string name="connecting_to_group_chat_">Forbinder til gruppesamtale</string>
   <string name="btn_create_account">Opret konto</string>
   <string name="pref_debug_title">Aktiver fejlsøgningslog</string>

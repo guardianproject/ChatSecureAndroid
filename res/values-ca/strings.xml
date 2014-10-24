@@ -140,7 +140,7 @@ Permet a les aplicacions escriure dades al proveïdor de contingut de missatgeri
   <string name="sign_in">Entreu</string>
   <!--These strings are displayed the sign in progress screen.-->
   <!--The title of the sign-in progress screen.-->
-  <string name="signing_in_to">arrencant el ChatSecure...</string>
+  <string name="signing_in_to">arrencant el ChatSecure…</string>
   <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
   <string name="signing_in_wait">Entrant\u2026</string>
   <!--Dialog title-->
@@ -240,8 +240,8 @@ Toqueu per a convidar.</string>
   <!--Displayed when there is no active chats in the chat dashboard.-->
   <string name="empty_chat_list">No hi ha xats actius.</string>
   <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">S\'està iniciat una sessió de xat xifrat...</string>
-  <string name="stopping_otr_chat">S\'està aturant la sessió de xat xifrat...</string>
+  <string name="starting_otr_chat">S\'està iniciat una sessió de xat xifrat…</string>
+  <string name="stopping_otr_chat">S\'està aturant la sessió de xat xifrat…</string>
   <!--Add contact screen-->
   <!--This is the title of the Add Contact Screen.-->
   <string name="add_contact_title">Afegeix un contacte</string>
@@ -487,9 +487,9 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="account_setup_advanced_enc_req">Xifra els xats quan es demani</string>
   <string name="account_setup_advanced_enc_off">Inhabilita el xifrat del xat</string>
   <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_a">S\'estan validant les credencials...</string>
-  <string name="account_setup_signin_b">S\'està generant el parell de claus...</string>
-  <string name="account_setup_signin_c">Accedint...</string>
+  <string name="account_setup_signin_a">S\'estan validant les credencials…</string>
+  <string name="account_setup_signin_b">S\'està generant el parell de claus…</string>
+  <string name="account_setup_signin_c">Accedint…</string>
   <!--Account Setup: Sign In Errors-->
   <string name="account_setup_error_validating">ChatSecure ha tingut problemes per validar el vostre nom d\'usuari o contrasenya - verifiqueu les dades i torneu-ho a provar.</string>
   <string name="account_setup_error_keypair">ChatSecure ha tingut un problema en generar un parell de claus.</string>
@@ -519,7 +519,7 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="warning_alpha">ADVERTÈNCIA: aquesta és una versió primerenca del ChatSecure i pot ser que contingui errors o forats de seguretat.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grups</string>
-  <string name="otr_gen_key">S\'està generant un nou parell de claus OTR...</string>
+  <string name="otr_gen_key">S\'està generant un nou parell de claus OTR…</string>
   <string name="search_label">Contate</string>
   <string name="search_hint">escriviu el nom del contacte amb el que voleu xatejar</string>
   <string name="search_button_text">Som-hi</string>
@@ -580,7 +580,7 @@ Toqueu ací per a afegir-ne un!</string>
   <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
   <string name="signout_kill_confirm_message">Voleu sortir de tots els serveis i aturar tots els processos (sortida radical)?</string>
   <string name="rekey_message">Introduïu una contrasenya *nova*. Ha de tenir com a mínim una majúscula, una minúscula i un nombre i ser més llarga de sis caràcters.</string>
-  <string name="do_rekey">S\'estan xifrant les vostres notes amb la nova contrasenya (sigueu pacients...)</string>
+  <string name="do_rekey">S\'estan xifrant les vostres notes amb la nova contrasenya (sigueu pacients…)</string>
   <string name="enter_pass">Introduïu la vostra contrasenya:</string>
   <string name="new_pass">Benvinguts! Introduïu una contrasenya forta per assegurar les vostres anotacions. Ha de tenir com a mínim una majúscula, una minúsculam un nombre i ser més llarga de sis caràcters.</string>
   <string name="pass_err_length">La vostra contrasenya no és prou llarga</string>

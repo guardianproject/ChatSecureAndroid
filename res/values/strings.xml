@@ -77,7 +77,7 @@
 		<string name="setup_passphrase_label2">Passphrase (again):</string>
 		
 		<string name="rekey_message">Enter a *new* passphrase. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
-		<string name="do_rekey">Encrypting your existing notes with the new passphrase (patience...)</string>
+		<string name="do_rekey">Encrypting your existing notes with the new passphrase (patience…)</string>
 		<string name="enter_pass">Enter your passphrase:</string>
 		<string name="new_pass">Welcome! Enter a strong passphrase to secure your notes. It must contain at least one uppercase, one lowercase and one number, and be longer than six characters.</string>
 		<string name="pass_err_length">Your passphrase was not long enough</string>
@@ -146,9 +146,9 @@
 		<string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
 		<string name="account_setup_advanced_enc_off">Disable chat encryption</string>
 		
-		<string name="account_setup_signin_a">Validating credentials...</string>
-		<string name="account_setup_signin_b">Generating keypair...</string>
-		<string name="account_setup_signin_c">Signing in...</string>
+		<string name="account_setup_signin_a">Validating credentials…</string>
+		<string name="account_setup_signin_b">Generating keypair…</string>
+		<string name="account_setup_signin_c">Signing in…</string>
 		
 		<string name="account_wizard_setup_title">Account Wizard</string>
 		<string name="account_wizard_account_title">Your Account ID</string>
@@ -162,9 +162,9 @@
 		
 		<string name="_via_orbot">"Orbot (Tor)"</string>
 		<string name="select_domain_new_account">Chat service domain</string>
-		<string name="registering_new_account_">Registering new account...</string>
+		<string name="registering_new_account_">Registering new account…</string>
 		
-		<string name="signing_in_to">getting going...</string>
+		<string name="signing_in_to">getting going…</string>
 		<string name="menu_cancel_signin">Cancel signin</string>
 		<string name="signing_in_wait">Signing in\u2026</string>
 		<string name="signing_out_wait">Signing out\u2026</string>
@@ -301,7 +301,7 @@
 		<string name="decline_invitation">Decline</string>
 		<string name="menu_new_group_chat">Group Chat</string>
 		<string name="create_or_join_group_chat">Create or Join Group Chat</string>
-		<string name="connecting_to_group_chat_">Connecting to group chat...</string>
+		<string name="connecting_to_group_chat_">Connecting to group chat…</string>
 		
 		<string name="menu_invite_contact">Invite\u2026</string>
 		<string name="contacts_picker_title">Select contact(s) to invite</string>
@@ -317,8 +317,8 @@
 		<!-- Security: OTR -->
 		<string name="menu_otr_start">Start Encryption</string>
 		<string name="menu_otr_stop">Stop Encryption</string>
-		<string name="starting_otr_chat">Starting encrypted chat session...</string>
-		<string name="stopping_otr_chat">Stopping encrypted chat session...</string>
+		<string name="starting_otr_chat">Starting encrypted chat session…</string>
+		<string name="stopping_otr_chat">Stopping encrypted chat session…</string>
 		<string name="label_fingerprint_remote">Security Fingerprint</string>
 		<string name="label_fingerprint_local">Security Fingerprint</string>
 		<string name="menu_sign_in">Sign In</string>
@@ -327,7 +327,7 @@
 		<string name="otr_session_status_encrypted">Encryption is on (Tap to verify)</string>
 		<string name="otr_session_status_finished">Your contact has stopped the encrypted chat.</string>
 		<string name="otr_session_status_verified">Encrypted and verified!</string>
-		<string name="otr_gen_key">Generating new OTR keypair...</string>
+		<string name="otr_gen_key">Generating new OTR keypair…</string>
 		
 		<!-- Security: OTR: Keyring -->
 		<string name="detected_Otr_keystore_import">We have detected an OTR keystore to import. Would you like to scan the QR password now?</string>
@@ -441,7 +441,7 @@
 		<string name="notify_groupchat_label">Group chat invitation</string>
 		<string name="group_chat_invite_notify_text">New group chat invitation from <xliff:g id="user">%s</xliff:g></string>
 		<string name="new_messages_notify">New message(s) from</string>
-		<string name="starting_the_chatsecure_service_">Starting the ChatSecure service...</string>
+		<string name="starting_the_chatsecure_service_">Starting the ChatSecure service…</string>
 		<string name="app_unlocked">Activated &amp; unlocked</string>
 		<string name="toast_chat_copied_to_clipboard">message copied to the clipboard</string>
 		
@@ -539,7 +539,7 @@
 	<string name="menu_sidebar_qr">Display Your Fingerprint</string>
     
     
-	<string name="loading">loading...</string>
+	<string name="loading">loading…</string>
 		<!-- Other -->
 		
 		<string name="about_link">About ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
