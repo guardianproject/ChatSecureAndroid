@@ -1,5 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
   <string name="ro_perm_label">číst rychlé zprávy</string>
   <string name="ro_perm_desc">
         Umožňuje aplikacím číst data od IM poskytovatele obsahu.
@@ -8,402 +12,278 @@
   <string name="wo_perm_desc">
         Umožňuje aplikacím psát data na IM poskytovatele obsahu.
     </string>
-  <!--The application label. This appears in the application launcher on the
-    Home screen. This is a noun.-->
-  <string name="im_label">ChatSecure</string>
-  <!--These strings displayed on the landing page.-->
-  <!--The title of the landing page.-->
+  <string name="perm_label">spustit službu Chat</string>
+  <string name="perm_desc">Povoluje aplikacím spustit Chat přes službu intent.</string>
+  <!--General: Actions-->
+  <string name="confirm">Potvrdit</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Zrušit</string>
+  <string name="yes">OK</string>
+  <string name="no">Zrušit</string>
+  <string name="btn_next">Další</string>
+  <string name="btn_back">Zpět</string>
+  <!--Views-->
+  <!--Views: Setup-->
   <string name="landing_page_title">Chat - Vyberte účet</string>
-  <!--Landing page screen menu and context menu items.-->
-  <string name="menu_about">O</string>
-  <!--Conext menu item: add a new account.-->
-  <string name="menu_add_account">Přidat účet</string>
-  <!--Conext menu item: edit an account.-->
-  <string name="menu_edit_account">Upravit účet</string>
-  <!--Conext menu item: remove an account.-->
-  <string name="menu_remove_account">Odstranit účet</string>
-  <!--Screen menu item: sign out all service.-->
-  <string name="menu_sign_out_all">Odhlásit všechny</string>
-  <!--These strings displayed on the landing page.-->
-  <!--The title of the landing page.-->
   <string name="choose_account_title">Chat - Vyberte účet</string>
-  <!--Displays the number of ongoing chats on the landing page.-->
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <!--Sign in progress screen menu items.-->
-  <!--Screen menu item on the sign-in progress screen. It allows the user to cancel signing in.-->
-  <string name="menu_cancel_signin">Zrušit přihlašování</string>
-  <!--Contact list screen menu and context menu items.-->
-  <!--This is a screen menu item for the Contact List Screen. It lets the
-    user to add a friend to the friend list. May be overrided by the plugin.-->
-  <string name="menu_add_contact">Přidat kontakt</string>
-  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
-    displayed when the user long clicks on a contact in the contact list. It lets the user to
-    remove a contact from the list. May be overrided by the plugin.-->
-  <string name="menu_remove_contact">Smazat kontakt</string>
-  <!--Context/drop-down menu item for the Contact List Screen. The context menu is
-    displayed when the user long clicks on a contact in the contact list. It lets the user to
-    block a contact. May be overrided by the plugin.-->
-  <string name="menu_block_contact">Blokovat kontakt</string>
-  <!--Screen menu item on the contact list screen to go to the blocked list
-    screen.-->
-  <string name="menu_contact_nickname">Kontaktní přezdívka</string>
-  <!--Screen menu item on the contact to edit nickname.-->
-  <string name="menu_view_blocked">Blokovaní uživatelé</string>
-  <!--Screen menu item on the contact list to go back to the landing page,
-    where you can choose which IM service you want to use-->
-  <string name="menu_view_accounts">Seznam účtů</string>
-  <!--Screen menu item on active chat list to start new chat-->
-  <string name="menu_new_chat">Nový Chat</string>
-  <!--Screen menu item on accounts list to create new account-->
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Přidat účet &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_about">O</string>
+  <string name="menu_sign_out_all">Odhlásit všechny</string>
+  <string name="signout_all_confirm_message">Chcete odhlásit všechny služby?</string>
+  <string name="signed_out_prompt">Byli jste odhlášeni ze služby &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="welcome_first">Používáte ChatSecure poprvé?</string>
+  <string name="welcome_skip">Už se nemůžu dočkat, jak začít?</string>
+  <string name="welcome_about">Jak začít</string>
+  <string name="welcome_account">Nastavení účtu</string>
+  <string name="setup_passphrase_title">Nastavení přístupové fráze</string>
+  <string name="setup_passphrase_label1">Přístupová fráze:</string>
+  <string name="setup_passphrase_label2">Přístupová fráze (znovu):</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">O ChatSecure</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Jak je to bezpečné?</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Jsou moje Chaty bezpečné?</string>
+  <!--Views: Account list-->
   <string name="menu_new_account">Nový účet</string>
-  <!--Screen menu item on the contact list to go to the setting page.-->
-  <string name="menu_settings">Nastavení</string>
-  <!--Screen menu item on the contact list to trigger search dialog-->
+  <string name="menu_add_account">Přidat účet</string>
+  <string name="menu_edit_account">Upravit účet</string>
+  <string name="menu_remove_account">Odstranit účet</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Uživatelské jméno:</string>
+  <string name="label_password">Heslo:</string>
+  <string name="remember_password">Zapamatovat heslo.</string>
+  <string name="keep_me_signed_in">Přihlašovat automaticky.</string>
+  <string name="sign_up">Nemáte účet?</string>
+  <string name="sign_in">Přihlásit se</string>
+  <string name="check_save_password">Pokud je telefon ztracen, nebo ukraden, přejděte na webovou stránku a změňte pro větší bezpečnost vaše heslo.</string>
+  <string name="check_auto_sign_in">Pokud povolíte tuto možnost, budete automaticky přihlášeni pokaždé, když spustíte tuto aplikaci. Chcete-li tuto možnost zakázat, odhlaste se a zrušte zaškrtnutí políčka Přihlašovat automaticky.</string>
+  <string name="use_tor">Připojit přes Tor (Vyžaduje aplikaci Orbot)</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">Nové uživatelské jméno</string>
+  <string name="account_setup_service_provider">poskytovatel služeb (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">heslo</string>
+  <string name="account_setup_password_confirm">potvrdit heslo</string>
+  <string name="account_setup_advanced_button">Pokročilé nastavení účtu</string>
+  <string name="account_select_type">Typ účtu</string>
+  <string name="btn_create_new_account">Zaregistrovat účet</string>
+  <string name="account_setup_pers_pw_title">Zapamatovat si heslo</string>
+  <string name="account_setup_pers_pw_on">Heslo ukládat do mezipaměti</string>
+  <string name="account_setup_pers_pw_off">Heslo neukládat do mezipaměti</string>
+  <string name="account_setup_pers_auto_title">Automaticky přihlásit</string>
+  <string name="account_setup_pers_auto_on">Připojt ChatSecure po spuštění</string>
+  <string name="account_setup_pers_now_title">Přihlásit se nyní</string>
+  <string name="account_setup_personal_sub">Osobní (volitelné)</string>
+  <string name="account_setup_personal_alias_title">Alias účtu (vaše jméno)</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_signin_b">Generování dvojice klíčů ...</string>
+  <string name="account_setup_signin_c">Podepisování ...</string>
+  <string name="account_wizard_setup_title">Průvodce účtem</string>
+  <string name="account_wizard_account_title">ID vašeho účtu</string>
+  <string name="account_wizard_host_title">Nastavit server</string>
+  <string name="account_wizard_ready_title">Jste připraveni?</string>
+  <string name="account_wizard_account_body">Prosím zadejte svůj ID účtu (uživatel@jménohosta):</string>
+  <string name="menu_cancel_signin">Zrušit přihlašování</string>
+  <string name="signing_in_wait">Přihlašování...</string>
+  <string name="signing_out_wait">Odhlašování...</string>
+  <!--Views: Settings: Account-->
+  <string name="verify_that_the_certificate_is_trusted">Ověřte, zda certifikát je důvěryhodný</string>
+  <string name="tls_verification">TLS ověření</string>
+  <string name="transport_encryption">Šifrovat přenos</string>
+  <string name="connect_server">Připojit server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port pro XMPP Server</string>
+  <string name="server_port">Port Serveru</string>
+  <string name="xmpp_resource">Zdroj XMPP </string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Konverzece</string>
+  <string name="buddy_list_title">Seznam kontaktů - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_add_contact">Přidat kontakt</string>
+  <string name="menu_remove_contact">Smazat kontakt</string>
+  <string name="menu_block_contact">Blokovat kontakt</string>
+  <string name="menu_contact_nickname">Kontaktní přezdívka</string>
+  <string name="menu_view_blocked">Blokovaní uživatelé</string>
+  <string name="confirm_delete_contact">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; bude smazán.</string>
+  <string name="confirm_block_contact">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; bude blokován.</string>
+  <string name="confirm_unblock_contact">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; bude odblokován.</string>
+  <string name="add_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byl přidán.</string>
+  <string name="delete_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byl smazán.</string>
+  <string name="block_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je blokován.</string>
+  <string name="unblock_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je odblokován.</string>
+  <string name="menu_new_chat">Nový Chat</string>
   <string name="menu_search_contacts">Najít kontakty</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a contact in the contact list. It lets the user to
-    start a chat with a friend. May be overried by the plugin.-->
   <string name="menu_start_chat">Začít chat</string>
-  <!--Screen menu item on the contact list to sign out the service.-->
-  <string name="menu_sign_out">Odhlásit se</string>
-  <!--Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a contact in the contact list. It lets the
-    user to view the contact's profile. May be overrided by the plugin.-->
   <string name="menu_view_profile">Zobrazit Profil</string>
   <string name="menu_verify">Ověřit klíč</string>
-  <!--Context/drop-down menu item for picking an image to send.-->
+  <string name="ongoing_conversation">Probíhající chaty: &lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="online_count">Kontakty online: &lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="subscriptions">Nabídky přátelství</string>
+  <string name="unknown_contact">(\"<i>\"Neznámý uživatel\"</i>\")</string>
+  <string name="empty_contact_group">Žádné kontakty</string>
+  <string name="empty_conversation_group">Skupina je prázdná</string>
+  <string name="search_label">Kontakt</string>
+  <string name="empty_chat_list">Neprobíhá žádný chat.</string>
+  <string name="add_contact_title">Přidat kontakt</string>
+  <string name="input_contact_label">E-mailová adresa osoby, kterou chcete pozvat:</string>
+  <string name="choose_list_label">Zvolte seznam:</string>
+  <string name="invite_instruction">Zadejte jméno uživatele, kterého chcete přidat z Kontaktů.</string>
+  <string name="invite_label">Odeslat pozvánku</string>
+  <string name="contact_profile_title">Profil kontaktu</string>
+  <string name="label_status">Stav:</string>
+  <string name="label_client_type">Typ klienta:</string>
+  <string name="client_type_computer">počítač</string>
+  <string name="client_type_mobile">Mobil</string>
+  <string name="blocked_list_title">Blokované kontakty – &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="no_blocked_contact">Žádné kontakty nejsou blokovány.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Chat s uživatelem &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="me">Já</string>
+  <string name="contact_online">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je online</string>
+  <string name="contact_away">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je pryč</string>
+  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je zaneprázdněn</string>
+  <string name="contact_offline">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je offline</string>
+  <string name="contact_joined">Uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se připojil</string>
+  <string name="contact_left">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; odešel</string>
+  <string name="time_stamp" format="date">'Posláno v' &lt;xliff:g id="minute"&gt;mm&lt;/xliff:g&gt;:&lt;xliff:g id="hour"&gt;hh&lt;/xliff:g&gt; &lt;xliff:g id="ampm"&gt;a&lt;/xliff:g&gt; ' ' &lt;xliff:g id="date"&gt;EEEE&lt;/xliff:g&gt;</string>
   <string name="menu_send_image">Poslat fotku</string>
   <string name="menu_send_file">Poslat soubor</string>
   <string name="menu_send_audio">Poslat audio</string>
   <string name="menu_take_picture">Pořídit fotku</string>
-  <!--OTRCHAT Adding in new menu options-->
-  <string name="menu_otr_start">Začátek šifrování</string>
-  <string name="menu_otr_stop">Konec šifrování</string>
-  <string name="menu_clear_chat">Vyčistit Chat</string>
-  <string name="menu_end_conversation">Ukončit chat</string>
-  <string name="menu_voip_title">Zabezpečené volání</string>
-  <!--Chat screen menu and context menu items.-->
-  <!--Screen menu item on the chat screen to go back the contact list screen.
-    May be overrided by the plugin.-->
-  <string name="menu_view_contact_list">Seznam kontaktů</string>
-  <!--Screen menu item on the chat screen to invite another contact to join the chat.
-    Currently not supported.-->
-  <string name="menu_invite_contact">Pozvat…</string>
-  <!--Screen menu item on the chat screen to open a chat dash board which lets the user to
-    switch between chats. May be overrided by the plugin.-->
-  <string name="menu_switch_chats">Přepnout chat</string>
-  <!--Screen menu item on the chat screen to insert smiley. May be overrided by the plugin.-->
-  <string name="menu_insert_smiley">Vložit smajlík</string>
+  <string name="send">Odeslat</string>
+  <string name="compose_hint">Poslat zprávu</string>
+  <string name="compose_hint_secure">Poslat bezpečnostní zprávu</string>
   <string name="menu_resend">Odeslat znovu</string>
-  <!--Strings for the contact info screen-->
-  <string name="menu_scan">Scan QR</string>
-  <string name="menu_fingerprint">Váš otisk</string>
-  <string name="menu_verify_fingerprint">Manuál</string>
-  <string name="menu_verify_secret">Otázka</string>
-  <!--This string is used in the chat dashboard.  When there is a shortcut assigned to a chat
-     it allows the user to press menu+[0-9] to quickly switch beteen chats.  This string of
-     menu+ is used to build up the UI to show the user which shortcut to use.  A number (0-9) will
-     be appended to the end of this.-->
+  <string name="menu_end_conversation">Ukončit chat</string>
+  <string name="menu_clear_chat">Vyčistit Chat</string>
+  <string name="menu_insert_smiley">Vložit smajlík</string>
+  <string name="menu_switch_chats">Přepnout chat</string>
   <string name="menu_plus">Menu+</string>
-  <!--The title of a simple input dialog. Currently not used.-->
-  <!--Strings for the confirm dialogs-->
-  <!--The title of the confirm dialog which asks the user to continue or cancel an operation such as block a contact, remove a contact.-->
-  <string name="confirm">Potvrdit</string>
-  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
-  <string name="signout_all_confirm_message">Chcete odhlásit všechny služby?</string>
-  <!--This is the message displayed in the confirm dialog that opens when user clicks to delete a contact in the contact list screen.-->
-  <string name="confirm_delete_contact">Kontakt <xliff:g id="USER">%1$s</xliff:g> bude smazán.</string>
-  <!--This is the message displayed in the confirm dialog that opens when user clicks to  block a contact in the contact list screen.-->
-  <string name="confirm_block_contact">Kontakt <xliff:g id="USER">%1$s</xliff:g> bude blokován.</string>
-  <!--This is the message displayed on the confirm dialog that opens when user clicks to unblock a contact in the blocked list screen.-->
-  <string name="confirm_unblock_contact">Kontakt <xliff:g id="USER">%1$s</xliff:g> bude odblokován.</string>
-  <!--The "OK" button label for the error message dialog.-->
-  <string name="ok">OK</string>
-  <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="cancel">Zrušit</string>
-  <!--The "OK" button label for the confirm dialogs.-->
-  <string name="yes">OK</string>
-  <!--The "Cancel" button label for the confirm dialogs.-->
-  <string name="no">Zrušit</string>
-  <!--This is the toast message displayed when the user has been signed out of the service.-->
-  <string name="signed_out_prompt">Byli jste odhlášeni ze služby <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
-  <!--This is the toast message displayed when the user has been signed out of the service due to an error.-->
-  <string name="signed_out_prompt_with_error">Byli jste odhlášeni ze služby <xliff:g id="ACCOUNT">%1$s</xliff:g>, protože došlo k chybě <xliff:g id="REASON">%2$s</xliff:g>.</string>
-  <!--These strings displayed on the landing page.-->
-  <!--The add account label on the landing page. This is displayed when the user hasn't setup an account of the IM service.-->
-  <string name="add_account">Přidat účet <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
-  <!--These strings are displayed on the account setup page.-->
-  <!--The username label. May be overrided by the plugin.-->
-  <string name="label_username">Uživatelské jméno:</string>
-  <!--The password label.-->
-  <string name="label_password">Heslo:</string>
-  <!--The label for the checkbox which asks if the user wants to save the password on the client.-->
-  <string name="remember_password">Zapamatovat heslo.</string>
-  <!--The label for the checkbox which asks if the user wants to sign in the account automatically when phone bootstrap.-->
-  <string name="keep_me_signed_in">Přihlašovat automaticky.</string>
-  <!--The label for the link which will bring up browser to let the user to sign up a new account when clicked. May be overrided by the plugin.-->
-  <string name="sign_up">Nemáte účet?</string>
-  <!--This is the warning message displayed in a toast when "Sign me in automatically" is selected. May be overrided by the plugin.-->
-  <string name="check_save_password">Pokud je telefon ztracen, nebo ukraden, přejděte na webovou stránku a změňte pro větší bezpečnost vaše heslo.</string>
-  <string name="check_auto_sign_in">Pokud povolíte tuto možnost, budete automaticky přihlášeni pokaždé, když spustíte tuto aplikaci. Chcete-li tuto možnost zakázat, odhlaste se a zrušte zaškrtnutí políčka Přihlašovat automaticky.</string>
-  <!--The button label which lets the user to sign into the IM service.-->
-  <string name="sign_in">Přihlásit se</string>
-  <!--These strings are displayed the sign in progress screen.-->
-  <!--The title of the sign-in progress screen.-->
-  <!--This is the progress/status text displayed in the middle of the sign-in progress screen.-->
-  <string name="signing_in_wait">Přihlašování…</string>
-  <string name="signing_out_wait">Odhlašování…</string>
-  <!--Dialog title-->
-  <!--This is the title for the background data prompt dialog, asking the user whether
-    to enable the background data if it is disabled when launch the IM app-->
-  <string name="bg_data_prompt_title">Přenos dat na pozadí je zakázán</string>
-  <!--Dialog messages:-->
-  <!--This is the message displayed in the prompt dialog when we launch IM but found
-    the background data is disabled-->
-  <string name="bg_data_prompt_message">Poskytovatel <xliff:g id="PROVIDER">%1$s</xliff:g> vyžaduje povolení přenosu dat na pozadí.</string>
-  <!--Dialog buttons:-->
-  <!--OK button for the prompt dialog-->
-  <string name="bg_data_prompt_ok">Povolit</string>
-  <!--Cancel button for the prompt dialog-->
-  <string name="bg_data_prompt_cancel">Ukončit</string>
-  <!--These strings are displayed on the contact list page.-->
-  <!--The title of the ongoing chat group. May be overrided by the plugin.-->
-  <string name="ongoing_conversation">Probíhající chaty: <xliff:g id="NUMBER">%1$d</xliff:g></string>
-  <!--Displays the number of online contacts in a list.-->
-  <string name="online_count">Kontakty online: <xliff:g id="NUMBER">%1$d</xliff:g></string>
-  <!--The title of the subscription request group if there is any.-->
-  <string name="subscriptions">Nabídky přátelství</string>
-  <!--Prefix of the contact if he/she is not in the user's list.-->
-  <string name="unknown_contact">(\"<i>\"Neznámý uživatel\"</i>\")</string>
-  <!--Displayed as a child item of the contact list if it's empty.-->
-  <string name="empty_contact_group">Žádné kontakty</string>
-  <!--Displayed as a child item of the ongoing chat group if it's empty.-->
-  <string name="empty_conversation_group">Skupina je prázdná</string>
-  <!--Strings for contacts picker activity to inviting a contact into a group chat. Currently not supported.-->
+  <string name="select_link_title">Zvolit odkaz</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt">Uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; vás pozval k hromadnému chatu.</string>
+  <string name="invitation_sent_prompt">Uživateli &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byla zaslána pozvánka.</string>
+  <string name="accept_invitation">Přijmout</string>
+  <string name="decline_invitation">Odmítnout</string>
+  <string name="menu_invite_contact">Pozvat...</string>
   <string name="contacts_picker_title">Vyberte kontakty, které chcete pozvat</string>
   <string name="contact_filter_hint">Zadejte hledaný kontakt</string>
   <string name="empty_contact_list">Žádné kontakty nenalezeny
 
 Klikněte pro pozvání.</string>
-  <!--The title of blocked contact list.-->
-  <string name="blocked_list_title">Blokované kontakty – <xliff:g id="USER">%1$s</xliff:g></string>
-  <!--Displayed if there isn't any blocked contact.-->
-  <string name="no_blocked_contact">Žádné kontakty nejsou blokovány.</string>
-  <!--These strings are displayed in the contact info dialog.-->
-  <!--The title of the contact profile dialog.-->
-  <string name="contact_profile_title">Profil kontaktu</string>
-  <!--The label of the status on the contact profile dialog.-->
-  <string name="label_status">Stav:</string>
-  <!--The label of the client type on the contact profile dialog.-->
-  <string name="label_client_type">Typ klienta:</string>
-  <!--The client type which indicates the contact is sign in with a PC client.-->
-  <string name="client_type_computer">počítač</string>
-  <!--The client type which indicates the contact is sign in with a mobile client.-->
-  <string name="client_type_mobile">Mobil</string>
-  <!--The contact presence status. May be overrided by the plugin.-->
-  <!--This is an adjective describing the "online" status for the user. It appears in the
-    drop-down status menu on the Contact List screen-->
-  <string name="presence_available">Online</string>
-  <!--This is an adjective describing the "busy" status for the user. It appears in the
-    drop-down status menu on the Contact List screen-->
-  <string name="presence_busy">Zaneprázdněn</string>
-  <!--This is an adjective describing the "away" status for the user. It appears in the
-    drop-down status menu on the Contact List screen-->
-  <string name="presence_away">Pryč</string>
-  <!--This is an adjective describing the "idle" status for the user. It appears in the
-    drop-down status menu on the Contact List screen-->
-  <string name="presence_idle">Nečinný</string>
-  <!--This is an adjective describing the "offline" status for the user. It appears in the
-    drop-down status menu on the Contact List screen-->
-  <string name="presence_offline">Offline</string>
-  <!--This is an adjective describing the "invisible" status for the user. It appears in the
-    drop-down status menu on the Contact List screen-->
-  <string name="presence_invisible">Zobrazit jako offline</string>
-  <!--These strings are displayed on the connection setting activity. They are used for development only. Do not localize!-->
-  <!--These strings are displayed on the chat screen-->
-  <!--Chat screen title (i.e. Chat with Anne Clarkson)-->
-  <string name="chat_with">Chat s uživatelem <xliff:g id="USER">%1$s</xliff:g></string>
-  <!--In the chat history list, this label is added before the chats the user typed-->
-  <string name="me">Já</string>
-  <!--On the chat screen, this is the hint text in the input field where the user enters the
-    chat. This needs to fit in both portrait and landscape mode-->
-  <string name="compose_hint">Poslat zprávu</string>
-  <string name="compose_hint_secure">Poslat bezpečnostní zprávu</string>
-  <!--Inline status message in the chat history list, when receiving a "online" status update.-->
-  <string name="contact_online">uživatel <xliff:g id="USER">%1$s</xliff:g> je online</string>
-  <!--Inline status message in the chat history list, when receiving an "away" status update.-->
-  <string name="contact_away">uživatel <xliff:g id="USER">%1$s</xliff:g> je pryč</string>
-  <!--Inline status message in the chat history list, when receiving a "busy" status update.-->
-  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> je zaneprázdněn</string>
-  <!--Inline status message in the chat history list, when receiving a "offline" status update.-->
-  <string name="contact_offline">uživatel <xliff:g id="USER">%1$s</xliff:g> je offline</string>
-  <!--Inline status message in the chat history list, when a friend joined the chat.-->
-  <string name="contact_joined">Uživatel <xliff:g id="USER">%1$s</xliff:g> se připojil</string>
-  <!--Inline status message in the chat history list, when a friend left the chat.-->
-  <string name="contact_left">uživatel <xliff:g id="USER">%1$s</xliff:g> odešel</string>
-  <!--Inline time stamp status in the chat history list. The timestamp formatting maybe different for different locales.-->
-  <string name="time_stamp" format="date">\'Posláno v\' <xliff:g id="minute">mm</xliff:g>:<xliff:g id="hour">hh</xliff:g> <xliff:g id="ampm">a</xliff:g> \' \' <xliff:g id="date">EEEE</xliff:g></string>
-  <!--The send button on the chat screen.-->
-  <string name="send">Odeslat</string>
-  <!--Error message when a chat failed to be sent.-->
-  <string name="msg_sent_failed">Zprávu nelze odeslat.</string>
-  <!--Warning message displayed in the chat screen when connection is lost.-->
-  <string name="disconnected_warning">Zprávy budou odeslány při opětovném připojení</string>
-  <!--Warning message displayed in the chat screen when the contact is offline.-->
-  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> je offline. Odeslané zprávy budou doručeny, jakmile se <xliff:g id="USER_1">%1$s</xliff:g> přihlásí online.</string>
-  <!--Warning message displayed in the chat screen when the contact is not in the user's list.-->
-  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> není ve vašem seznamu kontaktů.</string>
-  <!--The menu of links brought up when the user clicks on a chat history item, if there are any.-->
-  <string name="select_link_title">Zvolit odkaz</string>
-  <!--Displayed when there is no active chats in the chat dashboard.-->
-  <string name="empty_chat_list">Neprobíhá žádný chat.</string>
-  <!--Toast messages when starting/stopping OTR encryption for a chat-->
-  <string name="starting_otr_chat">Zahájení šifrované relace chatu …</string>
-  <string name="stopping_otr_chat">Ukončení šifrované relace chatu …</string>
-  <!--Add contact screen-->
-  <!--This is the title of the Add Contact Screen.-->
-  <string name="add_contact_title">Přidat kontakt</string>
-  <!--The label of the email input box on the Add Contact Screen.-->
-  <string name="input_contact_label">E-mailová adresa osoby, kterou chcete pozvat:</string>
-  <!--The label of the list spinner on the Add Contact Screen.-->
-  <string name="choose_list_label">Zvolte seznam:</string>
-  <!--This is an instruction message displayed under the input box on the Add Contact Screen.-->
-  <string name="invite_instruction">Zadejte jméno uživatele, kterého chcete přidat z Kontaktů.</string>
-  <!--The label of the button on the Add Contact Screen to send the invitation.-->
-  <string name="invite_label">Odeslat pozvánku</string>
-  <!--provider plugin names-->
-  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
-  <string name="provider_full_name_llxmpp">Blízké okolí (Bonjour/ZeroConf)</string>
-  <!--setting screen. A title is the name of the setting; a summary is displayed in smaller text below the title.-->
-  <string name="account_setup_title">Nastavit účet</string>
-  <string name="encryption_and_anonymity_title">Šifrování a anonymita</string>
-  <string name="hide_offline_contacts">Skrýt kontakty offline</string>
-  <!--This is a subtitle for the "Notification settings"  in the Setting screen.-->
-  <string name="notification_group_title">Nastavení oznámení</string>
-  <!--This is the text label of the setting for IM notifications; a summary is displayed in
-    smaller text below this label-->
-  <string name="notification_enabled_title">Oznamování chatových zpráv</string>
-  <!--This is the summary of the setting for IM notifications-->
-  <string name="notification_enabled_summary">Příchod chatové zprávy oznamovat na stavovém panelu.</string>
-  <!--This is the text label of the vibrate notification setting; a summary is displayed in
-    smaller text below this label-->
-  <string name="foreground_service_title">Použít prioritu popředí</string>
-  <string name="notification_vibrate_title">Vibrace</string>
-  <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_vibrate_summary">Oznámit příchozí chatovou zprávu také vibracemi</string>
-  <!--This is the text label of the sound notification setting; a summary is displayed in
-    smaller text below this label-->
-  <string name="notification_sound_title">Zvuk</string>
-  <!--This is the summary of the vibrate notification setting-->
-  <string name="notification_sound_summary">Oznámit příchozí chatovou zprávu také vyzváněním</string>
-  <!--This is the text label selecting the ringtone. Clicking on this will take the user to
-    the ringtone picker-->
-  <!--Group chat invitation screen (Currently not used.)-->
-  <!--The prompt message displayed on the group chat invitation screen.-->
-  <string name="invitation_prompt">Uživatel <xliff:g id="USER">%1$s</xliff:g> vás pozval k hromadnému chatu.</string>
-  <!--Toast when group chat invitation has been sent to the contact.-->
-  <string name="invitation_sent_prompt">Uživateli <xliff:g id="USER">%1$s</xliff:g> byla zaslána pozvánka.</string>
-  <!--The button for accepting an invitation.-->
-  <string name="accept_invitation">Přijmout</string>
-  <!--The button for decline an invitation.-->
-  <string name="decline_invitation">Odmítnout</string>
-  <!--Friend subscription screen-->
-  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> si vás chce přidat do svého seznamu kontaktů.</string>
-  <!--The button for approving a subscription request.-->
+  <string name="subscription_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; si vás chce přidat do svého seznamu kontaktů.</string>
   <string name="approve_subscription">Přijmout</string>
-  <!--The button for delecling a subscription request.-->
   <string name="decline_subscription">Odmítnout</string>
-  <!--Toast when approve a subscription request failed.-->
-  <string name="approve_subscription_error">Přihlášení k odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nepodařilo schválit. Zkuste to prosím znovu později.</string>
-  <!--Toast when decline a subscription request failed.-->
-  <string name="decline_subscription_error">Odmítnutí odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nezdařilo. Zkuste to prosím znovu později.</string>
-  <!--Notification bar messages-->
-  <!--This is the notification bar message when a new IM arrives.-->
-  <string name="newMessages_label">Nové zprávy od poskytovatele <xliff:g id="PROVIDER">%1$s</xliff:g></string>
-  <!--This is the notification bar message when new IMs comes from more than one contact.-->
-  <string name="num_unread_chats">Nové zprávy: <xliff:g id="NUMBER">%1$d</xliff:g></string>
-  <!--This is the notification bar message when an invitation from someone arrived.-->
-  <string name="subscription_notify_text">Nová nabídka přátelství od uživatele <xliff:g id="USER">%s</xliff:g></string>
-  <!--This is the notification bar message when an invitation to join a group chat from someone arrived. Currently not used.-->
+  <string name="approve_subscription_error">Přihlášení k odběru uživatele &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se nepodařilo schválit. Zkuste to prosím znovu později.</string>
+  <string name="decline_subscription_error">Odmítnutí odběru uživatele &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se nezdařilo. Zkuste to prosím znovu později.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Začátek šifrování</string>
+  <string name="menu_otr_stop">Konec šifrování</string>
+  <string name="starting_otr_chat">Zahájení šifrované relace chatu ...</string>
+  <string name="stopping_otr_chat">Ukončení šifrované relace chatu ...</string>
+  <string name="menu_sign_in">Přihlásit</string>
+  <string name="menu_gen_key">Přegenerovat klíč</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">Scan QR</string>
+  <string name="menu_fingerprint">Váš otisk</string>
+  <string name="menu_verify_fingerprint">Manuál</string>
+  <string name="menu_verify_secret">Otázka</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_send">Odeslat</string>
+  <string name="otr_qa_cancel">Zrušit</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Zabezpečené volání</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Nastavit účet</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="encryption_and_anonymity_title">Šifrování a anonymita</string>
+  <string name="menu_view_encrypt_chat">Šifrování Zap / Vyp</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="menu_locale">Jazyk</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Jazyky</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">Jaký jazyk by měl InTheClear zobrazovat?</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="hide_offline_contacts">Skrýt kontakty offline</string>
+  <string name="foreground_service_title">Použít prioritu popředí</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Nastavení oznámení</string>
+  <string name="notification_enabled_title">Oznamování chatových zpráv</string>
+  <string name="notification_enabled_summary">Příchod chatové zprávy oznamovat na stavovém panelu.</string>
+  <string name="notification_vibrate_title">Vibrace</string>
+  <string name="notification_vibrate_summary">Oznámit příchozí chatovou zprávu také vibracemi</string>
+  <string name="notification_sound_title">Zvuk</string>
+  <string name="notification_sound_summary">Oznámit příchozí chatovou zprávu také vyzváněním</string>
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Přenos dat na pozadí je zakázán</string>
+  <string name="bg_data_prompt_message">Poskytovatel &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; vyžaduje povolení přenosu dat na pozadí.</string>
+  <string name="bg_data_prompt_ok">Povolit</string>
+  <string name="bg_data_prompt_cancel">Ukončit</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Nové zprávy od poskytovatele &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Pozvánka k hromadnému chatu</string>
-  <!--This is the text label of the group chat invitation message in the notification. Currently not used.-->
-  <string name="group_chat_invite_notify_text">Nová pozvánka k hromadnému chatu od uživatele <xliff:g id="USER">%s</xliff:g></string>
-  <!--Toast when a contact is added into a list.-->
-  <string name="add_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> byl přidán.</string>
-  <!--Toast when a contact is deleted from the list.-->
-  <string name="delete_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> byl smazán.</string>
-  <!--Toast when a contact is blocked.-->
-  <string name="block_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> je blokován.</string>
-  <!--Toast when a contact is unblocked.-->
-  <string name="unblock_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> je odblokován.</string>
-  <!--IM service permission-->
-  <string name="perm_label">spustit službu Chat</string>
-  <string name="perm_desc">Povoluje aplikacím spustit Chat přes službu intent.</string>
-  <!--Errors-->
-  <!--The title of the error dialog-->
+  <string name="new_messages_notify">Nová zpráva(y) od</string>
+  <!--Alerts: Exceptions-->
   <string name="error">Upozornění</string>
-  <!--Error message for sign in failed.-->
-  <string name="login_service_failed">Nepodařilo se přihlásit ke službě <xliff:g id="SERVICE">%1$s</xliff:g>. Zkuste to prosím znovu později."\n"(Podrobnosti: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
-  <!--Error message for creating contact list failed.-->
+  <string name="general_error">Kód chyby: &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Nepodařilo se přihlásit ke službě &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Zkuste to prosím znovu později."\n"(Podrobnosti: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Seznam se nepodařilo přidat.</string>
-  <!--Error message for blocking contact failed.-->
   <string name="block_contact_failed">Blokování kontaktu se nezdařilo.</string>
-  <!--Error message for unblocking contact failed.-->
   <string name="unblock_contact_failed">Odblokování kontaktu se nezdařilo.</string>
-  <!--Error message for when the user didn't select a contact as required.-->
   <string name="select_contact">Nejprve zvolte kontakt.</string>
-  <!--Error message for when the current connection disconnected.-->
   <string name="disconnected">\"Odpojeno\"
 </string>
-  <!--Error message for when the IM service has died.-->
   <string name="service_error">Chyba služby.</string>
-  <!--Error message for loading contact list failed.-->
   <string name="load_contact_list_failed">Seznam kontaktů se nepodařilo načíst.</string>
-  <!--Error message for failed to connect to the server.-->
   <string name="cant_connect_to_server">K serveru se nelze připojit. Zkontrolujte své připojení.</string>
-  <!--Error message for when the contact is already in the list.-->
-  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> již je ve vašem seznamu kontaktů.</string>
-  <!--Error message for when the contact is blocked.-->
-  <string name="contact_blocked">Kontakt <xliff:g id="USER">%1$s</xliff:g> byl zablokován.</string>
-  <!--Error message for when the contact list is not compeletely loaded.-->
+  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; již je ve vašem seznamu kontaktů.</string>
+  <string name="contact_blocked">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byl zablokován.</string>
   <string name="contact_not_loaded">Počkejte, než se seznam kontaktů načte.</string>
-  <!--Error message for when a network error occurred.-->
   <string name="network_error">Došlo k chybě sítě.</string>
   <string name="wifi_not_connected_error">Pro toto připojení je nutné WiFi.</string>
-  <!--Error message for lack of server support error.-->
   <string name="service_not_support">Server tuto funkci nepodporuje.</string>
-  <!--Erorr message for bad password error.-->
   <string name="invalid_password">Zadané heslo není platné.</string>
-  <!--Error message for server internal error.-->
   <string name="internal_server_error">Na serveru došlo k chybě.</string>
-  <!--Error message for when the server does not implement the feature.-->
   <string name="not_implemented">Server tuto funkci nepodporuje.</string>
-  <!--Error message for server not available error.-->
   <string name="service_unavaiable">Server je momentálně nedostupný.</string>
-  <!--Error message for timeout error.-->
   <string name="timeout">Vypršel časový limit serveru.</string>
-  <!--Error message for when the server does not support the current protocol version.-->
   <string name="version_not_supported">Server nepodporuje aktuální verzi.</string>
-  <!--Error message for when the message queue on the server is full.-->
   <string name="message_queue_full">Fronta zpráv je plná.</string>
-  <!--Error message for when the domain is not supported by the server.-->
   <string name="domain_not_supported">Server nepodporuje předávání této doméně.</string>
-  <!--Error message for a bad username error.-->
   <string name="unknown_user">Zadané uživatelské jméno nebylo rozpoznáno.</string>
-  <!--Error message for when the user is blocked by the recipient.-->
   <string name="recipient_blocked_the_user">Tento uživatel vás blokuje.</string>
-  <!--Error message for session expired error.-->
   <string name="session_expired">Této relaci již vypršela platnost, přihlaste se znovu.</string>
-  <!--forced_logout and already_logged_in are used within another sentence so y is not capped.-->
   <string name="forced_logout">jste přihlášeni z jiného klienta.</string>
   <string name="already_logged_in">již jste přihlášeni z jiného klienta.</string>
-  <!--Error message for msisdn error.-->
   <string name="msisdn_error">Z karty SIM nelze číst vaše telefonní číslo. Požádejte o pomoc operátora.</string>
-  <!--Error message for when the user is not signed in.-->
   <string name="not_signed_in">Momentálně nejste přihlášeni.</string>
-  <!--Generic error.-->
-  <string name="general_error">Kód chyby: <xliff:g id="CODE">%1$d</xliff:g></string>
-  <!--Smiley names. May be overrided by the plugin.-->
+  <string name="signin_password_prompt">Vložte vaše heslo:</string>
+  <string name="msg_sent_failed">Zprávu nelze odeslat.</string>
+  <string name="disconnected_warning">Zprávy budou odeslány při opětovném připojení</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; je offline. Odeslané zprávy budou doručeny, jakmile se &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; přihlásí online.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; není ve vašem seznamu kontaktů.</string>
+  <string name="account_settings_title">Nastavení účtu</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Skupiny</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Seznam kontaktů</string>
+  <string name="menu_settings">Nastavení</string>
+  <string name="menu_view_accounts">Seznam účtů</string>
+  <string name="menu_sign_out">Odhlásit se</string>
+  <string name="menu_view_contact_list">Seznam kontaktů</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="provider_full_name_llxmpp">Blízké okolí (Bonjour/ZeroConf)</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">Online</string>
+  <string name="presence_busy">Zaneprázdněn</string>
+  <string name="presence_away">Pryč</string>
+  <string name="presence_idle">Nečinný</string>
+  <string name="presence_offline">Offline</string>
+  <string name="presence_invisible">Zobrazit jako offline</string>
+  <!--Other: Smileys-->
   <string-array name="default_smiley_names">
     <item>Happy</item>
     <item>Smutný</item>
@@ -423,7 +303,7 @@ Klikněte pro pozvání.</string>
     <item>Smějící se</item>
     <item>Zmatený</item>
   </string-array>
-  <!--Do not localize! Smiley text representations. May be overrided by the plugin.-->
+  <!--[Do not localize!]-->
   <string-array name="smiley_names">
     <item>Happy</item>
     <item>Smutný</item>
@@ -462,81 +342,5 @@ Klikněte pro pozvání.</string>
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
-  <string name="buddy_list_title">Seznam kontaktů - <xliff:g id="username">%1$s</xliff:g></string>
-  <string name="menu_contact_list">Seznam kontaktů</string>
-  <string name="menu_view_encrypt_chat">Šifrování Zap / Vyp</string>
-  <string name="use_tor">Připojit přes Tor (Vyžaduje aplikaci Orbot)</string>
-  <!--Welcome Splash Screen-->
-  <string name="app_name">ChatSecure</string>
-  <string name="welcome_first">Používáte ChatSecure poprvé?</string>
-  <string name="welcome_skip">Už se nemůžu dočkat, jak začít?</string>
-  <string name="welcome_about">Jak začít</string>
-  <string name="welcome_account">Nastavení účtu</string>
-  <!--About: Welcome-->
-  <string name="about_welcome_title">O ChatSecure</string>
-  <!--About: OTR-->
-  <string name="about_otr_title">Jak je to bezpečné?</string>
-  <!--About: Security-->
-  <string name="about_security_title">Jsou moje Chaty bezpečné?</string>
-  <!--Setup: Passphrase-->
-  <string name="setup_passphrase_title">Nastavení přístupové fráze</string>
-  <string name="setup_passphrase_label1">Přístupová fráze:</string>
-  <string name="setup_passphrase_label2">Přístupová fráze (znovu):</string>
-  <!--Account Setup: Account-->
-  <string name="account_setup_example_email_address">user@domain.com</string>
-  <string name="account_setup_new_username">Nové uživatelské jméno</string>
-  <string name="account_setup_service_provider">poskytovatel služeb (dukgo.com, jabber.ccc.de)</string>
-  <string name="account_setup_password">heslo</string>
-  <string name="account_setup_password_confirm">potvrdit heslo</string>
-  <string name="account_setup_advanced_button">Pokročilé nastavení účtu</string>
-  <string name="account_select_type">Typ účtu</string>
-  <string name="btn_create_new_account">Zaregistrovat účet</string>
-  <!--Account Setup: Persistence-->
-  <string name="account_setup_pers_pw_title">Zapamatovat si heslo</string>
-  <string name="account_setup_pers_pw_on">Heslo ukládat do mezipaměti</string>
-  <string name="account_setup_pers_pw_off">Heslo neukládat do mezipaměti</string>
-  <string name="account_setup_pers_auto_title">Automaticky přihlásit</string>
-  <string name="account_setup_pers_auto_on">Připojt ChatSecure po spuštění</string>
-  <string name="account_setup_pers_now_title">Přihlásit se nyní</string>
-  <!--Account Setup: Personal-->
-  <string name="account_setup_personal_sub">Osobní (volitelné)</string>
-  <string name="account_setup_personal_alias_title">Alias účtu (vaše jméno)</string>
-  <string name="account_setup_personal_profile_title">Profil</string>
-  <!--Account Setup: Advanced-->
-  <!--Account Setup: First Sign In-->
-  <string name="account_setup_signin_b">Generování dvojice klíčů …</string>
-  <string name="account_setup_signin_c">Podepisování …</string>
-  <!--Account Setup: Sign In Errors-->
-  <string name="menu_sign_in">Přihlásit</string>
-  <string name="menu_gen_key">Přegenerovat klíč</string>
-  <string name="account_wizard_setup_title">Průvodce účtem</string>
-  <string name="account_wizard_account_title">ID vašeho účtu</string>
-  <string name="account_wizard_host_title">Nastavit server</string>
-  <string name="account_wizard_ready_title">Jste připraveni?</string>
-  <string name="account_wizard_account_body">Prosím zadejte svůj ID účtu (uživatel@jménohosta):</string>
-  <string name="signin_password_prompt">Vložte vaše heslo:</string>
-  <!--Do not localize! Symbols for looking up preferences in Java code.-->
-  <string name="account_settings_title">Nastavení účtu</string>
-  <!--added 2011/09/01-->
-  <string name="menu_view_groups">Skupiny</string>
-  <string name="search_label">Kontakt</string>
-  <string name="menu_locale">Jazyk</string>
-  <string name="KEY_PREF_LANGUAGE_TITLE">Jazyky</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Jaký jazyk by měl InTheClear zobrazovat?</string>
-  <string name="verify_that_the_certificate_is_trusted">Ověřte, zda certifikát je důvěryhodný</string>
-  <string name="tls_verification">TLS ověření</string>
-  <string name="transport_encryption">Šifrovat přenos</string>
-  <string name="connect_server">Připojit server</string>
-  <string name="tcp_port_for_xmpp_server">TCP Port pro XMPP Server</string>
-  <string name="server_port">Port Serveru</string>
-  <string name="xmpp_resource">Zdroj XMPP </string>
-  <string name="btn_next">Další</string>
-  <string name="btn_back">Zpět</string>
-  <string name="title_chats">Konverzece</string>
-  <string name="new_messages_notify">Nová zpráva(y) od</string>
-  <!--<string name="warning_weak_crypto">WARNING: This service uses a certificate with WEAK cryptography. Please tell the administrator to upgrade.</string>
-	
-	<string name="warning_pinned_cert_mismatch">"Provided Certificate Does Not Match PINNED Certifcate: "</string>-->
-  <!--This is the message displayed in the confirm dialog when the user choose to sign out all service-->
-  <!--Screen menu item on active chat list to start new chat-->
+  <string name="i_need_a_new_account">Nový účet</string>
 </resources>
