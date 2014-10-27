@@ -249,7 +249,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             
             mOtrEngineHost.putSessionResource(sessionId, processResource(remoteUserId));
             plain = mOtrEngine.transformReceiving(sessionId, msg, tlvs);
-            OtrSm otrSm = mOtrSms.get(sessionId);
+            OtrSm otrSm = mOtrSms.get(sessionId.getSessionId());
 
             if (otrSm != null) {
                 List<TLV> smTlvs = otrSm.getPendingTlvs();
@@ -314,7 +314,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         OtrDebugLogger.log("session status changed: " + sStatus);
 
         final Session session = mOtrEngine.getSession(sessionID);
-        OtrSm otrSm = mOtrSms.get(sessionID);
+        OtrSm otrSm = mOtrSms.get(sessionID.getSessionId());
 
         if (sStatus == SessionStatus.ENCRYPTED) {
 
@@ -332,7 +332,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         } else if (sStatus == SessionStatus.PLAINTEXT) {
             if (otrSm != null) {
                 session.removeTlvHandler(otrSm);
-                mOtrSms.remove(sessionID);
+                mOtrSms.remove(sessionID.getSessionId());
             }
             mOtrEngineHost.removeSessionResource(sessionID);
         } else if (sStatus == SessionStatus.FINISHED) {
@@ -399,7 +399,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public void respondSmp(SessionID sessionID, String secret) throws OtrException {
-        OtrSm otrSm = mOtrSms.get(sessionID);
+        OtrSm otrSm = mOtrSms.get(sessionID.getSessionId());
 
         List<TLV> tlvs;
 
@@ -414,7 +414,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public void initSmp(SessionID sessionID, String question, String secret) throws OtrException {
-        OtrSm otrSm = mOtrSms.get(sessionID);
+        OtrSm otrSm = mOtrSms.get(sessionID.getSessionId());
 
         List<TLV> tlvs;
 
@@ -429,7 +429,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     }
 
     public void abortSmp(SessionID sessionID) throws OtrException {
-        OtrSm otrSm = mOtrSms.get(sessionID);
+        OtrSm otrSm = mOtrSms.get(sessionID.getSessionId());
         
         if (otrSm == null)
             return;
