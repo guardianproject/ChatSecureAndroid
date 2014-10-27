@@ -963,8 +963,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     { 
         Debug.onConnectionStart(); //only activates if Debug TRUE is set, so you can leave this in!
 
-        initConnection(providerSettings, userName);
-
         String userResource = providerSettings.getXmppResource();
         if (userResource.equals(ImApp.DEFAULT_XMPP_RESOURCE))
         {
@@ -972,7 +970,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             userResource += UUID.randomUUID().toString().substring(0,8);
             providerSettings.setXmppResource(userResource);
         }
-        
+
+        initConnection(providerSettings, userName);
+
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
         
