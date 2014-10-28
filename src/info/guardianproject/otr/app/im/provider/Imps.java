@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.provider;
 import info.guardianproject.otr.app.im.app.ImApp;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 import android.content.ContentQueryMap;
 import android.content.ContentResolver;
@@ -1976,7 +1977,15 @@ public class Imps {
             }
 
             public String getXmppResource() {
-                return getString(XMPP_RESOURCE, ImApp.DEFAULT_XMPP_RESOURCE);
+                String currentResource = getString(XMPP_RESOURCE, ImApp.DEFAULT_XMPP_RESOURCE);
+                String defaultResource;
+                if (currentResource.equals(ImApp.DEFAULT_XMPP_RESOURCE)) {
+                    defaultResource = ImApp.DEFAULT_XMPP_RESOURCE + "-"
+                                      + UUID.randomUUID().toString().substring(0, 8);
+                    setXmppResource(defaultResource);
+                    return defaultResource;
+                }
+                return currentResource;
             }
 
             public void setXmppResourcePrio(int prio) {
