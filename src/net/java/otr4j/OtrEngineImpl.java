@@ -43,9 +43,9 @@ public class OtrEngineImpl implements OtrEngine {
         if (sessionID == null || sessionID.equals(SessionID.Empty))
             throw new IllegalArgumentException();
 
-        if (!sessions.containsKey(sessionID.getSessionId())) {
+        if (!sessions.containsKey(sessionID.toString())) {
             Session session = new SessionImpl(sessionID, getHost());
-            sessions.put(sessionID.getSessionId(), session);
+            sessions.put(sessionID.toString(), session);
 
             session.addOtrEngineListener(new OtrEngineListener() {
 
@@ -57,7 +57,7 @@ public class OtrEngineImpl implements OtrEngine {
             return session;
         } else
         {
-            SessionImpl session = (SessionImpl)sessions.get(sessionID.getSessionId());
+            SessionImpl session = (SessionImpl)sessions.get(sessionID.toString());
             session.setSessionID(sessionID);//make sure latest instance is stored in session (in case JIDs get updated)
             return session;
         }
@@ -97,7 +97,7 @@ public class OtrEngineImpl implements OtrEngine {
     
     public void endSession(SessionID sessionID) throws OtrException {
         getSession(sessionID).endSession();
-        sessions.remove(sessionID.getSessionId());
+        sessions.remove(sessionID.toString());
     }
 
     public void startSession(SessionID sessionID) throws OtrException {

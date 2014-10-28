@@ -34,12 +34,7 @@ public final class SessionID {
     {
         return mRemoteUserId;
     }
-    
-    public String getSessionId ()
-    {
-        return mSessionId;
-    }
-    
+
     public String getProtocolName ()
     {
         return mProtocolName;

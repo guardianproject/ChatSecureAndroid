@@ -102,13 +102,13 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
     public SessionID getSessionId(String localUserId, String remoteUserId) {
         
         SessionID sIdTemp = new SessionID(localUserId, remoteUserId, "XMPP");
-        SessionID sessionId = mSessions.get(sIdTemp.getSessionId());
-        
+        SessionID sessionId = mSessions.get(sIdTemp.toString());
+
         if (sessionId == null)
         {
          // or we didn't have a session yet.
             sessionId = sIdTemp;
-            mSessions.put(sessionId.getSessionId(), sessionId);
+            mSessions.put(sessionId.toString(), sessionId);
         }
         else if ((!sessionId.getRemoteUserId().equals(remoteUserId)) &&
                         remoteUserId.contains("/")) {
@@ -117,8 +117,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             
             //sessionId.updateRemoteUserId(remoteUserId);
             sessionId = sIdTemp;
-            mSessions.put(sessionId.getSessionId(), sessionId);
-            
+            mSessions.put(sessionId.toString(), sessionId);
+
             if (Debug.DEBUG_ENABLED)
                 Log.d(ImApp.LOG_TAG,"getting new otr session id: " + sessionId);
             
@@ -327,7 +327,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                         sessionID, OtrChatManager.this);
                 session.addTlvHandler(otrSm);
 
-                mOtrSms.put(sessionID.getSessionId(), otrSm);
+                mOtrSms.put(sessionID.toString(), otrSm);
             }
         } else if (sStatus == SessionStatus.PLAINTEXT) {
             if (otrSm != null) {
@@ -388,10 +388,10 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         dialog.putExtra("sid", sessionID.getRemoteUserId());//yes "sid" = remoteUserId in this case - see SMPResponseActivity
         ImConnectionAdapter connection = mOtrEngineHost.findConnection(sessionID);
         if (connection == null) {
-            OtrDebugLogger.log("Could ask for secret - no connection for " + sessionID.getSessionId());
+            OtrDebugLogger.log("Could ask for secret - no connection for " + sessionID.toString());
             return;
         }
-        
+
         dialog.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, connection.getProviderId());
 
         mContext.getApplicationContext().startActivity(dialog);
