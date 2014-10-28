@@ -18,7 +18,7 @@
 package info.guardianproject.otr.app.im.engine;
 
 import android.os.Parcel;
-import android.os.Parcelable;
+import android.text.TextUtils;
 
 /**
  * An abstract representation of the address to any addressable entities such as
@@ -63,7 +63,9 @@ public abstract class Address {
     }
     
     static public String stripResource(String address) {
-        if (address.contains("/"))
+        if (TextUtils.isEmpty(address))
+            return "null";
+        else if (address.contains("/"))
             return address.split("/")[0];
         else
             return address;

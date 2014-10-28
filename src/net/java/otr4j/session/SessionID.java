@@ -22,11 +22,7 @@ public final class SessionID {
        mLocalUserId = localUserId;
        mRemoteUserId = remoteUserId;
        mProtocolName = protocolName;
-       
-       if (mLocalUserId != null)
-           mSessionId = Address.stripResource(mLocalUserId) + '_' + mProtocolName + '_' + Address.stripResource(mRemoteUserId);
-       //mSessionId = mLocalUserId + '_' + mProtocolName + '_' + mRemoteUserId;
-       
+       mSessionId = Address.stripResource(mLocalUserId) + '_' + mProtocolName + '_' + Address.stripResource(mRemoteUserId);
     }
 
     public String getLocalUserId ()
