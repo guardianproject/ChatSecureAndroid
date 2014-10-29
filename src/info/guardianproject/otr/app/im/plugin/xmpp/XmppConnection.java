@@ -46,6 +46,7 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
@@ -172,7 +173,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private PacketCollector mPingCollector;
     private String mUsername;
     private String mPassword;
-    private String mResource;
     private int mPriority;
 
     private int mGlobalId;
@@ -963,9 +963,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     { 
         Debug.onConnectionStart(); //only activates if Debug TRUE is set, so you can leave this in!
 
-        initConnection(providerSettings, userName);
+        String userResource = providerSettings.getXmppResource();
+        if (userResource.equals(ImApp.DEFAULT_XMPP_RESOURCE))
+        {
+            //we need to add a random appendage to this
+            userResource += UUID.randomUUID().toString().substring(0,8);
+            providerSettings.setXmppResource(userResource);
+        }
 
-        mResource = providerSettings.getXmppResource();
+        initConnection(providerSettings, userName);
 
         //disable compression based on statement by Ge0rg
         mConfig.setCompressionEnabled(false);
@@ -973,7 +979,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (mConnection.isConnected())
         {
             
-            mConnection.login(mUsername, mPassword, mResource);
+            mConnection.login(mUsername, mPassword, userResource);
             
             String fullJid = mConnection.getUser();
             XmppAddress xa = new XmppAddress(fullJid);
