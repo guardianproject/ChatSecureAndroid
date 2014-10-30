@@ -148,7 +148,7 @@ public class ContactsPickerActivity extends ActionBarActivity  {
                     }
                     
                     Cursor cursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
-                                buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
+                                buf == null ? null : buf.toString(), null, Imps.Contacts.MODE_AND_ALPHA_SORT_ORDER);
                    
                     Intent dataNew = new Intent();
                     
@@ -363,7 +363,6 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         }
     }
     
-    
     class MyLoaderCallbacks implements LoaderCallbacks<Cursor> {
         @Override
         public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -395,7 +394,7 @@ public class ContactsPickerActivity extends ActionBarActivity  {
             }
             
             CursorLoader loader = new CursorLoader(ContactsPickerActivity.this, mUri, ContactView.CONTACT_PROJECTION,
-                    buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
+                    buf == null ? null : buf.toString(), null, Imps.Contacts.MODE_AND_ALPHA_SORT_ORDER);
             loader.setUpdateThrottle(50L);
             return loader;
         }
