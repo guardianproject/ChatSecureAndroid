@@ -1,19 +1,19 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Harus</item>
-    <item>Otomatis</item>
-    <item>Ketika Diminta</item>
-    <item>Non Aktif</item>
+    <item>Harus / Wajib</item>
+    <item>Coba Otomatis</item>
+    <item>Sesuai Permintaan</item>
+    <item>Non Aktif / Tidak Pernah</item>
   </string-array>
   <string-array name="otr_options_values">
-    <item>paksa</item>
-    <item>otomatis</item>
+    <item>harus</item>
+    <item>auto</item>
     <item>diminta</item>
-    <item>non-aktif</item>
+    <item>non aktif</item>
   </string-array>
   <string-array name="languages">
-    <item>Standar</item>
+    <item>Default</item>
     <item>العربية</item>
     <item>فارسی</item>
     <item>中文(简体)</item>
@@ -31,11 +31,11 @@
     <item>Italiano</item>
     <item>Magyar</item>
     <item>Nederlands</item>
-    <item>Norwegian Bokmål</item>
+    <item>Norsk Bokmål</item>
     <item>Português</item>
     <item>Pyccĸий</item>
     <item>Slovenčina</item>
-    <item>Swedish</item>
+    <item>Svenska</item>
     <item>Tϋrkçe</item>
     <item>Čeština</item>
     <item>ελληνικά</item>

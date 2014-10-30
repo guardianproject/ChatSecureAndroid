@@ -1,0 +1,8 @@
+#!/bin/sh
+
+sed -i \
+    -e 's,&lt;/xliff:g&gt;,</xliff:g>,g' \
+    -e 's,&lt;xliff:g\( [^&]*\)&gt;,<xliff:g\1>,g' \
+    -e 's,\(<xliff:g [^\\>]*\)\\"\([^\\>]*\)\\",\1"\2",g' \
+    -e 's,\(<xliff:g [^\\>]*\)\\",\1",g' \
+    res/values*/strings.xml

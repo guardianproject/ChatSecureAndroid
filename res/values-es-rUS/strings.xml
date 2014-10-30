@@ -27,7 +27,7 @@
     <string name="menu_view_profile" msgid="5883288134525529119">"Ver perfil"</string>
     <string name="menu_end_conversation" msgid="3556567768336552622">"Finalizar chat"</string>
     <string name="menu_view_contact_list" msgid="4630377976475003130">"Lista de contactos"</string>
-    <string name="menu_invite_contact" msgid="4669830812552484236">"Invitar a..."</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Invitar a…"</string>
     <string name="menu_switch_chats" msgid="5113455126377025717">"Modificar chats"</string>
     <string name="menu_insert_smiley" msgid="2555290958985391105">"Insertar ícono gestual"</string>
     <string name="menu_plus" msgid="5000617247235760106">"Menú+"</string>
@@ -51,7 +51,7 @@
     <string name="check_auto_sign_in" msgid="308461891031463647">"Esta opción inicia la sesión automáticamente cada vez que abres la aplicación. Para desactivarla, sal de la sesión y quita la marca de verificación de la casilla \"Iniciar sesión automáticamente\"."</string>
     <string name="sign_in" msgid="6204326200860136567">"Inicia sesión"</string>
     <string name="signing_in_to" msgid="2689649632858697221">"Iniciando sesión en <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
-    <string name="signing_in_wait" msgid="987357161364666888">"Iniciando sesión..."</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Iniciando sesión…"</string>
     <string name="bg_data_prompt_title" msgid="4861800723853178111">"Datos de fondo desactivados"</string>
     <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> necesita que se habiliten datos de fondo."</string>
     <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Habilitar"</string>
