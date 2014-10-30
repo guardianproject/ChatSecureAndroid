@@ -32,11 +32,10 @@
     <item>Magyar</item>
     <item>Nederlands</item>
     <item>Norsk Bokmål</item>
-    <item>Polski</item>
     <item>Português</item>
     <item>Pyccĸий</item>
     <item>Slovenčina</item>
-    <item>Swedish</item>
+    <item>Svenska</item>
     <item>Tϋrkçe</item>
     <item>Čeština</item>
     <item>ελληνικά</item>
@@ -61,7 +60,6 @@
     <item>hu</item>
     <item>nl</item>
     <item>nb_NO</item>
-    <item>pl</item>
     <item>pt</item>
     <item>ru</item>
     <item>sk</item>
@@ -69,5 +67,14 @@
     <item>tr</item>
     <item>cs</item>
     <item>el</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>rkquery.de</item>
+    <item>bam.yt</item>
   </string-array>
 </resources>
