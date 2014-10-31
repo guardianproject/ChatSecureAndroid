@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
  * Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -68,33 +68,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MessageView extends FrameLayout {
-    
+
     private static int sCacheSize = 512; // 1MiB
     private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
-            
+
     public enum DeliveryState {
         NEUTRAL, DELIVERED, UNDELIVERED
     }
 
     public enum EncryptionState {
         NONE, ENCRYPTED, ENCRYPTED_AND_VERIFIED
-        
+
     }
     private CharSequence lastMessage = null;
-    
+
     private Context context;
-    
+
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
     }
 
     private ViewHolder mHolder = null;
-    
+
     private final static DateFormat MESSAGE_DATETIME_FORMAT = SimpleDateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT);
     private final static DateFormat MESSAGE_TIME_FORMAT = SimpleDateFormat.getTimeInstance(DateFormat.SHORT);
     private static final SimpleDateFormat FMT_SAME_DAY = new SimpleDateFormat("yyyyMMdd");
-    
+
     private final static Date DATE_NOW = new Date();
 
     private final static char DELIVERED_SUCCESS = '\u2714';
@@ -102,20 +102,20 @@ public class MessageView extends FrameLayout {
     private final static String LOCK_CHAR = "Secure";
     		
 
-    class ViewHolder 
+    class ViewHolder
     {
 
         TextView mTextViewForMessages = (TextView) findViewById(R.id.message);
         TextView mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
-        ImageView mAvatar = (ImageView) findViewById(R.id.avatar);              
-       // View mStatusBlock = findViewById(R.id.status_block);        
+        ImageView mAvatar = (ImageView) findViewById(R.id.avatar);
+       // View mStatusBlock = findViewById(R.id.status_block);
         ImageView mMediaThumbnail = (ImageView) findViewById(R.id.media_thumbnail);
         View mContainer = findViewById(R.id.message_container);
-        
+
         // save the media uri while the MediaScanner is creating the thumbnail
         // if the holder was reused, the pair is broken
         Uri mMediaUri = null;
-        
+
         public void setOnClickListenerMediaThumbnail( final String mimeType, final Uri mediaUri ) {
             mMediaThumbnail.setOnClickListener( new OnClickListener() {
                 @Override
@@ -124,7 +124,7 @@ public class MessageView extends FrameLayout {
                 }
             });
             mMediaThumbnail.setOnLongClickListener( new OnLongClickListener() {
-                
+
                 @Override
                 public boolean onLongClick(View v) {
                     onLongClickMediaIcon( mimeType, mediaUri );
@@ -132,58 +132,58 @@ public class MessageView extends FrameLayout {
                 }
             });
         }
-        
+
         public void resetOnClickListenerMediaThumbnail() {
             mMediaThumbnail.setOnClickListener( null );
         }
-        
+
        long mTimeDiff = -1;
     }
-    
+
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        
-      
+
+
         mHolder = (ViewHolder)getTag();
-        
+
         if (mHolder == null)
         {
-            mHolder = new ViewHolder();   
+            mHolder = new ViewHolder();
             setTag(mHolder);
-            
+
         }
 
     }
-    
+
     public void setMessageBackground (Drawable d)
     {
         mHolder.mContainer.setBackgroundDrawable(d);
     }
-    
+
     public URLSpan[] getMessageLinks() {
         return mHolder.mTextViewForMessages.getUrls();
     }
-    
+
 
     public String getLastMessage () {
         return lastMessage.toString();
     }
-    
+
     public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact, int presenceStatus) {
-      
+
         mHolder = (ViewHolder)getTag();
 
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
-        
+
         if (nickname == null)
             nickname = address;
-        
+
         if (showContact && nickname != null)
         {
             String[] nickParts = nickname.split("/");
-            
+
             lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
             showAvatar(address,true,presenceStatus);
 
@@ -193,24 +193,24 @@ public class MessageView extends FrameLayout {
             lastMessage = formatMessage(body);
             showAvatar(address,true,presenceStatus);
 
-            mHolder.resetOnClickListenerMediaThumbnail();     
+            mHolder.resetOnClickListenerMediaThumbnail();
             if( mimeType != null ) {
-    
+
                 mHolder.mTextViewForMessages.setVisibility(View.GONE);
                 mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
 
                 Uri mediaUri = Uri.parse( body ) ;
                 lastMessage = "";
                 showMediaThumbnail(mimeType, mediaUri, id, mHolder);
-               
+
             } else {
                 mHolder.mMediaThumbnail.setVisibility(View.GONE);
                 if (showContact)
                 {
                     String[] nickParts = nickname.split("/");
-                   
+
                     lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
-                    
+
                 }
                 else
                 {
@@ -218,13 +218,13 @@ public class MessageView extends FrameLayout {
                 }
             }
 	}	
-        
+
         if (lastMessage.length() > 0)
         {
             try {
                 SpannableString spannablecontent=new SpannableString(lastMessage);
                 EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
-                
+
                 mHolder.mTextViewForMessages.setText(spannablecontent);
             } catch (IOException e) {
                 LogCleaner.error(ImApp.LOG_TAG, "error processing message", e);
@@ -234,46 +234,46 @@ public class MessageView extends FrameLayout {
         {
             mHolder.mTextViewForMessages.setText(lastMessage);
         }
-        
-        
+
+
         if (date != null)
         {
            CharSequence tsText = null;
-            
+
            if (isSameDay(date,DATE_NOW))
                tsText = formatTimeStamp(date,MESSAGE_TIME_FORMAT, null, encryption);
            else
                tsText = formatTimeStamp(date,MESSAGE_DATETIME_FORMAT, null, encryption);
-         
+
          mHolder.mTextViewForTimestamp.setText(tsText);
          mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
-        
+
         }
         else
         {
-            
+
             mHolder.mTextViewForTimestamp.setText("");
             //mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
-           
+
         }
-       
+
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
-        
+
     }
-    
+
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
     {
-        holder.setOnClickListenerMediaThumbnail(mimeType, mediaUri);     
-        
-        holder.mMediaThumbnail.setVisibility(View.VISIBLE);                       
+        holder.setOnClickListenerMediaThumbnail(mimeType, mediaUri);
+
+        holder.mMediaThumbnail.setVisibility(View.VISIBLE);
         holder.mTextViewForMessages.setText(lastMessage);
         holder.mTextViewForMessages.setVisibility(View.GONE);
-        
+
         if( mimeType.startsWith("image/") ) {
-            setImageThumbnail( getContext().getContentResolver(), id, holder, mediaUri ); 
+            setImageThumbnail( getContext().getContentResolver(), id, holder, mediaUri );
             holder.mMediaThumbnail.setBackgroundColor(Color.TRANSPARENT);
            // holder.mMediaThumbnail.setBackgroundColor(Color.WHITE);
-            
+
         }
         else if (mimeType.startsWith("audio"))
         {
@@ -283,49 +283,49 @@ public class MessageView extends FrameLayout {
         else
         {
             holder.mMediaThumbnail.setImageResource(R.drawable.ic_file); // generic file icon
-            
+
         }
-        
+
         holder.mContainer.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        
-     
-     
+
+
+
     }
-    
-    
+
+
     private boolean isSameDay (Date date1, Date date2)
-    {        
+    {
         return FMT_SAME_DAY.format(date1).equals(FMT_SAME_DAY.format(date2));
     }
-    
+
     protected String convertMediaUriToPath(Uri uri) {
         String path = null;
-        
+
         String [] proj={MediaStore.Images.Media.DATA};
         Cursor cursor = getContext().getContentResolver().query(uri, proj,  null, null, null);
         if (cursor != null && (!cursor.isClosed()))
         {
             if (cursor.isBeforeFirst())
             {
-                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);            
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
                 cursor.moveToFirst();
                 path = cursor.getString(column_index);
             }
-            
+
             cursor.close();
         }
-        
+
         return path;
     }
-    
+
     private MediaPlayer mMediaPlayer = null;
-    
+
     /**
      * @param mimeType
      * @param body
      */
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
-        
+
         if (IocVfs.isVfsScheme(mediaUri.getScheme())) {
             if (mimeType.startsWith("image")) {
                 Intent intent = new Intent(context, ImageViewActivity.class);
@@ -344,19 +344,19 @@ public class MessageView extends FrameLayout {
         }
         else
         {
-            
-        
+
+
             String body = convertMediaUriToPath(mediaUri);
-            
+
             if (body == null)
                 body = new File(mediaUri.getPath()).getAbsolutePath();
-            
+
             if (mimeType.startsWith("audio") || (body.endsWith("3gp")||body.endsWith("3gpp")||body.endsWith("amr")))
             {
-               
+
                 if (mMediaPlayer != null)
                     mMediaPlayer.release();
-                
+
                 try
                 {
                     mMediaPlayer = new  MediaPlayer();
@@ -364,18 +364,18 @@ public class MessageView extends FrameLayout {
                     mMediaPlayer.setDataSource(body);
                     mMediaPlayer.prepare();
                     mMediaPlayer.start();
-                    
+
                     return;
                 } catch (IOException e) {
                     Log.e(ImApp.LOG_TAG,"error playing audio: " + body,e);
                 }
-                
-                
+
+
             }
-            
+
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK|Intent.FLAG_ACTIVITY_NEW_TASK);
-          
+
             //set a general mime type not specific
             if (mimeType != null)
             {
@@ -385,25 +385,25 @@ public class MessageView extends FrameLayout {
             {
                 intent.setData(Uri.parse( body ));
             }
-            
+
             Context context = getContext().getApplicationContext();
-            
+
             if (isIntentAvailable(context,intent))
-            {        
+            {
                 context.startActivity(intent);
             }
             else
             {
                 Toast.makeText(getContext(), R.string.there_is_no_viewer_available_for_this_file_format, Toast.LENGTH_LONG).show();
             }
-        }     
+        }
     }
-    
+
     protected void onLongClickMediaIcon(final String mimeType, final Uri mediaUri) {
-        
+
         final java.io.File exportPath = IocVfs.exportPath(mimeType, mediaUri);
-        
-        new AlertDialog.Builder(context)            
+
+        new AlertDialog.Builder(context)
         .setTitle(context.getString(R.string.export_media))
         .setMessage(context.getString(R.string.export_media_file_to, exportPath.getAbsolutePath()))
         .setPositiveButton(R.string.export, new DialogInterface.OnClickListener() {
@@ -429,19 +429,19 @@ public class MessageView extends FrameLayout {
         })
         .create().show();
     }
-    
-    public static boolean isIntentAvailable(Context context, Intent intent) {  
-        final PackageManager packageManager = context.getPackageManager();  
-        List<ResolveInfo> list =  
-                packageManager.queryIntentActivities(intent,  
-                        PackageManager.MATCH_DEFAULT_ONLY);  
-        return list.size() > 0;  
-    }  
+
+    public static boolean isIntentAvailable(Context context, Intent intent) {
+        final PackageManager packageManager = context.getPackageManager();
+        List<ResolveInfo> list =
+                packageManager.queryIntentActivities(intent,
+                        PackageManager.MATCH_DEFAULT_ONLY);
+        return list.size() > 0;
+    }
 
 
     /**
-     * @param contentResolver 
-     * @param id 
+     * @param contentResolver
+     * @param id
      * @param aHolder
      * @param mediaUri
      */
@@ -449,25 +449,25 @@ public class MessageView extends FrameLayout {
         // pair this holder to the uri. if the holder is recycled, the pairing is broken
         aHolder.mMediaUri = mediaUri;
         // if a content uri - already scanned
-        
+
         setThumbnail(contentResolver, aHolder, mediaUri);
-        
-                
+
+
     }
-    
+
     /**
-     * @param contentResolver 
+     * @param contentResolver
      * @param aHolder
      * @param uri
      */
     private void setThumbnail(final ContentResolver contentResolver, final ViewHolder aHolder, final Uri uri) {
         new AsyncTask<String, Void, Bitmap>() {
-            
+
             @Override
             protected Bitmap doInBackground(String... params) {
-                
+
                 Bitmap result = mBitmapCache.get(uri.toString());
-                
+
                 if (result == null)
                     return getThumbnail( contentResolver, uri );
                 else
@@ -476,11 +476,11 @@ public class MessageView extends FrameLayout {
 
             @Override
             protected void onPostExecute(Bitmap result) {
-                
+
                 if (uri != null && result != null)
                 {
                     mBitmapCache.put(uri.toString(), result);
-                    
+
                     // confirm the holder is still paired to this uri
                     if( ! uri.equals( aHolder.mMediaUri ) ) {
                         return ;
@@ -498,7 +498,7 @@ public class MessageView extends FrameLayout {
     }
 
     public final static int THUMBNAIL_SIZE = 400;
-    
+
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
      //   Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
         if (IocVfs.isVfsScheme(uri.getScheme())) {
@@ -506,9 +506,9 @@ public class MessageView extends FrameLayout {
         }
         return getThumbnailFile(cr, uri);
     }
-    
+
     public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri) {
-        
+
         java.io.File image = new java.io.File(uri.getPath());
 
         if (!image.exists())
@@ -517,13 +517,13 @@ public class MessageView extends FrameLayout {
             if (!image.exists())
                 return null;
         }
-        
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
 
-        
+
         BitmapFactory.decodeFile(image.getPath(), options);
         if ((options.outWidth == -1) || (options.outHeight == -1))
             return null;
@@ -533,119 +533,119 @@ public class MessageView extends FrameLayout {
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
-        
+
         Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
 
-        return scaledBitmap;     
+        return scaledBitmap;
     }
-    
+
     private String formatMessage (String body)
     {
         return android.text.Html.fromHtml(body).toString();
     }
-    
+
     public void bindOutgoingMessage(int id, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
-        
+
         mHolder = (ViewHolder)getTag();
 
         mHolder.mTextViewForMessages.setVisibility(View.VISIBLE);
-        mHolder.resetOnClickListenerMediaThumbnail();     
+        mHolder.resetOnClickListenerMediaThumbnail();
         if( mimeType != null ) {
-            
+
             lastMessage = "";
             Uri mediaUri = Uri.parse( body ) ;
-            
+
             showMediaThumbnail(mimeType, mediaUri, id, mHolder);
-            
+
 
             mHolder.mTextViewForMessages.setVisibility(View.GONE);
             mHolder.mMediaThumbnail.setVisibility(View.VISIBLE);
-            
+
         } else {
             mHolder.mMediaThumbnail.setVisibility(View.GONE);
             lastMessage = body;//formatMessage(body);
-         
+
              try {
 
                  SpannableString spannablecontent=new SpannableString(lastMessage);
-    
+
                  EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
-                 
+
                  mHolder.mTextViewForMessages.setText(spannablecontent);
              } catch (IOException e) {
                  // TODO Auto-generated catch block
                  e.printStackTrace();
              }
         }
-         
-       
+
+
         /**
         mHolder.mStatusBlock.setVisibility(VISIBLE);
 
 //        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
-        
+
         if (encryption == EncryptionState.NONE)
         {
 
             mHolder.mStatusBlock.setBackgroundResource(R.color.holo_red_dark);
 
-               
+
         }
         else if (encryption == EncryptionState.ENCRYPTED)
         {
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);            
-     
+            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);
+
         }
-        
+
         else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
             mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
-            
+
         }*/
 
 
         if (date != null)
         {
-            
+
             CharSequence tsText = null;
-            
+
             if (isSameDay(date,DATE_NOW))
                 tsText = formatTimeStamp(date,MESSAGE_TIME_FORMAT, delivery, encryption);
             else
                 tsText = formatTimeStamp(date,MESSAGE_DATETIME_FORMAT, delivery, encryption);
-            
-            mHolder.mTextViewForTimestamp.setText(tsText);    
-            
-            mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);            
-         
+
+            mHolder.mTextViewForTimestamp.setText(tsText);
+
+            mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
+
         }
         else
         {
-            mHolder.mTextViewForTimestamp.setText("");      
+            mHolder.mTextViewForTimestamp.setText("");
 
         }
-        
-                  
+
+
         Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
-        
+
     }
 
     private static RoundedAvatarDrawable AVATAR_DEFAULT;
-    
+
     private void showAvatar (String address, boolean isLeft, int encryptionState)
     {
 
-        mHolder.mAvatar.setVisibility(View.GONE);        
-        
+        mHolder.mAvatar.setVisibility(View.GONE);
+
         if (address != null)
         {
-            
+
             RoundedAvatarDrawable avatar = null;
-            
+
             try { avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
             catch (Exception e){}
-            
+
             if (avatar != null)
             {
                 if (isLeft)
@@ -661,19 +661,19 @@ public class MessageView extends FrameLayout {
                     AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
                             R.drawable.avatar_unknown));
                 }
-                
+
                 avatar = AVATAR_DEFAULT;
                 mHolder.mAvatar.setVisibility(View.VISIBLE);
                 mHolder.mAvatar.setImageDrawable(avatar);
-                
+
             }
-                
+
             setAvatarBorder(encryptionState, avatar);
-        }    
+        }
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {
-        
+
         mHolder = (ViewHolder)getTag();
 
         CharSequence message = formatPresenceUpdates(contact, type, isGroupChat, scrolling);
@@ -683,7 +683,7 @@ public class MessageView extends FrameLayout {
     }
 
     public void bindErrorMessage(int errCode) {
-        
+
         mHolder = (ViewHolder)getTag();
 
         mHolder.mTextViewForMessages.setText(R.string.msg_sent_failed);
@@ -692,68 +692,68 @@ public class MessageView extends FrameLayout {
     }
 
     private SpannableString formatTimeStamp(Date date, DateFormat format, MessageView.DeliveryState delivery, EncryptionState encryptionState) {
-        
+
 
         StringBuilder deliveryText = new StringBuilder();
         deliveryText.append(format.format(date));
         deliveryText.append(' ');
-        
+
         if (delivery != null)
         {
             if (delivery == DeliveryState.DELIVERED) {
-                
+
                 deliveryText.append(DELIVERED_SUCCESS);
-                    
+
             } else if (delivery == DeliveryState.UNDELIVERED) {
-    
+
                 deliveryText.append(DELIVERED_FAIL);
-                
-            } 
+
+            }
         }
-        
+
 
         SpannableString spanText = null;
-        
+
         if (encryptionState == EncryptionState.ENCRYPTED)
         {
             deliveryText.append('X');
             spanText = new SpannableString(deliveryText.toString());
             int len = spanText.length();
-            
+
             spanText.setSpan(new ImageSpan(getContext(), R.drawable.lock16), len-1,len,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            
+
         }
         else if (encryptionState == EncryptionState.ENCRYPTED_AND_VERIFIED)
         {
             deliveryText.append('X');
             spanText = new SpannableString(deliveryText.toString());
             int len = spanText.length();
-            
+
             spanText.setSpan(new ImageSpan(getContext(), R.drawable.lock16), len-1,len,Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            
+
         }
         else
         {
             spanText = new SpannableString(deliveryText.toString());
             int len = spanText.length();
-            
+
         }
-        
+
      //   spanText.setSpan(new StyleSpan(Typeface.SANS_SERIF), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        
+
        // spanText.setSpan(new RelativeSizeSpan(0.8f), 0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
     //    spanText.setSpan(new ForegroundColorSpan(R.color.soft_grey),
       //        0, len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-     
+
         return spanText;
     }
 
     private CharSequence formatPresenceUpdates(String contact, int type, boolean isGroupChat,
             boolean scrolling) {
         String body;
-        
+
         Resources resources =getResources();
-        
+
         switch (type) {
         case Imps.MessageType.PRESENCE_AVAILABLE:
             body = resources.getString(isGroupChat ? R.string.contact_joined
@@ -789,31 +789,31 @@ public class MessageView extends FrameLayout {
             return spanText;
         }
     }
-    
+
     public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
         switch (status) {
         case Imps.Presence.AVAILABLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
             avatar.setAlpha(255);
             break;
-            
+
         case Imps.Presence.IDLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
             avatar.setAlpha(255);
 
             break;
-        
+
         case Imps.Presence.AWAY:
             avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
             avatar.setAlpha(255);
             break;
-            
+
         case Imps.Presence.DO_NOT_DISTURB:
             avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
             avatar.setAlpha(255);
 
             break;
-            
+
         case Imps.Presence.OFFLINE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
             avatar.setAlpha(100);

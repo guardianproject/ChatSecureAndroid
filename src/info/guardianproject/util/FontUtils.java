@@ -76,7 +76,7 @@ public final class FontUtils {
                 default:
                     robotoFontType = FontType.NORMAL;
                     break;
-                    
+
             }
         }
 
@@ -90,7 +90,7 @@ public final class FontUtils {
      * @param view    - root view to apply typeface to
      */
     public static void setRobotoFont(Context context, View view) {
-        
+
         if (view instanceof ViewGroup) {
             for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
                 setRobotoFont(context, ((ViewGroup) view).getChildAt(i));

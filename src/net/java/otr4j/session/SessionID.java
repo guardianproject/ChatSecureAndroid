@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.session;
@@ -29,7 +29,7 @@ public final class SessionID {
     {
         return mLocalUserId;
     }
-    
+
     public String getRemoteUserId ()
     {
         return mRemoteUserId;
@@ -39,7 +39,7 @@ public final class SessionID {
     {
         return mProtocolName;
     }
-    
+
     public String toString() {
         return mSessionId;
 

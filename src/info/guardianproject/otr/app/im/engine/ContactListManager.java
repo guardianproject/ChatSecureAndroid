@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -73,7 +73,7 @@ public abstract class ContactListManager {
 
     /**
      * Creates a new ContactListManager.
-     * 
+     *
      * @param conn The underlying protocol connection.
      */
     protected ContactListManager() {
@@ -89,7 +89,7 @@ public abstract class ContactListManager {
 
     /**
      * Set the state of the ContactListManager
-     * 
+     *
      * @param state the new state
      */
     protected synchronized void setState(int state) {
@@ -102,7 +102,7 @@ public abstract class ContactListManager {
 
     /**
      * Get the state of the ContactListManager
-     * 
+     *
      * @return the current state of the manager
      */
     public synchronized int getState() {
@@ -112,7 +112,7 @@ public abstract class ContactListManager {
     /**
      * Adds a listener to the manager so that it will be notified for contact
      * list changed.
-     * 
+     *
      * @param listener the listener to add.
      */
     public synchronized void addContactListListener(ContactListListener listener) {
@@ -123,7 +123,7 @@ public abstract class ContactListManager {
 
     /**
      * Removes a listener from this manager.
-     * 
+     *
      * @param listener the listener to remove.
      */
     public synchronized void removeContactListListener(ContactListListener listener) {
@@ -133,7 +133,7 @@ public abstract class ContactListManager {
     /**
      * Sets the SubscriptionRequestListener to the manager so that it will be
      * notified when a subscription request from another user is received.
-     * 
+     *
      * @param listener the ContactInvitationListener.
      */
     public synchronized void setSubscriptionRequestListener(ISubscriptionListener listener) {
@@ -146,7 +146,7 @@ public abstract class ContactListManager {
 
     /**
      * Gets a collection of the contact lists.
-     * 
+     *
      * @return a collection of the contact lists.
      */
     public Collection<ContactList> getContactLists() {
@@ -155,7 +155,7 @@ public abstract class ContactListManager {
 
     /**
      * Gets a contact by address.
-     * 
+     *
      * @param address the address of the Contact.
      * @return the Contact or null if the Contact doesn't exist in any list.
      */
@@ -172,21 +172,21 @@ public abstract class ContactListManager {
         }
         return null;
     }
-    
+
     public abstract String normalizeAddress(String address);
 
     /**
      * Creates a temporary contact. It's usually used when we want to create a
      * chat with someone not in the list.
-     * 
+     *
      * @param address the address of the temporary contact.
      * @return the created temporary contact
      */
     public abstract Contact[] createTemporaryContacts(String[] addresses);
-    
+
     /**
      * Tell whether the manager contains the specified contact
-     * 
+     *
      * @param contact the specified contact
      * @return true if the contact is contained in the lists of the manager,
      *         otherwise, return false
@@ -203,7 +203,7 @@ public abstract class ContactListManager {
 
     /**
      * Gets a contact list by name.
-     * 
+     *
      * @param name the name of the contact list.
      * @return the ContactList or null if the contact list doesn't exist.
      */
@@ -218,7 +218,7 @@ public abstract class ContactListManager {
 
     /**
      * Get the contact list by the address
-     * 
+     *
      * @param address the address of the contact list
      * @return the <code>ContactList</code> or null if the list doesn't exist
      */
@@ -234,7 +234,7 @@ public abstract class ContactListManager {
 
     /**
      * Gets the default contact list.
-     * 
+     *
      * @return the default contact list.
      * @throws ImException
      */
@@ -245,7 +245,7 @@ public abstract class ContactListManager {
 
     /**
      * Create a contact list with the specified name asynchronously.
-     * 
+     *
      * @param name the specific name of the contact list
      * @throws ImException
      */
@@ -256,7 +256,7 @@ public abstract class ContactListManager {
     /**
      * Create a contact list with specified name and whether it is to be created
      * as the default list.
-     * 
+     *
      * @param name the specific name of the contact list
      * @param isDefault whether the contact list is to be created as the default
      *            list
@@ -268,7 +268,7 @@ public abstract class ContactListManager {
 
     /**
      * Create a contact list with specified name and contacts asynchronously.
-     * 
+     *
      * @param name the specific name of the contact list
      * @param contacts the initial contacts of the contact list
      * @throws ImException
@@ -281,7 +281,7 @@ public abstract class ContactListManager {
     /**
      * Create a contact list with specified name and contacts asynchronously,
      * and whether it is to be created as the default contact list.
-     * 
+     *
      * @param name the name of the contact list
      * @param contacts the initial contacts of the list
      * @param isDefault whether the contact list is the default list
@@ -304,7 +304,7 @@ public abstract class ContactListManager {
 
     /**
      * Delete a contact list of the specified name asynchronously
-     * 
+     *
      * @param name the specific name of the contact list
      * @throws ImException
      */
@@ -314,7 +314,7 @@ public abstract class ContactListManager {
 
     /**
      * Delete a specified contact list asynchronously
-     * 
+     *
      * @param list the contact list to be deleted
      * @throws ImException if any error raised
      */
@@ -336,7 +336,7 @@ public abstract class ContactListManager {
      * Blocks a certain Contact. The contact will be removed from any
      * ContactList after be blocked. If the contact has already been blocked,
      * the method does nothing.
-     * 
+     *
      * @param address the address of the contact to block.
      * @throws ImException if an error occurs
      */
@@ -364,7 +364,7 @@ public abstract class ContactListManager {
      * nothing. Whether the unblocked contact will be added to the ContactList
      * it belongs before blocked or not depends on the underlying protocol
      * implementation.
-     * 
+     *
      * @param address the address of the contact to unblock.
      * @throws ImException if the current state is illegal
      */
@@ -393,12 +393,12 @@ public abstract class ContactListManager {
 
         doRemoveContactFromListAsync(contact, list);
     }
-    
+
     /**
      * @param address
      * @param name
      * @return
-     * @throws ImException 
+     * @throws ImException
      */
     public void setContactName(String address, String name) throws ImException {
         checkState();
@@ -406,9 +406,9 @@ public abstract class ContactListManager {
         doSetContactName(address,name);
         updateCache(address,name); // used to refresh the display
     }
-    
+
     protected abstract void doSetContactName(String address, String name) throws ImException;
-    
+
     protected void updateCache(String address, String name) {
         // each contact list holds a cache
         for (ContactList list : mContactLists) {
@@ -420,10 +420,10 @@ public abstract class ContactListManager {
             }
         }
     }
-    
+
     /**
      * Gets a unmodifiable list of blocked contacts.
-     * 
+     *
      * @return a unmodifiable list of blocked contacts.
      * @throws ImException
      */
@@ -435,7 +435,7 @@ public abstract class ContactListManager {
 
     /**
      * Checks if a contact is blocked.
-     * 
+     *
      * @param contact the contact.
      * @return true if it's blocked, false otherwise.
      * @throws ImException if contacts has not been loaded.
@@ -446,7 +446,7 @@ public abstract class ContactListManager {
 
     /**
      * Checks if a contact is blocked.
-     * 
+     *
      * @param address the address of the contact.
      * @return true if it's blocked, false otherwise.
      * @throws ImException if contacts has not been loaded.
@@ -468,7 +468,7 @@ public abstract class ContactListManager {
     /**
      * Check the state of the ContactListManager. Only the LIST_LOADED state is
      * permitted.
-     * 
+     *
      * @throws ImException if the current state is not LIST_LOADED
      */
     protected void checkState() throws ImException {
@@ -497,7 +497,7 @@ public abstract class ContactListManager {
 
     /**
      * Block or unblock a contact.
-     * 
+     *
      * @param address the address of the contact to block or unblock.
      * @param block <code>true</code> to block the contact; <code>false</code>
      *            to unblock the contact.
@@ -511,7 +511,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that the presence of the contact has been updated
-     * 
+     *
      * @param contacts the contacts who have updated presence information
      */
     public void notifyContactsPresenceUpdated(Contact[] contacts) {
@@ -522,7 +522,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that a contact list related error has been raised.
-     * 
+     *
      * @param type the type of the error
      * @param error the raised error
      * @param listName the list name, if any, associated with the error
@@ -541,7 +541,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that a contact list has been loaded
-     * 
+     *
      * @param list the loaded list
      */
     protected void notifyContactListLoaded(ContactList list) {
@@ -561,7 +561,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that a contact has been added to or removed from a list.
-     * 
+     *
      * @param list the updated contact list
      * @param type the type of the update
      * @param contact the involved contact, null if no contact involved.
@@ -583,7 +583,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that the name of the specified contact list has been updated.
-     * 
+     *
      * @param list
      * @param name the new name of the list
      */
@@ -597,7 +597,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that a contact list has been created.
-     * 
+     *
      * @param list the created list
      */
     protected void notifyContactListCreated(ContactList list) {
@@ -618,7 +618,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that a contact list has been deleted
-     * 
+     *
      * @param list the deleted list
      */
     protected void notifyContactListDeleted(ContactList list) {
@@ -636,7 +636,7 @@ public abstract class ContactListManager {
 
     /**
      * Notify that a contact has been blocked/unblocked.
-     * 
+     *
      * @param contact the blocked/unblocked contact
      */
     protected void notifyBlockContact(Contact contact, boolean blocked) {

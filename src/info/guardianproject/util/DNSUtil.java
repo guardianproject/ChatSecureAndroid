@@ -1,14 +1,14 @@
 /**
  * $Revision: 1456 $ $Date: 2005-06-01 22:04:54 -0700 (Wed, 01 Jun 2005) $
- * 
+ *
  * Copyright 2003-2005 Jive Software.
- * 
+ *
  * All rights reserved. Licensed under the Apache License, Version 2.0 (the
  * "License"); you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -29,7 +29,7 @@ import org.xbill.DNS.Type;
 
 /**
  * Utilty class to perform DNS lookups for XMPP services.
- * 
+ *
  * @author Matt Tucker
  */
 public class DNSUtil {
@@ -92,20 +92,20 @@ public class DNSUtil {
      * reached at for client-to-server communication. A DNS lookup for a SRV
      * record in the form "_xmpp-client._tcp.example.com" is attempted,
      * according to section 14.4 of RFC 3920.
-     * 
+     *
      * If that lookup fails, it's assumed that the XMPP server lives at the host
      * resolved by a DNS lookup at the specified domain on the default port of
      * 5222. <p>
-     * 
+     *
      * As an example, a lookup for "example.com" may return
      * "im.example.com:5222".
-     * 
+     *
      * Note on SRV record selection. We now check priority and weight, but we
      * still don't do this correctly. The missing behavior is this: if we fail
      * to reach a host based on its SRV record then we need to select another
      * host from the other SRV records. In Smack 3.1.1 we're not going to be
      * able to do the major system redesign to correct this.
-     * 
+     *
      * @param domain the domain.
      * @return a HostAddress, which encompasses the hostname and port that the
      *         XMPP server can be reached at for the specified domain.
@@ -143,10 +143,10 @@ public class DNSUtil {
      * notation. If that lookup fails as well, it's assumed that the XMPP server
      * lives at the host resolved by a DNS lookup at the specified domain on the
      * default port of 5269. <p>
-     * 
+     *
      * As an example, a lookup for "example.com" may return
      * "im.example.com:5269".
-     * 
+     *
      * @param domain the domain.
      * @return a HostAddress, which encompasses the hostname and port that the
      *         XMPP server can be reached at for the specified domain.
@@ -188,7 +188,7 @@ public class DNSUtil {
 
         /**
          * Returns the hostname.
-         * 
+         *
          * @return the hostname.
          */
         public String getHost() {
@@ -197,7 +197,7 @@ public class DNSUtil {
 
         /**
          * Returns the port.
-         * 
+         *
          * @return the port.
          */
         public int getPort() {

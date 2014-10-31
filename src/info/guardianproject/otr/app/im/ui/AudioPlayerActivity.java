@@ -38,9 +38,9 @@ public class AudioPlayerActivity extends Activity {
         super.onCreate(savedInstanceState);
         filename = getIntent().getStringExtra(FILENAME);
         mimeType = getIntent().getStringExtra(MIMETYPE);
-        
+
         // TODO; we will make this an invisible activity for now
-        
+
         /**
         setContentView(R.layout.audio_player_activity);
         filenameTextView = (TextView) findViewById(R.id.audio_player_text);
@@ -49,7 +49,7 @@ public class AudioPlayerActivity extends Activity {
         playButton = (Button) findViewById(R.id.audio_player_play);
         playButton.setOnClickListener(onClickPlay);
         */
-        
+
         play();
     }
 
@@ -63,12 +63,12 @@ public class AudioPlayerActivity extends Activity {
             throw new RuntimeException(e);
         }
     }
-    
+
     @Override
     protected void onDestroy() {
-        
+
         super.onDestroy();
-        
+
         if (streamer != null) {
             streamer.destroy();
         }
@@ -87,7 +87,7 @@ public class AudioPlayerActivity extends Activity {
                 play();
         }
     };
-    
+
     private void play() {
         try {
             initPlayer(filename, mimeType);
@@ -120,26 +120,26 @@ public class AudioPlayerActivity extends Activity {
 
     private MediaPlayer mediaPlayer;
     private HttpMediaStreamer streamer;
-    
+
     private void killPlayer() {
         if (streamer != null) {
             streamer.destroy();
         }
-        
+
         if (mediaPlayer == null) {
             return;
         }
         mediaPlayer.stop();
         mediaPlayer.release();
         mediaPlayer = null;
-        
+
         refreshUi();
     }
-    
+
     private void initPlayer(String filename, String mimeType) throws Exception {
         streamer = new HttpMediaStreamer(filename, mimeType);
         Uri uri = streamer.getUri();
-        
+
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnPreparedListener(new OnPreparedListener() {
@@ -172,10 +172,10 @@ public class AudioPlayerActivity extends Activity {
 
 
     public static void playOnce(Context context, String filename, String mimeType) throws IllegalArgumentException, SecurityException, IllegalStateException, IOException {
-        
+
         final HttpMediaStreamer streamer = new HttpMediaStreamer(filename, mimeType);
         Uri uri = streamer.getUri();
-        
+
         MediaPlayer mediaPlayer = new MediaPlayer();
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.setOnPreparedListener(new OnPreparedListener() {

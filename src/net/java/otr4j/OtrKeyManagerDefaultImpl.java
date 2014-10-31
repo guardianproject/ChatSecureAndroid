@@ -148,7 +148,7 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privKey.getEncoded());
 
         this.store.setProperty(accountID + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
-        
+
     }
 
     public String getLocalFingerprint(SessionID sessionID) {
@@ -258,12 +258,12 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
         String userID = sessionID.getRemoteUserId();
-        
+
         byte[] keyEnc = x509EncodedKeySpec.getEncoded();
         String keyString = userID + ".publicKey";
-        
+
         byte[] keyExisting = store.getPropertyBytes(keyString);
-        
+
         if (keyExisting != null && (!Arrays.equals(keyEnc, keyExisting)))
         {
             store.removeProperty(userID + ".publicKey.verified"); //remove any verified state
@@ -293,7 +293,7 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
             return;
 
         store.setProperty(sessionID.getRemoteUserId() + ".publicKey.verified", true);
-        
+
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
     }

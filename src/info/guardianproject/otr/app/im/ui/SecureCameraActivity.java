@@ -35,7 +35,7 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
 
     private String filename = null;
     private String thumbnail = null;
-    
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,7 +62,7 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
             out.write(data);
             out.flush();
             out.close();
-            
+
             if (thumbnail != null) {
                 Bitmap thumbnailBitmap = getThumbnail(getContentResolver(), filename);
                 FileOutputStream fos = new FileOutputStream(thumbnail);
@@ -84,18 +84,18 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
         }
         finish();
     }
-    
+
     public final static int THUMBNAIL_SIZE = 800;
-    
+
     public Bitmap getThumbnail(ContentResolver cr, String filename) throws IOException {
-        
+
         File file = new File(filename);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
-        
+
         FileInputStream fis = new FileInputStream(file);
         BitmapFactory.decodeStream(fis, null, options);
         fis.close();
@@ -110,7 +110,7 @@ public class SecureCameraActivity extends SurfaceGrabberActivity {
 
         fis = new FileInputStream(file);
         Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
-        return scaledBitmap;     
+        return scaledBitmap;
     }
-    
+
 }

@@ -69,7 +69,7 @@ public class SurfaceGrabberActivity extends Activity implements OnClickListener,
     /**
      * Whether or not we can default to "other" direction if our preferred
      * facing camera can't be opened
-     * 
+     *
      * @return true to try camera facing other way, false otherwise
      */
     protected boolean canUseOtherDirection() {
@@ -111,7 +111,7 @@ public class SurfaceGrabberActivity extends Activity implements OnClickListener,
                 params.setPictureFormat(ImageFormat.JPEG);
                 //params.setPictureSize(size.width,size.height);
                 //params.setJpegThumbnailSize(128,128);
-                //params.setPreviewSize(size.width/2,size.height/2); 
+                //params.setPreviewSize(size.width/2,size.height/2);
 
                 if (this.getCameraDirection() == CameraInfo.CAMERA_FACING_BACK) {
                     params.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);

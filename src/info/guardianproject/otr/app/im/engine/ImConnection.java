@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -100,7 +100,7 @@ public abstract class ImConnection {
 
         return new Presence(mUserPresence);
     }
-    
+
     public abstract void initUser (long providerId, long accountId) throws ImException;
 
     public void updateUserPresenceAsync(Presence newPresence) throws ImException {
@@ -115,7 +115,7 @@ public abstract class ImConnection {
      * Tells the engine that the network type has changed, e.g. switch from gprs
      * to wifi. The engine should drop all the network connections created
      * before because they are not available anymore.
-     * 
+     *
      * The engine might also need to redo authentication on the new network
      * depending on the underlying protocol.
      */
@@ -129,7 +129,7 @@ public abstract class ImConnection {
 
     /**
      * Sets the state of the connection.
-     * 
+     *
      * @param state the new state of the connection.
      * @param error the error information which caused the state change or null.
      */
@@ -161,14 +161,14 @@ public abstract class ImConnection {
      * Gets bit-or of capabilities supported by the underlying protocol. Valid
      * capability bits are: {@value #CAPABILITY_GROUP_CHAT},
      * {@value #CAPABILITY_SESSION_REESTABLISHMENT}
-     * 
+     *
      * @return bit-or of capabilities supported by the underlying protocol
      */
     public abstract int getCapability();
 
     /**
      * Log in to the IM server, using the settings stored in Imps.
-     * 
+     *
      * @param accountId the ID to get the Account record
      * @param passwordTemp a one time use password, not to be saved
      * @param providerId the ID to get the ProviderSettings record
@@ -186,7 +186,7 @@ public abstract class ImConnection {
      * stored context should be removed by the client. <p> The client can query
      * if session re-establishment is supported through {@link #getCapability()}
      * .
-     * 
+     *
      * @param sessionContext the session context which was fetched from previous
      *            session by {@link #getSessionContext()} and persisted by the
      *            client.
@@ -210,7 +210,7 @@ public abstract class ImConnection {
      * context and use it to re-establish the session by
      * {@link #reestablishSessionAsync(Map)} . The stored context MUST be
      * removed upon the connection logout/disconnect.
-     * 
+     *
      * @return the context of the current session or <code>null</code> if the
      *         user has not logged in yet.
      * @throws UnsupportedOperationException if session re-establishment is not
@@ -220,21 +220,21 @@ public abstract class ImConnection {
 
     /**
      * Gets the instance of ChatSessionManager for the connection.
-     * 
+     *
      * @return the instance of ChatSessionManager for the connection.
      */
     public abstract ChatSessionManager getChatSessionManager();
 
     /**
      * Gets the instance of ContactListManager for the connection.
-     * 
+     *
      * @return the instance of ContactListManager for the connection.
      */
     public abstract ContactListManager getContactListManager();
 
     /**
      * Gets the instance of ChatGroupManager for the connection.
-     * 
+     *
      * @return the instance of ChatGroupManager for the connection.
      * @throws UnsupportedOperationException if group chat is not supported by
      *             the underlying protocol.
@@ -245,7 +245,7 @@ public abstract class ImConnection {
 
     /**
      * Handle a heartbeat.
-     * 
+     *
      * @param heartbeatInterval the number of heartbeats before a ping should be sent.
      */
     public abstract void sendHeartbeat(long heartbeatInterval);

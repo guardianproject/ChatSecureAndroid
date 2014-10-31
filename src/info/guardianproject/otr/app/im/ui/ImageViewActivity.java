@@ -20,7 +20,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 public class ImageViewActivity extends Activity {
-    
+
     public static final String FILENAME = "filename";
 
     @Override
@@ -33,7 +33,7 @@ public class ImageViewActivity extends Activity {
     protected void onStart() {
         super.onStart();
         final String filename = getIntent().getStringExtra(FILENAME);
-        
+
         runOnUiThread( new Runnable() {
             @Override
             public void run() {
@@ -41,7 +41,7 @@ public class ImageViewActivity extends Activity {
             }
         });
     }
-    
+
     private void display( String filename ) {
         try {
             Bitmap bitmap = fitToScreen(filename);
@@ -52,25 +52,25 @@ public class ImageViewActivity extends Activity {
             findViewById(R.id.pzs_broken_image_view).setVisibility(View.VISIBLE);
         }
     }
-    
+
     private Bitmap fitToScreen( String filename ) throws IOException {
         // read in dimensions only
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
-        
+
         FileInputStream fis = new FileInputStream(new File(filename));
         BitmapFactory.decodeStream(fis, null, options);
         fis.close();
 
         if ((options.outWidth <= 0) || (options.outHeight <= 0))
             throw new IOException( "Image dimensions unknown");
-        
+
         // calculate down sampling ratio to fit screen
         int imageWidth = options.outWidth;
         int imageHeight = options.outHeight;
-        
+
         options = new BitmapFactory.Options();
         Point screenDimensions = getScreenDimensions();
         if (imageHeight > imageWidth) {
@@ -85,7 +85,7 @@ public class ImageViewActivity extends Activity {
         fis.close();
         return scaledBitmap;
     }
-    
+
     @SuppressLint("NewApi")
     private Point getScreenDimensions() {
         Display display = getWindowManager().getDefaultDisplay();

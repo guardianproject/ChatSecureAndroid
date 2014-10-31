@@ -51,7 +51,7 @@ public interface OtrEngine {
 
     /**
      * Starts an Off-the-Record session, if there is no active one.
-     * 
+     *
      * @param sessionID The session identifier.
      * @throws OtrException
      */
@@ -62,7 +62,7 @@ public interface OtrEngine {
 
     /**
      * Ends the Off-the-Record session, if exists.
-     * 
+     *
      * @param sessionID The session identifier.
      * @throws OtrException
      */
@@ -70,7 +70,7 @@ public interface OtrEngine {
 
     /**
      * Stops/Starts the Off-the-Record session.
-     * 
+     *
      * @param sessionID The session identifier.
      * @throws OtrException
      */

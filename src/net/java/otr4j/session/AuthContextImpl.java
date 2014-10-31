@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.session;
@@ -69,7 +69,7 @@ class AuthContextImpl implements AuthContext {
     private KeyPair localLongTermKeyPair;
     private Boolean isSecure = false;
     private int protocolVersion;
-    
+
     private static Logger logger = Logger.getLogger(AuthContextImpl.class.getName());
 
     private int getProtocolVersion() {
@@ -280,8 +280,8 @@ class AuthContextImpl implements AuthContext {
 
     public byte[] getExtraSymmetricKey() throws OtrException {
         return h2(EXTRA_SYMMETRIC_KEY);
-    } 
-    
+    }
+
     private byte[] getC() throws OtrException {
         if (c != null)
             return c;

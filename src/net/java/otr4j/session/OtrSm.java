@@ -33,7 +33,7 @@ public class OtrSm implements OtrTlvHandler {
 
     /**
      * Construct an OTR Socialist Millionaire handler object.
-     * 
+     *
      * @param authContext The encryption context for encrypting the session.
      * @param keyManager The long-term key manager.
      * @param sessionId The session ID.
@@ -79,13 +79,13 @@ public class OtrSm implements OtrTlvHandler {
 
     /**
      * Respond to or initiate an SMP negotiation
-     * 
+     *
      * @param question The question to present to the peer, if initiating. May
      *            be null for no question.
      * @param secret The secret.
      * @param initiating Whether we are initiating or responding to an initial
      *            request.
-     * 
+     *
      * @return TLVs to send to the peer
      */
     public List<TLV> initRespondSmp(String question, String secret, boolean initiating)
@@ -99,11 +99,11 @@ public class OtrSm implements OtrTlvHandler {
          * responder fingerprint (20 bytes), secure session id, input secret
          */
         byte[] our_fp = Hex.decode(keyManager.getLocalFingerprint(sessionID));
-        
+
         String remoteFingerprint = keyManager.getRemoteFingerprint(sessionID);
         if (remoteFingerprint == null)
             throw new OtrException("no fingerprint for remote user");
-        
+
         byte[] their_fp = Hex.decode(remoteFingerprint);
 
         byte[] sessionId;
@@ -145,7 +145,7 @@ public class OtrSm implements OtrTlvHandler {
             throw new OtrException(ex);
         }
 
-        // If we've got a question, attach it to the smpmsg 
+        // If we've got a question, attach it to the smpmsg
         if (question != null) {
             byte[] qsmpmsg = new byte[question.length() + 1 + smpmsg.length];
             System.arraycopy(question.getBytes(), 0, qsmpmsg, 0, question.length());
@@ -161,7 +161,7 @@ public class OtrSm implements OtrTlvHandler {
 
     /**
      * Create an abort TLV and reset our state.
-     * 
+     *
      * @return TLVs to send to the peer
      */
     public List<TLV> abortSmp() throws OtrException {

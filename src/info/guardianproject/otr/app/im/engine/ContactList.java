@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class ContactList extends ImEntity {
-    
+
     protected Address mAddress;
     protected String mName;
     protected boolean mDefault;
@@ -77,7 +77,7 @@ public class ContactList extends ImEntity {
     /**
      * Add a contact to the list. The contact is specified by its address
      * string.
-     * 
+     *
      * @param address the address string specifies the contact.
      * @throws IllegalArgumentException if the address is invalid.
      * @throws NullPointerException if the address string is null
@@ -95,10 +95,10 @@ public class ContactList extends ImEntity {
                         "Contact has been blocked");
             }
         }
-        
+
         //String aKey = mManager.normalizeAddress(address);
         Contact contact = getContact(address);
-        
+
         if (contact != null)
         {
             if (containsContact(contact)) {
@@ -117,16 +117,16 @@ public class ContactList extends ImEntity {
     /**
      * Add a contact to the list. The contact is specified by its address
      * string.
-     * 
+     *
      * @param address the address string specifies the contact.
      * @throws IllegalArgumentException if the address is invalid.
      * @throws NullPointerException if the address string is null
      * @throws ImException if the contact is not allowed to be added
      */
     public void addExistingContact(Contact contact) throws ImException {
-       
+
         String aKey = mManager.normalizeAddress(contact.getAddress().getAddress());
-        
+
         if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED) {
             if (mManager.isBlocked(aKey)) {
                 throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
@@ -146,7 +146,7 @@ public class ContactList extends ImEntity {
      * Remove a contact from the list. If the contact is not in the list,
      * nothing will happen. Otherwise, the contact will be removed from the list
      * on the server asynchronously.
-     * 
+     *
      * @param address the address of the contact to be removed from the list
      * @throws NullPointerException If the address is null
      */
@@ -164,7 +164,7 @@ public class ContactList extends ImEntity {
      * Remove a contact from the list. If the contact is not in the list,
      * nothing will happen. Otherwise, the contact will be removed from the list
      * on the server asynchronously.
-     * 
+     *
      * @param contact the contact to be removed from the list
      * @throws NullPointerException If the contact is null
      */
@@ -175,7 +175,7 @@ public class ContactList extends ImEntity {
 
         if (containsContact(contact)) {
             mManager.removeContactFromListAsync(contact, this);
-            mContactsCache.remove(mManager.normalizeAddress(contact.getAddress().getAddress()));            
+            mContactsCache.remove(mManager.normalizeAddress(contact.getAddress().getAddress()));
         }
     }
 

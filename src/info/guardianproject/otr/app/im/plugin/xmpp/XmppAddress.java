@@ -9,9 +9,9 @@ public class XmppAddress extends Address {
     private String mAddress;
     private String mUser;
     private String mResource;
-    
+
     public XmppAddress() {}
-    
+
     @Override
     public String getBareAddress() {
         int resIdx;
@@ -22,14 +22,14 @@ public class XmppAddress extends Address {
     }
 
     public XmppAddress(String fullJid) {
-        
+
         mUser = fullJid.replaceFirst("@.*", "");
         mAddress = fullJid;
-        
+
         String[] presenceParts = fullJid.split("/");
         if (presenceParts.length > 1)
             mResource = presenceParts[1];
-        
+
     }
 
     @Override
@@ -41,7 +41,7 @@ public class XmppAddress extends Address {
     public String getUser() {
         return mUser;
     }
-   
+
     @Override
     public void readFromParcel(Parcel source) {
         mUser = source.readString();
@@ -55,10 +55,10 @@ public class XmppAddress extends Address {
         dest.writeString(mAddress);
         dest.writeString(mResource);
     }
-    
+
     @Override
     public String getResource() {
         return mResource;
     }
-    
+
 }

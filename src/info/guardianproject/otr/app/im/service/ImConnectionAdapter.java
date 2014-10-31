@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -130,7 +130,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -150,17 +150,17 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             }
         });
     }
-    
+
     public void do_login(String passwordTemp, boolean autoLoadContacts, boolean retry) {
-        
+
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
 
         mConnection.loginAsync(mAccountId, passwordTemp, mProviderId, retry);
-        
-      
+
+
     }
-    
+
     private void loadSavedPresence ()
     {
         ContentResolver cr =  mService.getContentResolver();
@@ -183,10 +183,10 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     @Override
     public void sendHeartbeat() throws RemoteException {
-        
+
         if (mConnection != null)
             mConnection.sendHeartbeat(mService.getHeartbeatInterval());
-        
+
     }
 
     @Override
@@ -250,8 +250,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         }
     }
 
-    
-    
+
+
     public IChatSessionManager getChatSessionManager() {
         return mChatSessionManager;
     }
@@ -277,11 +277,11 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     public int updateUserPresence(Presence newPresence) {
         try {
-            
-            
+
+
             mConnection.updateUserPresenceAsync(newPresence);
-            
-            
+
+
         } catch (ImException e) {
             return e.getImError().getCode();
         }
@@ -426,7 +426,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
 
                 //                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
-                
+
                 loadSavedPresence();
 
             } else if (state == ImConnection.DISCONNECTED) {
@@ -446,7 +446,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             }
 
             updateAccountStatusInDb();
-            
+
             synchronized (mRemoteConnListeners) {
 
                 final int N = mRemoteConnListeners.beginBroadcast();
@@ -461,7 +461,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
                 mRemoteConnListeners.finishBroadcast();
             }
-            
+
             if (state == ImConnection.DISCONNECTED) {
                 // NOTE: if this logic is changed, the logic in ImApp.MyConnListener must be changed to match
                 mService.removeConnection(ImConnectionAdapter.this);

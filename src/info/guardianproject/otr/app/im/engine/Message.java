@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -24,14 +24,14 @@ import android.os.Parcelable;
 
 /** Represents an instant message send between users. */
 public class Message implements Parcelable {
-    
+
     private String mId;
     private Address mFrom;
     private Address mTo;
     private String mBody;
     private Date mDate;
     private int mType;
-    
+
     /**
      * @param msg
      * @throws NullPointerException if msg is null.
@@ -58,7 +58,7 @@ public class Message implements Parcelable {
     /**
      * Gets an identifier of this message. May be <code>null</code> if the
      * underlying protocol doesn't support it.
-     * 
+     *
      * @return the identifier of this message.
      */
     public String getID() {
@@ -67,7 +67,7 @@ public class Message implements Parcelable {
 
     /**
      * Gets the body of this message.
-     * 
+     *
      * @return the body of this message.
      */
     public String getBody() {
@@ -76,7 +76,7 @@ public class Message implements Parcelable {
 
     /**
      * Gets the address where the message is sent from.
-     * 
+     *
      * @return the address where the message is sent from.
      */
     public Address getFrom() {
@@ -85,7 +85,7 @@ public class Message implements Parcelable {
 
     /**
      * Gets the address where the message is sent to.
-     * 
+     *
      * @return the address where the message is sent to.
      */
     public Address getTo() {
@@ -97,7 +97,7 @@ public class Message implements Parcelable {
      * from this client, the date time is when the message is sent. If it's a
      * message received from other users, the date time is either when the
      * message was received or sent, depending on the underlying protocol.
-     * 
+     *
      * @return the date time.
      */
     public Date getDateTime() {
@@ -158,7 +158,7 @@ public class Message implements Parcelable {
             return new Message[size];
         }
     };
-    
+
 
 
     public int getType() {

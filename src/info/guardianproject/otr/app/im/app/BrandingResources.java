@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
  * Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -38,13 +38,13 @@ public class BrandingResources {
 
     private Map<Integer, Integer> mResMapping;
     private Resources mPackageRes;
-  
+
     private BrandingResources mDefaultRes;
 
     /**
      * Creates a new BrandingResource of a specific plug-in. The resources will
      * be retrieved from the plug-in package.
-     * 
+     *
      * @param context The current application context.
      * @param pluginInfo The info about the plug-in.
      * @param defaultRes The default branding resources. If the resource is not
@@ -68,7 +68,7 @@ public class BrandingResources {
             Method m = cls.getMethod("onBind", Intent.class);
             ImPlugin plugin = (ImPlugin) m.invoke(cls.newInstance(), new Object[] { null });
             mResMapping = plugin.getResourceMap();
-            
+
         } catch (ClassNotFoundException e) {
             Log.e(TAG, "Failed load the plugin resource map", e);
         } catch (IllegalAccessException e) {
@@ -90,7 +90,7 @@ public class BrandingResources {
      * Creates a BrandingResource with application context and the resource ID
      * map. The resource will be retrieved from the context directly instead
      * from the plug-in package.
-     * 
+     *
      * @param context
      * @param resMapping
      */
@@ -109,7 +109,7 @@ public class BrandingResources {
     /**
      * Gets a drawable object associated with a particular resource ID defined
      * in {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
-     * 
+     *
      * @param id The ID defined in
      *            {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
      * @return Drawable An object that can be used to draw this resource.
@@ -130,7 +130,7 @@ public class BrandingResources {
     /**
      * Gets the string value associated with a particular resource ID defined in
      * {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
-     * 
+     *
      * @param id The ID of the string resource defined in
      *            {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
      * @param formatArgs The format arguments that will be used for
@@ -151,7 +151,7 @@ public class BrandingResources {
     /**
      * Gets the string array associated with a particular resource ID defined in
      * {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
-     * 
+     *
      * @param id The ID of the string resource defined in
      *            {@link info.guardianproject.otr.app.im.plugin.BrandingResourceIDs}
      * @return The string array associated with the resource.

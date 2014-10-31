@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007 Esmertec AG. Copyright (C) 2007 The Android Open Source
  * Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -26,7 +26,7 @@ import android.os.Parcelable;
 /**
  * A <code>Presence</code> is an abstract presentation of the user's presence
  * information.
- * 
+ *
  * Note that changes made to the Presence data won't be reflected to the server
  * until <code>ImConnection.updateUserPresence</code> is called. Only the logged
  * in user can update its own presence data via
@@ -49,7 +49,7 @@ public final class Presence implements Parcelable {
     private String mAvatarType;
     private int mClientType;
     private String mResource;
-    
+
     private Map<String, String> mExtendedInfo;
 
     public Presence() {
@@ -88,7 +88,7 @@ public final class Presence implements Parcelable {
         // TODO - what ClassLoader should be passed to readMap?
         // TODO - switch to Bundle
         mExtendedInfo = source.readHashMap(null);
-        
+
         //this may not exist for older persisted presence data
         if (source.dataAvail() > 0)
             mResource = source.readString();
@@ -96,7 +96,7 @@ public final class Presence implements Parcelable {
 
     /**
      * Get avatar bitmap.
-     * 
+     *
      * @return Avatar bitmap. Note any changes made to the bitmap itself won't
      *         be saved or sent back to the server. To change avatar call
      *         <code>setAvatar</code> with a <b>new</b> bitmap instance. FIXME:
@@ -116,7 +116,7 @@ public final class Presence implements Parcelable {
 
     /**
      * Get the MIME type of avatar.
-     * 
+     *
      * @return the MIME type of avatar.
      */
     public String getAvatarType() {
@@ -191,12 +191,12 @@ public final class Presence implements Parcelable {
             return new Presence[size];
         }
     };
-    
+
     public String getResource ()
     {
         return mResource;
     }
-    
+
     public void setResource (String resource)
     {
         mResource = resource;

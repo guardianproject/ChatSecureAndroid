@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.session;
@@ -8,9 +8,9 @@ package net.java.otr4j.session;
 import java.net.ProtocolException;
 
 /**
- * 
+ *
  * @author Felix Eckhofer
- * 
+ *
  */
 public final class OtrAssembler {
 
@@ -45,9 +45,9 @@ public final class OtrAssembler {
      * fragment was received. <p> A fragmented OTR message looks like this: (V2)
      * ?OTR,k,n,piece-k, or (V3)
      * ?OTR|sender_instance|receiver_instance,k,n,piece-k,
-     * 
+     *
      * @param msgText Message to be processed.
-     * 
+     *
      * @return String with the accumulated message or null if the message was
      *         incomplete or malformed
      */

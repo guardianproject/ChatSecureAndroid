@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -82,9 +82,9 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
 
     Imps.ProviderSettings.QueryMap mGlobalSettingMap;
     boolean mDestroyed;
-    
+
     View mSearchView;
-    
+
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -100,29 +100,29 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
         mFilterView.setListener(this);
 
         mFilterView.getListView().setOnCreateContextMenuListener(this);
-        
+
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+
         Intent intent = getIntent();
         mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
         if (mAccountId == -1) {
             finish();
             return;
         }
-        
+
         mApp = (ImApp)getApplication();
         mHandler = new MyHandler(this);
-        
+
     }
-    
+
     private void initAccount ()
     {
 
-        
-        
+
+
         ContentResolver cr = getContentResolver();
-        
+
         /**
         Cursor c = cr.query(ContentUris.withAppendedId(Imps.Account.CONTENT_URI, mAccountId), null,
                 null, null, null);
@@ -149,9 +149,9 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
        // getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
          //       brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
 
-        
+
         Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
-        
+
         mGlobalSettingMap = new Imps.ProviderSettings.QueryMap(pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS, true, null);
 
         mApp.callWhenServiceConnected(mHandler, new Runnable() {
@@ -191,15 +191,15 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
         showFilterView();
 
     }
-    
-    
-   
-    
+
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.contact_list_menu, menu);
-        
+
         mSearchView = SearchViewCompat.newSearchView(this);
         /**
         if (mSearchView != null)
@@ -208,7 +208,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
                     .setIcon(android.R.drawable.ic_menu_search)
                     .setActionView(mSearchView);
             item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS | MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-    
+
             SearchViewCompat.setOnQueryTextListener(mSearchView, new SearchViewCompat.OnQueryTextListenerCompat() {
 
                 @Override
@@ -222,11 +222,11 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
                     mFilterView.doFilter(query);
                     return true;
                 }
-                
-                
+
+
             });
-        
-            
+
+
         }*/
 
         return true;
@@ -387,7 +387,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
 
         if (mGlobalSettingMap == null)
             return;
-        
+
         Uri uri = mGlobalSettingMap.getHideOfflineContacts() ? Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY
                                                             : Imps.Contacts.CONTENT_URI_CONTACTS_BY;
         uri = ContentUris.withAppendedId(uri, mProviderId);
@@ -417,24 +417,24 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
     @Override
     protected void onResume() {
         super.onResume();
-        
+
         mApp = (ImApp)getApplication();
         mApp.startImServiceIfNeed();
         mApp.setAppTheme(this);
-        
-        
+
+
         initAccount ();
-        
+
         mApp.registerForConnEvents(mHandler);
         mContactListView.setAutoRefreshContacts(true);
-        
+
         // Get the intent, verify the action and get the query
 
 
         showFilterView();
-        
+
         Intent intent = getIntent();
-        
+
         if (intent.getAction() != null && Intent.ACTION_SEARCH.equals(intent.getAction())) {
             if (mIsFiltering) {
                 String filterText = intent.getStringExtra(SearchManager.QUERY);
@@ -527,7 +527,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
                     .setIcon(android.R.drawable.ic_menu_delete)
                     .setOnMenuItemClickListener(mContextMenuHandler);
         }
-        
+
       //  contactCursor.close();
     }
 
@@ -538,7 +538,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
         values.put(Imps.AccountStatus.ACCOUNT, mAccountId);
         values.put(Imps.AccountStatus.PRESENCE_STATUS, Imps.Presence.OFFLINE);
         values.put(Imps.AccountStatus.CONNECTION_STATUS, Imps.ConnectionStatus.OFFLINE);
-        // insert on the "account_status" uri actually replaces the existing value 
+        // insert on the "account_status" uri actually replaces the existing value
         cr.insert(Imps.AccountStatus.CONTENT_URI, values);
     }
 
@@ -579,7 +579,7 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
             return true;
         }
 
-       
+
     }
 
     final class MyHandler extends SimpleAlertHandler {
@@ -609,21 +609,21 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
             super.handleMessage(msg);
         }
     }
-    
-    
-    
-    
-    
 
-  
+
+
+
+
+
+
     public boolean onClose() {
-        
+
         return false;
     }
     protected boolean isAlwaysExpanded() {
         return false;
     }
-    
+
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,
                                                          Imps.Provider.NAME,
@@ -666,21 +666,21 @@ public class ContactListActivity extends ActionBarActivity implements View.OnCre
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
                 Intent i = new Intent(Intent.ACTION_VIEW, data);
                 i.addCategory(ImApp.IMPS_CATEGORY);
-                
+
                 startActivity(i);
               //  mScreen.finish();
-                
+
                 //mContactListView.setAutoRefreshContacts(false);
             } catch (RemoteException e) {
 
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             }
-           
+
         }
-        
-        
+
+
     }
-    
+
     public void showProfile (Cursor c){}
 }

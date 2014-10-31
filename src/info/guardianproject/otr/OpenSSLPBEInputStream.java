@@ -62,13 +62,13 @@ public class OpenSSLPBEInputStream extends InputStream {
             }
             maxIndex = bufferClear.length - 1;
         }
-        
+
         if (bufferClear == null || bufferClear.length == 0) {
             return -1;
         }
-        
+
         return bufferClear[index++] & 0xff;
-       
+
     }
 
     private byte[] readSalt() throws IOException {

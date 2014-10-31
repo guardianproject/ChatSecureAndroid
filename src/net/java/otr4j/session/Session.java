@@ -46,8 +46,8 @@ public interface Session {
     public abstract void removeTlvHandler(OtrTlvHandler handler);
 
     public abstract BigInteger getS();
-    
+
     public abstract void showWarning(String warning);
-    
+
     public byte[] getExtraKey();
 }

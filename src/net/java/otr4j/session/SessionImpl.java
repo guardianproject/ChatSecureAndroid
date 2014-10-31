@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 
@@ -55,7 +55,7 @@ public class SessionImpl implements Session {
     private SessionKeys[][] sessionKeys;
     private Vector<byte[]> oldMacKeys;
     private static Logger logger = Logger.getLogger(SessionImpl.class.getName());
-  
+
     private List<OtrTlvHandler> tlvHandlers = new ArrayList<OtrTlvHandler>();
     private BigInteger ess;
     private String lastSentMessage;
@@ -69,7 +69,7 @@ public class SessionImpl implements Session {
 
         this.setSessionID(sessionID);
         this.setHost(listener);
-        
+
         logger.addHandler(new AndroidLogHandler());
         // client application calls OtrEngine.getSessionStatus()
         // -> create new session if it does not exist, end up here
@@ -196,9 +196,9 @@ public class SessionImpl implements Session {
     private void setSessionStatus(SessionStatus sessionStatusNew) throws OtrException {
 
         boolean sessionStatusChanged = (sessionStatus != sessionStatusNew);
-        
+
         sessionStatus = sessionStatusNew;
-        
+
         switch (sessionStatus) {
             case ENCRYPTED:
                 AuthContext auth = this.getAuthContext();
@@ -210,28 +210,28 @@ public class SessionImpl implements Session {
                     current.setRemoteDHPublicKey(auth.getRemoteDHPublicKey(), 1);
                     current.setS(auth.getS());
                 }
-    
+
                 KeyPair nextDH = new OtrCryptoEngineImpl().generateDHKeyPair();
                 for (int i = 0; i < this.getSessionKeys()[1].length; i++) {
                     SessionKeys current = getSessionKeysByIndex(1, i);
                     current.setRemoteDHPublicKey(auth.getRemoteDHPublicKey(), 1);
                     current.setLocalPair(nextDH, 2);
                 }
-    
+
                 this.setRemotePublicKey(auth.getRemoteLongTermPublicKey());
-    
+
                 auth.reset();
-                
+
                 break;
             case PLAINTEXT:
                 //nothing here
                 break;
-                
+
             default:
                 //do nothing;
         }
 
-        
+
         if (sessionStatus == SessionStatus.ENCRYPTED && doTransmitLastMessage && lastSentMessage != null) {
             String retransmit = (isLastMessageRetransmit ? "[resent] " : "");
             String msg = transformSending(retransmit + lastSentMessage, null);
@@ -241,19 +241,19 @@ public class SessionImpl implements Session {
         doTransmitLastMessage = false;
         isLastMessageRetransmit = false;
         lastSentMessage = null;
-        
+
         if (sessionStatusChanged) {
-            
+
             for (OtrEngineListener l : this.listeners)
                 l.sessionStatusChanged(getSessionID());
         }
-        
-        
+
+
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.java.otr4j.session.ISession#getSessionStatus()
      */
 
@@ -267,7 +267,7 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.java.otr4j.session.ISession#getSessionID()
      */
     public SessionID getSessionID() {
@@ -303,10 +303,10 @@ public class SessionImpl implements Session {
     public String transformReceiving(String msgText) throws OtrException {
         return transformReceiving(msgText, null);
     }
-    
+
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * net.java.otr4j.session.ISession#handleReceivingMessage(java.lang.String)
      */
@@ -706,7 +706,7 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.java.otr4j.session.ISession#startSession()
      */
     public void startSession() throws OtrException {
@@ -716,7 +716,7 @@ public class SessionImpl implements Session {
             return;
         }
         lastStart = now;
-        
+
         if (this.getSessionStatus() == SessionStatus.ENCRYPTED)
             return;
 
@@ -728,7 +728,7 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.java.otr4j.session.ISession#endSession()
      */
     public void endSession() throws OtrException {
@@ -752,7 +752,7 @@ public class SessionImpl implements Session {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see net.java.otr4j.session.ISession#refreshSession()
      */
     public void refreshSession() throws OtrException {
@@ -792,11 +792,11 @@ public class SessionImpl implements Session {
     public KeyPair getLocalKeyPair() {
         return getHost().getKeyPair(this.getSessionID());
     }
-    
+
     public void showError(String warning) {
         getHost().showError(sessionID, warning);
     }
-    
+
     public void showWarning(String warning) {
         getHost().showWarning(sessionID, warning);
     }

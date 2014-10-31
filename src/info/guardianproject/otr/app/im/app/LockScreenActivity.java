@@ -44,7 +44,7 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
     private EditText mConfirmNewPassphrase;
     private View mViewCreatePassphrase;
     private View mViewEnterPassphrase;
-    
+
     private CacheWordActivityHandler mCacheWord;
     private String mPasswordError;
     private TwoViewSlider mSlider;
@@ -52,31 +52,31 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
     private ImApp mApp;
     private Button mBtnCreate;
     private Button mBtnSkip;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); 
 
-        
+        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+
         mApp = (ImApp)getApplication();
-        
+
         ThemeableActivity.setBackgroundImage(this);
 
         getSupportActionBar().hide();
-        
+
         setContentView(R.layout.activity_lock_screen);
-        
+
         mCacheWord = new CacheWordActivityHandler(mApp, (ICacheWordSubscriber)this);
-        
+
         mViewCreatePassphrase = findViewById(R.id.llCreatePassphrase);
         mViewEnterPassphrase = findViewById(R.id.llEnterPassphrase);
 
         mEnterPassphrase = (EditText) findViewById(R.id.editEnterPassphrase);
-        
+
         mNewPassphrase = (EditText) findViewById(R.id.editNewPassphrase);
         mConfirmNewPassphrase = (EditText) findViewById(R.id.editConfirmNewPassphrase);
         ViewFlipper vf = (ViewFlipper) findViewById(R.id.viewFlipper1);
@@ -90,7 +90,7 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
     protected void onPause() {
         super.onPause();
         mCacheWord.onPause();
-        
+
     }
 
     @Override
@@ -105,10 +105,10 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
         super.onDestroy();
         mCacheWord.disconnect();
     }
-    
+
     @Override
     public void onBackPressed() {
-      
+
         //do nothing!
     }
 
@@ -231,23 +231,23 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                 }
             }
         });
-        
-       
-        
+
+
+
         mBtnSkip = (Button)findViewById(R.id.btnSkip);
         mBtnSkip.setOnClickListener(new OnClickListener(){
-            
+
             public void onClick(View v)
             {
                 if (isPasswordFieldEmpty())
                     initializeWithPassphrase();
-                
+
             }
         });
     }
 
     Button mBtnSignIn;
-    
+
     private void promptPassphrase() {
         mViewCreatePassphrase.setVisibility(View.GONE);
         mViewEnterPassphrase.setVisibility(View.VISIBLE);
@@ -264,7 +264,7 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                     // Check passphrase
                     try {
                         char[] passphrase = mEnterPassphrase.getText().toString().toCharArray();
-                        
+
                         mCacheWord.setPassphrase(passphrase);
                         ImApp.mUsingCacheword = true;
                     } catch (Exception e) {
@@ -276,7 +276,7 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                 }
             });
         }
-        
+
         mEnterPassphrase.setOnEditorActionListener(new OnEditorActionListener()
         {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
@@ -311,7 +311,7 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
             mPasswordError = getString(R.string.pass_err_length);
             return false;
         }
-      
+
         return true;
     }
 
@@ -377,9 +377,9 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
 
     @Override
     public void onCacheWordUninitialized() {
-        
+
         Intent intentOrig;
-        
+
         if ((intentOrig = getIntent().getParcelableExtra("originalIntent"))!=null)
         {
             if (intentOrig.getData() != null)
@@ -387,16 +387,16 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                 if (intentOrig.getData().getScheme().equals("immu")||
                 intentOrig.getData().getScheme().equals("ima"))
                 {
-                
+
                     initializeWithPassphrase();
                     return;
                 }
             }
         }
-        
-        
+
+
         initializePassphrase();
-        
+
     }
 
     @Override
@@ -411,11 +411,11 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
     }
 
     /**
-     * 
+     *
      */
     private void afterCacheWordOpened() {
         Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
-        
+
         if (intent != null)
         {
 
@@ -426,6 +426,6 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
            // LockScreenActivity.this.overridePendingTransition(0, 0);
         }
     }
-    
+
 
 }

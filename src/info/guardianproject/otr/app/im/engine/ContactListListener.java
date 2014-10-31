@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007 Esmertec AG. Copyright (C) 2007 The Android Open Source
  * Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -49,7 +49,7 @@ public interface ContactListListener {
      * Called when: <ul> <li> a contact list has been created, deleted, renamed
      * or loaded, or <li> a contact has been added to or removed from a list, or
      * <li> a contact has been blocked or unblocked </ul>
-     * 
+     *
      * @param type one of the following values: <ul> <li>{@link #LIST_CREATED}
      *            list: the newly created list; contact: null <li>
      *            {@link #LIST_DELETED} list: the delete list; contact: null
@@ -76,7 +76,7 @@ public interface ContactListListener {
     /**
      * Called when received one or more contacts' updated presence information
      * from the server.
-     * 
+     *
      * @param contacts one or more contacts that have updated presence
      *            information.
      */

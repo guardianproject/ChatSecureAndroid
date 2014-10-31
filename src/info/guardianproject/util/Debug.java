@@ -19,7 +19,7 @@ import org.apache.commons.io.output.StringBuilderWriter;
 import android.os.StrictMode;
 
 public class Debug {
-    
+
     public static boolean DEBUG_ENABLED = false;
     public static final boolean DEBUGGER_ATTACH_ENABLED = false;
     public static final boolean DEBUG_INJECT_ERRORS = false;
@@ -47,7 +47,7 @@ public class Debug {
             return "#notrail";
         }
     }
-    
+
     public static void recordTrail(Context context, String key, String value) {
         File trail = new File(context.getFilesDir(), "trail.properties");
         Properties props = new Properties();
@@ -58,7 +58,7 @@ public class Debug {
         } catch (IOException e) {
             // ignore
         }
-        
+
         try {
             FileWriter writer = new FileWriter(trail);
             props.put(key, value);
@@ -68,7 +68,7 @@ public class Debug {
             throw new RuntimeException(e);
         }
     }
-    
+
     public static String getTrail(Context context, String key) {
         File trail = new File(context.getFilesDir(), "trail.properties");
         Properties props = new Properties();
@@ -81,7 +81,7 @@ public class Debug {
             return null;
         }
     }
-    
+
     public static void onConnectionStart() {
         if (DEBUG_ENABLED) {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
@@ -90,7 +90,7 @@ public class Debug {
             .build());
         }
     }
-    
+
     public static void onAppStart() {
         // Same StrictMode policy
         onConnectionStart();

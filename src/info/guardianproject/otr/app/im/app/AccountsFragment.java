@@ -26,23 +26,23 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 public class AccountsFragment extends ListFragment implements ProviderListItem.SignInManager {
-    
+
         private FragmentActivity mActivity;
         private int mAccountLayoutView;
-        
+
         @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
-            
+
             mActivity = (FragmentActivity)activity;
 
             mAccountLayoutView = R.layout.account_view;
             if (mActivity instanceof NewChatActivity)
                 mAccountLayoutView = R.layout.account_view_sidebar;
-                
-            
+
+
             initProviderCursor();
-            
+
         }
 
         @Override
@@ -50,17 +50,17 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
             super.onDetach();
             mActivity = null;
         }
-        
+
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
         }
 
-                
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
-            
-            
+
+
             return super.onCreateView(inflater, container, savedInstanceState);
         }
 
@@ -76,7 +76,7 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
 
             mAdapter = new AccountAdapter(mActivity, new ProviderListItemFactory(), mAccountLayoutView);
             setListAdapter(mAdapter);
-            
+
             mActivity.getSupportLoaderManager().initLoader(ACCOUNT_LOADER_ID, null, new LoaderCallbacks<Cursor>() {
 
                 @Override
@@ -98,12 +98,12 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
                 @Override
                 public void onLoaderReset(Loader<Cursor> loader) {
                     mAdapter.swapCursor(null);
-                    
+
                 }
             });
-            
+
         }
-        
+
 
         private class ProviderListItemFactory implements LayoutInflater.Factory {
             public View onCreateView(String name, Context context, AttributeSet attrs) {
@@ -113,8 +113,8 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
                 return null;
             }
         }
-        
-        
+
+
         public void signIn(long accountId) {
             if (accountId <= 0) {
                 return;
@@ -125,10 +125,10 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
             while (!cursor.isAfterLast())
             {
                 long cAccountId = cursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-                
+
                 if (cAccountId == accountId)
                     break;
-                
+
                 cursor.moveToNext();
             }
 
@@ -137,21 +137,21 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
 
             long providerId = cursor.getLong(PROVIDER_ID_COLUMN);
             String password = cursor.getString(ACTIVE_ACCOUNT_PW_COLUMN);
-            
+
             boolean isActive = false; // TODO(miron)
-            
+
             new SignInHelper(mActivity).signIn(password, providerId, accountId, isActive);
-            
+
             cursor.moveToPosition(-1);
         }
-        
+
 
         public void signOut(final long accountId) {
             // Remember that the user signed out and do not auto sign in until they
             // explicitly do so
             setKeepSignedIn(accountId, false);
 
-            try {                
+            try {
                 IImConnection conn =  ((ImApp)mActivity.getApplication()).getConnectionByAccount(accountId);
                 if (conn != null) {
                     conn.logout();
@@ -166,7 +166,7 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
             values.put(Imps.Account.KEEP_SIGNED_IN, signin);
             mActivity.getContentResolver().update(mAccountUri, values, null, null);
         }
-        
+
         AccountAdapter mAdapter;
 
         private static final String[] PROVIDER_PROJECTION = {
@@ -196,5 +196,5 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
         static final int ACCOUNT_CONNECTION_STATUS = 10;
 
         private static final int ACCOUNT_LOADER_ID = 1000;
-        
+
     }

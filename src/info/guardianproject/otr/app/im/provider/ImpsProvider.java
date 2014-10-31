@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -219,7 +219,7 @@ public class ImpsProvider extends ContentProvider {
     protected static DatabaseHelper mDbHelper;
     private String mDatabaseName;
     private final int mDatabaseVersion;
-    
+
 
     private final String[] BACKFILL_PROJECTION = { Imps.Chats._ID, Imps.Chats.SHORTCUT,
                                                   Imps.Chats.LAST_MESSAGE_DATE };
@@ -253,7 +253,7 @@ public class ImpsProvider extends ContentProvider {
 
     // contact id query selection args 2
     private String[] mQueryContactIdSelectionArgs2 = new String[2];
-    
+
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -262,10 +262,10 @@ public class ImpsProvider extends ContentProvider {
 
         boolean mInMemoryDB = false;
         String mKey = null;
-        
+
         DatabaseHelper(Context context, String key, boolean inMemoryDb) throws Exception {
             super(context, mDatabaseName, null, mDatabaseVersion);
-            
+
             mInMemoryDB = inMemoryDb;
             mKey = key;
         }
@@ -474,10 +474,10 @@ public class ImpsProvider extends ContentProvider {
                 // This was a no-op upgrade when we added the encrypted DB option
                 return;
             case 103:
-               
+
                 try {
-                    db.beginTransaction();                    
-                                        
+                    db.beginTransaction();
+
                     Cursor c = db.query(TABLE_MESSAGES, null, null, null, null, null, null);
                     if (c.getColumnIndex("mime_type")==-1)
                     {
@@ -485,34 +485,34 @@ public class ImpsProvider extends ContentProvider {
                                 + " ADD COLUMN mime_type TEXT;");
                     }
                     c.close();
-                    
+
                     db.setTransactionSuccessful();
                 } catch (Throwable ex) {
                     LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                 } finally {
                     db.endTransaction();
                 }
-                
+
                 if (mInMemoryDB) { //this should actually be if mInMemoryDB = true, then update the table
-                    
+
                         try {
-                           
+
                                 db.beginTransaction();
                                 db.execSQL("ALTER TABLE " + TABLE_IN_MEMORY_MESSAGES
                                         + " ADD COLUMN mime_type TEXT;");
                                 db.setTransactionSuccessful();
-                            
+
                         } catch (Throwable ex) {
                             LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
                         } finally {
                             db.endTransaction();
                         }
-                        
+
                 }
 
                 return;
             case 104:
-                
+
                 db.rawExecSQL("PRAGMA cipher_migrate;");
 
                 return;
@@ -738,10 +738,10 @@ public class ImpsProvider extends ContentProvider {
             if (DBG)
                 log("##### createTransientTables");
 
-            
+
             // Create transient tables
             String cpDbName;
-            
+
             if (mInMemoryDB)
             {
                 db.execSQL("ATTACH DATABASE ':memory:' AS " + mTransientDbName + ";");
@@ -751,7 +751,7 @@ public class ImpsProvider extends ContentProvider {
             {
                cpDbName = "";
             }
-            
+
             // in-memory message table
             createInMemoryMessageTables(db, cpDbName);
 
@@ -981,7 +981,7 @@ public class ImpsProvider extends ContentProvider {
     public ImpsProvider() {
         this(DATABASE_VERSION);
 
-    
+
         setupImUrlMatchers(AUTHORITY);
         setupMcsUrlMatchers(AUTHORITY);
     }
@@ -1087,7 +1087,7 @@ public class ImpsProvider extends ContentProvider {
         mDatabaseName = isEncrypted ? ENCRYPTED_DATABASE_NAME : UNENCRYPTED_DATABASE_NAME;
         mTransientDbName = "transient_" + mDatabaseName.replace(".", "_");
     }
-    
+
     private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
         if (mDbHelper == null) {
             if (pkey != null) {
@@ -1104,7 +1104,7 @@ public class ImpsProvider extends ContentProvider {
                 mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
                 OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
                 LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
-                
+
                 Debug.recordTrail(getContext(), EMPTY_KEY_TRAIL_TAG, "" + pkey.isEmpty());
                 String prevOpen = Debug.getTrail(getContext(), DATABASE_OPEN_TRAIL_TAG);
                 if (prevOpen != null) {
@@ -1121,7 +1121,7 @@ public class ImpsProvider extends ContentProvider {
     }
 
     private DatabaseHelper getDBHelper() {
-        
+
         return mDbHelper;
     }
 
@@ -1135,32 +1135,32 @@ public class ImpsProvider extends ContentProvider {
             final String[] selectionArgs) {
 
         DatabaseHelper dbHelper = getDBHelper();
-        
-        
+
+
         int result = 0;
-        
+
         if (dbHelper != null)
         {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-            
+
             synchronized (db)
             {
                 if (db.isOpen())
                 {
                     try {
                         db.beginTransaction();
-                    
+
                         result = updateInternal(url, values, selection, selectionArgs);
                         db.setTransactionSuccessful();
                         db.endTransaction();
                     }
                     catch (Exception e){
-                        
+
                         if (db.isOpen() && db.inTransaction())
                             db.endTransaction();
                     }
-                    
-                    
+
+
                     if (result > 0) {
                         getContext().getContentResolver()
                                 .notifyChange(url, null /* observer */, false /* sync */);
@@ -1168,25 +1168,25 @@ public class ImpsProvider extends ContentProvider {
                 }
             }
         }
-        
+
         return result;
     }
 
     @Override
     public final int delete(final Uri url, final String selection, final String[] selectionArgs) {
-        
+
         int result = -1;
-        
+
         if (getDBHelper() != null)
         {
             SQLiteDatabase db = getDBHelper().getWritableDatabase();
-            
+
             synchronized (db)
             {
                 if (db.isOpen()) //db can be closed if service sign out takes longer than app/cacheword lock
                 {
                     try {
-                        db.beginTransaction();                    
+                        db.beginTransaction();
                         result = deleteInternal(url, selection, selectionArgs);
                         db.setTransactionSuccessful();
                         db.endTransaction();
@@ -1195,7 +1195,7 @@ public class ImpsProvider extends ContentProvider {
                     {
                         //could not delete
                     }
-                    
+
                     if (result > 0) {
                         getContext().getContentResolver()
                                 .notifyChange(url, null /* observer */, false /* sync */);
@@ -1203,14 +1203,14 @@ public class ImpsProvider extends ContentProvider {
                 }
             }
         }
-        
+
         return result;
     }
 
     @Override
     public final Uri insert(final Uri url, final ContentValues values) {
         Uri result = null;
-        
+
         if (getDBHelper() != null)
         {
             try
@@ -1249,18 +1249,18 @@ public class ImpsProvider extends ContentProvider {
     }
 
     boolean mLoadedLibs = false;
-    
+
     public Cursor queryInternal(Uri url, String[] projectionIn, String selection,
             String[] selectionArgs, String sort) {
-        
+
         Debug.onServiceStart();
-        
+
         if (!mLoadedLibs)
         {
             SQLiteDatabase.loadLibs(this.getContext().getApplicationContext());
             mLoadedLibs = true;
         }
-        
+
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         StringBuilder whereClause = new StringBuilder();
         if (selection != null) {
@@ -1272,7 +1272,7 @@ public class ImpsProvider extends ContentProvider {
         String pkey = url.getQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY);
         boolean noCreate = "1".equals(url.getQueryParameter(ImApp.NO_CREATE_KEY));
         boolean clearKey = "1".equals(url.getQueryParameter(ImApp.CLEAR_PASSWORD_KEY));
-        
+
         if (clearKey) {
             if (mDbHelper != null) {
                 mDbHelper.close();
@@ -1280,25 +1280,25 @@ public class ImpsProvider extends ContentProvider {
             }
             return null;
         }
-        
+
         try {
             initDBHelper(pkey, noCreate);
         } catch (Exception e) {
             LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
             return null;
         }
-        
+
         if (mDbHelper == null) {
             // Failed to open
             return null;
         }
-        
+
         if (pkey != null)
         {
             OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
-            
+
         }
-    
+
 
         /*
          * String dbKey = null;
@@ -1497,12 +1497,12 @@ public class ImpsProvider extends ContentProvider {
             final SQLiteDatabase db = getDBHelper().getWritableDatabase();
             String[] doubleArgs = null;
             if (selectionArgs != null) {
-                
+
                 doubleArgs = new String[ selectionArgs.length * 2];//Arrays.copyOf(selectionArgs, selectionArgs.length * 2);
                 System.arraycopy(selectionArgs, 0, doubleArgs, 0, selectionArgs.length);
                 System.arraycopy(selectionArgs, 0, doubleArgs, selectionArgs.length, selectionArgs.length);
             }
-            
+
             Cursor c = db.rawQueryWithFactory(null, query, doubleArgs, TABLE_MESSAGES);
             if ((c != null) && !isTemporary()) {
                 c.setNotificationUri(getContext().getContentResolver(), url);
@@ -1667,7 +1667,7 @@ public class ImpsProvider extends ContentProvider {
 
         if (!db.isOpen())
             return null;
-        
+
         try {
             qb.setDistinct(true);
             c = qb.query(db, projectionIn, whereClause.toString(), selectionArgs, groupBy, null,
@@ -1687,15 +1687,15 @@ public class ImpsProvider extends ContentProvider {
                 }
                 if (DBG)
                     log("set notify url " + url);
-                
-                
+
+
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
-            
+
 
             c = new MyCrossProcessCursorWrapper(c);
             return c;
-            
+
         } catch (Exception ex) {
             LogCleaner.error(LOG_TAG, "query exc db caught ", ex);
             return null;
@@ -1704,15 +1704,15 @@ public class ImpsProvider extends ContentProvider {
             LogCleaner.error(LOG_TAG, "query error db caught ", ex);
             return null;
         }
-        
+
 
     }
-    
+
     static class MyCrossProcessCursorWrapper extends net.sqlcipher.CrossProcessCursorWrapper {
         public MyCrossProcessCursorWrapper(net.sqlcipher.Cursor cursor) {
             super(cursor);
         }
-        
+
         @Override
         public void fillWindow(int position, CursorWindow window) {
             if (position < 0 || position > getCount()) {
@@ -1727,7 +1727,7 @@ public class ImpsProvider extends ContentProvider {
                 window.setNumColumns(columnNum);
                 boolean isFull = false;
                 int numRows = 10;
-                
+
                 while (!isFull && --numRows > 0 && moveToNext() && window.allocRow()) {
                     for (int i = 0; i < columnNum; i++) {
                         String field = getString(i);
@@ -2140,11 +2140,11 @@ public class ImpsProvider extends ContentProvider {
      * this method does not remove presences for which the corresponding
      * contacts no longer exist. That's probably ok since presence is kept in
      * memory, so it won't stay around for too long. Here is the algorithm.
-     * 
+     *
      * 1. for all presence that have a corresponding contact, make it OFFLINE.
      * This is one sqlite call. 2. query for all the contacts that don't have a
      * presence, and add a presence row for them.
-     * 
+     *
      * TODO simplify the presence management! The desire is to have a presence
      * row for each TODO contact in the database, so later we can just call
      * update() on the presence rows TODO instead of checking for the existence
@@ -2153,7 +2153,7 @@ public class ImpsProvider extends ContentProvider {
      * complicated. One possible solution is to use insert_or_replace the
      * presence rows TODO when updating the presence. That way we don't always
      * need to maintain an empty presence TODO row for each contact.
-     * 
+     *
      * @param account the account of the contacts for which we want to create
      *            seed presence rows.
      */

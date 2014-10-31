@@ -36,7 +36,7 @@ import java.util.logging.Logger;
  * implementation is rather straightforward. The name of the logger serves as
  * the log tag. Only the log levels need to be converted appropriately. For
  * this purpose, the following mapping is being used:
- * 
+ *
  * <table>
  *   <tr>
  *     <th>logger level</th>
@@ -138,7 +138,7 @@ public class AndroidLogHandler extends Handler {
     public void publish(Logger source, String tag, Level level, String message) {
         // TODO: avoid ducking into native 2x; we aren't saving any formatter calls
         int priority = getAndroidLevel(level);
-        
+
         if (!Debug.DEBUG_ENABLED) {
             return;
         }

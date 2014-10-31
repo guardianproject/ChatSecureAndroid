@@ -84,7 +84,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
      * Return the Fragment associated with a specified position.
      */
     public abstract Fragment getItem(int position);
-    
+
     public Fragment getItemAt(int position) {
         if (position >= mFragments.size())
             return null;
@@ -119,7 +119,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
                     mSavedState.set(position, oldState.get(i));
             }
         }
-        
+
         // The list must never shrink because other methods depend on it
         while (mFragments.size() < old.size()) {
             mFragments.add(null);
@@ -128,7 +128,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
 
         super.notifyDataSetChanged();
     }
-    
+
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         // If we already have this item instantiated, there is nothing
@@ -157,7 +157,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
         while (mFragments.size() <= position) {
             mFragments.add(null);
         }
-        
+
         fragment.setMenuVisibility(false);
         fragment.setUserVisibleHint(false);
         mFragments.set(position, fragment);
@@ -173,7 +173,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
         // but when an item is scrolled off screen due to an insert, the post-reorg position is supplied.
         // Find the item ourselves.
         int position = mFragments.indexOf(fragment);
-        
+
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
@@ -189,7 +189,7 @@ public abstract class DynamicPagerAdapter extends PagerAdapter {
             mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(fragment));
             mFragments.set(position, null);
         }
-        
+
         // TODO do we need to unset the visible hint, etc.?
         if (mCurrentPrimaryItem == fragment)
             mCurrentPrimaryItem = null;

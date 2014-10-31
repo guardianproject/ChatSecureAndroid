@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -186,13 +186,13 @@ public class ContactListView extends LinearLayout {
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
                 Intent i = new Intent(Intent.ACTION_VIEW, data);
                 i.addCategory(ImApp.IMPS_CATEGORY);
-                
+
                 mScreen.startActivity(i);
               //  mScreen.finish();
-                
+
                 setAutoRefreshContacts(false);
             } catch (RemoteException e) {
-                
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             }
@@ -226,7 +226,7 @@ public class ContactListView extends LinearLayout {
                     session.leave();
                 }
             } catch (RemoteException e) {
-                
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             }
@@ -268,7 +268,7 @@ public class ContactListView extends LinearLayout {
             IContactListManager manager = mConn.getContactListManager();
             return (manager.getState() == ContactListManager.LISTS_LOADED);
         } catch (RemoteException e) {
-            
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
             return false;
@@ -299,7 +299,7 @@ public class ContactListView extends LinearLayout {
                                     ErrorResUtils.getErrorRes(getResources(), res, address));
                         }
                     } catch (RemoteException e) {
-                        
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                     }
@@ -335,13 +335,13 @@ public class ContactListView extends LinearLayout {
                     try {
                         IContactListManager manager = mConn.getContactListManager();
                         int res = manager.blockContact(address);
-                        
+
                         if (res != ImErrorInfo.NO_ERROR) {
                             mHandler.showAlert(R.string.error,
                                     ErrorResUtils.getErrorRes(getResources(), res, address));
                         }
                     } catch (RemoteException e) {
-                        
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
                     }
@@ -396,7 +396,7 @@ public class ContactListView extends LinearLayout {
             listManager.registerContactListListener(mContactListListener);
             listManager.registerSubscriptionListener(mSubscriptionListener);
         } catch (RemoteException e) {
-            
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
@@ -408,7 +408,7 @@ public class ContactListView extends LinearLayout {
             listManager.unregisterContactListListener(mContactListListener);
             listManager.unregisterSubscriptionListener(mSubscriptionListener);
         } catch (RemoteException e) {
-            
+
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "remote error",e);
         }
