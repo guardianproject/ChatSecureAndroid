@@ -148,6 +148,39 @@ public class XMPPCertPins
             */
             PINLIST.add("234B71255613E130DDE34269C9CC30D46F0841E0");
 
+            /* The following pins are for self-signed certificates and the
+             * cacert.org Certificate Authority certificate.  AndroidPinning
+             * will always fail on these unless they have been manually
+             * installed into the system's keystore.  AndroidPinning always
+             * does a check using the system's default trust manager.
+             */
+
+            /*
+            SubjectDN: CN=jabber.ccc.de, O=Chaos Computer Club e.V., L=Hamburg, ST=Hamburg, C=DE
+            IssuerDN: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority, OU=http://www.cacert.org, O=Root CA
+            Fingerprint: 4E09F9D9F224174684768D467A84B139B86A021F
+            SPKI Pin: 686B3569ABE87202E9018532719CB67DD7EA3356
+            */
+            PINLIST.add("686B3569ABE87202E9018532719CB67DD7EA3356");
+
+            /*
+            SubjectDN: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority, OU=http://www.cacert.org, O=Root CA
+            IssuerDN: EMAILADDRESS=support@cacert.org, CN=CA Cert Signing Authority, OU=http://www.cacert.org, O=Root CA
+            Fingerprint: 135CEC36F49CB8E93B1AB270CD80884676CE8F33
+            SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
+            */
+            PINLIST.add("10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C");
+            //added pin from cacert.org downloadable class3 crt
+            PINLIST.add("f061d83f958f4d78b147b31339978ea9c251ba9b");
+
+            /* guardianproject.info/hyper.to self-signed
+            SubjectDN: CN=hyper.to, O=Chaos Inc., L=San Francisco, ST=California, C=US
+            IssuerDN: CN=hyper.to, O=Chaos Inc., L=San Francisco, ST=California, C=US
+            Fingerprint: 1064712E64D1AE7F4FDC2DEFDE7F19B1CEEB82B8
+            SPKI Pin: 2B1292D6CD084EC90B5DBD398AEA15B853337971
+            */
+            PINLIST.add("2B1292D6CD084EC90B5DBD398AEA15B853337971");
+
             // double check there are no duplicates by mistake
             if (PINLIST.size() != new HashSet<String>(PINLIST).size())
                 throw new SecurityException("PINLIST has duplicate entries!");
