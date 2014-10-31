@@ -529,6 +529,9 @@ public class Imps {
         /** The default sort order for this table */
         public static final String ALPHA_SORT_ORDER = "nickname COLLATE NOCASE ASC";
 
+        /** The default sort order for this table */
+        public static final String MODE_AND_ALPHA_SORT_ORDER = "mode DESC, nickname COLLATE NOCASE ASC";
+
         public static final String CHATS_CONTACT = "chats_contact";
 
         public static final String AVATAR_HASH = "avatars_hash";

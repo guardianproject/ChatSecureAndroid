@@ -1479,6 +1479,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         Type rtype = presence.getType();
 
         //if a device sends something other than available, check if there is a higher priority one available on the server
+        /*
         if (rmode != Mode.available)
         {
             if (mRoster != null)
@@ -1494,7 +1495,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 else if (rtype == Type.unavailable || rtype == Type.error)
                     type = Presence.OFFLINE;
             }
-        }
+        }*/
+        
+
+        if (rmode == Mode.away || rmode == Mode.xa)
+            type = Presence.AWAY;
+        else if (rmode == Mode.dnd)
+            type = Presence.DO_NOT_DISTURB;
+        else if (rtype == Type.unavailable || rtype == Type.error)
+            type = Presence.OFFLINE;
 
         return type;
     }
@@ -2855,17 +2864,34 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             return null;
 
         String status = presence.getStatus();
-
-        // Get presence from the Roster to handle priorities and such 
-        // TODO: this causes bad network and performance issues
-        //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
-        //presence = roster.getPresence(xaddress.getBareAddress());       
-
-        Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
-
+        
         Presence p = new Presence(parsePresence(presence), status, null, null,
                 Presence.CLIENT_TYPE_DEFAULT);
+        
+        // Get presence from the Roster to handle priorities and such 
+        // TODO: this causes bad network and performance issues
+        //   if (presence.getType() == Type.available) //get the latest presence for the highest priority              
+        Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
+        boolean reloadPresence = true;
+        
+        //don't reload if everything is the same
+        /**
+        if (contact.getPresence() != null
+                && contact.getPresence().getResource().equals(xaddress.getResource())
+                && contact.getPresence().getStatusText().equals(p.getStatusText())
+                && contact.getPresence().getStatus() == p.getStatus())
+            reloadPresence = false;
+            */
+        
+        if (reloadPresence)
+        {
+            presence = mRoster.getPresence(xaddress.getBareAddress());
+            p = new Presence(parsePresence(presence), status, null, null,
+                    Presence.CLIENT_TYPE_DEFAULT);
+        }
+        
+        
         String[] presenceParts = presence.getFrom().split("/");
         if (presenceParts.length > 1)
             p.setResource(presenceParts[1]);
