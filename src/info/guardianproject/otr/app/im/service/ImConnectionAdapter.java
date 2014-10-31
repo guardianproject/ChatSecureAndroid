@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IConnectionListener;
 import info.guardianproject.otr.app.im.IContactListManager;
@@ -213,7 +214,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return cookie;
     }
 
+    @Override
     public void logout() {
+        OtrChatManager.endSessionsForAccount(mConnection.getLoginUser());
         mConnectionState = ImConnection.LOGGING_OUT;
         mConnection.logout();
     }

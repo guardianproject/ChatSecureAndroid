@@ -4,6 +4,8 @@ package info.guardianproject.otr;
 
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.SmpResponseActivity;
+import info.guardianproject.otr.app.im.engine.Address;
+import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.service.ImConnectionAdapter;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -12,6 +14,7 @@ import info.guardianproject.util.Debug;
 
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -78,6 +81,27 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return mInstance;
     }
 
+    public static void endAllSessions() {
+        if (mInstance == null) {
+            return;
+        }
+        Collection<SessionID> sessionIDs = mInstance.mSessions.values();
+        for (SessionID sessionId : sessionIDs) {
+            mInstance.endSession(sessionId);
+        }
+    }
+
+    public static void endSessionsForAccount(Contact localUserContact) {
+        if (mInstance == null) {
+            return;
+        }
+        String localUserId = localUserContact.getAddress().getBareAddress();
+        Collection<SessionID> sessionIDs = mInstance.mSessions.values();
+        for (SessionID sessionId : sessionIDs) {
+            if (localUserId.equals(Address.stripResource(sessionId.getLocalUserId())))
+                mInstance.endSession(sessionId);
+        }
+    }
 
     public void addOtrEngineListener(OtrEngineListener oel) {
         mOtrEngine.addOtrEngineListener(oel);
