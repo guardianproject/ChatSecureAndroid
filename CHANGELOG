@@ -1,6 +1,68 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.0.6 BETA / 2014-11-03 
+
+5bfaa90 set a date to the internal Message instance
+7c3897d make the save/persist code a bit more reliable
+944a47a make sure roster is not null when you tried to load presence
+0220d72 ensures chat title is reset on end chat. fixes #555 on github.
+3912b95 setFrom() to full JID to address bug #3948
+ce89fd2 load latest presence for all that request
+f604949 guarantee a unique XMPP Resource
+7247581 include pins for self-signed/cacert.org for people who install those certs
+cc2148d formatting updates find src/ -name \*.java |xargs sed -i 's, *$,,' as requested by HC
+89f0661 some optimizations for sha1 hashing on OTRData
+0b6ce0a update pins to use the CA's certificates
+cb30014 getAddress() should return the base address with resource The Presence is updated with the latest resource value, but the addr
+80dfb94 remove SessionID.getSessionID(), it duplicates toString() and is misnamed
+0a5b47d make sure a SessionID is created, even if LocalUser is null or empty
+18b2278 improve logic for presence handling and parsing
+1620509 add new alpha+mode sort as default for contact picking
+ef718b6 When SessionID object is used as key, make sure to be specific toString() doesn't always seem to produce the same results this
+e8dd2ff set unique resource before initConnection()
+02f71aa add a random tag to our default XMPP resource value if the user is still using our default "ChatSecure" resource, then we shou
+0a31a5f on Sign In, put indeterminite, spinning progress meter in ActionBar
+
+dd2d4ac use Android formatter in Eclipse to format AndroidManifest.xml (Ctrl-Shift-F)
+90f47ec script reproducible release build process (careful, it wipes everything!)
+89454d5 parse target and lib-projects from project.properties when setting up ant
+c2335ef alpha-sort Android Library Projects to make it easy for humans to follow
+3437641 Eclipse ADT insists on reordering elements in these .classpath files
+579773b document how to setup the Eclipse build process
+da078ac purge IOCipher submodule, the v0.2 release jar is used
+4698f3d purge ant/proguard/lint template cruft
+75012c2 document how to setup the ant build process
+
+0ccdbf2 fix reconnect try from heartbeat and tune retry/relogin code
+bd25922 fixes contact loading by using proper cursormanager/loadermanager fixes #3909
+57a7f4f fixes #3909 by using proper CursorLoader/LoaderManager for contact list
+
+17de5a6 update to support Tibetan font if Tibetan Keyboard is installed
+a7c1b13 update to latest tibetantextlibrary
+
+03852ec had two tap twice to open chat the first time (fixed!)
+a5abb79 throttle and batch contact presence updates
+2ac3187 fix for #3879 NPE in some otr init cases
+c113fab Merge pull request #551 from n8fr8/master
+a8cf348 slight fix for ciphers and method for setting ssl context
+d7ad0d6 Merge branch 'crypto3' of https://github.com/knoy/ChatSecureAndroid into knoy-crypto3
+e7854c7 SessionID instances must NOT be held anywhere, as they change a new SessionID can be created if the remote user /resource chan
+011bc2c the user can't do anything about these error messages so let's not make it worse TODO improve error message handling automatic
+8df8a7b make sure to not throw a NPE if last cursor is null
+45e1180 don't update remote sessions; if jabberid changes, create new session
+7fbff76 improve groupchat user interface/setup
+79b56b0 when new roster entries are added, make sure they are on the local list
+4f7ed69 SessionID instances must NOT be held anywhere, as they change a new SessionID can be created if the remote user /resource chan
+9b33132 the user can't do anything about these error messages so let's not make it worse TODO improve error message handling automatic
+b01aa0a make sure to not throw a NPE if last cursor is null
+b9ec7e3 Add TLSv1.1 and TLSv1.2 support
+01d6fb6 New TLS ciphersuites
+4564370 don't update remote sessions; if jabberid changes, create new session
+346be6a improve groupchat user interface/setup
+e8a39cf when new roster entries are added, make sure they are on the local list
+
+
 14.0.4 / 2014-09-24 / 0eccf0213403c74243056730d432b8d0b217b432
     update to 14.0.4
 
