@@ -134,6 +134,9 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     private ViewPager mChatPager;
     private ChatViewPagerAdapter mChatPagerAdapter;
 
+    private int mLastPagePosition = -1;
+
+
     private SlidingMenu mDrawer;
 
     private SimpleAlertHandler mHandler;
@@ -193,14 +196,12 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
         mChatPager.setOnPageChangeListener(new SimpleOnPageChangeListener () {
 
-            private int lastPos = -1;
-
             @Override
             public void onPageSelected(int pos) {
 
                 if (pos > 0) {
 
-                    if (lastPos != -1)
+                    if (mLastPagePosition != -1)
                     {
                         ChatViewFragment frag = (ChatViewFragment)mChatPagerAdapter.getItemAt(pos);
                         // Fragment isn't guaranteed to be initialized yet
@@ -213,7 +214,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     if (frag != null)
                         frag.onSelected(mApp);
 
-                    lastPos = pos;
+                    mLastPagePosition = pos;
 
                     if (mMenu != null)
                     {
@@ -1896,7 +1897,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
         if (mContactList != null && mContactList.mFilterView != null)
         {
-
+            mLastPagePosition = -1;
               Uri baseUri = Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY;
               Uri.Builder builder = baseUri.buildUpon();
 
