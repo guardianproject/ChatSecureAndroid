@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr librar
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 
@@ -94,7 +94,7 @@ public class OtrEngineImpl implements OtrEngine {
         return this.getSession(sessionID).transformSending(msgText, tlvs);
     }
 
-    
+
     public void endSession(SessionID sessionID) throws OtrException {
         getSession(sessionID).endSession();
         sessions.remove(sessionID.toString());

@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -48,13 +48,13 @@ public class SimpleAlertHandler extends Handler {
             promptMsg = mActivity.getString(R.string.signed_out_prompt_with_error, provider.mName,
                     ErrorResUtils.getErrorRes(mRes, error.getCode()));
         }
-        else    
+        else
         {
             promptMsg = mActivity.getString(R.string.error);
         }
-        
+
         if (promptMsg != null)
-            showAlert(R.string.error, promptMsg); 
+            showAlert(R.string.error, promptMsg);
     }
 
     public void registerForBroadcastEvents() {
@@ -84,21 +84,21 @@ public class SimpleAlertHandler extends Handler {
     }
 
     public void showAlert(final CharSequence title, final CharSequence message) {
-        
+
         if (title == null || message == null)
             return;
-        
+
         if (!title.equals(message)) //sometimes this reads Attention: Attention!
         {
-            Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();           
+            Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
         }
-        
+
     }
 
     public void showServiceErrorAlert(String msg) {
         showAlert(R.string.error, msg);
     }
-    
+
     public void showContactError(int errorType, ImErrorInfo error, String listName, Contact contact) {
         int id = 0;
         switch (errorType) {

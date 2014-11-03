@@ -25,7 +25,7 @@ import android.util.Log;
 
 
 public class GTalkOAuth2 extends SASLMechanism {
-    
+
 public static final String NAME="X-GOOGLE-TOKEN";//"X-OAUTH2";//
 private static final String TOKEN_TYPE = "mail";// "https://www.googleapis.com/auth/googletalk";//"mail";
 public static final String TYPE_GOOGLE_ACCT = "com.google";
@@ -67,18 +67,18 @@ public void challengeReceived(String arg0) throws IOException {
 protected void authenticate() throws IOException, XMPPException
 {
    //Log.d(NAME, "authId=" + authenticationId + "; password=" + password);
-    
+
     String jidAndToken = "\0" + URLEncoder.encode( authenticationId, "utf-8" ) + "\0" + password;
 
     StringBuilder stanza = new StringBuilder();
     stanza.append( "<auth mechanism=\"" ).append( getName() );
     stanza.append( "\" xmlns=\"urn:ietf:params:xml:ns:xmpp-sasl\">" );
-    
+
     stanza.append( new String(Base64.encodeBase64( jidAndToken.getBytes( "UTF-8" ) ) ));
     stanza.append( "</auth>" );
 
     getSASLAuthentication().send( new Auth2Mechanism(stanza.toString()) );
-    
+
 }
 
 /*
@@ -87,22 +87,22 @@ protected void authenticate() throws IOException, XMPPException
 public static String getGoogleAuthTokenAllow(String name, Context context, Activity activity, Handler handler)
 {
     AccountManager aMgr = AccountManager.get(context);
-    
+
     String retVal = null;
     Account account = getAccount(TYPE_GOOGLE_ACCT,name, aMgr);
     Bundle bundle = new Bundle();
-    
-    AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, bundle, activity, 
+
+    AccountManagerFuture<Bundle> accFut = aMgr.getAuthToken(account, TOKEN_TYPE, bundle, activity,
             new AccountManagerCallback<Bundle>() {
 
                 @Override
                 public void run(AccountManagerFuture<Bundle> bundle) {
-                   
+
                     //this is the result bundle?
-                    
-                    
+
+
                 }} ,handler);
-    
+
     try
     {
         Bundle authTokenBundle = accFut.getResult();
@@ -125,12 +125,12 @@ public static String getGoogleAuthToken(String accountName, Context context) {
     Account account = getAccount(TYPE_GOOGLE_ACCT,accountName,aMgr);
     if (accountName == null)
         accountName = account.name;
-    
+
     if (account != null) {
       try {
-          
+
           //aMgr.updateCredentials(account, authTokenType, options, activity, callback, handler);
-          
+
         return aMgr.blockingGetAuthToken(account, authTokenType, true);
       } catch (OperationCanceledException e) {
         Log.e(NAME, "auth canceled", e);
@@ -148,10 +148,10 @@ public static String getGoogleAuthToken(String accountName, Context context) {
 //help method for getting proper account
 public static Account getAccount(String type, String name, AccountManager aMgr) {
     Account[] accounts = aMgr.getAccountsByType(type);
-    
+
     if (name == null)
         return accounts[0];
-    
+
     for (Account account : accounts) {
       if (account.name.equals(name)) {
         return account;
@@ -220,7 +220,7 @@ public class AuthMechanism extends Packet {
       }});
  *  this.authorizer = new GlsAuthorizer.GlsAuthorizerFactory().getAuthorizer(activity,
         GlsAuthorizer.YOUTUBE_AUTH_TOKEN_TYPE);
-        
+
                 this.clientLoginToken = authorizer.getFreshAuthToken(youTubeName, clientLoginToken);
 
  */

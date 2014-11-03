@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package info.guardianproject.util;
 
@@ -25,15 +25,15 @@ public class HttpMediaStreamer {
     private static final String TAG = HttpMediaStreamer.class.getSimpleName();
     private Uri uri;
     private ServerSocket serverSocket;
-    
+
     public HttpMediaStreamer(String filename, String mimeType) throws IOException {
         uri = create(filename, mimeType);
     }
-    
+
     public Uri getUri() {
         return uri;
     }
-    
+
     public void destroy() {
         try {
             if (serverSocket != null)
@@ -41,9 +41,9 @@ public class HttpMediaStreamer {
         } catch (Exception e) {
         }
     }
-    
+
     private Uri create(final String filename, final String mimeType) throws IOException {
-        
+
         // FIXME generate a random token for security
         final File file = new File(filename);
         if (!file.exists()) {
@@ -65,14 +65,14 @@ public class HttpMediaStreamer {
 
                     byte[] b = new byte[8192];
                     int len;
-                    
+
                     InputStream is = socket.getInputStream();
                     StringBuilder isb = new StringBuilder();
                     len = is.read(b);
                     isb.append(new String(b));
-                    
+
                     //Log.i(TAG, "request: " + isb.toString());
-                    
+
                     StringBuilder sb = new StringBuilder();
                     sb.append("HTTP/1.1 200\r\n");
                     sb.append("Content-Type: " + mimeType + "\r\n");

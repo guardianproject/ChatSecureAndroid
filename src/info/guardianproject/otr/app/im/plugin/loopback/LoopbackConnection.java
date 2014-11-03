@@ -59,15 +59,15 @@ public class LoopbackConnection extends ImConnection {
 
     public void initUser(long providerId, long accountId)
     {
-       
+
         mUser = makeUser();
     }
-    
+
     private Contact makeUser() {
-       
+
         return new Contact(new XmppAddress("test@foo"), "test");
     }
-    
+
     @Override
     public int getCapability() {
         // TODO Auto-generated method stub
@@ -252,7 +252,7 @@ public class LoopbackConnection extends ImConnection {
         private String address;
         private String name;
         private String resource;
-        
+
         public LoopbackAddress() {
         }
 
@@ -266,7 +266,7 @@ public class LoopbackConnection extends ImConnection {
         public String getBareAddress() {
             return address;
         }
-        
+
         @Override
         public String getAddress() {
             return address;
@@ -276,7 +276,7 @@ public class LoopbackConnection extends ImConnection {
         public String getUser() {
             return name;
         }
-        
+
         @Override
         public String getResource() {
             return null;

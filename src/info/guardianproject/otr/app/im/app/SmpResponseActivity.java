@@ -36,7 +36,7 @@ public class SmpResponseActivity extends Activity {
 
         String title = getString(R.string.smp_question_title);
         String strQuestion = mSessionId + ": " + mQuestion;
-        
+
         new AlertDialog.Builder(this).setTitle(title).setMessage(strQuestion)
                 .setView(mInputSMP)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -56,11 +56,11 @@ public class SmpResponseActivity extends Activity {
     }
 
     private void respondSmp(String sid, String answer) {
-        
+
         ImApp app = (ImApp)getApplication();
 
-        
-        
+
+
         IOtrChatSession iOtrSession;
         try {
             IChatSession chatSession = app.getChatSession(mProviderId, Address.stripResource(sid));

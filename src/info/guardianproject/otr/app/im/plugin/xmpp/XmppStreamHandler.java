@@ -58,7 +58,7 @@ public class XmppStreamHandler {
             mConnection.shutdown();
         }
     }
-    
+
     public void setMaxOutgoingQueueSize(int maxOutgoingQueueSize) {
         this.maxOutgoingQueueSize = maxOutgoingQueueSize;
     }
@@ -66,7 +66,7 @@ public class XmppStreamHandler {
     public boolean isResumePossible() {
         return sessionId != null;
     }
-    
+
     public boolean isResumePending() {
         return isResumePossible() && !isSmEnabled;
     }
@@ -177,7 +177,7 @@ public class XmppStreamHandler {
                 return true;
             }
         });
-        
+
         mConnection.addPacketListener(new PacketListener() {
             public void processPacket(Packet packet) {
                 if (isSmEnabled && isStanza(packet)) {
@@ -186,7 +186,7 @@ public class XmppStreamHandler {
                 } else {
                     trace("recv " + packet.toXML());
                 }
-                
+
                 if (packet instanceof StreamHandlingPacket) {
                     StreamHandlingPacket shPacket = (StreamHandlingPacket) packet;
                     String name = shPacket.getElementName();
@@ -219,16 +219,16 @@ public class XmppStreamHandler {
                         // Removed acked packets
                         removeOutgoingAcked(resumeStanzaCount);
                         trace(outgoingQueue.size() + " in outgoing queue after resume");
-                        
+
                         // Resend any unacked packets
                         for (Packet resendPacket : outgoingQueue) {
                             mConnection.sendPacket(resendPacket);
                         }
-                        
+
                         // Enable only after resend, so that the interceptor does not
                         // queue these again or increment outgoingStanzaCount.
                         isSmEnabled = true;
-                        
+
                         // Re-notify the listener - we are really ready for packets now
                         // Before this point, isSuspendPending() was true, and the listener should have
                         // ignored reconnectionSuccessful() from XMPPConnection.
@@ -341,7 +341,7 @@ public class XmppStreamHandler {
         }
 
     }
-    
+
     /** Returns true if the packet is a Stanza as defined in RFC-6121 - a Message, IQ or Presence packet. */
     public static boolean isStanza(Packet packet) {
         if (packet instanceof Message)

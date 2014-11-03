@@ -13,32 +13,32 @@ public class OtrChatSessionAdapter extends Stub {
     private OtrChatManager _chatManager;
     private String _localUser;
     private String _remoteUser;
-    
+
     public OtrChatSessionAdapter(String localUser, String remoteUser, OtrChatManager chatManager) {
 
         _localUser = localUser;
         _remoteUser = remoteUser;
         _chatManager = chatManager;
     }
-    
+
     private SessionID getSessionID ()
     {
-        
+
         return _chatManager.getSessionId(_localUser, _remoteUser);
     }
-    
+
     public void startChatEncryption() throws RemoteException {
         Debug.wrapExceptions(new Runnable() {
             @Override
             public void run() {
                 if (_chatManager != null)
                 {
-                     _chatManager.startSession(getSessionID ());                 
+                     _chatManager.startSession(getSessionID ());
                 }
             }
         });
     }
-    
+
     @Override
     public void stopChatEncryption() throws RemoteException {
         Debug.wrapExceptions(new Runnable() {
@@ -46,10 +46,10 @@ public class OtrChatSessionAdapter extends Stub {
             public void run() {
                 if (_chatManager != null)
                 {
-                 
+
                             _chatManager.endSession(getSessionID ());
-                        
-                  
+
+
                 }
             }
         });
@@ -67,7 +67,7 @@ public class OtrChatSessionAdapter extends Stub {
 
     @Override
     public int getChatStatus() throws RemoteException {
-        
+
         if (_chatManager != null && getSessionID () != null)
         {
             SessionStatus sessionStatus = _chatManager.getSessionStatus(getSessionID ());
@@ -98,18 +98,18 @@ public class OtrChatSessionAdapter extends Stub {
 
         try {
             _chatManager.respondSmp(getSessionID (), answer);
-            
+
         } catch (OtrException e) {
             OtrDebugLogger.log("respondSmp", e);
             throw new RemoteException();
         }
     }
-    
+
     @Override
     public void verifyKey(String address) throws RemoteException {
-        
+
         _chatManager.getKeyManager().verify(getSessionID ());
-        
+
     }
 
     @Override
@@ -124,14 +124,14 @@ public class OtrChatSessionAdapter extends Stub {
 
     @Override
     public String getLocalFingerprint() throws RemoteException {
-        
+
          SessionID sid = getSessionID ();
-         
+
          if (sid != null)
              return _chatManager.getKeyManager().getLocalFingerprint(sid);
          else
              return null;
-        
+
     }
 
     @Override

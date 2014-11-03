@@ -26,11 +26,11 @@ public class DummySSLSocketFactory extends SSLSocketFactory {
 
     private SSLSocketFactory factory;
     private static X509TrustManager sTrustManager;
-    
+
     public DummySSLSocketFactory(X509TrustManager trustManager) {
 
         DummySSLSocketFactory.sTrustManager = trustManager;
-        
+
         try {
             SSLContext sslcontent = SSLContext.getInstance("TLS");
             sslcontent.init(null, // KeyManager not required

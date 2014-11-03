@@ -2,31 +2,31 @@ package info.guardianproject.otr.app.im.plugin.xmpp;
 
 import java.util.ArrayList;
 
-public class XMPPCertPins 
+public class XMPPCertPins
 {
-    
+
     // Use the following rules
     // https://wiki.mozilla.org/Security/Server_Side_TLS
     // AEADs over everything else
     // PFS over non-PFS
     // AES-128 over AES-256 ( https://www.schneier.com/blog/archives/2009/07/another_new_aes.html )
-    // Avoid SHA-1 
+    // Avoid SHA-1
     // Remove RC4, MD5, DES
     public final static String[] SSL_IDEAL_CIPHER_SUITES_API_20 = {
-     "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",    
+     "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256",
      "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
      "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
      "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
      "TLS_DHE_RSA_WITH_AES128_GCM_SHA256",
      "TLS_DHE_RSA_WITH_AES256_GCM_SHA384",
-     
+
      "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256",
      "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256",
      "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384",
      "TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384",
      "TLS_DHE_RSA_WITH_AES_128_CBC_SHA256",
      "TLS_DHE_RSA_WITH_AES_256_CBC_SHA384",
-     
+
      "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
      "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
      "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
@@ -35,7 +35,7 @@ public class XMPPCertPins
      "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
      "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
      "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
-      
+
      "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA",
      "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
      "TLS_ECDH_RSA_WITH_AES_256_CBC_SHA",
@@ -45,9 +45,9 @@ public class XMPPCertPins
      "TLS_RSA_WITH_AES_128_CBC_SHA",
      "TLS_RSA_WITH_AES_256_CBC_SHA"
     };
-    
+
     // Follow above rules but as closely as possible but if we have to use RC4, use it last
-    public final static String[] SSL_IDEAL_CIPHER_SUITES = { 
+    public final static String[] SSL_IDEAL_CIPHER_SUITES = {
     "TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA",
     "TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA",
     "TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA",
@@ -56,15 +56,15 @@ public class XMPPCertPins
     "TLS_DHE_RSA_WITH_AES_256_CBC_SHA",
     "TLS_DHE_DSS_WITH_AES_128_CBC_SHA",
     "TLS_DHE_DSS_WITH_AES_256_CBC_SHA",
-    
+
     "TLS_ECDH_RSA_WITH_AES_128_CBC_SHA",
     "TLS_ECDH_RSA_WITH_AES_256_CBC_SHA",
     "TLS_ECDH_ECDSA_WITH_AES_128_CBC_SHA",
     "TLS_ECDH_ECDSA_WITH_AES_256_CBC_SHA",
-    
+
     "TLS_RSA_WITH_AES_128_CBC_SHA",
     "TLS_RSA_WITH_AES_256_CBC_SHA",
-    
+
     // UNCOMMENT THIS BLOCK ONLY IF ABSOLUTELY NECESSARY
     /*
     "TLS_ECDHE_RSA_WITH_RC4_128_SHA",
@@ -74,15 +74,15 @@ public class XMPPCertPins
     */
     };
 
-    
+
     public static ArrayList<String> PINLIST = null;
-    
+
     public static String[] getPinList ()
     {
-        
+
         if (PINLIST == null)
         {
-            
+
             PINLIST = new ArrayList<String>();
 /*
 ## Certificate 0 ##
@@ -92,10 +92,10 @@ SHA1 FP: 0B93EB84CCBB7AA2CB92CF61A0348F63CCED14C1
 SPKI Pin: B3A7C02FC620C25F3C395AB043BF3C7729CE3C41
 
 */
-    
+
         PINLIST.add("B3A7C02FC620C25F3C395AB043BF3C7729CE3C41");
-    
-    
+
+
        /***
        # Connecting to riseup.net [1 of 9 hosts]
                ## Found 2 pinnable certs in chain
@@ -111,12 +111,12 @@ SPKI Pin: B3A7C02FC620C25F3C395AB043BF3C7729CE3C41
                Fingerprint: A9F79883A075CE82D20D274D1368E876140D33B3
                SPKI Pin: 636AB6EB0296E6C0681DB0C6CF3BB024BE267B8A
                **/
-       
-       
+
+
         PINLIST.add("7D58173F276A483786D977DB35E836D482A3B687");
         PINLIST.add("636AB6EB0296E6C0681DB0C6CF3BB024BE267B8A");
-       
-       
+
+
        /**
 
 
@@ -128,7 +128,7 @@ SPKI Pin: B3A7C02FC620C25F3C395AB043BF3C7729CE3C41
                Fingerprint: BF32F60E50B20711C4A3F51147F74285414CFE0E
                SPKI Pin: CCB6BAB6E52C4B448C4FFD04F13446E18B1B0420
                **/
-        
+
         PINLIST.add("CCB6BAB6E52C4B448C4FFD04F13446E18B1B0420");
 
         /**
@@ -157,13 +157,13 @@ SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
 
 
 **/
-        
+
         PINLIST.add("686B3569ABE87202E9018532719CB67DD7EA3356");
         PINLIST.add("10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C");
-        
+
         //added pin from cacert.org downloadable class3 crt
         PINLIST.add("f061d83f958f4d78b147b31339978ea9c251ba9b");
-        
+
         /**
 
                # Connecting to talk.l.google.com [4 of 9 hosts]
@@ -190,7 +190,7 @@ SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
         PINLIST.add("43DAD630EE53F8A980CA6EFD85F46AA37990E0EA");
         PINLIST.add("C07A98688D89FBAB05640C117DAA7D65B8CACC4E");
 
-        
+
         /**
                # Connecting to gmail.com [5 of 9 hosts]
                ## Found 3 pinnable certs in chain
@@ -202,7 +202,7 @@ SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
     **/
         PINLIST.add("6D1D4933C8A6723FB112D046EC6C7AD18191231C");
 
-        
+
         /**
 
                # Connecting to chat.facebook.com [6 of 9 hosts]
@@ -225,12 +225,12 @@ SPKI Pin: 10DA624DEF41A3046DCDBA3D018F19DF3DC9A07C
                Fingerprint: 32F30882622B87CF8856C63DB873DF0853B4DD27
                SPKI Pin: B181081A19A4C0941FFAE89528C124C99B34ACC7
     **/
-        
+
         PINLIST.add("72AC3AEDE343CDE867E5E412B502518794F2FF1C");
         PINLIST.add("83244223D6CBF0A26FC7DE27CEBCA4BDA32612AD");
         PINLIST.add("B181081A19A4C0941FFAE89528C124C99B34ACC7");
 
-        
+
         /**
 
               # Connecting to dukgo.com [4 of 5 hosts]
@@ -252,7 +252,7 @@ SPKI Pin: 4DC08738FE301627BF02D49EE265BD4B7C15D54E
 
         PINLIST.add("3AE35A2F6960B3267769F8C66BDD517C64463E10");
         PINLIST.add("4DC08738FE301627BF02D49EE265BD4B7C15D54E");
-        
+
         /**
 
                # Connecting to guardianproject.info [8 of 9 hosts]
@@ -268,12 +268,12 @@ SPKI Pin: 4DC08738FE301627BF02D49EE265BD4B7C15D54E
 
                # Goodbye!
 **/
-        
+
 
         PINLIST.add("2B1292D6CD084EC90B5DBD398AEA15B853337971");
         }
-    
+
         return PINLIST.toArray(new String[PINLIST.size()]);
-        
+
     }
 }

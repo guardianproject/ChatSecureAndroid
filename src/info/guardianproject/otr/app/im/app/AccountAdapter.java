@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -35,23 +35,23 @@ public class AccountAdapter extends CursorAdapter {
         mInflater.setFactory(factory);
         mResId = resId;
     }
-    
+
     public void setListener(Listener listener) {
         this.mListener = listener;
     }
-    
+
     @Override
     public Cursor swapCursor(Cursor newCursor) {
         if(mBindTask != null) {
             mBindTask.cancel(false);
             mBindTask = null ;
         }
-        
+
         if (mStashCursor != null && (!mStashCursor.isClosed()))
                 mStashCursor.close();
-        
+
         mStashCursor = newCursor;
-        
+
         if (mStashCursor != null) {
             // Delay swapping in the cursor until we get the extra info
            // List<AccountInfo> accountInfoList = getAccountInfoList(mStashCursor) ;
@@ -59,7 +59,7 @@ public class AccountAdapter extends CursorAdapter {
         }
         return super.swapCursor(mStashCursor);
     };
-    
+
     /**
      * @param mStashCursor
      * @return
@@ -79,21 +79,21 @@ public class AccountAdapter extends CursorAdapter {
         int dbConnectionStatus;
         int presenceStatus;
     }
-    
+
     static class AccountSetting {
         String mProviderNameText;
         String mSecondRowText;
         boolean mSwitchOn;
         String activeUserName;
         int connectionStatus ;
-        
+
         String domain;
         String host;
         int port;
         boolean isTor;
-        
+
     }
-    
+
     AccountInfo getAccountInfo( Cursor cursor ) {
         AccountInfo accountInfo = new AccountInfo();
         accountInfo.providerId = cursor.getInt(cursor.getColumnIndexOrThrow(Imps.Provider._ID));
@@ -119,22 +119,22 @@ public class AccountAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ((ProviderListItem) view).bindView(cursor);
-        
+
     }
 
     private void runBindTask( final Activity context, final List<AccountInfo> accountInfoList ) {
         final Resources resources = context.getResources();
         final ContentResolver resolver = context.getContentResolver();
         final ImApp mApp = (ImApp)context.getApplication();
-        
+
         // if called multiple times
         if (mBindTask != null)
             mBindTask.cancel(false);
-        // 
-        
-        
+        //
+
+
         mBindTask = new AsyncTask<Void, Void, List<AccountSetting>>() {
-            
+
             @Override
             protected List<AccountSetting> doInBackground(Void... params) {
                 List<AccountSetting> accountSettingList = new ArrayList<AccountSetting>();
@@ -143,25 +143,25 @@ public class AccountAdapter extends CursorAdapter {
                 }
                 return accountSettingList;
             }
-            
+
             private AccountSetting getAccountSettings(AccountInfo ai) {
                 AccountSetting as = new AccountSetting();
-                
-                
+
+
                 Cursor pCursor = resolver.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(ai.providerId)},null);
-               
+
                 if (pCursor != null)
                 {
                     Imps.ProviderSettings.QueryMap settings =
                             new Imps.ProviderSettings.QueryMap(pCursor, resolver, ai.providerId, false , null);
-                    
+
                     as.connectionStatus = ai.dbConnectionStatus;
                     as.activeUserName = ai.activeUserName;
                     as.domain = settings.getDomain();
                     as.host = settings.getServer();
                     as.port = settings.getPort();
                     as.isTor = settings.getUseTor();
-                    
+
                     IImConnection conn = mApp.getConnection(ai.providerId);
                     if (conn == null) {
                         as.connectionStatus = ImConnection.DISCONNECTED;
@@ -173,15 +173,15 @@ public class AccountAdapter extends CursorAdapter {
                             e.printStackTrace();
                         }
                     }
-    
+
                     settings.close();
                 }
                 return as;
             }
-            
+
             @Override
             protected void onPostExecute(List<AccountSetting> result) {
-                // store 
+                // store
                 mBindTask = null;
                 // swap
                 AccountAdapter.super.swapCursor(mStashCursor);
@@ -191,7 +191,7 @@ public class AccountAdapter extends CursorAdapter {
         };
         mBindTask.execute();
     }
-    
+
     public interface Listener {
         void onPopulate();
     }

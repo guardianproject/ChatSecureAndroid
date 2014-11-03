@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -33,8 +33,8 @@ import android.util.Log;
 /**
  * A wrapper for a broadcast receiver that provides network connectivity state
  * information, independent of network type (mobile, Wi-Fi, etc.). {@hide
- * 
- * 
+ *
+ *
  * }
  */
 public class NetworkConnectivityListener extends BroadcastReceiver {
@@ -60,13 +60,13 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        
+
         /*
         if (!action.equals(ConnectivityManager.CONNECTIVITY_ACTION) || mListening == false) {
             Log.w(TAG, "onReceived() called with " + mState.toString() + " and " + intent);
             return;
         }*/
-  
+
         boolean noConnectivity = intent.getBooleanExtra(
                 ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 
@@ -93,7 +93,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
                    + " mOtherNetworkInfo = "
                    + (mOtherNetworkInfo == null ? "[none]" : mOtherNetworkInfo + " noConn="
                                                              + noConnectivity) + " mState=" + mState);*/
-   
+
         if (mHandlers != null)
         {
                 // Notifiy any handlers.
@@ -105,7 +105,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
             }
         }
     }
-    
+
 
     public enum State {
         UNKNOWN,
@@ -130,7 +130,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
 
     /**
      * This method starts listening for network connectivity state changes.
-     * 
+     *
      * @param context
      */
     public synchronized void startListening(Context context) {
@@ -160,7 +160,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
     /**
      * This methods registers a Handler to be called back onto with the
      * specified what code when the network connectivity state changes.
-     * 
+     *
      * @param target The target handler.
      * @param what The what code to be used when posting a message to the
      *            handler.
@@ -171,7 +171,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
 
     /**
      * This methods unregisters the specified Handler.
-     * 
+     *
      * @param target
      */
     public static void unregisterHandler(Handler target) {
@@ -185,7 +185,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
     /**
      * Return the NetworkInfo associated with the most recent connectivity
      * event.
-     * 
+     *
      * @return {@code NetworkInfo} for the network that had the most recent
      *         connectivity event.
      */
@@ -199,7 +199,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
      * might be available. If this returns a non-null value, then another
      * broadcast should follow shortly indicating whether connection to the
      * other network succeeded.
-     * 
+     *
      * @return NetworkInfo
      */
     public NetworkInfo getOtherNetworkInfo() {
@@ -209,7 +209,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
     /**
      * Returns true if the most recent event was for an attempt to switch over
      * to a new network following loss of connectivity on another network.
-     * 
+     *
      * @return {@code true} if this was a failover attempt, {@code false}
      *         otherwise.
      */
@@ -220,12 +220,12 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
     /**
      * An optional reason for the connectivity state change may have been
      * supplied. This returns it.
-     * 
+     *
      * @return the reason for the state change, if available, or {@code null}
      *         otherwise.
      */
     public String getReason() {
         return mReason;
     }
-    
+
 }

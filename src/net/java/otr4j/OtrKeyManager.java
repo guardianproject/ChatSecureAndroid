@@ -18,7 +18,7 @@ public abstract interface OtrKeyManager {
 
     /** The remote verified us with an SMP Q&A */
     public abstract void remoteVerifiedUs(SessionID sessionID);
-    
+
     public abstract boolean isVerified(SessionID sessionID);
 
     public abstract String getRemoteFingerprint(SessionID sessionID);

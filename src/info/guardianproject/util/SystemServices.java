@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package info.guardianproject.util;
 
@@ -21,20 +21,20 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 /**
- * 
+ *
  * @author liorsaar
- * 
+ *
  */
 
 /*
  * Usage:
  * String filePath = writeFile() ;
  * Uri fileUri = SystemService.Scanner.scan( context, filePath ) ; // scan that one file
- * the notification will launch the target activity with the file uri 
+ * the notification will launch the target activity with the file uri
  * SystemServices.Ntfcation.sent( context, fileUri, NewChatActivity.class ) ;
  * in the target activity call:
  * Uri uri = getIntent().getData() ;
- * SystemServices.Viewer.viewImage( context, uri ) ; 
+ * SystemServices.Viewer.viewImage( context, uri ) ;
  */
 public class SystemServices {
     static class Ntfcation {
@@ -99,7 +99,7 @@ public class SystemServices {
         public String path;
         public String type;
     }
-    
+
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
         if (IocVfs.isVfsScheme(uri.getScheme())) {
@@ -110,31 +110,31 @@ public class SystemServices {
             info.path = uri.getPath();
             return info;
         }
-        
+
         if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
             // Work around URI escaping brokenness
             info.path = uri.toString().replaceFirst("content://org.openintents.filemanager", "");
             return info;
         }
-        
+
         Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
-        
+
         if (cursor != null && cursor.getCount() > 0)
         {
             cursor.moveToFirst();
-            
+
             //need to check columns for different types
             int dataIdx = cursor.getColumnIndex(MediaStore.Images.Media.DATA);
-            if (dataIdx != -1) 
+            if (dataIdx != -1)
             {
                 info.path = cursor.getString(dataIdx);
                 info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.MIME_TYPE));
-            
+
             }
             else
             {
                 dataIdx = cursor.getColumnIndex(MediaStore.Video.Media.DATA);
-            
+
                 if (dataIdx != -1)
                 {
                     info.path = cursor.getString(dataIdx);
@@ -143,7 +143,7 @@ public class SystemServices {
                 else
                 {
                     dataIdx = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-            
+
                     if (dataIdx != -1)
                     {
                         info.path = cursor.getString(dataIdx);
@@ -152,23 +152,23 @@ public class SystemServices {
                     else
                     {
                         dataIdx = cursor.getColumnIndex(MediaStore.MediaColumns.DATA);
-                
+
                         if (dataIdx != -1)
                         {
                             info.path = cursor.getString(dataIdx);
                             info.type = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.MIME_TYPE));
-                          
+
                         }
                     }
                 }
-                
-               
+
+
             }
         }
-        
+
         if (cursor != null)
             cursor.close();
-        
+
         return info;
     }
 }

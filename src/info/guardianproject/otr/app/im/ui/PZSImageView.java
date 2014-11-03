@@ -107,11 +107,11 @@ public class PZSImageView extends ImageView {
 	
 	private void calculateScaleFactorLimit() {
 		
-		//set max / min scale factor. 
-		mMaxScaleFactor = Math.max( getHeight() * MAX_SCALE_TO_SCREEN / mImageHeight, 
+		//set max / min scale factor.
+		mMaxScaleFactor = Math.max( getHeight() * MAX_SCALE_TO_SCREEN / mImageHeight,
 				getWidth() * MAX_SCALE_TO_SCREEN / mImageWidth);
 		
-		mMinScaleFactor = Math.min( getHeight() * MIN_SCALE_TO_SCREEN / mImageHeight, 
+		mMinScaleFactor = Math.min( getHeight() * MIN_SCALE_TO_SCREEN / mImageHeight,
 				getWidth() * MIN_SCALE_TO_SCREEN / mImageWidth);
 	}
 
@@ -205,14 +205,14 @@ public class PZSImageView extends ImageView {
 	private long mLastTocuhDownTime = 0;
 	protected boolean isDoubleTap(MotionEvent ev){
 		//if old pointer is tapped?
-		if( ev.getPointerCount() > 1){ 
+		if( ev.getPointerCount() > 1){
 			//if there are more than one pointer... reset
 			mLastTocuhDownTime = 0;
 			return false;
 		}
 
 		long downTime = ev.getDownTime();
-		long diff = downTime - mLastTocuhDownTime; 
+		long diff = downTime - mLastTocuhDownTime;
 		mLastTocuhDownTime = downTime;
 
 		return diff < DOUBLE_TAP_MARGIN_TIME;
@@ -246,7 +246,7 @@ public class PZSImageView extends ImageView {
 			return scale;
 		} else {
 			float newScaleFactor = newSpan / stdSpan;
-			float candinateScale = scale * newScaleFactor; 
+			float candinateScale = scale * newScaleFactor;
 			
 			if( candinateScale > mMaxScaleFactor ){
 				return mMaxScaleFactor / scale;
@@ -285,7 +285,7 @@ public class PZSImageView extends ImageView {
 			mTraslateLimitRect.top = getHeight() - imageHeight - getPaddingTop() - getPaddingBottom();
 			mTraslateLimitRect.bottom = 0.f;
 		}else{
-			mTraslateLimitRect.top = mTraslateLimitRect.bottom = 
+			mTraslateLimitRect.top = mTraslateLimitRect.bottom =
 					(getHeight() - imageHeight - getPaddingTop() - getPaddingBottom() ) / 2.f;
 		}
 
@@ -312,7 +312,7 @@ public class PZSImageView extends ImageView {
 		mCurrentMatrix.setValues(values);
 		
 		if( mTraslateLimitRect.contains(tranX, tranY) == false ){
-			//set new start point. 
+			//set new start point.
 			mStartPoint.offset(tranX - newTranX, tranY - newTranY);
 		}
 	}

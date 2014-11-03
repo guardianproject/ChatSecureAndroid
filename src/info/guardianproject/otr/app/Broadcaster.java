@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2006 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -26,7 +26,7 @@ public class Broadcaster {
 
     /**
      * Sign up for notifications about something.
-     * 
+     *
      * When this broadcaster pushes a message with senderWhat in the what field,
      * target will be sent a copy of that message with targetWhat in the what
      * field.

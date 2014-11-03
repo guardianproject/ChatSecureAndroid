@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.session;
@@ -28,7 +28,7 @@ interface AuthContext {
     public static final byte M1p_START = (byte) 0x04;
     public static final byte M2p_START = (byte) 0x05;
     public static final byte EXTRA_SYMMETRIC_KEY = (byte) 0xFF;
-    
+
     public abstract void reset();
 
     public abstract boolean getIsSecure();
@@ -48,6 +48,6 @@ interface AuthContext {
     public abstract PublicKey getRemoteLongTermPublicKey();
 
     public abstract KeyPair getLocalLongTermKeyPair();
-    
+
     public abstract byte[] getExtraSymmetricKey() throws OtrException;
 }

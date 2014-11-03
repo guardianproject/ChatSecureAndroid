@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.crypto;
@@ -267,7 +267,7 @@ public class OtrCryptoEngineImpl implements OtrCryptoEngine {
         Boolean writeS = false;
         int shiftR = rslen - rb.length;
         int shiftS = rslen - sb.length;
-        
+
         for (int i = 0; i < siglen; i++) {
             if (i < rslen) {
                 if (!writeR)

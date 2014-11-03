@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2008 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -50,7 +50,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
-    
+
     private static final String TAG = "WelcomeActivity";
     private boolean mDidAutoLaunch = false;
     private Cursor mProviderCursor;
@@ -59,7 +59,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private SignInHelper mSignInHelper;
 
     private boolean mDoSignIn = true;
-    
+
     static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
                                                  Imps.Provider.FULLNAME, Imps.Provider.CATEGORY,
                                                  Imps.Provider.ACTIVE_ACCOUNT_ID,
@@ -81,9 +81,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     static final int ACTIVE_ACCOUNT_KEEP_SIGNED_IN = 8;
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
-    
+
     private SharedPreferences mPrefs = null;
-    
+
     private CacheWordActivityHandler mCacheWord = null;
     private boolean mDoLock;
 
@@ -95,11 +95,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mHandler = new MyHandler(this);
 
         mSignInHelper = new SignInHelper(this);
-       
+
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        
+
         getSupportActionBar().hide();
-      
+
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         mDoLock = getIntent().getBooleanExtra("doLock", false);
 
@@ -107,12 +107,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         if (!mDoLock)
         {
             mApp.maybeInit(this);
-            
+
         }
-        
+
         if (ImApp.mUsingCacheword)
             connectToCacheWord();
-        else 
+        else
         {
            if (openEncryptedStores(null, false)) {
                IocVfs.init(this, "");
@@ -124,46 +124,46 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     private void connectToCacheWord ()
     {
-        
-        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-        
-        mCacheWord.connectToService();
-        
-        
-    }
-    
 
-   
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+
+        mCacheWord.connectToService();
+
+
+    }
+
+
+
     @SuppressWarnings("deprecation")
     private boolean cursorUnlocked(String pKey, boolean allowCreate) {
         try {
             Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
-            
+
             Builder builder = uri.buildUpon();
             if (pKey != null)
                 builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
             if (!allowCreate)
                 builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
             uri = builder.build();
-            
+
             mProviderCursor = managedQuery(uri,
                     PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
                     new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
                     Imps.Provider.DEFAULT_SORT_ORDER);
- 
+
             if (mProviderCursor != null)
             {
                 ImPluginHelper.getInstance(this).loadAvailablePlugins();
 
                 mProviderCursor.moveToFirst();
-            
+
                 return true;
             }
             else
             {
                 return false;
             }
-            
+
         } catch (Exception e) {
             // Only complain if we thought this password should succeed
             if (allowCreate) {
@@ -172,7 +172,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 Toast.makeText(this, getString(R.string.error_welcome_database), Toast.LENGTH_LONG).show();
                 finish();
             }
-            
+
             // needs to be unlocked
             return false;
         }
@@ -200,7 +200,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        
+
         if (mCacheWord != null)
             mCacheWord.disconnect();
     }
@@ -219,7 +219,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         int countSignedIn = accountsSignedIn();
         int countAvailable = accountsAvailable();
         int countConfigured = accountsConfigured();
-        
+
 
         if (countAvailable == 1) {
             // If just one account is available for auto-signin, go there immediately after service starts trying
@@ -236,9 +236,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         } else {
             mSignInHelper.setSignInListener(null);
         }
-            
+
         Intent intent = getIntent();
-        
+
         if (intent != null && intent.getAction() != null && (!intent.getAction().equals(Intent.ACTION_MAIN)))
         {
             handleIntentAPILaunch(intent);
@@ -259,7 +259,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         else
         {
             setContentView(R.layout.welcome_activity);
-            
+
             Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
 
             getStarted.setOnClickListener(new OnClickListener() {
@@ -271,14 +271,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 }
             });
 
-            
+
         }*/
-    
+
     }
-    
-   
+
+
     // Show signed in account
-    
+
     protected boolean showActiveAccount() {
         if (!mProviderCursor.moveToFirst())
             return false;
@@ -291,8 +291,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         return false;
     }
 
-    
-   
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -379,7 +379,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         boolean isActive = false; // TODO(miron)
         mSignInHelper.signIn(password, providerId, accountId, isActive);
     }
-    
+
     boolean isSigningIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
         return connectionStatus == Imps.ConnectionStatus.CONNECTING;
@@ -452,31 +452,31 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 Toast.LENGTH_LONG).show();
     }
 
-   
+
 
     void showAccounts() {
         //startActivity(new Intent(getBaseContext(), AccountListActivity.class));
         startActivity(new Intent(getBaseContext(), NewChatActivity.class));
         finish();
     }
-    
+
     void handleIntentAPILaunch (Intent srcIntent)
     {
         Intent intent = new Intent(this, ImUrlActivity.class);
         intent.setAction(srcIntent.getAction());
-        
+
         if (srcIntent.getData() != null)
             intent.setData(srcIntent.getData());
-        
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);    
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         if (srcIntent.getExtras()!= null)
             intent.putExtras(srcIntent.getExtras());
         startActivity(intent);
-        
+
         setIntent(null);
         finish();
     }
-    
+
     Intent getEditAccountIntent() {
         Intent intent = new Intent(Intent.ACTION_EDIT, ContentUris.withAppendedId(
                 Imps.Account.CONTENT_URI, mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN)));
@@ -484,8 +484,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         intent.addCategory(getProviderCategory(mProviderCursor));
         return intent;
     }
-    
-    
+
+
     private String getProviderCategory(Cursor cursor) {
         return cursor.getString(PROVIDER_CATEGORY_COLUMN);
     }
@@ -512,10 +512,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         Configuration config = getResources().getConfiguration();
         String defaultLangName = config.locale.getDefault().getDisplayName();
         String defaultLangCode = config.locale.getDefault().getCountry();
-        
+
         String[] langs = getResources().getStringArray(R.array.languages);
         langs[0] = langs[0] + " (" + defaultLangName + ")";
-        
+
         ad.setItems(langs,
                 new DialogInterface.OnClickListener() {
 
@@ -540,7 +540,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     public void onCacheWordUninitialized() {
         Log.d(ImApp.LOG_TAG,"cache word uninit");
-        
+
         if (mDoLock) {
             completeShutdown();
         } else {
@@ -555,14 +555,14 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         returnIntent.putExtra("doSignIn", mDoSignIn);
         intent.putExtra("originalIntent", returnIntent);
         startActivity(intent);
-       
+
     }
-    
+
     @Override
     public void onCacheWordLocked() {
         if (mDoLock) {
             Log.d(ImApp.LOG_TAG, "cacheword lock requested but already locked");
-            
+
         } else {
             showLockScreen();
         }
@@ -575,12 +575,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             completeShutdown();
             return;
         }
-        
+
        byte[] encryptionKey = mCacheWord.getEncryptionKey();
        openEncryptedStores(encryptionKey, true);
 
        // this is no longer configurable
-     //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));              
+     //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
      //  mCacheWord.setTimeoutSeconds(defaultTimeout);
        IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
     }
@@ -588,10 +588,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private void completeShutdown ()
     {
            new AsyncTask<String, Void, String>() {
-            
+
             private ProgressDialog dialog;
-            
-            
+
+
             @Override
             protected void onPreExecute() {
                 if (mApp.getActiveConnections().size() > 0)
@@ -602,23 +602,23 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                     dialog.show();
                 }
             }
-            
+
             @Override
             protected String doInBackground(String... params) {
-              
+
                 while (mApp.getActiveConnections().size() > 0)
                 {
 
                        try{
                            IImConnection conn = mApp.getActiveConnections().iterator().next();
                            conn.logout();
-                      
+
                            Thread.sleep(1000);
                        }catch(Exception e){}
-                    
-                  
+
+
                 }
-                   
+
                 return "";
               }
 
@@ -630,41 +630,41 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                     dialog.dismiss();
 
                 mApp.forceStopImService();
-                
+
                 Imps.clearPassphrase(mApp);
-                
+
                 if (mCacheWord != null)
                 {
                     mCacheWord.manuallyLock();
                 }
-                
+
                 Intent cacheWordIntent = CacheWordService
                         .getBlankServiceIntent(getApplicationContext());
-                stopService(cacheWordIntent);                
+                stopService(cacheWordIntent);
                 finish();
             }
         }.execute();
-        
-      
-        
+
+
+
     }
-    
+
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
         String pkey = (key != null) ? new String(SQLCipherOpenHelper.encodeRawKey(key)) : "";
-        
+
         if (cursorUnlocked(pkey, allowCreate)) {
-            
+
             if (mDoLock)
                 completeShutdown();
             else
                 doOnResume();
-        
+
             return true;
         } else {
             return false;
         }
     }
-    
+
 
     private void checkForUpdates() {
         // Remove this for store builds!

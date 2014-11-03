@@ -24,14 +24,14 @@ public interface DataHandler {
 
     /**
      * Offer data to peer
-     * 
+     *
      * @param offerId offer ID
      * @param us our Address
      * @param localUri URI of data
      * @param headers extra headrs or null
      */
     void offerData(String offerId, Address us, String localUri, Map<String, String> headers) throws IOException;
-    
+
     void setDataListener(IDataListener dataListener);
 
     void onOtrStatusChanged(SessionStatus status);

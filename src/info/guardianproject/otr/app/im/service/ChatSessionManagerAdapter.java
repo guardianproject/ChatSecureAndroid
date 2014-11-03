@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -51,18 +51,18 @@ public class ChatSessionManagerAdapter extends
     final RemoteCallbackList<IChatSessionListener> mRemoteListeners = new RemoteCallbackList<IChatSessionListener>();
 
     static HashMap<String, ChatSessionAdapter> mActiveChatSessionAdapters;
-    
+
     public ChatSessionManagerAdapter(ImConnectionAdapter connection) {
         mConnection = connection;
         ImConnection connAdaptee = connection.getAdaptee();
-        
+
         mChatSessionManager = connAdaptee.getChatSessionManager();
         mChatSessionManager.setAdapter(this);
-        
+
         mActiveChatSessionAdapters = new HashMap<String, ChatSessionAdapter>();
         mSessionListenerAdapter = new ChatSessionListenerAdapter();
         mChatSessionManager.addChatSessionListener(mSessionListenerAdapter);
-     
+
         if ((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
             mGroupManager = connAdaptee.getChatGroupManager();
             mGroupManager.addGroupListener(new ChatGroupListenerAdapter());
@@ -74,10 +74,10 @@ public class ChatSessionManagerAdapter extends
     }
 
     public IChatSession createChatSession(String contactAddress, boolean isNewSession) {
-        
+
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
-        
+
         Contact contact = listManager.getContactByAddress(contactAddress);
         if (contact == null) {
             try {
@@ -90,29 +90,29 @@ public class ChatSessionManagerAdapter extends
                 return null;
             }
         }
-        
+
         ChatSession session = mChatSessionManager.createChatSession(contact, isNewSession);
-        
+
         return getChatSessionAdapter(session, isNewSession);
     }
-    
-    public IChatSession createMultiUserChatSession(String roomAddress, String nickname) 
+
+    public IChatSession createMultiUserChatSession(String roomAddress, String nickname)
     {
-        
+
         ChatGroupManager groupMan = mConnection.getAdaptee().getChatGroupManager();
-        
+
         try
         {
             groupMan.createChatGroupAsync(roomAddress, nickname);
-    
+
             Address address = new XmppAddress(roomAddress); //TODO hard coding XMPP for now
-            
+
             ChatGroup chatGroup = groupMan.getChatGroup(address);
-            
+
             if (chatGroup != null)
             {
                 ChatSession session = mChatSessionManager.createChatSession(chatGroup,true);
-    
+
                 return getChatSessionAdapter(session, true);
             }
             else
@@ -131,7 +131,7 @@ public class ChatSessionManagerAdapter extends
         synchronized (mActiveChatSessionAdapters) {
             ChatSession session = adapter.getAdaptee();
             mChatSessionManager.closeChatSession(session);
-            
+
             String key = Address.stripResource(adapter.getAddress());
             mActiveChatSessionAdapters.remove(key);
         }
@@ -185,17 +185,17 @@ public class ChatSessionManagerAdapter extends
     }
 
     public synchronized ChatSessionAdapter getChatSessionAdapter(ChatSession session, boolean isNewSession) {
-        
+
         Address participantAddress = session.getParticipant().getAddress();
         String key = Address.stripResource(participantAddress.getAddress());
         ChatSessionAdapter adapter = mActiveChatSessionAdapters.get(key);
-        
+
         if (adapter == null) {
             adapter = new ChatSessionAdapter(session, mConnection, isNewSession);
             mActiveChatSessionAdapters.put(key, adapter);
         }
-        
-        return adapter;        
+
+        return adapter;
     }
 
     class ChatSessionListenerAdapter implements ChatSessionListener {

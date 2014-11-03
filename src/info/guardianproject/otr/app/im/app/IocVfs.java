@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package info.guardianproject.otr.app.im.app;
 
@@ -33,29 +33,29 @@ public class IocVfs {
     private static String dbFile;
     private static final String BLOB_NAME = "media.db";
     private static String password;
-    
+
     //maybe called multiple times to remount
     public static void init(Context context)  throws IllegalArgumentException {
-        
+
         if (context.getExternalFilesDir(null) != null)
             dbFile = new File(context.getExternalFilesDir(null),BLOB_NAME).getAbsolutePath();
         else
             dbFile = new File(context.getFilesDir(),BLOB_NAME).getAbsolutePath();
-       
+
         if (password != null)
             mount();
-        
+
     }
-    
-    public static void mount() throws IllegalArgumentException {        
+
+    public static void mount() throws IllegalArgumentException {
         if (!VirtualFileSystem.get().isMounted())
-            VirtualFileSystem.get().mount(dbFile, password);               
+            VirtualFileSystem.get().mount(dbFile, password);
     }
-    
-    public static void unmount() {     
+
+    public static void unmount() {
         VirtualFileSystem.get().unmount();
     }
-    
+
     public static void list(String parent) {
         File file = new File(parent);
         String[] list = file.list();
@@ -71,7 +71,7 @@ public class IocVfs {
             }
         }
     }
-    
+
     public static void deleteSession( String sessionId ) throws IOException {
         String dirName = "/" + sessionId;
         File file = new File(dirName);
@@ -79,10 +79,10 @@ public class IocVfs {
         if (!file.exists()) {
             return;
         }
-        // delete recursive 
+        // delete recursive
         delete( dirName );
     }
-    
+
     private static void delete(String parentName) throws IOException {
         File parent = new File(parentName);
         // if a file or an empty directory - delete it
@@ -101,17 +101,17 @@ public class IocVfs {
         }
         delete( parentName );
     }
-    
+
     private static final String VFS_SCHEME = "vfs";
 
     public static Uri vfsUri(String filename) {
         return Uri.parse(VFS_SCHEME + ":" + filename);
     }
-    
+
     public static boolean isVfsScheme(String scheme) {
         return VFS_SCHEME.equals(scheme);
     }
-    
+
     public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
         File image = new File(uri.getPath());
 
@@ -119,7 +119,7 @@ public class IocVfs {
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
-        
+
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
             BitmapFactory.decodeStream(fis, null, options);
@@ -140,7 +140,7 @@ public class IocVfs {
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
             Bitmap scaledBitmap = BitmapFactory.decodeStream(fis, null, opts);
-            return scaledBitmap;     
+            return scaledBitmap;
         } catch (FileNotFoundException e) {
             LogCleaner.error(ImApp.LOG_TAG, "can't find IOcipher file: " + image.getPath(), e);
             return null;
@@ -157,23 +157,23 @@ public class IocVfs {
      * @param mCacheWord
      */
     public static void init(Context context, String password)  throws IllegalArgumentException {
-        
+
       //  Log.w(TAG, "init with password of length " + password.length());
         if (password.length() > 32)
             password = password.substring(0, 32);
         IocVfs.password = password;
-    
+
         init(context);
     }
 
     /**
-     * Copy device content into vfs. 
+     * Copy device content into vfs.
      * All imported content is stored under /SESSION_NAME/
      * The original full path is retained to facilitate browsing
-     * The session content can be deleted when the session is over 
+     * The session content can be deleted when the session is over
      * @param sourcePath
      * @return vfs uri
-     * @throws IOException 
+     * @throws IOException
      */
     public static Uri importContent(String sessionId, String sourcePath) throws IOException {
         list("/");
@@ -184,15 +184,15 @@ public class IocVfs {
         list("/");
         return vfsUri(targetPath);
     }
-    
+
     public static void exportAll(String sessionId ) throws IOException {
     }
-    
+
     public static void exportContent(String mimeType, Uri mediaUri, java.io.File exportPath) throws IOException {
         String sourcePath = mediaUri.getPath();
         copyToExternal( sourcePath, exportPath);
     }
-    
+
     public static java.io.File exportPath(String mimeType, Uri mediaUri) {
         java.io.File targetFilename;
         if (mimeType.startsWith("image")) {
@@ -205,31 +205,31 @@ public class IocVfs {
         java.io.File targetUniqueFilename = createUniqueFilenameExternal(targetFilename);
         return targetFilename;
     }
-    
+
     public static void copyToVfs(String sourcePath, String targetPath) throws IOException {
         // create the target directories tree
         mkdirs( targetPath );
         // copy
         java.io.FileInputStream fis = new java.io.FileInputStream(new java.io.File(sourcePath));
         FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
-        
+
         IOUtils.copyLarge(fis, fos);
-        
+
         fos.close();
         fis.close();
     }
-    
+
     public static void copyToExternal(String sourcePath, java.io.File targetPath) throws IOException {
         // copy
         FileInputStream fis = new FileInputStream(new File(sourcePath));
         java.io.FileOutputStream fos = new java.io.FileOutputStream(targetPath, false);
-        
+
         IOUtils.copyLarge(fis, fos);
-        
+
         fos.close();
         fis.close();
     }
-    
+
     private static void mkdirs(String targetPath) throws IOException {
         File targetFile = new File(targetPath);
         if (!targetFile.exists()) {
@@ -246,11 +246,11 @@ public class IocVfs {
     public static boolean exists(String path) {
         return new File(path).exists();
     }
-    
+
     public static boolean sessionExists(String sessionId) {
         return exists( "/" + sessionId );
     }
-    
+
     private static String createUniqueFilename( String filename ) {
         if (!exists(filename)) {
             return filename;
@@ -262,23 +262,23 @@ public class IocVfs {
             uniqueName = formatUnique(filename, count++);
             file = new File(uniqueName);
         } while(file.exists());
-        
+
         return uniqueName;
     }
-    
+
     private static String formatUnique(String filename, int counter) {
         int lastDot = filename.lastIndexOf(".");
         String name = filename.substring(0,lastDot);
         String ext = filename.substring(lastDot);
         return name + "(" + counter + ")" + ext;
     }
-    
+
     public static String getDownloadFilename(String sessionId, String filenameFromUrl) {
         String filename = "/" + sessionId + "/download/" + filenameFromUrl;
         String uniqueFilename = createUniqueFilename(filename);
         return uniqueFilename;
     }
-    
+
     private static java.io.File createUniqueFilenameExternal(java.io.File filename ) {
         if (!filename.exists()) {
             return filename;
@@ -290,10 +290,10 @@ public class IocVfs {
             uniqueName = formatUnique(filename.getName(), count++);
             file = new java.io.File(filename.getParentFile(),uniqueName);
         } while(file.exists());
-        
+
         return file;
     }
-    
-    
+
+
 
 }

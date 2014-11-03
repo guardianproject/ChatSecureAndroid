@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -49,13 +49,13 @@ public class SettingActivity extends PreferenceActivity implements
     CheckBoxPreference mNotificationSound;
     CheckBoxPreference mForegroundService;
     EditTextPreference mHeartbeatInterval;
-    
+
     EditTextPreference mThemeBackground;
     Preference mNotificationRingtone;
 
     private void setInitialValues() {
-        ContentResolver cr = getContentResolver();        
-        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
 
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
                 Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
@@ -65,48 +65,48 @@ public class SettingActivity extends PreferenceActivity implements
         mEnableNotification.setChecked(settings.getEnableNotification());
         mNotificationVibrate.setChecked(settings.getVibrate());
         mNotificationSound.setChecked(settings.getRingtoneURI() != null);
-        
+
         mForegroundService.setChecked(settings.getUseForegroundPriority());
-        
+
         long heartbeatInterval = settings.getHeartbeatInterval();
         if (heartbeatInterval == 0) heartbeatInterval = DEFAULT_HEARTBEAT_INTERVAL;
         mHeartbeatInterval.setText(String.valueOf(heartbeatInterval));
 
         settings.close();
     }
-    
+
     /*
      * Warning: must call settings.close() after usage!
      */
     private static Imps.ProviderSettings.QueryMap getSettings(Context context) {
-        ContentResolver cr = context.getContentResolver();        
+        ContentResolver cr = context.getContentResolver();
         Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,
                 new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},
                 Imps.ProviderSettings.PROVIDER + "=?",
                 new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},
-                null);            
+                null);
 
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, 
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor,
                 cr,
                 Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
-                false /* keep updated */, 
+                false /* keep updated */,
                 null /* no handler */);
         return settings;
     }
-    
+
     public static boolean getDeleteUnsecuredMedia(Context context) {
         Imps.ProviderSettings.QueryMap settings = getSettings(context);
         boolean value = settings.getDeleteUnsecuredMedia();
         settings.close();
         return value;
     }
-    
+
 
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        ContentResolver cr = getContentResolver();        
-        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
 
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
                 Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
@@ -117,7 +117,7 @@ public class SettingActivity extends PreferenceActivity implements
             settings.setHideOfflineContacts(prefs.getBoolean(key, false));
         } else if (key.equals("pref_delete_unsecured_media")) {
             boolean test = prefs.getBoolean(key, false);
-            settings.setDeleteUnsecuredMedia(prefs.getBoolean(key, false));            
+            settings.setDeleteUnsecuredMedia(prefs.getBoolean(key, false));
         }else if (key.equals("pref_enable_notification")) {
             settings.setEnableNotification(prefs.getBoolean(key, true));
         } else if (key.equals("pref_notification_vibrate")) {
@@ -154,14 +154,14 @@ public class SettingActivity extends PreferenceActivity implements
         {
            ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
            setResult(RESULT_OK);
-           
+
         }
         else if (key.equals("themeDark"))
         {
-         
+
             setResult(RESULT_OK);
         }
-        
+
         settings.close();
     }
 
@@ -178,14 +178,14 @@ public class SettingActivity extends PreferenceActivity implements
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
 
         mNotificationRingtone = findPreference("pref_notification_ringtone");
-        
+
 
         mNotificationRingtone.setOnPreferenceClickListener(new OnPreferenceClickListener()
         {
 
             @Override
             public boolean onPreferenceClick(Preference arg0) {
-              
+
                 Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_NOTIFICATION);
                 intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, getString(R.string.notification_ringtone_title));
@@ -193,28 +193,28 @@ public class SettingActivity extends PreferenceActivity implements
                 startActivityForResult(intent, 5);
                 return true;
             }
-            
+
         });
-        
+
         mForegroundService = (CheckBoxPreference) findPreference("pref_foreground_enable");
         mHeartbeatInterval = (EditTextPreference) findPreference("pref_heartbeat_interval");
-        
+
         mThemeBackground = (EditTextPreference) findPreference("pref_background");
-        
-        
+
+
         mThemeBackground.setOnPreferenceClickListener(new OnPreferenceClickListener()
         {
 
             @Override
             public boolean onPreferenceClick(Preference arg0) {
-              
+
                 showThemeChooserDialog ();
                 return true;
             }
-            
+
         });
     }
-    
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == 888 && data != null && data.getData() != null){
@@ -223,24 +223,24 @@ public class SettingActivity extends PreferenceActivity implements
             if (_uri != null) {
                 //User had pick an image.
                 Cursor cursor = getContentResolver().query(_uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
-              
+
                 if (cursor != null)
                 {
                     cursor.moveToFirst();
-    
+
                     //Link to the image
                     final String imageFilePath = cursor.getString(0);
-                    mThemeBackground.setText(imageFilePath);                
+                    mThemeBackground.setText(imageFilePath);
                     mThemeBackground.getDialog().cancel();
                 }
             }
-           
+
         }
         else if (resultCode == Activity.RESULT_OK && requestCode == 5)
         {
             Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-            ContentResolver cr = getContentResolver();        
-            Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);            
+            ContentResolver cr = getContentResolver();
+            Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString( Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS)},null);
 
             Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
                     Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
@@ -249,20 +249,20 @@ public class SettingActivity extends PreferenceActivity implements
             {
 
                 settings.setRingtoneURI(uri.toString());
-                
+
             }
             else
             {
                 settings.setRingtoneURI(null);
             }
-            
+
             settings.close();
         }
         super.onActivityResult(requestCode, resultCode, data);
-        
+
     }
 
-    
+
     private void showThemeChooserDialog ()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

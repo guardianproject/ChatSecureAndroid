@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class AboutActivity extends ThemeableActivity implements OnClickListener {
-   
+
     private int title[] = { R.string.about_welcome_title, R.string.about_otr_title,
                            R.string.about_security_title };
 

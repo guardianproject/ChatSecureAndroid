@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -55,7 +55,7 @@ public class ActiveChatListView extends LinearLayout {
     SimpleAlertHandler mHandler;
     Context mContext;
     private final IChatSessionListener mChatListListener;
-    
+
     ListView mChatList;
     private ChatListAdapter mAdapter;
     private boolean mAutoRefresh = true;
@@ -67,13 +67,13 @@ public class ActiveChatListView extends LinearLayout {
         mScreen = (Activity) screen;
         mHandler = new SimpleAlertHandler(mScreen);
         mChatListListener = new MyChatSessionListener(mHandler);
-        
+
         mConnectionListener = new ConnectionListenerAdapter(mHandler) {
             @Override
             public void onConnectionStateChange(IImConnection connection, int state,
                     ImErrorInfo error) {
-                    
-            }  
+
+            }
         };
     }
 
@@ -105,7 +105,7 @@ public class ActiveChatListView extends LinearLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        
+
         mChatList = (ListView) findViewById(R.id.chatsList);
         mChatList.setOnItemClickListener(mOnClickListener);
     }
@@ -115,7 +115,7 @@ public class ActiveChatListView extends LinearLayout {
     }
 
     public void setConnection(IImConnection conn) {
-        
+
             if (conn != null) {
                 unregisterListeners(conn);
             }
@@ -129,11 +129,11 @@ public class ActiveChatListView extends LinearLayout {
                     mAdapter.changeConnection();
                     mChatList.setAdapter(mAdapter);
                     mChatList.setOnScrollListener(mAdapter);
-                } 
-                
+                }
+
            //     mAdapter.changeConnection();
-                
-                
+
+
 //                try {
 //                    IChatSessionManager listMgr = conn.getChatSessionManager();
                     mAdapter.startAutoRequery();
@@ -142,22 +142,22 @@ public class ActiveChatListView extends LinearLayout {
 //                    Log.e(ImApp.LOG_TAG, "Service died!");
 //                }
             }
-       
+
     }
 
 
-    
+
     void startChat(Cursor c) {
         if (c != null) {
             long id = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts._ID));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            
+
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Account.PROVIDER));
             IImConnection conn = ((ImApp)mScreen.getApplication()).getConnection(providerId);
-            
-            
+
+
                 try {
-                    
+
                     if (conn != null)
                     {
                         IChatSessionManager manager = conn.getChatSessionManager();
@@ -166,7 +166,7 @@ public class ActiveChatListView extends LinearLayout {
                             manager.createChatSession(username, false);
                         }
                     }
-    
+
                     Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
                     Intent intent = new Intent(Intent.ACTION_VIEW, data);
                     intent.addCategory(ImApp.IMPS_CATEGORY);
@@ -176,7 +176,7 @@ public class ActiveChatListView extends LinearLayout {
                     mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                     LogCleaner.error(ImApp.LOG_TAG, "error starting chat",e);
                 }
-            
+
             clearFocusIfEmpty(c);
         }
     }
@@ -193,7 +193,7 @@ public class ActiveChatListView extends LinearLayout {
     public void endChat(Cursor c, IImConnection conn) {
         if (c != null) {
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
-            
+
             try {
                 IChatSessionManager manager = conn.getChatSessionManager();
                 IChatSession session = manager.getChatSession(username);
@@ -203,7 +203,7 @@ public class ActiveChatListView extends LinearLayout {
             } catch (RemoteException e) {
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             }
-            
+
             clearFocusIfEmpty(c);
         }
     }
@@ -235,7 +235,7 @@ public class ActiveChatListView extends LinearLayout {
 
     /*
     public boolean isContactsLoaded() {
-        
+
         if (mConn != null)
         {
             try {
@@ -316,34 +316,34 @@ public class ActiveChatListView extends LinearLayout {
 
 
     private void registerListeners(IImConnection conn) {
-        
-       
+
+
             try {
                 IChatSessionManager chatManager = conn.getChatSessionManager();
                 chatManager.registerChatSessionListener(mChatListListener);
                 conn.registerConnectionListener(mConnectionListener);
 
-    
-            } 
+
+            }
             catch (RemoteException e) {
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "error registering listeners",e);
             }
-            
+
     }
 
     private void unregisterListeners(IImConnection conn) {
-       
+
         try {
             IChatSessionManager chatManager = conn.getChatSessionManager();
             chatManager.unregisterChatSessionListener(mChatListListener);
-        } 
+        }
         catch (RemoteException e) {
 
             mHandler.showServiceErrorAlert(e.getLocalizedMessage());
             LogCleaner.error(ImApp.LOG_TAG, "error unreg listener",e);
         }
-        
+
     }
 
     private final OnItemClickListener mOnClickListener = new OnItemClickListener() {

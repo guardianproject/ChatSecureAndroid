@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -82,10 +82,10 @@ public class AccountSettingsActivity extends PreferenceActivity implements
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        
+
         ContentResolver cr = getContentResolver();
         Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
-        
+
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                 pCursor, cr, mProviderId, true /* don't keep updated */, null /* no handler */);
         String value;
@@ -99,7 +99,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
                 mXmppResource.setText(value); // In case it was trimmed
             }
         } else if (key.equals("pref_account_xmpp_resource_prio")) {
-            
+
             value = prefs.getString(key, "20");
             try {
                 settings.setXmppResourcePrio(Integer.parseInt(value));
@@ -136,7 +136,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
         } else if (key.equals("pref_security_do_dns_srv")) {
             settings.setDoDnsSrv(prefs.getBoolean(key, true));
         }
-        
+
         settings.setShowMobileIndicator(true);
         settings.close();
     }
@@ -170,7 +170,7 @@ public class AccountSettingsActivity extends PreferenceActivity implements
         super.onResume();
 
         setInitialValues();
-        
+
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 

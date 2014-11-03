@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2008 Google Inc.
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -328,7 +328,7 @@ public class ChatSwitcher {
 
         public SwitcherAdapter(Cursor c, Activity a) {
             // use false as the third parameter to the CursorAdapter constructor
-            // to indicate that we should not auto-requery the cursor 
+            // to indicate that we should not auto-requery the cursor
             super(a, c, false);
             mLayout = R.layout.chat_switcher_item;
             mActivity = a;
@@ -404,7 +404,7 @@ public class ChatSwitcher {
 
             ImageView avatarView = (ImageView) view.findViewById(R.id.avatar);
             Drawable avatar = null;
-            
+
             try { avatar = DatabaseUtils.getAvatarFromCursor(c, mAvatarDataColumn, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
             catch(Exception e){}
 

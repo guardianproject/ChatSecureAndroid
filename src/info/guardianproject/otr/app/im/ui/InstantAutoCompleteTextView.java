@@ -1,6 +1,6 @@
 package info.guardianproject.otr.app.im.ui;
 
-import android.content.Context;  
+import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.AutoCompleteTextView;

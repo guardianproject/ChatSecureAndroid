@@ -74,7 +74,7 @@ import android.util.Log;
  * user was prompted to download the application. This lets the calling app potentially manage the dialog.
  * In particular, ideally, the app dismisses the dialog if it's still active in its {@link Activity#onPause()}
  * method.</p>
- * 
+ *
  * <p>You can use {@link #setTitle(String)} to customize the title of this download prompt dialog (or, use
  * {@link #setTitleByID(int)} to set the title by string resource ID.) Likewise, the prompt message, and
  * yes/no button labels can be changed.</p>
@@ -82,7 +82,7 @@ import android.util.Log;
  * <p>Finally, you can use {@link #addExtra(String, Object)} to add more parameters to the Intent used
  * to invoke the scanner. This can be used to set additional options not directly exposed by this
  * simplified API.</p>
- * 
+ *
  * <p>By default, this will only allow applications that are known to respond to this intent correctly
  * do so. The apps that are allowed to response can be set with {@link #setTargetApplications(List)}.
  * For example, set to {@link #TARGET_BARCODE_SCANNER_ONLY} to only target the Barcode Scanner app itself.</p>
@@ -129,15 +129,15 @@ public class IntentIntegrator {
   public static final Collection<String> DATA_MATRIX_TYPES = Collections.singleton("DATA_MATRIX");
 
   public static final Collection<String> ALL_CODE_TYPES = null;
-  
+
   public static final List<String> TARGET_BARCODE_SCANNER_ONLY = Collections.singletonList(BS_PACKAGE);
   public static final List<String> TARGET_ALL_KNOWN = list(
           BSPLUS_PACKAGE,             // Barcode Scanner+
           BSPLUS_PACKAGE + ".simple", // Barcode Scanner+ Simple
-          BS_PACKAGE                  // Barcode Scanner          
+          BS_PACKAGE                  // Barcode Scanner
           // What else supports this intent?
       );
-  
+
   private final Activity activity;
   private String title;
   private String message;
@@ -145,7 +145,7 @@ public class IntentIntegrator {
   private String buttonNo;
   private List<String> targetApplications;
   private final Map<String,Object> moreExtras;
-  
+
   public IntentIntegrator(Activity activity) {
     this.activity = activity;
     title = DEFAULT_TITLE;
@@ -155,11 +155,11 @@ public class IntentIntegrator {
     targetApplications = TARGET_ALL_KNOWN;
     moreExtras = new HashMap<String,Object>(3);
   }
-  
+
   public String getTitle() {
     return title;
   }
-  
+
   public void setTitle(String title) {
     this.title = title;
   }
@@ -203,18 +203,18 @@ public class IntentIntegrator {
   public void setButtonNoByID(int buttonNoID) {
     buttonNo = activity.getString(buttonNoID);
   }
-  
+
   public Collection<String> getTargetApplications() {
     return targetApplications;
   }
-  
+
   public final void setTargetApplications(List<String> targetApplications) {
     if (targetApplications.isEmpty()) {
       throw new IllegalArgumentException("No target applications");
     }
     this.targetApplications = targetApplications;
   }
-  
+
   public void setSingleTargetApplication(String targetApplication) {
     this.targetApplications = Collections.singletonList(targetApplication);
   }
@@ -283,7 +283,7 @@ public class IntentIntegrator {
   protected void startActivityForResult(Intent intent, int code) {
     activity.startActivityForResult(intent, code);
   }
-  
+
   private String findTargetAppPackage(Intent intent) {
     PackageManager pm = activity.getPackageManager();
     List<ResolveInfo> availableApps = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
@@ -296,7 +296,7 @@ public class IntentIntegrator {
     }
     return null;
   }
-  
+
   private static boolean contains(Iterable<ResolveInfo> availableApps, String targetApp) {
     for (ResolveInfo availableApp : availableApps) {
       String packageName = availableApp.activityInfo.packageName;
@@ -403,7 +403,7 @@ public class IntentIntegrator {
     activity.startActivity(intent);
     return null;
   }
-  
+
   private static List<String> list(String... values) {
     return Collections.unmodifiableList(Arrays.asList(values));
   }

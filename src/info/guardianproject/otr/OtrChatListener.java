@@ -36,7 +36,7 @@ public class OtrChatListener implements MessageListener {
         String body = msg.getBody();
         String from = msg.getFrom().getAddress();
         String to = msg.getTo().getAddress();
-        
+
         body = Debug.injectErrors(body);
 
         SessionID sessionID = mOtrChatManager.getSessionId(to, from);
@@ -51,20 +51,20 @@ public class OtrChatListener implements MessageListener {
             }
 
             if (body != null) {
-                msg.setBody(body);                 
+                msg.setBody(body);
                 mMessageListener.onIncomingMessage(session, msg);
             }
-        
+
         } catch (OtrException e) {
-            
+
          //   OtrDebugLogger.log("error decrypting message",e);
-            
+
            // msg.setBody("[" + "You received an unreadable encrypted message" + "]");
-           // mMessageListener.onIncomingMessage(session, msg);            
+           // mMessageListener.onIncomingMessage(session, msg);
         //   mOtrChatManager.injectMessage(sessionID, "[error please stop/start encryption]");
-            
+
         }
-        
+
         for (TLV tlv : tlvs) {
             if (tlv.getType() == TLV_DATA_REQUEST) {
                 mMessageListener.onIncomingDataRequest(session, msg, tlv.getValue());
@@ -77,10 +77,10 @@ public class OtrChatListener implements MessageListener {
         if (newStatus != otrStatus) {
             mMessageListener.onStatusChanged(session, newStatus);
         }
-        
+
         return true;
     }
-    
+
     @Override
     public void onIncomingDataRequest(ChatSession session, Message msg, byte[] value) {
         throw new UnsupportedOperationException();
@@ -107,7 +107,7 @@ public class OtrChatListener implements MessageListener {
     public void onMessagePostponed(ChatSession ses, String id) {
         mMessageListener.onMessagePostponed(ses, id);
     }
-    
+
     @Override
     public void onReceiptsExpected(ChatSession ses) {
         mMessageListener.onReceiptsExpected(ses);
@@ -117,7 +117,7 @@ public class OtrChatListener implements MessageListener {
     public void onStatusChanged(ChatSession session, SessionStatus status) {
         mMessageListener.onStatusChanged(session, status);
     }
-    
+
     @Override
     public void onIncomingTransferRequest(Transfer transfer) {
         mMessageListener.onIncomingTransferRequest(transfer);

@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007 Esmertec AG. Copyright (C) 2007 The Android Open Source
  * Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,10 +17,12 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Contact extends ImEntity implements Parcelable {
+
     private Address mAddress;
     private String mName;
     private Presence mPresence;
@@ -45,7 +47,7 @@ public class Contact extends ImEntity implements Parcelable {
     public String getName() {
         return mName;
     }
-    
+
     public void setName( String aName ) {
         mName = aName;
     }
@@ -55,7 +57,7 @@ public class Contact extends ImEntity implements Parcelable {
     }
 
     public boolean equals(Object other) {
-        
+
         return other instanceof Contact && mAddress.getBareAddress().equals(((Contact) other).getAddress().getBareAddress());
     }
 
@@ -65,11 +67,13 @@ public class Contact extends ImEntity implements Parcelable {
 
     /* Set the presence of the Contact. Note that this method is public but not
      * provide to the user.
-     * 
+     *
      * @param presence the new presence
      */
     public void setPresence(Presence presence) {
         mPresence = presence;
+        if (mPresence != null && mPresence.getResource() != null)
+            mAddress = new XmppAddress(mAddress.getBareAddress() + '/' + mPresence.getResource());
     }
 
     public void writeToParcel(Parcel dest, int flags) {

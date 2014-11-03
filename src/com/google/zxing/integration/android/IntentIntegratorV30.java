@@ -21,7 +21,7 @@ import android.content.Intent;
 
 /**
  * IntentIntegrator for Android version 3.0 and beyond.
- * 
+ *
  * @author Lachezar Dobrev
  */
 public final class IntentIntegratorV30 extends IntentIntegrator {
