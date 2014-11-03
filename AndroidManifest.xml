@@ -139,13 +139,7 @@
             android:name=".ui.AboutActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.AccountWizardActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.AppPassphraseActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.SettingsActivity"
             android:exported="false" />
 
         <service
@@ -391,11 +385,6 @@
             android:name=".app.SmpResponseActivity"
             android:exported="false"
             android:theme="@android:style/Theme.Dialog" />
-        <activity
-            android:name=".LockScreenActivity"
-            android:label="@string/title_activity_lock_screen"
-            android:screenOrientation="portrait" >
-        </activity>
         <activity
             android:name="de.duenndns.ssl.MemorizingActivity"
             android:configChanges="orientation|locale"
