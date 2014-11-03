@@ -1659,41 +1659,41 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             String chatRoomJid = message.getTo().getAddress();
             MultiUserChat muc = ((XmppChatGroupManager)getChatGroupManager()).getMultiUserChat(chatRoomJid);
 
+            org.jivesoftware.smack.packet.Message msgXmpp = null;
+            
             if (muc != null)
             {
-                org.jivesoftware.smack.packet.Message msg = muc.createMessage();
-
-                msg.setBody(message.getBody());
-
-                debug(TAG, "sending packet ID " + msg.getPacketID());
-              //   msg.setPacketID(message.getID());
-
-                sendPacket(msg, mConnection);
-
-                message.setID(msg.getPacketID());
+                msgXmpp = muc.createMessage();
 
             }
             else
             {
-                org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
+                msgXmpp = new org.jivesoftware.smack.packet.Message(
                         message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
-                msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
+                msgXmpp.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
 
-       //         msg.setFrom(message.getFrom().getAddress());
-                msg.setBody(message.getBody());
-
-                //debug(TAG, "sending packet ID " + msg.getPacketID());
-                //message.setID(msg.getPacketID());
-
-//                msg.setPacketID(message.getID());
-
-                sendPacket(msg, mConnection);
-
-                message.setID(msg.getPacketID());
 
             }
+            
+            //mRoster.getPresence(xaddress.getBareAddress())
+            
+            
+            msgXmpp.setFrom(message.getFrom().getAddress());
+            msgXmpp.setBody(message.getBody());
 
+            sendPacket(msgXmpp, mConnection);
+            
+            //set message ID value on internal message
+            message.setID(msgXmpp.getPacketID());
 
+            //if contact is offline, try to refresh their presence
+            Contact contact = findOrCreateContact(message.getFrom().getBareAddress());
+            if (contact.getPresence() == null || contact.getPresence().getStatus() == Presence.OFFLINE)
+            {
+                org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(message.getFrom().getBareAddress());
+                if (p != null)
+                    qPresence.push(p);
+            }
 
         }
 
@@ -2062,7 +2062,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
 
-                qPresence.push(presence);
+//                qPresence.push(presence);
 
 
             }
@@ -2867,24 +2867,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
 
-        boolean reloadPresence = true;
+        /*
+        boolean reloadPresence = false;
 
         //don't reload if everything is the same
-        /**
         if (contact.getPresence() != null
                 && contact.getPresence().getResource().equals(xaddress.getResource())
                 && contact.getPresence().getStatusText().equals(p.getStatusText())
                 && contact.getPresence().getStatus() == p.getStatus())
             reloadPresence = false;
-            */
-
+        
         if (reloadPresence)
-        {
+        {*/
             presence = mRoster.getPresence(xaddress.getBareAddress());
             p = new Presence(parsePresence(presence), status, null, null,
                     Presence.CLIENT_TYPE_DEFAULT);
-        }
-
+        //}
 
         String[] presenceParts = presence.getFrom().split("/");
         if (presenceParts.length > 1)
