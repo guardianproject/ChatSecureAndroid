@@ -29,6 +29,7 @@ import java.util.UUID;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -37,6 +38,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -89,11 +91,14 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
      */
     private PagerAdapter mPagerAdapter;
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle icicle) {
         super.onCreate(icicle);
 
-        getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+        if(Build.VERSION.SDK_INT >= 11)
+            getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+
         getSupportActionBar().hide();
 
         mApp = (ImApp)getApplication();
@@ -167,6 +172,7 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
         finish();
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void doHardShutdown() {
 
         for (IImConnection conn : mApp.getActiveConnections())
@@ -183,7 +189,9 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
         // Request lock
         intent.putExtra("doLock", true);
         // Clear the backstack
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 11)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
    }
