@@ -293,7 +293,7 @@ public class OtrKeyManagerDefaultImpl implements OtrKeyManager {
             return;
 
         store.setProperty(sessionID.getRemoteUserId() + ".publicKey.verified", true);
-
+        
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
     }
