@@ -842,27 +842,6 @@ public class OtrDataHandler implements DataHandler {
 
     }
 
-    private String sha1sum(FileInputStream fis) throws IOException {
-        MessageDigest digest;
-        try {
-            digest = MessageDigest.getInstance("SHA1");
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-        int read;
-        int SIZE = 1024*32;
-        byte[] bytes = new byte[SIZE];
-
-        while ((read = fis.read(bytes)) != -1) {
-            digest.update(bytes, 0, read);
-        }
-
-        byte[] sha1sum = digest.digest();
-        StringBuffer display = new StringBuffer();
-        for(byte b : sha1sum)
-            display.append(toHex(b));
-        return display.toString();
-    }
 
     private void debug (String msg)
     {

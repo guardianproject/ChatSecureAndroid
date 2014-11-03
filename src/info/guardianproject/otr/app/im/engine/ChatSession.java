@@ -42,6 +42,7 @@ public class ChatSession {
 
     private MessageListener mListener = null;
     private Vector<Message> mHistoryMessages;
+    
 
     /**
      * Creates a new ChatSession with a particular participant.
