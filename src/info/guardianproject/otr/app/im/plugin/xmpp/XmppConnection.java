@@ -1677,7 +1677,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             //mRoster.getPresence(xaddress.getBareAddress())
             
-            
             msgXmpp.setFrom(message.getFrom().getAddress());
             msgXmpp.setBody(message.getBody());
 
@@ -1688,9 +1687,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             //if contact is offline, try to refresh their presence
             Contact contact = findOrCreateContact(message.getFrom().getBareAddress());
-            if (contact.getPresence() == null || contact.getPresence().getStatus() == Presence.OFFLINE)
+            if (mRoster != null && (contact.getPresence() == null || contact.getPresence().getStatus() == Presence.OFFLINE))
             {
-                org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(message.getFrom().getBareAddress());
+                org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(message.getFrom().getAddress());
                 if (p != null)
                     qPresence.push(p);
             }
