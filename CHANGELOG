@@ -1,7 +1,7 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
-14.0.6 BETA 1 / 2014-11-03 / 5bfaa908b00607dab02f5516b104863413e824c4
+14.0.6 / 2014-11-04 / 8f8771c16513b21c03387ccc835011fe755158ef
 
 * Message sending and OTR init reliability 
 5bfaa90 set a date to the internal Message instance
