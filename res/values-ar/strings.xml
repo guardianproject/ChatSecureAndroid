@@ -203,7 +203,6 @@
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> غير متصل.</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> قام بالدخول</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> قام بالخروج</string>
-
   <string name="menu_send_image">أرسل صورة</string>
   <string name="menu_send_file">إرسال ملف</string>
   <string name="menu_send_audio">أرسل ملف صوتي</string>

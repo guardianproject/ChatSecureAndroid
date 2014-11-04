@@ -210,7 +210,6 @@ Tryk her for at tilføje!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> er offline</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> har tilsluttet sig</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> er gået</string>
-
   <string name="menu_send_image">Send billede</string>
   <string name="menu_send_file">Send fil</string>
   <string name="menu_send_audio">Send lyd</string>

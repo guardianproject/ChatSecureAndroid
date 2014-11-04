@@ -143,7 +143,6 @@ A aplicação suporta qualquer serviço de chat que uso o Jabber ou XMPP protoco
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> está off-line</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> entrou</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> saiu</string>
-
   <string name="send">Enviar</string>
   <string name="compose_hint">Envia uma mensagem.</string>
   <string name="menu_end_conversation">Encerrar bate-papo</string>

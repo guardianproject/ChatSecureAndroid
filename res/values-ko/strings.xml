@@ -132,7 +132,6 @@
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>님은 오프라인 상태입니다.</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>님이 채팅에 참여했습니다.</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>님이 채팅에서 나갔습니다.</string>
-
   <string name="send">전송</string>
   <string name="menu_end_conversation">채팅 종료</string>
   <string name="menu_clear_chat">채팅 로그 지우기</string>

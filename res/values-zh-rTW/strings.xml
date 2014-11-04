@@ -170,7 +170,6 @@
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> 顯示離線</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> 已加入</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> 已離開</string>
-
   <string name="send">傳送</string>
   <string name="menu_resend">從新傳送</string>
   <string name="menu_end_conversation">結束即時通訊</string>

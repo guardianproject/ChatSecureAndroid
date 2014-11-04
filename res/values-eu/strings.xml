@@ -209,7 +209,6 @@ Hemen ikutu  bat gehitzeko!</string>
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> lineaz kanpo dago</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> etorri da</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> joan da</string>
-
   <string name="menu_send_image">Argazkia bidali</string>
   <string name="menu_send_file">Fitxategia bidali</string>
   <string name="menu_send_audio">Audioa bidali</string>

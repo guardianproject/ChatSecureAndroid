@@ -215,7 +215,6 @@ Trykk her for å legge til én!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> er frakoblet</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> har blitt med i samtalen</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> har forlatt samtalen</string>
-
   <string name="menu_send_image">Send bilde</string>
   <string name="menu_send_file">Send fil</string>
   <string name="menu_send_audio">Send lyd</string>

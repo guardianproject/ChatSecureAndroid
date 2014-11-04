@@ -206,7 +206,6 @@
   <string name="contact_offline">Пользователь <xliff:g id="USER">%1$s</xliff:g> не в сети</string>
   <string name="contact_joined">Пользователь <xliff:g id="USER">%1$s</xliff:g> присоединился к чату</string>
   <string name="contact_left">Пользователь <xliff:g id="USER">%1$s</xliff:g> покинул чат</string>
-
   <string name="menu_send_image">Отправить Фото</string>
   <string name="menu_send_file">Отправить файл</string>
   <string name="menu_send_audio">Отправить Аудио</string>

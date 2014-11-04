@@ -29,6 +29,7 @@
   <string name="lock_screen_passphrase_not_set_confirm">Conferma Nuova Password</string>
   <string name="lock_screen_passphrases_not_matching">La password non corrisponde, per favore riprova</string>
   <string name="lock_screen_skip">Sono Pigro (No Password!)</string>
+  <string name="app_passphrase_view_password_question">Inserisci Password Perfavore</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Chat - selezionare un account</string>
   <string name="choose_account_title">Chat - selezionare un account</string>
@@ -38,6 +39,7 @@
   <string name="menu_sign_out_all">Esci da tutte le</string>
   <string name="signout_all_confirm_message">Vuoi uscire tutti i servizi?</string>
   <string name="signed_out_prompt">Utente disconnesso da <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Utente disconnesso da <xliff:g id="account">%1$s</xliff:g>. Causa: <xliff:g id="reason">%2$s</xliff:g>.</string>
   <string name="welcome_first">Prima volta con ChatSecure?</string>
   <string name="welcome_skip">Can\'t l\'ora di cominciare?</string>
   <string name="welcome_about">A proposito di ChatSecure</string>
@@ -74,6 +76,7 @@ Iniziamo!</string>
   <string name="menu_add_account">Aggiungi account</string>
   <string name="menu_edit_account">Modifica account</string>
   <string name="menu_remove_account">Rimuovi account</string>
+  <string name="menu_use_existing_account">Account Esistente</string>
   <!--Views: Setup: Account-->
   <string name="label_username">Nome utente:</string>
   <string name="label_password">Password:</string>
@@ -160,6 +163,7 @@ Tocca qui per aggiungerne uno!</string>
   <string name="menu_add_contact">Aggiungi contatto</string>
   <string name="menu_remove_contact">Elimina contatto</string>
   <string name="menu_block_contact">Blocca contatto</string>
+  <string name="menu_contact_nickname">Nickname Contatto</string>
   <string name="menu_view_blocked">Bloccati</string>
   <string name="confirm_delete_contact">Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà eliminato.</string>
   <string name="confirm_block_contact">Il contatto \"<xliff:g id="USER">%1$s</xliff:g>\" sarà bloccato.</string>
@@ -205,7 +209,6 @@ Tocca qui per aggiungerne uno!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> è offline</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> è entrato</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> è uscito</string>
-
   <string name="menu_send_image">Invia Immagine</string>
   <string name="menu_send_file">Invia File</string>
   <string name="menu_send_audio">Invia Audio</string>
@@ -225,6 +228,13 @@ Tocca qui per aggiungerne uno!</string>
   <string name="menu_switch_chats">Cambia conversazione</string>
   <string name="menu_plus">Menu+</string>
   <string name="select_link_title">Seleziona link</string>
+  <string name="delete">Elimina</string>
+  <string name="keep_files">Mantieni File</string>
+  <string name="delete_original">Elimina Originale</string>
+  <string name="keep">Mantieni</string>
+  <string name="export">Esporta</string>
+  <string name="export_media">Esporta Media File?</string>
+  <string name="end_chat_title">Termina conversazione?</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> ti ha invitato a unirti a una conversazione di gruppo.</string>
   <string name="invitation_sent_prompt">L\'invito è stato inviato a <xliff:g id="USER">%1$s</xliff:g>.</string>
@@ -484,5 +494,6 @@ Tocca per invitare qualcuno.</string>
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Account Esistente</string>
   <string name="i_need_a_new_account">Nuovo Account</string>
 </resources>

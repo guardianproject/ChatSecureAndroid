@@ -208,7 +208,6 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> དྲ་ཐོག་ཏུ་མེད་།</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g>ཞུགས་སོང་།</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g>ཐོན་ཟིན་འདུག</string>
-
   <string name="menu_send_image">འདྲ་པར་ཐོངས། </string>
   <string name="menu_send_file">ཡིག་ཆ་ཐོངས། </string>
   <string name="menu_send_audio">སྐད་འཕྲིན་ཞིག་ཐོངས། </string>

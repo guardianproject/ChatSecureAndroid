@@ -123,7 +123,6 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> on offline</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> on liittynyt</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> on poistunut</string>
-
   <string name="menu_send_image">Lähetä kuva</string>
   <string name="menu_send_file">Lähetä tiedosto</string>
   <string name="menu_send_audio">Lähetä ääntä</string>

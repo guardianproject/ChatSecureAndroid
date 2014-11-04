@@ -33,6 +33,7 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <string name="lock_screen_passphrase_not_set_confirm">Potwierdź Nowe Hasło</string>
   <string name="lock_screen_passphrases_not_matching">Hasła nie zgadzają się, proszę spróbuj ponownie</string>
   <string name="lock_screen_skip">Jestem leniwy (Bez hasła!)</string>
+  <string name="app_passphrase_view_password_question">Prosimy o wpisanie hasła</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Wybierz konto</string>
   <string name="choose_account_title">Wybierz konto</string>
@@ -42,6 +43,7 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <string name="menu_sign_out_all">Wyloguj całość</string>
   <string name="signout_all_confirm_message">Czy chcesz wylogować się ze wszystkich usług ?</string>
   <string name="signed_out_prompt">Nastąpiło wylogowanie z konta <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Zostałeś wylogowany z <xliff:g id="account">%1$s</xliff:g> ponieważ <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">Pierwszy raz używasz ChatSecure ?</string>
   <string name="welcome_skip">Nie możesz doczekać się żeby zacząć ? :)</string>
   <string name="welcome_about">Zaczynij tutaj</string>
@@ -78,6 +80,7 @@ No to zaczynamy!</string>
   <string name="menu_add_account">Dodaj konto</string>
   <string name="menu_edit_account">Edytuj konto</string>
   <string name="menu_remove_account">Usuń konto</string>
+  <string name="menu_use_existing_account">Istniejące Konto</string>
   <!--Views: Setup: Account-->
   <string name="label_username">Nazwa użytkownika (User@Host):</string>
   <string name="label_password">Hasło:</string>
@@ -210,7 +213,6 @@ Kliknij aby dodać konto.</string>
   <string name="contact_offline">Użytkownik <xliff:g id="USER">%1$s</xliff:g> jest niedostępny</string>
   <string name="contact_joined">Użytkownik <xliff:g id="USER">%1$s</xliff:g> dołączył do czatu</string>
   <string name="contact_left">Użytkownik <xliff:g id="USER">%1$s</xliff:g> opuścił czat</string>
-
   <string name="menu_send_image">Wyślij Zdjęcie</string>
   <string name="menu_send_file">Wyślij plik</string>
   <string name="menu_send_audio">Wyślij Audio</string>
@@ -230,6 +232,15 @@ Kliknij aby dodać konto.</string>
   <string name="menu_switch_chats">Przełącz czaty</string>
   <string name="menu_plus">Menu+</string>
   <string name="select_link_title">Wybierz łącze</string>
+  <string name="delete">Usuń</string>
+  <string name="keep_files">Trzymaj pliki</string>
+  <string name="delete_original">Usunąć oryginał?</string>
+  <string name="keep">Trzymaj</string>
+  <string name="export">Eksport</string>
+  <string name="export_media">Eksportować plik mediów?</string>
+  <string name="export_media_file_to">Ten plik został wyeksportowany do %1$s</string>
+  <string name="end_chat_title">Zakończyć czat?</string>
+  <string name="end_chat_and_delete">Zakończ czat i usuń pliki</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> przesyła zaproszenie do czatu grupowego.</string>
   <string name="invitation_sent_prompt">Wysłano zaproszenie do użytkownika <xliff:g id="USER">%1$s</xliff:g>.</string>
@@ -284,6 +295,7 @@ Kliknij aby zaprosić.</string>
   <string name="smp_question_hint">pytanie, które chcesz zadać</string>
   <string name="qmp_answer_hint">oczekiwana odpowiedź</string>
   <string name="remote_verified_us">Twoj kontakt zweryfikował twoją tożsamość. Teraz ty zweryfikuj osobę po drugiej stronie zadając swoje pytanie.</string>
+  <string name="chat_encryption_title">Szyfrowanie Czata</string>
   <string name="otr_qa_send">Wyślij</string>
   <string name="otr_qa_cancel">Anuluj</string>
   <!--Views: VoIP-->
@@ -312,6 +324,7 @@ Kliknij aby zaprosić.</string>
   <string name="pref_show_grid">Pokaż Kartę Kontaktów</string>
   <string name="pref_show_grid_summary">Pokaż listę kontaktów jako kartę avatarów</string>
   <string name="button_yes_accept_all">Tak, akceptuj wszystkie</string>
+  <string name="pref_delete_unsecured_media_title">Usuń nieszyfrowane media</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Inne Dostrajanie</string>
   <string name="start_on_boot">Automatycznie włącz Bezpieczny komunikator = ChatSecure</string>
@@ -341,14 +354,28 @@ Kliknij aby zaprosić.</string>
   <string name="signout_kill_confirm_message">Czy chcesz wylogować się z serwisu i zakończyć wszystkie procesy (tzw. twarde wyłącznie) ?</string>
   <string name="prompt_create_new_account_">Utwórz nowe konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Utwórz nowe konto czat dla użytkownika \'%1$s\'?</string>
+  <string name="dialog_cert_title">Info Certyfikatu</string>
+  <string name="dialog_cert_subject">Certyfikat:</string>
+  <string name="dialog_cert_issuer">Wydany przez:</string>
+  <string name="dialog_cert_fingerprint">SHA1 Fingerprint: </string>
+  <string name="dialog_cert_issue_date">Wydany:</string>
+  <string name="dialog_cert_expires">Wygaśnie:</string>
+  <string name="dialog_connect_chatroom_title">Dołączyć do czata?</string>
+  <string name="dialog_settings_choose_background_title">Wybierz tło</string>
+  <string name="dialog_settings_choose_background_picker">Wybierz zdjęcie</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Nowe wiadomości <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> nieprzeczytanych czatów</string>
+  <string name="subscription_notify_text">Nowe zaproszenie do znajomych od <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Nowy plik <xliff:g id="filename">%s</xliff:g> od <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">Zaproszenie do czatu grupowego</string>
+  <string name="group_chat_invite_notify_text">Nowe zaproszenie do grupowego czata od <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Nowa/e wiadomość/i od</string>
   <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure…</string>
   <string name="app_unlocked">Aktywowany &amp; odblokowany</string>
   <!--Alerts: Exceptions-->
   <string name="error">Uwaga</string>
+  <string name="error_prefix">Błąd:</string>
   <string name="general_error">Kod błędu <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">Nie można zalogować do usługi <xliff:g id="SERVICE">%1$s</xliff:g>. Spróbuj ponownie później."\n"(Szczegóły: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">Nie dodano listy.</string>
@@ -403,6 +430,11 @@ Kliknij aby zaprosić.</string>
   <string name="disconnected_warning">Wiadomości będą wysłane przy ponowym połączeniu.</string>
   <string name="contact_offline_warning">Użytkownik <xliff:g id="USER_0">%1$s</xliff:g> jest offline. Wysyłane wiadomości zostaną dostarczone, gdy <xliff:g id="USER_1">%1$s</xliff:g> będzie znowu online.</string>
   <string name="contact_not_in_list_warning">Użytkownik <xliff:g id="USER">%1$s</xliff:g> nie jest na Twojej liście kontaktów.</string>
+  <string name="error_account_password_mismatch">Twoje hasła nie zgadzają się</string>
+  <string name="error_account_settings_priority">Priorytet musi być liczbą pomiędzy [0 .. 127]</string>
+  <string name="error_account_settings_port">Numer portu musi być liczbą</string>
+  <string name="error_chat_file_transfer_title">Błąd transferu</string>
+  <string name="error_chat_file_transfer_body">Nie można odczytać pliku do przechowywania</string>
   <string name="account_settings_title">Ustawienia konta</string>
   <string name="pref_default_locale">domLok</string>
   <string name="warning_alpha">Ostrzeżenie: To jest wczesna wersja Bezpiecznego komunikatora = ChatSecure więc może posiadać luki bezpieczeństwa.</string>
@@ -494,5 +526,26 @@ Kliknij aby zaprosić.</string>
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Istniejące Konto</string>
+  <string name="i_want_to_chat_using_my_google_account">Konto Google</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Czat WiFi Mesh</string>
+  <string name="account_wifi_full">Czatuj z innymi na tej samej sieci WiFi lub mesh - Internet lub serwer nie jest wymagany!</string>
+  <string name="account_wifi_button">Włącz Czat przez WiFi</string>
   <string name="i_need_a_new_account">Nowe konto</string>
+  <string name="account_new_button">Utwórz nowe konto</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Sekretna Tożsamość!</string>
+  <string name="account_burner_button">Generuj Tożsamość</string>
+  <string name="this_is_a_group_chat">To jest czat grupowy</string>
+  <string name="_resent_">[wyślij ponownie]</string>
+  <string name="resent">[wyślij ponownie]</string>
+  <string name="unable_to_securely_share_this_file">Nie można bezpiecznie podzielić się tym plikiem</string>
+  <string name="install_orbot_">Zainstalować Orbot?</string>
+  <string name="market_orbot">market://search?q=pname:org.torproject.android</string>
+  <string name="you_must_have_orbot">Musisz mieć zainstalowany i włączony Orbot, aby transportować przez niego swoje połączenie. Czy chciałbyś zainstalować Orbot używając sklep Google Play?</string>
+  <string name="always">Zawsze</string>
+  <string name="start_orbot_">Uruchomić Orbot?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Wygląda na to, że Orbot nie jest włączony. Czy chcesz go uruchomić i połączyć się z siecią Tor?</string>
+  <string name="muc_dialog_nickname">pseudonim który chcesz używać na czacie</string>
+  <string name="muc_dialog_room">nazwa czata do stworzenia lub dołączenia\"</string>
+  <string name="muc_dialog_server">serwer grupowego czata (conference.foo.com)</string>
 </resources>

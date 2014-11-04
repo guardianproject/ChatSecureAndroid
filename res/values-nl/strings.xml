@@ -210,7 +210,6 @@ Klik hier om er één toe te voegen!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> is offline</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> is online gekomen</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> is weggegaan</string>
-
   <string name="menu_send_image">Verzend foto</string>
   <string name="menu_send_file">Verzend bestand</string>
   <string name="menu_send_audio">Verzend audio</string>

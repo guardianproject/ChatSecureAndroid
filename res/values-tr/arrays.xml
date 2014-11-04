@@ -13,7 +13,7 @@
     <item>geçersiz</item>
   </string-array>
   <string-array name="languages">
-    <item>Varsayılan</item>
+    <item>Default</item>
     <item>العربية</item>
     <item>فارسی</item>
     <item>中文(简体)</item>
@@ -39,6 +39,7 @@
     <item>Tϋrkçe</item>
     <item>Čeština</item>
     <item>ελληνικά</item>
+    <item>српски</item>
   </string-array>
   <string-array name="languages_values">
     <item>xx</item>
@@ -67,6 +68,7 @@
     <item>tr</item>
     <item>cs</item>
     <item>el</item>
+    <item>sr</item>
   </string-array>
   <string-array name="account_domains">
     <item>dukgo.com</item>

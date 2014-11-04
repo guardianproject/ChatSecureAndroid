@@ -32,6 +32,8 @@ Tillåt applikationer att skriva data till IM innehållsleverantör.
   <string name="lock_screen_passphrase_not_set_confirm">Bekräfta nytt lösenord</string>
   <string name="lock_screen_passphrases_not_matching">Lösenord matchade inte, var vänlig försök igen</string>
   <string name="lock_screen_skip">Jag är lat (inget lösenord!)</string>
+  <string name="app_passphrase_view_title_dialog">Informationsprompt</string>
+  <string name="app_passphrase_view_password_question">Ange lösenord</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Välj ett konto</string>
   <string name="choose_account_title">Välj ett konto</string>
@@ -41,6 +43,7 @@ Tillåt applikationer att skriva data till IM innehållsleverantör.
   <string name="menu_sign_out_all">Logga ut alla</string>
   <string name="signout_all_confirm_message">Vill du logga ut från alla tjänster?</string>
   <string name="signed_out_prompt">Du har loggats ut från <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Du har loggats ut från <xliff:g id="account">%1$s</xliff:g> på grund av <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">Första gången du använder ChatSecure?</string>
   <string name="welcome_skip">Kan du inte vänta på att komma igång?</string>
   <string name="welcome_about">Kom igång</string>
@@ -77,6 +80,7 @@ Låt oss börja!</string>
   <string name="menu_add_account">Lägg till konto</string>
   <string name="menu_edit_account">Ändra konto</string>
   <string name="menu_remove_account">Ta bort konto</string>
+  <string name="menu_use_existing_account">Existerande konto</string>
   <!--Views: Setup: Account-->
   <string name="label_username">Användarnamn:</string>
   <string name="label_password">Lösenord</string>
@@ -209,7 +213,6 @@ Tappa här för att lägga till ett!</string>
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> är offline</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> är med</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> har lämnat chatten</string>
-
   <string name="menu_send_image">Skicka foto</string>
   <string name="menu_send_file">Skicka fil</string>
   <string name="menu_send_audio">Skicka ljud</string>
@@ -229,6 +232,19 @@ Tappa här för att lägga till ett!</string>
   <string name="menu_switch_chats">Byt chatt</string>
   <string name="menu_plus">Meny+</string>
   <string name="select_link_title">Välj länk</string>
+  <string name="delete">Radera</string>
+  <string name="keep_files">Behåll filer</string>
+  <string name="delete_chat_session_secured_storage">Radera lagrade data för chattsession?</string>
+  <string name="all_files_will_be_deleted">Alla upp- och nedladdade filer kommer raderas permanent. Denna åtgärd kan inte ångras!</string>
+  <string name="delete_original">Radera original?</string>
+  <string name="this_file_will_be_copied">Denna fil kommer kopieras till den säkra lagringsytan innan den skickas. Vill du radera originalfilen från enhetens vanliga lagringsyta?</string>
+  <string name="keep">Behåll</string>
+  <string name="export">Exportera</string>
+  <string name="export_media">Exportera mediafil?</string>
+  <string name="export_media_file_to">Denna mediafil kommer exporteras till %1$s</string>
+  <string name="end_chat_title">Avsluta chatt?</string>
+  <string name="end_chat_summary">Alla säkra mediafiler för denna session kommer raderas. Exportera mediafiler genom långt tryck på ikonen.</string>
+  <string name="end_chat_and_delete">Avsluta chatt och radera filer</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> har bjudit in dig till en gruppchatt.</string>
   <string name="invitation_sent_prompt">Inbjudan har skickats till <xliff:g id="USER">%1$s</xliff:g>.</string>
@@ -283,6 +299,8 @@ Klicka för att bjuda in.</string>
   <string name="smp_question_hint">fråga</string>
   <string name="qmp_answer_hint">förväntat svar</string>
   <string name="remote_verified_us">Din kontakt har framgångsrikt autentiserat dig. Autentisera nu din kontakt genom att fråga in egen fråga.</string>
+  <string name="otr_qa_title">OTR Q&amp;A verifiering</string>
+  <string name="chat_encryption_title">Chattkryptering</string>
   <string name="otr_qa_send">Skicka</string>
   <string name="otr_qa_cancel">Avbryt</string>
   <!--Views: VoIP-->
@@ -311,6 +329,8 @@ Klicka för att bjuda in.</string>
   <string name="pref_show_grid">Visa kontakter i rutnät</string>
   <string name="pref_show_grid_summary">Visa kontaktlista som avatar rutnät</string>
   <string name="button_yes_accept_all">Ja, acceptera alla</string>
+  <string name="pref_delete_unsecured_media_title">Radera osäker media</string>
+  <string name="pref_delete_unsecured_media_summary">När du delat en bild eller en fil - radera automatiskt originalfilen från den ursprungliga lagringsplatsen</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Andra inställningar</string>
   <string name="start_on_boot">Starta ChatSecure automatiskt</string>
@@ -341,14 +361,31 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
   <string name="signout_kill_confirm_message">Vill du logga ut ur alla tjänster OCH döda alla processer (hård avslutning)?</string>
   <string name="prompt_create_new_account_">Skapa nytt konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Skapa nytt chattkonto för användarnamn \'%1$s\'?</string>
+  <string name="dialog_cert_title">Certifikatinfo</string>
+  <string name="dialog_cert_subject">Certifikat:</string>
+  <string name="dialog_cert_issuer">Utfärdat av:</string>
+  <string name="dialog_cert_fingerprint">SHA1 Fingeravtryck:</string>
+  <string name="dialog_cert_issue_date">Utfärdat:</string>
+  <string name="dialog_cert_expires">Förfaller:</string>
+  <string name="dialog_connect_chatroom_title">Anslut till chattrum?</string>
+  <string name="dialog_connect_chatroom_message">En extern app försöker ansluta dig till ett chattrum. Tillåt?</string>
+  <string name="dialog_settings_choose_background_title">Välj bakgrund</string>
+  <string name="dialog_settings_choose_background_body">Vill du välja en bakgrundsbild från bildgalleriet?</string>
+  <string name="dialog_settings_choose_background_picker">Välj bild</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Nya meddelanden från <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> olästa chattmeddelanden</string>
+  <string name="subscription_notify_text">Ny kontaktförfrågan från <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Ny fil <xliff:g id="filename">%s</xliff:g> från <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">Inbjudan till gruppchatt</string>
+  <string name="group_chat_invite_notify_text">Ny gruppchattinbjudan från <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Nytt meddelande(n) från</string>
   <string name="starting_the_chatsecure_service_">Startar ChatSecure service…</string>
   <string name="app_unlocked">Aktiverad &amp; olåst</string>
+  <string name="toast_chat_copied_to_clipboard">meddelande kopierat till urklipp</string>
   <!--Alerts: Exceptions-->
   <string name="error">Obs!</string>
+  <string name="error_prefix">Fel:</string>
   <string name="general_error">Felkod <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">Det gick inte att logga in till tjänsten <xliff:g id="SERVICE">%1$s</xliff:g>. Försök igen senare."\n"(Information: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">Det gick inte att lägga till listan.</string>
@@ -390,6 +427,8 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
   <string name="account_wizard_no_root_domain_warning">Ditt server värdnamn hade inte ett .com, .net, eller liknande appendix. Försök igen!</string>
   <string name="signin_password_prompt">Skriv in ditt lösenord:</string>
   <string name="warning_tor_connect">Eftersom du använder Tor måste du skriva in XMPP \'Anslutningsserver\' värdnamn direkt i Avancerade kontoinställningar</string>
+  <string name="warning_weak_crypto">VARNING: Denna tjänst använder ett certifikat med svag kryptering. Vänligen be administratören att uppgradera.</string>
+  <string name="warning_pinned_cert_mismatch">Erhållet certifikat matchar inte PINNED certificate:</string>
   <string name="unable_to_create_or_join_group_chat">Kan inte skapa eller gå med i grupp chatt</string>
   <string name="sorry_we_cannot_share_that_file_type">Vi kan tyvärr inte dela denna filtyp</string>
   <string name="err_otr_share_no_encryption">Du måste aktivera kryptering för att dela filer</string>
@@ -403,6 +442,12 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
   <string name="disconnected_warning">Meddelanden kommer skickas vid återanslutning</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> är offline. Meddelanden som du skickar levereras när <xliff:g id="USER_1">%1$s</xliff:g> är online igen.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> är inte med i din Kontaktlista.</string>
+  <string name="error_account_password_mismatch">Dina lösenord matchar inte</string>
+  <string name="error_account_settings_priority">Prioritet måste anges som ett tal mellan [0 .. 127]</string>
+  <string name="error_account_settings_port">Portnummer måste vara ett tal</string>
+  <string name="error_chat_file_transfer_title">Överföringsfel</string>
+  <string name="error_chat_file_transfer_body">Kan inte läsa fil till lagringsplats</string>
+  <string name="error_welcome_database">Allvarligt fel: kan inte låsa upp eller ladda appdatabasen. Vänligen installera om appen eller rensa data.</string>
   <string name="account_settings_title">Kontoinställningar</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">VARNING: Detta är en tidig release av ChatSecure som fortfarande kan innehålla säkerhetshål eller buggar.</string>
@@ -415,7 +460,9 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
   <string name="contacts">Kontakter</string>
   <string name="mtm_accept_cert">Acceptera servercertifikat?</string>
   <string name="menu_sidebar_qr">Fingeravtryck</string>
+  <string name="loading">laddar…</string>
   <!--Other-->
+  <string name="about_link">Om ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">Kontaktlista</string>
   <string name="menu_settings">Inställningar</string>
@@ -494,5 +541,33 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Existerande konto</string>
+  <string name="account_existing_full">Anslut till mitt konto på en specifik Jabber / XMPP-server.</string>
+  <string name="i_want_to_chat_using_my_google_account">Googlekonto</string>
+  <string name="account_google_full">Chatta med andra Google Hangouts-användare genom din enhets existerande Googlekonto(n).</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Wifi Mesh Chatt</string>
+  <string name="account_wifi_full">Chatta med andra på samma lokala WiFi-nätverk - ingen internetanslutning eller server behövs!</string>
+  <string name="account_wifi_button">Aktivera WiFi chatt</string>
   <string name="i_need_a_new_account">Nytt konto</string>
+  <string name="account_new_full">Registrera ett nytt, gratis konto på en av tjänsterna i vår lista eller på en tjänst du väljer själv.</string>
+  <string name="account_new_button">Skapa nytt konto</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Hemlig identitet!</string>
+  <string name="account_burner_full">Skapa ett anonymt engångskonto med ett enkelt klick (kräver Orbot: Tor for Android)</string>
+  <string name="account_burner_button">Skapa identitet</string>
+  <string name="this_is_a_group_chat">Detta är en gruppchatt</string>
+  <string name="_resent_">[senaste]</string>
+  <string name="resent">[senaste]</string>
+  <string name="unable_to_securely_share_this_file">Kan inte dela denna fil säkert</string>
+  <string name="install_orbot_">Installera Orbot?</string>
+  <string name="market_orbot">market://search?q=pname:org.torproject.android</string>
+  <string name="you_must_have_orbot">Du måste ha Orbot installerad och aktiverad för att kunna dirigera trafik genom den. Vill du installera Orbot från Google Play?</string>
+  <string name="always">Alltid</string>
+  <string name="start_orbot_">Starta Orbot?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot verkar inte köras. Vill du starta Orbot och ansluta till Tor?</string>
+  <string name="muc_dialog_nickname">nick att använda i chattrum</string>
+  <string name="muc_dialog_room">namn på chattrum att skapa eller ansluta till\"</string>
+  <string name="muc_dialog_server">gruppchattserver conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Din nyckellagring är korrupt. Installera om ChatSecure eller radera data för appen</string>
+  <string name="you_received_an_unreadable_encrypted_message">Du tog emot ett oläsbart krypterat meddelande</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Jag kunde inte dekryptera meddelandet du skickade</string>
 </resources>
