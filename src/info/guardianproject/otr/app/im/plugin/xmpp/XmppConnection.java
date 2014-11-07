@@ -81,6 +81,7 @@ import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
+import org.jivesoftware.smack.packet.RosterPacket.ItemStatus;
 import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
@@ -183,9 +184,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Maintains a sequence counting up to the user configured heartbeat interval
     private int heartbeatSequence = 0;
 
-
     LinkedList<String> qAvatar = new LinkedList <String>();
     LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
+    LinkedList<org.jivesoftware.smack.packet.Packet> qPacket = new LinkedList<org.jivesoftware.smack.packet.Packet>();
 
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -242,7 +243,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     private void createExecutor() {
-       mExecutor = new ThreadPoolExecutor(1, 1, 0L, TimeUnit.MILLISECONDS,
+       mExecutor = new ThreadPoolExecutor(1, 1, 1L, TimeUnit.SECONDS,
               new LinkedBlockingQueue<Runnable>());
 
     }
@@ -294,25 +295,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         return false;
     }
 
-    public void sendPacket(final org.jivesoftware.smack.packet.Packet packet,final XMPPConnection conn) {
-        execute(new Runnable() {
-            @Override
-            public void run() {
-                if (conn == null) {
-                    debug(TAG, "postponed packet to " + packet.getTo()
-                            + " because we are not connected");
-                    postpone(packet);
-                    return;
-                }
-                try {
-                    conn.sendPacket(packet);
-                } catch (IllegalStateException ex) {
-                    postpone(packet);
-                   debug(TAG, "postponed packet to " + packet.getTo()
-                            + " because socket is disconnected");
-                }
-            }
-        });
+    public void sendPacket(final org.jivesoftware.smack.packet.Packet packet) {
+        qPacket.add(packet);
+       
     }
 
 
@@ -446,7 +431,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         org.jivesoftware.smack.packet.Presence packet = makePresencePacket(presence);
 
 
-        sendPacket(packet, mConnection);
+        sendPacket(packet);
         mUserPresence = presence;
         notifyUserPresenceUpdated();
     }
@@ -1279,8 +1264,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     boolean good = session.onReceiveMessage(rec);
 
-                    //qPresence.push(mConnection.getRoster().getPresence(smackMessage.getFrom()));
-
                     if (smackMessage.getExtension("request", DeliveryReceipts.NAMESPACE) != null) {
                         if (good) {
                             debug(TAG, "sending delivery receipt");
@@ -1299,6 +1282,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Message.class));
 
+        initPacketProcessor();
         initPresenceProcessor ();
 
         mConnection.addPacketListener(new PacketListener() {
@@ -1491,14 +1475,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }*/
 
-
         if (rmode == Mode.away || rmode == Mode.xa)
             type = Presence.AWAY;
         else if (rmode == Mode.dnd)
             type = Presence.DO_NOT_DISTURB;
         else if (rtype == Type.unavailable || rtype == Type.error)
             type = Presence.OFFLINE;
-
+        else if (rtype == Type.unsubscribed)
+            type = Presence.NOT_SUBSCRIBED;
+        
         return type;
     }
 
@@ -1655,7 +1640,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void sendMessageAsync(ChatSession session, Message message) {
 
-
             String chatRoomJid = message.getTo().getAddress();
             MultiUserChat muc = ((XmppChatGroupManager)getChatGroupManager()).getMultiUserChat(chatRoomJid);
 
@@ -1672,7 +1656,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
                 msgXmpp.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
 
-
             }
             
             //mRoster.getPresence(xaddress.getBareAddress())
@@ -1680,19 +1663,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             msgXmpp.setFrom(message.getFrom().getAddress());
             msgXmpp.setBody(message.getBody());
 
-            sendPacket(msgXmpp, mConnection);
+            sendPacket(msgXmpp);
             
             //set message ID value on internal message
             message.setID(msgXmpp.getPacketID());
 
-            //if contact is offline, try to refresh their presence
-            Contact contact = findOrCreateContact(message.getFrom().getBareAddress());
-            if (mRoster != null && (contact.getPresence() == null || contact.getPresence().getStatus() == Presence.OFFLINE))
-            {
-                org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(message.getFrom().getAddress());
-                if (p != null)
-                    qPresence.push(p);
-            }
 
         }
 
@@ -1924,11 +1899,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     contact = new Contact(xAddr,name);
 
                 }
-
-            //    org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());
-
-                //contact.setPresence(new Presence(parsePresence(p), p.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
-
+                
+                org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());
+                qPresence.push(p);
+                                
                 if (!cl.containsContact(contact))
                 {
                     try {
@@ -1937,13 +1911,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         debug(TAG,"could not add contact to list: " + e.getLocalizedMessage());
                     }
                 }
+                
 
             }
 
             notifyContactListLoaded(cl);
             notifyContactListsLoaded();
-
-            //notifyContactsPresenceUpdated(cl.getContacts().toArray(new Contact[cl.getContacts().size()]));
 
         }
 
@@ -2060,29 +2033,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
+                Contact contact = mContactListManager.getContact(XmppAddress.stripResource(presence.getFrom()));
 
-//                qPresence.push(presence);
-
-
+                contact.setPresence(new Presence(parsePresence(presence), presence.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
+                qPresence.push(presence);
+                
             }
 
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
 
-                Collection<Contact> contacts = new ArrayList<Contact>();
-
                 for (String address :addresses)
                 {
-                    Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
-
-                    if (contact != null)
-                        contacts.add(contact);
-
-
+                    org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(XmppAddress.stripResource(address));
+                    qPresence.push(p);
+                    
                 }
-
-                mContactListManager.notifyContactsPresenceUpdated(contacts.toArray(new Contact[contacts.size()]));
 
             }
 
@@ -2109,7 +2076,48 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesAdded(Collection<String> addresses) {
 
-                loadContactListsAsync();
+                try
+                {
+                    if (mContactListManager.getState() == LISTS_LOADED)
+                    {
+                        
+                        for (String address : addresses)
+                        {
+        
+                            org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(Address.stripResource(address));
+                            qPresence.push(p);
+        
+                            Contact contact = getContact(address);
+        
+                            if (contact == null)
+                            {
+                                XmppAddress xAddr = new XmppAddress(address);
+                                contact = new Contact(xAddr,xAddr.getUser());
+        
+                            }
+        
+                            try
+                            {
+                                ContactList cl = mContactListManager.getDefaultContactList();
+                                if (!cl.containsContact(contact))
+                                    cl.addExistingContact(contact);
+                                 
+                            }
+                            catch (Exception e)
+                            {
+                                debug(TAG,"could not add contact to list: " + e.getLocalizedMessage());
+
+                            }
+                        
+        
+                        }
+                        
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.d(ImApp.LOG_TAG,"error adding contacts",e);
+                }
             }
         };
 
@@ -2155,7 +2163,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(address);
-            sendPacket(response, mConnection);
+            sendPacket(response);
 
 
             notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_REMOVED, contact);
@@ -2192,10 +2200,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             if (mConnection.isConnected())
             {
-                org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
+                org.jivesoftware.smack.packet.Presence reqSubscribe = new org.jivesoftware.smack.packet.Presence(
                         org.jivesoftware.smack.packet.Presence.Type.subscribe);
-                response.setTo(contact.getAddress().getBareAddress());
-                sendPacket(response, mConnection);
+                reqSubscribe.setTo(contact.getAddress().getBareAddress());
+                sendPacket(reqSubscribe);
+                
+                org.jivesoftware.smack.packet.Presence reqSubscribed = new org.jivesoftware.smack.packet.Presence(
+                        org.jivesoftware.smack.packet.Presence.Type.subscribed);
+                reqSubscribed.setTo(contact.getAddress().getBareAddress());
+                sendPacket(reqSubscribed);
 
                 Roster roster = mConnection.getRoster();
                 String[] groups = new String[] { list.getName() };
@@ -2209,13 +2222,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                             roster.createEntry (contact.getAddress().getBareAddress(), contact.getName(), null);
 
                     }
-                    else
+                    else if (rEntry == null)
                     {
-
-                        if (rEntry == null)
                             roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
-                        else
-                            rGroup.addEntry(rEntry);
+                        
                     }
 
                 } catch (XMPPException e) {
@@ -2232,7 +2242,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
             response.setTo(contact.getAddress().getBareAddress());
-            sendPacket(response, mConnection);
+            sendPacket(response);
             try {
                 mContactListManager.getSubscriptionRequestListener().onSubscriptionDeclined(contact, mProviderId, mAccountId);
             } catch (RemoteException e) {
@@ -2247,7 +2257,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.subscribed);
             response.setTo(contact.getAddress().getBareAddress());
-            sendPacket(response, mConnection);
+            sendPacket(response);
             try
             {
                 mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
@@ -2865,24 +2875,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         // TODO: this causes bad network and performance issues
         //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
         Contact contact = mContactListManager.getContact(xaddress.getBareAddress());
-
-        /*
-        boolean reloadPresence = false;
-
-        //don't reload if everything is the same
-        if (contact.getPresence() != null
-                && contact.getPresence().getResource().equals(xaddress.getResource())
-                && contact.getPresence().getStatusText().equals(p.getStatusText())
-                && contact.getPresence().getStatus() == p.getStatus())
-            reloadPresence = false;
         
-        if (reloadPresence)
-        {*/
-            presence = mRoster.getPresence(xaddress.getBareAddress());
-            p = new Presence(parsePresence(presence), status, null, null,
-                    Presence.CLIENT_TYPE_DEFAULT);
-        //}
-
         String[] presenceParts = presence.getFrom().split("/");
         if (presenceParts.length > 1)
             p.setResource(presenceParts[1]);
@@ -2925,7 +2918,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (presence.getType() == Type.subscribe) {
             debug(TAG,"got subscribe request: " + presence.getFrom());
 
-            contact.setPresence(p);
             try
             {
                 mContactListManager.getSubscriptionRequestListener().onSubScriptionRequest(contact, mProviderId, mAccountId);
@@ -2964,14 +2956,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 Log.e(TAG,"remote exception on subscription handling",e);
             }
 
-
-        }
-        else {
-
-            contact.setPresence(p);
-
         }
 
+        contact.setPresence(p);
+        
+        
         return contact;
     }
 
@@ -2990,6 +2979,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     ArrayList<Contact> alUpdate = new ArrayList<Contact>();
 
                     if (qPresence.size() > 0)
+                    {
                         while ((p = qPresence.poll())!=null)
                         {
                             contact = handlePresenceChanged(p);
@@ -2998,7 +2988,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         }
 
 
-                    mContactListManager.notifyContactsPresenceUpdated(alUpdate.toArray(new Contact[alUpdate.size()]));
+                        mContactListManager.notifyContactsPresenceUpdated(alUpdate.toArray(new Contact[alUpdate.size()]));
+                    }
 
                 }
                 catch (NoSuchElementException e)
@@ -3015,6 +3006,52 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
              }
 
           }, 1000, 5000);
+    }
+    
+    Timer mTimerPackets = null;
+    
+    private void initPacketProcessor ()
+    {
+        mTimerPackets = new Timer();
+
+        mTimerPackets.scheduleAtFixedRate(new TimerTask() {
+
+            public void run() {
+
+                try
+                {
+                    org.jivesoftware.smack.packet.Packet packet = null;
+                    
+                    if (qPacket.size() > 0)
+                        while ((packet = qPacket.poll())!=null)
+                        {
+                            
+                                if (mConnection == null) {
+                                    debug(TAG, "postponed packet to " + packet.getTo()
+                                            + " because we are not connected");
+                                    postpone(packet);
+                                    return;
+                                }
+                                try {
+                                    mConnection.sendPacket(packet);
+                                } catch (IllegalStateException ex) {
+                                    postpone(packet);
+                                   debug(TAG, "postponed packet to " + packet.getTo()
+                                            + " because socket is disconnected");
+                                }
+                        }
+
+
+                }
+                catch (Exception e)
+                {
+                    Log.e(ImApp.LOG_TAG,"error processing presence",e);
+                }
+
+
+             }
+
+          }, 500, 1000);
     }
 
 }
