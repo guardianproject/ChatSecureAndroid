@@ -2418,7 +2418,7 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.INCOMING:
                 if (body != null)
                 {
-                   messageView.bindIncomingMessage(id, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat(), mPresenceStatus);
+                   messageView.bindIncomingMessage(id, messageType, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat(), mPresenceStatus);
                 }
 
                 break;
@@ -2430,7 +2430,7 @@ public class ChatView extends LinearLayout {
                 if (errCode != 0) {
                     messageView.bindErrorMessage(errCode);
                 } else {
-                    messageView.bindOutgoingMessage(id, null, mimeType, body, date, mMarkup, isScrolling(),
+                    messageView.bindOutgoingMessage(id, messageType, null, mimeType, body, date, mMarkup, isScrolling(),
                             deliveryState, encState);
                 }
 
