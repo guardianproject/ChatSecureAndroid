@@ -39,7 +39,8 @@ public final class Presence implements Parcelable {
     public static final int AWAY = 2;
     public static final int IDLE = 3;
     public static final int AVAILABLE = 4;
-
+    public static final int NOT_SUBSCRIBED = 5;
+    
     public static final int CLIENT_TYPE_DEFAULT = 0;
     public static final int CLIENT_TYPE_MOBILE = 1;
 
