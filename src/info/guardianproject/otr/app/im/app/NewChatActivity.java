@@ -169,10 +169,8 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
     @Override
     protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-//        requestWindowFeature(Window.FEATURE_PROGRESS);
+        super.onCreate(icicle);
 
         checkCustomFont ();
 
@@ -243,8 +241,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                     getSupportActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
-
-                setProgressBarIndeterminateVisibility(false);
 
             }
 
@@ -744,8 +740,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
                 }
 
-              //  setSupportProgressBarIndeterminateVisibility(false);
-
             }
 
          }
@@ -914,12 +908,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
                 boolean isEnc = (getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED ||
                         getCurrentChatView().getOtrSessionStatus() == SessionStatus.FINISHED
                         );
-
-                if (!isEnc)
-                {
-                    setProgressBarIndeterminateVisibility(true);
-
-                }
 
                 getCurrentChatView().setOTRState(!isEnc);
 

@@ -1793,8 +1793,6 @@ public class ChatView extends LinearLayout {
                 mComposeMessage.setHint(R.string.compose_hint_secure);
                 visibility = View.GONE;
 
-                mNewChatActivity.setProgressBarIndeterminateVisibility(false);
-
                 mSendButton.setImageResource(R.drawable.ic_send_secure);
 
                 try
