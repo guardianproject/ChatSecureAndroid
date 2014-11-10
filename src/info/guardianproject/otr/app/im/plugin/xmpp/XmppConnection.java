@@ -1087,7 +1087,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
 
-      //  mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
+        mConfig.setDebuggerEnabled(Debug.DEBUG_ENABLED);
 
         mConfig.setSASLAuthenticationEnabled(useSASL);
 
