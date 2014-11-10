@@ -143,27 +143,30 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             {
                 OtrKeyManager otrKeyManager = OtrAndroidKeyManagerImpl.getInstance(this);
 
-                mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this, otrKeyManager);
-                mOtrChatManager.addOtrEngineListener(this);
-
-                otrKeyManager.addListener(new OtrKeyManagerListener() {
-                    public void verificationStatusChanged(SessionID session) {
-                        boolean isVerified = mOtrChatManager.getKeyManager().isVerified(session);
-                        String msg = session + ": verification status=" + isVerified;
-
-                        OtrDebugLogger.log(msg);
-
-                    }
-
-                    public void remoteVerifiedUs(SessionID session) {
-                        String msg = session + ": remote verified us";
-                        OtrDebugLogger.log(msg);
-
-                        showToast(getString(R.string.remote_verified_us),Toast.LENGTH_SHORT);
-                     //   if (!isRemoteKeyVerified(session))
-                       //     showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
-                    }
-                });
+                if (otrKeyManager != null)
+                {
+                    mOtrChatManager = OtrChatManager.getInstance(otrPolicy, this, otrKeyManager);
+                    mOtrChatManager.addOtrEngineListener(this);
+    
+                    otrKeyManager.addListener(new OtrKeyManagerListener() {
+                        public void verificationStatusChanged(SessionID session) {
+                            boolean isVerified = mOtrChatManager.getKeyManager().isVerified(session);
+                            String msg = session + ": verification status=" + isVerified;
+    
+                            OtrDebugLogger.log(msg);
+    
+                        }
+    
+                        public void remoteVerifiedUs(SessionID session) {
+                            String msg = session + ": remote verified us";
+                            OtrDebugLogger.log(msg);
+    
+                            showToast(getString(R.string.remote_verified_us),Toast.LENGTH_SHORT);
+                         //   if (!isRemoteKeyVerified(session))
+                           //     showWarning(session, mContext.getApplicationContext().getString(R.string.remote_verified_us));
+                        }
+                    });
+                }
 
             }
             catch (Exception e)
