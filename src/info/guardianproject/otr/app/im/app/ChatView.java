@@ -1023,7 +1023,7 @@ public class ChatView extends LinearLayout {
         if (mIsSelected)
         {
             mNewChatActivity.setTitle(mRemoteNickname);
-            mNewChatActivity.getSupportActionBar().setIcon(mRemoteAvatar);
+           // mNewChatActivity.getSupportActionBar().setIcon(mRemoteAvatar);
         }
     }
 

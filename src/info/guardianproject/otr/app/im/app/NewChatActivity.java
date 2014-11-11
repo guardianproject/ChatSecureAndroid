@@ -75,15 +75,20 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 import android.util.AttributeSet;
@@ -98,7 +103,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
@@ -110,9 +114,8 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
-import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class NewChatActivity extends ActionBarActivity implements View.OnCreateContextMenuListener {
+public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
     private static final String ICICLE_CHAT_PAGER_ADAPTER = "chatPagerAdapter";
     private static final String ICICLE_POSITION = "position";
@@ -134,10 +137,10 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     private ViewPager mChatPager;
     private ChatViewPagerAdapter mChatPagerAdapter;
 
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawer;
+    
     private int mLastPagePosition = -1;
-
-
-    private SlidingMenu mDrawer;
 
     private SimpleAlertHandler mHandler;
 
@@ -148,8 +151,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     private MessageContextMenuHandler mMessageContextMenuHandler;
 
     private ContactListFragment mContactList = null;
-
-//    private SearchView mSearchView = null;
 
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
@@ -173,15 +174,31 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         super.onCreate(icicle);
 
         checkCustomFont ();
+        
 
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
 
         mApp.setAppTheme(this);
         ThemeableActivity.setBackgroundImage(this);
-        getSupportActionBar().setLogo(R.drawable.ic_drawer); //for ActionBarCompat
 
         setContentView(R.layout.chat_pager);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        
+        mToolbar.inflateMenu(R.menu.chat_screen_menu);
+        setupMenu ();
+        
+       
+        mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+            this,  mDrawer, mToolbar,
+            R.string.ok, R.string.cancel
+        );
+        // Set the drawer toggle as the DrawerListener
+        mDrawer.setDrawerListener(mDrawerToggle);        
+        mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerToggle.syncState();
 
         mHandler = new MyHandler(this);
         mRequestedChatId = -1;
@@ -189,8 +206,8 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         //mChatPager.setSaveEnabled(false);
         //mChatPager.setOffscreenPageLimit(3);
-        mChatPager.setDrawingCacheEnabled(true);
-        mChatPager.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_LOW);
+        //mChatPager.setDrawingCacheEnabled(true);
+        //mChatPager.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_AUTO);
 
         mChatPager.setOnPageChangeListener(new SimpleOnPageChangeListener () {
 
@@ -222,7 +239,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
                     }
 
-                    getSupportActionBar().setLogo(R.drawable.abc_ic_ab_back_holo_dark); //for ActionBarCompat
                 }
                 else
                 {
@@ -237,8 +253,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
                     }
 
-                    getSupportActionBar().setLogo(R.drawable.ic_drawer); //for ActionBarCompat
-                    getSupportActionBar().setIcon(R.drawable.ic_launcher);
                     setTitle(R.string.app_name);
                 }
 
@@ -250,7 +264,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
         mMessageContextMenuHandler = new MessageContextMenuHandler();
 
-        initSideBar ();
+       // initSideBar ();
 
         mChatPagerAdapter = new ChatViewPagerAdapter(getSupportFragmentManager());
         mChatPager.setAdapter(mChatPagerAdapter);
@@ -305,6 +319,16 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
             }
         });
     }
+    
+    
+
+    @Override
+    public void setTitle(CharSequence title) {
+
+        mToolbar.setTitle(title);
+    }
+
+
 
     private void checkCustomFont ()
     {
@@ -363,13 +387,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
     protected void onResume() {
         super.onResume();
 
-      //  if (menu.isMenuShowing())
-        //    menu.toggle();
-
         mApp.getTrustManager().bindDisplayActivity(this);
-
-        //View vg = findViewById (R.id.chatpager);
-        //vg.invalidate();
 
         mApp.checkForCrashes(this);
     }
@@ -392,10 +410,7 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
     @Override
     public void onBackPressed() {
-        if (mDrawer.isMenuShowing()) {
-            mDrawer.showContent();
-            return;
-        }
+        
         int currentPos = mChatPager.getCurrentItem();
         if (currentPos > 0) {
             mChatPager.setCurrentItem(0);
@@ -403,24 +418,6 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         }
 
         super.onBackPressed();
-    }
-
-    private void initSideBar ()
-    {
-
-        mDrawer = new SlidingMenu(this);
-        mDrawer.setMode(SlidingMenu.LEFT);
-        mDrawer.setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
-        mDrawer.setShadowWidthRes(R.dimen.shadow_width);
-        mDrawer.setShadowDrawable(R.drawable.shadow);
-        mDrawer.setBehindOffsetRes(R.dimen.slidingmenu_offset);
-        mDrawer.setFadeDegree(0.35f);
-        mDrawer.attachToActivity(this, SlidingMenu.SLIDING_CONTENT);
-
-        mDrawer.setMenu(R.layout.fragment_drawer);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
     private void showInviteContactDialog ()
@@ -541,9 +538,9 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
         } else if (intent != null) {
             Uri data = intent.getData();
 
-            if (intent.getBooleanExtra("showaccounts", false))
-                mDrawer.showMenu();
-
+           if (intent.getBooleanExtra("showaccounts", false))
+               mDrawer.openDrawer(GravityCompat.START);
+           
             if (data != null)
             {
                 if (data.getScheme() != null && data.getScheme().equals("immu"))
@@ -745,50 +742,10 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
          }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    private void setupMenu ()
+    {
 
-        mMenu = menu;
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.chat_screen_menu, menu);
-
-        /**
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        mSearchView = (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        if (mSearchView != null )
-        {
-            mSearchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            mSearchView.setIconifiedByDefault(false);
-        }
-
-        SearchView.OnQueryTextListener queryTextListener = new SearchView.OnQueryTextListener()
-        {
-            public boolean onQueryTextChange(String newText)
-            {
-                if (mContactList == null) //the contact list can be not init'd yet
-                    return false;
-
-                mContactList.filterContacts(newText);
-
-                if (mChatPager.getCurrentItem() != 0)
-                    mChatPager.setCurrentItem(0);
-
-                return true;
-            }
-
-            public boolean onQueryTextSubmit(String query)
-            {
-                mContactList.filterContacts(query);
-
-                if (mChatPager.getCurrentItem() != 0)
-                    mChatPager.setCurrentItem(0);
-
-                return true;
-            }
-        };
-
-        mSearchView.setOnQueryTextListener(queryTextListener);*/
+        mMenu = mToolbar.getMenu();
 
         if (mMenu != null)
         {
@@ -809,147 +766,146 @@ public class NewChatActivity extends ActionBarActivity implements View.OnCreateC
 
             }
         }
+        
+        mToolbar.setOnMenuItemClickListener(new OnMenuItemClickListener ()
+        {
 
-        return true;
-    }
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                
+                switch (item.getItemId()) {
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        //updateOtrMenuState();
-        return true;
-    }
+                case R.id.menu_send_image:
+                    if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
+                    {
+                       startImagePicker();
+                    }
+                    else
+                    {
+                        mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+                    }
+                    return true;
+                case R.id.menu_take_picture:
+                    if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
+                    {
+                        startPhotoTaker();
+                    }
+                    else
+                    {
+                        mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+                    }
+                    return true;
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
+                case R.id.menu_send_file:
 
-        case R.id.menu_send_image:
-            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
-            {
-               startImagePicker();
+                    if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
+                    {
+                       startFilePicker();
+                    }
+                    else
+                    {
+                        mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+                    }
+
+                    return true;
+
+                case R.id.menu_send_audio:
+
+                    if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
+                    {
+                       startAudioPicker();
+                    }
+                    else
+                    {
+                        mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
+                    }
+
+                    return true;
+
+                case R.id.menu_view_profile:
+                    if (getCurrentChatView() != null)
+                        getCurrentChatView().viewProfile();
+                    return true;
+
+                case R.id.menu_show_qr:
+                    displayQRCode();
+                    return true;
+                case R.id.menu_end_conversation:
+                    try {
+                        endCurrentChatPrompt( getCurrentSessionId());
+                    } catch (Exception e) {
+                        Toast.makeText(NewChatActivity.this, "Error:" + e.getMessage(), Toast.LENGTH_LONG).show(); // TODO i18n
+                        e.printStackTrace();
+                    }
+
+                    return true;
+                /*
+                case R.id.menu_delete_conversation:
+                    if (getCurrentChatView() != null)
+                        getCurrentChatView().closeChatSession(true);
+                    return true;
+                  */
+                case R.id.menu_settings:
+                    Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);
+                    startActivityForResult(sintent,REQUEST_SETTINGS);
+                    return true;
+
+                case R.id.menu_otr:
+                case R.id.menu_otr_stop:
+
+                    if (getCurrentChatView() != null)
+                    {
+
+                        boolean isEnc = (getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED ||
+                                getCurrentChatView().getOtrSessionStatus() == SessionStatus.FINISHED
+                                );
+
+                        getCurrentChatView().setOTRState(!isEnc);
+
+
+
+                    }
+
+                    return true;
+
+                case android.R.id.home:
+                    int currentPos = mChatPager.getCurrentItem();
+                    if (currentPos > 0) {
+                        mChatPager.setCurrentItem(0);
+
+                    }
+                   
+                    return true;
+
+                case R.id.menu_view_accounts:
+                    startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+
+                    return true;
+
+                case R.id.menu_new_chat:
+                    startContactPicker();
+                    return true;
+
+                case R.id.menu_exit:
+                    doHardShutdown();
+                    return true;
+
+                case R.id.menu_add_contact:
+                    showInviteContactDialog();
+                    return true;
+
+                case R.id.menu_group_chat:
+                    showGroupChatDialog();
+                    return true;
+                }
+
+                return false;
+                
             }
-            else
-            {
-                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
-            }
-            return true;
-        case R.id.menu_take_picture:
-            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
-            {
-                startPhotoTaker();
-            }
-            else
-            {
-                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
-            }
-            return true;
+            
+        });
+        
 
-        case R.id.menu_send_file:
-
-            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
-            {
-               startFilePicker();
-            }
-            else
-            {
-                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
-            }
-
-            return true;
-
-        case R.id.menu_send_audio:
-
-            if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
-            {
-               startAudioPicker();
-            }
-            else
-            {
-                mHandler.showServiceErrorAlert(getString(R.string.please_enable_chat_encryption_to_share_files));
-            }
-
-            return true;
-
-        case R.id.menu_view_profile:
-            if (getCurrentChatView() != null)
-                getCurrentChatView().viewProfile();
-            return true;
-
-        case R.id.menu_show_qr:
-            displayQRCode();
-            return true;
-        case R.id.menu_end_conversation:
-            try {
-                endCurrentChatPrompt( getCurrentSessionId());
-            } catch (Exception e) {
-                Toast.makeText(this, "Error:" + e.getMessage(), Toast.LENGTH_LONG).show(); // TODO i18n
-                e.printStackTrace();
-            }
-
-            return true;
-        /*
-        case R.id.menu_delete_conversation:
-            if (getCurrentChatView() != null)
-                getCurrentChatView().closeChatSession(true);
-            return true;
-          */
-        case R.id.menu_settings:
-            Intent sintent = new Intent(NewChatActivity.this, SettingActivity.class);
-            startActivityForResult(sintent,REQUEST_SETTINGS);
-            return true;
-
-        case R.id.menu_otr:
-        case R.id.menu_otr_stop:
-
-            if (getCurrentChatView() != null)
-            {
-
-                boolean isEnc = (getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED ||
-                        getCurrentChatView().getOtrSessionStatus() == SessionStatus.FINISHED
-                        );
-
-                getCurrentChatView().setOTRState(!isEnc);
-
-
-
-            }
-
-            return true;
-
-        case android.R.id.home:
-            int currentPos = mChatPager.getCurrentItem();
-            if (currentPos > 0) {
-                mChatPager.setCurrentItem(0);
-
-            }
-            else
-                mDrawer.toggle();
-            return true;
-
-        case R.id.menu_view_accounts:
-            startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-
-            return true;
-
-        case R.id.menu_new_chat:
-            startContactPicker();
-            return true;
-
-        case R.id.menu_exit:
-            doHardShutdown();
-            return true;
-
-        case R.id.menu_add_contact:
-            showInviteContactDialog();
-            return true;
-
-        case R.id.menu_group_chat:
-            showGroupChatDialog();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void endCurrentChatPrompt( final String sessionId ) {

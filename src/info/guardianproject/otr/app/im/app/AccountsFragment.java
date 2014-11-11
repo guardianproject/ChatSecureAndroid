@@ -43,6 +43,7 @@ public class AccountsFragment extends ListFragment implements ProviderListItem.S
 
             initProviderCursor();
 
+            
         }
 
         @Override

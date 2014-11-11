@@ -69,12 +69,22 @@
     </style>
     
         
-    <style name="AppTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar" >    
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light" >    
          <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
          <item name="messageTextPrimary">#333333</item>
          <item name="messageTextSecondary">#999999</item>
-         <item name="listBackground">#ababab</item>
-         <item name="homeAsUpIndicator">@null</item> 
+         <item name="listBackground">#ababab</item>         
+
+    <!-- customize the color palette -->
+   
+    <item name="colorPrimary">#111</item>
+    <item name="colorPrimaryDark">#eee</item>
+    <item name="colorAccent">#00aa00</item>
+    
+    <item name="windowActionBar">false</item>
+       <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+       <item name="windowActionModeOverlay">true</item>
+       
      </style>
     
    <style name="AppThemeDark" parent="@style/Theme.AppCompat" >
@@ -82,7 +92,23 @@
        <item name="messageRoundBackground">@drawable/message_view_rounded_dark</item>                     
          <item name="messageTextSecondary">#aaaaaa</item>
          <item name="listBackground">#222222</item>
-         <item name="homeAsUpIndicator">@null</item>
+
+    <!-- customize the color palette -->
+    
+    <item name="colorPrimary">#eee</item>
+    <item name="colorPrimaryDark">#111</item>
+    <item name="colorAccent">#006600</item>
+    
+    <item name="windowActionBar">false</item>
+       <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+       <item name="windowActionModeOverlay">true</item>
+       
     </style>
     
+   <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+    <item name="spinBars">true</item>
+    <item name="color">@android:color/white</item>
+</style>
+    
+
 </resources>
