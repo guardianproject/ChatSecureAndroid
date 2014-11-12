@@ -17,15 +17,13 @@
 
 package info.guardianproject.otr.app.im.app.adapter;
 
+import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.Message;
-
-import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatListener;
 import info.guardianproject.util.LogCleaner;
-
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -112,4 +110,5 @@ public class ChatListenerAdapter extends IChatListener.Stub {
         }
 
     }
+
 }

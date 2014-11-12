@@ -73,7 +73,8 @@ public class HeartbeatService extends Service {
         alarmManager.cancel(mPendingIntent);
         if (interval > 0)
         {
-            alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval, interval, mPendingIntent);
+            //alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval, interval, mPendingIntent);
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime() + interval, interval, mPendingIntent);
         }
     }
 

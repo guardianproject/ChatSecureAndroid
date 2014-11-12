@@ -139,7 +139,7 @@ public class SettingActivity extends PreferenceActivity implements
             }*/
         }
         else if (key.equals("pref_foreground_enable")) {
-            settings.setUseForegroundPriority(prefs.getBoolean(key, false));
+            settings.setUseForegroundPriority(prefs.getBoolean(key, true));
         } else if (key.equals("pref_heartbeat_interval")) {
             try
             {

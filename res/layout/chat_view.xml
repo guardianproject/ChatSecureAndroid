@@ -24,40 +24,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="0dp"   
-        android:padding="0dp"
+    android:padding="0dp"
  >
 
-    
     <ListView android:id="@+id/history"
         android:layout_width="match_parent"
         android:layout_height="0dip"
-        android:layout_weight="1"                        
+        android:layout_weight="1"            
         android:stackFromBottom="true"               
   		android:layout_margin="0dp"
         android:padding="0dp"
+        android:paddingBottom="6dip"
         android:divider="#00000000"
         android:dividerHeight="10dp"
         android:scrollingCache="true"
         android:transcriptMode="normal"
          />
 
-    
-      <ProgressBar
-         android:id="@+id/progressTransfer"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         style="?android:attr/progressBarStyleHorizontal"
-         android:visibility="gone"
-         android:padding="0dp"
-          />
-      
   <LinearLayout 
-	    android:layout_width="fill_parent"
+	    android:layout_width="match_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="horizontal"
 	     android:layout_gravity="fill_vertical"
 	             android:gravity="bottom"
 	     android:padding="3sp"
+	     android:background="?inputBackground"
 	     >
 	<!-- 
         <ImageButton
@@ -135,6 +126,7 @@
         android:layout_gravity="bottom"
         android:orientation="vertical"
         android:visibility="gone"
+        
         android:background="@drawable/text_divider_horizontal">
 
         <TextView android:id="@+id/txtInvitation"
@@ -166,6 +158,7 @@
         android:layout_gravity="bottom"
         android:orientation="vertical"
         android:background="@color/background_light"
+        
         android:visibility="gone">
 
         <TextView android:id="@+id/txtSubscription"
@@ -199,11 +192,6 @@
         android:orientation="horizontal"
         android:visibility="gone">
 
-        <ImageView android:id="@+id/warningIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_im_message_not_sent" />
 
         <TextView android:id="@+id/warningText"
             android:layout_width="wrap_content"
@@ -217,5 +205,17 @@
         
         
     </LinearLayout>
+    
+    
+      <ProgressBar
+         android:id="@+id/progressTransfer"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         style="?android:attr/progressBarStyleHorizontal"
+         android:visibility="gone"
+         android:padding="0dp"
+         
+          />
+    
       
 </info.guardianproject.otr.app.im.app.ChatView>

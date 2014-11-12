@@ -1,15 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent" >
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize" />
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
-    
+    android:layout_marginTop="?attr/actionBarSize"
+    >
+    <!-- The main content view -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/content_frame"
+     >
+        
     <info.guardianproject.otr.app.im.app.ChatViewPager
-android:layout_width="match_parent" 
-android:layout_height="match_parent" 
-android:id="@+id/chatpager">
+		android:layout_width="match_parent" 
+		android:layout_height="match_parent" 
+		android:id="@+id/chatpager"/>
+    </LinearLayout>    
+    <!-- The navigation drawer -->
+    <LinearLayout
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/left_drawer"
+    android:layout_gravity="start"        
+    android:background="@color/background_gray"
+     >
+    <fragment    
+         android:layout_width="match_parent"
+        android:layout_height="match_parent"
         
-        
-    </info.guardianproject.otr.app.im.app.ChatViewPager>
-
-</LinearLayout>
+        android:name="info.guardianproject.otr.app.im.app.AccountsFragment"                
+         />
+    </LinearLayout>
+ </android.support.v4.widget.DrawerLayout>
+ </RelativeLayout>

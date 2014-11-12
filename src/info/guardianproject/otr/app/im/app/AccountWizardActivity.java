@@ -94,10 +94,11 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle icicle) {
-        super.onCreate(icicle);
 
         if(Build.VERSION.SDK_INT >= 11)
             getWindow().requestFeature(Window.FEATURE_ACTION_BAR);
+
+        super.onCreate(icicle);
 
         getSupportActionBar().hide();
 

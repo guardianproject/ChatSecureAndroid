@@ -135,6 +135,7 @@ public class AccountActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle icicle) {
+
         super.onCreate(icicle);
         Intent i = getIntent();
 
@@ -300,16 +301,17 @@ public class AccountActivity extends ActionBarActivity {
             return;
         }
 
-       getSupportActionBar().setHomeButtonEnabled(true);
-
        setupUIPost();
 
     }
 
     private void setupUIPre ()
     {
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        ((ImApp)getApplication()).setAppTheme(this);
+
         setContentView(R.layout.account_activity);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         mIsNewAccount = getIntent().getBooleanExtra("register", false);
 
@@ -399,7 +401,6 @@ public class AccountActivity extends ActionBarActivity {
         mBtnSignIn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSupportProgressBarIndeterminateVisibility(true);
 
                 checkUserChanged();
 
@@ -478,7 +479,6 @@ public class AccountActivity extends ActionBarActivity {
                     if (isSignedIn) {
                         signOut();
                         isSignedIn = false;
-                        setSupportProgressBarIndeterminateVisibility(false);
                     } else {
                         setAccountKeepSignedIn(rememberPass);
 

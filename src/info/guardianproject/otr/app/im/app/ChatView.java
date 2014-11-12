@@ -160,7 +160,6 @@ public class ChatView extends LinearLayout {
     EditText mComposeMessage;
     private ImageButton mSendButton;
     private View mStatusWarningView;
-    private ImageView mWarningIcon;
     private TextView mWarningText;
     private ProgressBar mProgressTransfer;
 
@@ -622,7 +621,6 @@ public class ChatView extends LinearLayout {
         mHistory.setOnItemClickListener(mOnItemClickListener);
 
         mStatusWarningView = findViewById(R.id.warning);
-        mWarningIcon = (ImageView) findViewById(R.id.warningIcon);
         mWarningText = (TextView) findViewById(R.id.warningText);
 
         mProgressTransfer = (ProgressBar)findViewById(R.id.progressTransfer);
@@ -1022,8 +1020,8 @@ public class ChatView extends LinearLayout {
     {
         if (mIsSelected)
         {
-            mNewChatActivity.setTitle(mRemoteNickname);
-            mNewChatActivity.getSupportActionBar().setIcon(mRemoteAvatar);
+            mNewChatActivity.setTitle(mRemoteNickname,mRemoteAvatar);
+
         }
     }
 
@@ -1793,8 +1791,6 @@ public class ChatView extends LinearLayout {
                 mComposeMessage.setHint(R.string.compose_hint_secure);
                 visibility = View.GONE;
 
-                mNewChatActivity.setProgressBarIndeterminateVisibility(false);
-
                 mSendButton.setImageResource(R.drawable.ic_send_secure);
 
                 try
@@ -1851,7 +1847,6 @@ public class ChatView extends LinearLayout {
         mStatusWarningView.setVisibility(visibility);
 
         if (visibility == View.VISIBLE) {
-            mWarningIcon.setVisibility(iconVisibility);
             mWarningText.setText(message);
         }
 
@@ -2416,10 +2411,7 @@ public class ChatView extends LinearLayout {
 
             switch (messageType) {
             case Imps.MessageType.INCOMING:
-                if (body != null)
-                {
-                   messageView.bindIncomingMessage(id, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat(), mPresenceStatus);
-                }
+                messageView.bindIncomingMessage(id, messageType, mRemoteAddress, nickname, mimeType, body, date, mMarkup, isScrolling(), encState, isGroupChat(), mPresenceStatus);
 
                 break;
 
@@ -2430,7 +2422,7 @@ public class ChatView extends LinearLayout {
                 if (errCode != 0) {
                     messageView.bindErrorMessage(errCode);
                 } else {
-                    messageView.bindOutgoingMessage(id, null, mimeType, body, date, mMarkup, isScrolling(),
+                    messageView.bindOutgoingMessage(id, messageType, null, mimeType, body, date, mMarkup, isScrolling(),
                             deliveryState, encState);
                 }
 

@@ -32,6 +32,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import org.jivesoftware.smack.packet.Message;
+
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -172,7 +174,7 @@ public class MessageView extends FrameLayout {
         return lastMessage.toString();
     }
 
-    public void bindIncomingMessage(int id, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
+    public void bindIncomingMessage(int id, int messageType, String address, String nickname, final String mimeType, final String body, Date date, Markup smileyRes,
             boolean scrolling, EncryptionState encryption, boolean showContact, int presenceStatus) {
 
         mHolder = (ViewHolder)getTag();
@@ -243,9 +245,9 @@ public class MessageView extends FrameLayout {
            CharSequence tsText = null;
 
            if (isSameDay(date,DATE_NOW))
-               tsText = formatTimeStamp(date,MESSAGE_TIME_FORMAT, null, encryption);
+               tsText = formatTimeStamp(date,messageType,MESSAGE_TIME_FORMAT, null, encryption);
            else
-               tsText = formatTimeStamp(date,MESSAGE_DATETIME_FORMAT, null, encryption);
+               tsText = formatTimeStamp(date,messageType,MESSAGE_DATETIME_FORMAT, null, encryption);
 
          mHolder.mTextViewForTimestamp.setText(tsText);
          mHolder.mTextViewForTimestamp.setVisibility(View.VISIBLE);
@@ -546,10 +548,13 @@ public class MessageView extends FrameLayout {
 
     private String formatMessage (String body)
     {
-        return android.text.Html.fromHtml(body).toString();
+        if (body != null)
+            return android.text.Html.fromHtml(body).toString();
+        else
+            return null;
     }
 
-    public void bindOutgoingMessage(int id, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
+    public void bindOutgoingMessage(int id, int messageType, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
             DeliveryState delivery, EncryptionState encryption) {
 
         mHolder = (ViewHolder)getTag();
@@ -616,9 +621,9 @@ public class MessageView extends FrameLayout {
             CharSequence tsText = null;
 
             if (isSameDay(date,DATE_NOW))
-                tsText = formatTimeStamp(date,MESSAGE_TIME_FORMAT, delivery, encryption);
+                tsText = formatTimeStamp(date,messageType, MESSAGE_TIME_FORMAT, delivery, encryption);
             else
-                tsText = formatTimeStamp(date,MESSAGE_DATETIME_FORMAT, delivery, encryption);
+                tsText = formatTimeStamp(date,messageType, MESSAGE_DATETIME_FORMAT, delivery, encryption);
 
             mHolder.mTextViewForTimestamp.setText(tsText);
 
@@ -640,7 +645,9 @@ public class MessageView extends FrameLayout {
 
     private void showAvatar (String address, boolean isLeft, int encryptionState)
     {
-
+        if (mHolder.mAvatar == null)
+            return;
+        
         mHolder.mAvatar.setVisibility(View.GONE);
 
         if (address != null)
@@ -696,7 +703,7 @@ public class MessageView extends FrameLayout {
 
     }
 
-    private SpannableString formatTimeStamp(Date date, DateFormat format, MessageView.DeliveryState delivery, EncryptionState encryptionState) {
+    private SpannableString formatTimeStamp(Date date, int messageType, DateFormat format, MessageView.DeliveryState delivery, EncryptionState encryptionState) {
 
 
         StringBuilder deliveryText = new StringBuilder();
@@ -705,17 +712,21 @@ public class MessageView extends FrameLayout {
 
         if (delivery != null)
         {
+            //this is for delivery
             if (delivery == DeliveryState.DELIVERED) {
 
                 deliveryText.append(DELIVERED_SUCCESS);
-
+                
             } else if (delivery == DeliveryState.UNDELIVERED) {
 
                 deliveryText.append(DELIVERED_FAIL);
 
             }
+            
         }
-
+        
+        if (messageType != Imps.MessageType.POSTPONED)
+            deliveryText.append(DELIVERED_SUCCESS);//this is for sent, so we know show 2 checks like WhatsApp!
 
         SpannableString spanText = null;
 
@@ -821,7 +832,7 @@ public class MessageView extends FrameLayout {
 
         case Imps.Presence.OFFLINE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
-            avatar.setAlpha(100);
+            avatar.setAlpha(150);
             break;
 
 

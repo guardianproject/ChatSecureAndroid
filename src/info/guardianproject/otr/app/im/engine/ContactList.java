@@ -99,14 +99,7 @@ public class ContactList extends ImEntity {
         //String aKey = mManager.normalizeAddress(address);
         Contact contact = getContact(address);
 
-        if (contact != null)
-        {
-            if (containsContact(contact)) {
-                throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
-                        "Contact already exists in the list");
-            }
-        }
-        else
+        if (contact == null)
         {
             contact = new Contact (new XmppAddress(address),address);
         }

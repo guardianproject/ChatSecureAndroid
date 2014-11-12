@@ -321,7 +321,6 @@ public class ProviderListItem extends LinearLayout {
         else
         {
             setBackgroundColor(getResources().getColor(android.R.color.transparent));
-
         }
 
         if (mProviderName != null)
