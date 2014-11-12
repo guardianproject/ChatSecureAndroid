@@ -67,39 +67,49 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:backgroundDimAmount">0.7</item>
     </style>
-    
-        
+
     <style name="AppTheme" parent="@style/Theme.AppCompat.Light" >    
          <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
-         <item name="messageTextPrimary">#333333</item>
-         <item name="messageTextSecondary">#999999</item>
-         <item name="listBackground">#ababab</item>         
-
+         <item name="messageTextPrimary">#111111</item>
+         <item name="messageTextSecondary">#777777</item>
+                  
+         <item name="listBackground">#eceff1</item>
+         
+         <item name="toolbarBackground">#CFD8DC</item>
+         <item name="inputBackground">#CCECEFF1</item>
     <!-- customize the color palette -->
    
-    <item name="colorPrimary">#111</item>
-    <item name="colorPrimaryDark">#eee</item>
+   		<item name="contactTextPrimary">#111111</item>
+         <item name="contactTextSecondary">#777777</item>
+   
+    <item name="colorPrimary">#aaaaaa</item>
+    <item name="colorPrimaryDark">#333333</item>
     <item name="colorAccent">#00aa00</item>
     
-    <item name="windowActionBar">false</item>
+    <item name="windowActionBar">true</item>
        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
        <item name="windowActionModeOverlay">true</item>
        
      </style>
     
    <style name="AppThemeDark" parent="@style/Theme.AppCompat" >
-        <item name="messageTextPrimary">#cccccc</item>
+        <item name="messageTextPrimary">#dddddd</item>
        <item name="messageRoundBackground">@drawable/message_view_rounded_dark</item>                     
          <item name="messageTextSecondary">#aaaaaa</item>
-         <item name="listBackground">#222222</item>
-
+         <item name="listBackground">#263238</item>                     
+		<item name="contactTextPrimary">#dddddd</item>
+         <item name="contactTextSecondary">#aaaaaa</item>
+         
+         <item name="toolbarBackground">#263238</item>
+                  <item name="inputBackground">#CC263238</item>
+         
     <!-- customize the color palette -->
     
-    <item name="colorPrimary">#eee</item>
-    <item name="colorPrimaryDark">#111</item>
+    <item name="colorPrimary">#eeeeee</item>
+    <item name="colorPrimaryDark">#111111</item>
     <item name="colorAccent">#006600</item>
     
-    <item name="windowActionBar">false</item>
+    <item name="windowActionBar">true</item>
        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
        <item name="windowActionModeOverlay">true</item>
        

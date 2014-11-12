@@ -29,13 +29,20 @@ android:layout_height="match_parent" >
 		android:id="@+id/chatpager"/>
     </LinearLayout>    
     <!-- The navigation drawer -->
-    <fragment
-        android:id="@+id/left_drawer"
-         android:layout_width="240dp"
+    <LinearLayout
+    android:layout_width="240dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/left_drawer"
+    android:layout_gravity="start"        
+    android:background="@color/background_gray"
+     >
+    <fragment    
+         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/background_dark"
+        
         android:name="info.guardianproject.otr.app.im.app.AccountsFragment"                
          />
+    </LinearLayout>
  </android.support.v4.widget.DrawerLayout>
  </RelativeLayout>

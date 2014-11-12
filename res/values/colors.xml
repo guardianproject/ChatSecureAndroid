@@ -28,7 +28,7 @@
         <color name="android_green">#ccA4C639</color>
             <color name="android_green_light">#ccA4C639</color>
     <color name="honeycombish_blue">#cc58BAED</color>
-    <color name="soft_grey">#FF777777</color>
+    <color name="soft_grey">#CFD8DC</color>
     
     <color name="background_light">#DDDEDEDE</color>
     <color name="background_med">#DDABABAB</color>
@@ -64,7 +64,7 @@
     <color name="holo_blue_bright">#cc00ddff</color>
     
      <!-- A light Holo shade of gray -->
-    <color name="holo_grey_light">#88555555</color>
+    <color name="holo_grey_light">#ECEFF1</color>
     
     <color name="otr_red">#ffcaca</color>
     <color name="otr_yellow">#ffecc0</color>
@@ -90,6 +90,8 @@
     <color name="contact_status_bg">#aaffffff</color>
     <color name="contact_status_avatar_overlay">#aa555555</color>
     
-    <color name="background_gray">#343330</color>
+    <color name="background_gray">#37474F</color>
+        
+    
     
 </resources>

@@ -70,6 +70,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -78,6 +80,9 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -258,7 +263,7 @@ public class ImApp extends Application {
 
         mBroadcaster = new Broadcaster();
 
-        setAppTheme(null);
+        setAppTheme(null,null);
 
         checkLocale();
     }
@@ -269,8 +274,16 @@ public class ImApp extends Application {
     {
         return mThemeDark;
     }
-
+    
     public void setAppTheme (Activity activity)
+    {
+        setAppTheme(activity, null);
+    }
+    
+    private final static int COLOR_TOOLBAR_DARK = Color.parseColor("#263238");
+    private final static int COLOR_TOOLBAR_LIGHT = Color.parseColor("#B0BEC5");
+
+    public void setAppTheme (Activity activity, Toolbar toolbar)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -280,8 +293,23 @@ public class ImApp extends Application {
         {
             setTheme(R.style.AppThemeDark);
 
+
             if (activity != null)
+            {
                 activity.setTheme(R.style.AppThemeDark);
+                if (activity instanceof ActionBarActivity)
+                {
+                    ActionBar ab = ((ActionBarActivity)activity).getSupportActionBar();
+                    
+                    if (ab != null)
+                    {
+                        ab.setBackgroundDrawable(new ColorDrawable(COLOR_TOOLBAR_DARK));                        
+                    }
+                }
+            }      
+            if (toolbar != null)                
+                toolbar.setBackgroundColor(COLOR_TOOLBAR_DARK);
+      
         }
         else
         {
@@ -289,7 +317,23 @@ public class ImApp extends Application {
 
 
             if (activity != null)
+            {
                 activity.setTheme(R.style.AppTheme);
+                if (activity instanceof ActionBarActivity)
+                {
+                    ActionBar ab = ((ActionBarActivity)activity).getSupportActionBar();
+                    
+                    if (ab != null)
+                    {
+                        ab.setBackgroundDrawable(new ColorDrawable(COLOR_TOOLBAR_LIGHT));                        
+                    }
+                }
+            }
+            
+            if (toolbar != null)
+                toolbar.setBackgroundColor(COLOR_TOOLBAR_LIGHT);
+            
+            
         }
 
         Configuration config = getResources().getConfiguration();
@@ -1014,7 +1058,7 @@ public class ImApp extends Application {
 
     public void maybeInit(Activity activity) {
         startImServiceIfNeed();
-        setAppTheme(activity);
+        setAppTheme(activity,null);
         ImPluginHelper.getInstance(this).loadAvailablePlugins();
     }
 

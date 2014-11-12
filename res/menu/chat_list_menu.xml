@@ -23,7 +23,7 @@
 
      <item android:id="@+id/menu_new_chat"
         android:title="@string/menu_new_chat" 
-              android:icon="@drawable/ic_menu_msg_compose"
+              android:icon="@drawable/ic_action_new"
                 app:showAsAction="always"
         
         />

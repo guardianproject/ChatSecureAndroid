@@ -88,12 +88,10 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         super.onCreate(icicle);
 
         ((ImApp)getApplication()).setAppTheme(this);
-
+        
         setContentView(R.layout.contacts_picker_activity);
 
-
         mListView = (ListView)findViewById(R.id.contactsList);
-
 
         mListView.setOnItemClickListener(new OnItemClickListener ()
         {

@@ -548,7 +548,10 @@ public class MessageView extends FrameLayout {
 
     private String formatMessage (String body)
     {
-        return android.text.Html.fromHtml(body).toString();
+        if (body != null)
+            return android.text.Html.fromHtml(body).toString();
+        else
+            return null;
     }
 
     public void bindOutgoingMessage(int id, int messageType, String address, final String mimeType, final String body, Date date, Markup smileyRes, boolean scrolling,
@@ -642,7 +645,9 @@ public class MessageView extends FrameLayout {
 
     private void showAvatar (String address, boolean isLeft, int encryptionState)
     {
-
+        if (mHolder.mAvatar == null)
+            return;
+        
         mHolder.mAvatar.setVisibility(View.GONE);
 
         if (address != null)
@@ -827,7 +832,7 @@ public class MessageView extends FrameLayout {
 
         case Imps.Presence.OFFLINE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
-            avatar.setAlpha(100);
+            avatar.setAlpha(150);
             break;
 
 

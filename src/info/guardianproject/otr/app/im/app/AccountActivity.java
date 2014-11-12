@@ -301,16 +301,17 @@ public class AccountActivity extends ActionBarActivity {
             return;
         }
 
-       getSupportActionBar().setHomeButtonEnabled(true);
-
        setupUIPost();
 
     }
 
     private void setupUIPre ()
     {
+        ((ImApp)getApplication()).setAppTheme(this);
 
         setContentView(R.layout.account_activity);
+
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         mIsNewAccount = getIntent().getBooleanExtra("register", false);
 

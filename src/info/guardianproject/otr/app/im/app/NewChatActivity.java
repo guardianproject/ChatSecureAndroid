@@ -139,6 +139,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
+    private ActionBarDrawerToggle mDrawerToggle;
     
     private int mLastPagePosition = -1;
 
@@ -175,23 +176,23 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         checkCustomFont ();
         
-
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
-
-        mApp.setAppTheme(this);
-        ThemeableActivity.setBackgroundImage(this);
 
         setContentView(R.layout.chat_pager);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        
+
+        mApp.setAppTheme(this,mToolbar);
+        ThemeableActivity.setBackgroundImage(this);
+
         mToolbar.inflateMenu(R.menu.chat_screen_menu);
         setupMenu ();
+
+        setTitle(R.string.app_name);
         
-       
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(
+        mDrawerToggle = new ActionBarDrawerToggle(
             this,  mDrawer, mToolbar,
             R.string.ok, R.string.cancel
         );
@@ -199,7 +200,23 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mDrawer.setDrawerListener(mDrawerToggle);        
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerToggle.syncState();
+        mDrawerToggle.setToolbarNavigationClickListener(new OnClickListener ()
+        {
 
+            @Override
+            public void onClick(View v) {
+                
+                int currentPos = mChatPager.getCurrentItem();
+                if (currentPos > 0) {
+                    mChatPager.setCurrentItem(0);
+
+                }
+               
+            }
+            
+            
+        });
+        
         mHandler = new MyHandler(this);
         mRequestedChatId = -1;
 
@@ -238,6 +255,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         mMenu.setGroupVisible(R.id.menu_group_contacts, false);
 
                     }
+                    
+                    mDrawerToggle.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+                    mDrawerToggle.setDrawerIndicatorEnabled(false);
+                    mDrawerToggle.syncState();
+
 
                 }
                 else
@@ -254,6 +276,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     }
 
                     setTitle(R.string.app_name);
+                    mDrawerToggle.setHomeAsUpIndicator(null);
+                    mDrawerToggle.setDrawerIndicatorEnabled(true);
+                    mDrawerToggle.syncState();
+
                 }
 
             }
@@ -326,8 +352,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     public void setTitle(CharSequence title) {
 
         mToolbar.setTitle(title);
+      //  mToolbar.setLogo(null);
     }
 
+    public void setTitle(CharSequence title, Drawable icon) {
+
+        mToolbar.setTitle(title);
+     //   mToolbar.setLogo(icon);
+    }
 
 
     private void checkCustomFont ()
