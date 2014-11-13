@@ -15,6 +15,7 @@ import info.guardianproject.util.Debug;
 import java.security.KeyPair;
 import java.security.PublicKey;
 import java.util.Collection;
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
 
@@ -96,10 +97,19 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
             return;
         }
         String localUserId = localUserContact.getAddress().getBareAddress();
-        Collection<SessionID> sessionIDs = mInstance.mSessions.values();
-        for (SessionID sessionId : sessionIDs) {
-            if (localUserId.equals(Address.stripResource(sessionId.getLocalUserId())))
-                mInstance.endSession(sessionId);
+        
+        Enumeration<String> sKeys = mInstance.mSessions.keys();
+        
+        while (sKeys.hasMoreElements())
+        {
+            String sKey = sKeys.nextElement();
+            if (sKey.contains(localUserId))
+            {
+                SessionID sessionId = mInstance.mSessions.get(sKey);
+                
+                if (sessionId != null)
+                    mInstance.endSession(sessionId);
+            }
         }
     }
 
