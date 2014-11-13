@@ -1,6 +1,34 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.0.7 / 2014-11-13 / 9914be3aad11880bbeb7616934d6056e35957b03 
+
+* Connection management improvements
+366d895 ensure logout happens fast, and reload contacts on new add
+87d016d check for state (disconnected) to ensure shutdown is complete
+551394a removing these is causing dups and confusion just because it is disconnected doesn't mean we should remove
+64aefd5 don't keep local instances of anything as they can get stale
+d6abb8f new connection instances should override the old/stale ones
+05c6985 InexactRepeating seems to be one source of delays and oddities Let's go back to "exact"!
+2a86288 Fix Presence/Subscribe handling; Improve Message sending - presence subscribe(d) requests were being lost due to trying to rel
+b2446dd always reload lists on logging to refresh presence state
+905adaa add new state to Presence so we can support retry subscribe
+
+* OTR encryption fixes
+397ee80 send OTR "FINISHED" message to all OTR sessions on logout
+0b9b591 OTRKeyMgr might be null if the user has not yet entered a passphrase
+
+* User interface updates (Material!)
+58de542 simplify lockscreen UI - we don't need a button
+14c63c0 show 2 checks now for sent and delivered like WhatsApp
+46ca027 fixing theme colors and other material tweaks
+69b445c updates for new Material design and color schemes
+9d13e05 target 21 now to ensure Material support on Android L
+a9de17a updates to support appcompat v21 and new drawerlayout/toolbar removed external SlidingMenu dependency - only appcompat now
+8ac9802 update to target android-21 to support Material
+59a5ef5 update appcompat for latest SDK/Android-L
+c343510 for lower-res devices hide the avatar icon in messages as it takes up too much space
+
 14.0.6 / 2014-11-04 / 8f8771c16513b21c03387ccc835011fe755158ef
 
 * Message sending and OTR init reliability 
