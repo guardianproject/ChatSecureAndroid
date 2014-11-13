@@ -246,36 +246,9 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
         });
     }
 
-    Button mBtnSignIn;
-
     private void promptPassphrase() {
         mViewCreatePassphrase.setVisibility(View.GONE);
         mViewEnterPassphrase.setVisibility(View.VISIBLE);
-
-        mBtnSignIn = (Button) findViewById(R.id.btnSignIn);
-        if (mBtnSignIn != null)
-        {
-            mBtnSignIn.setOnClickListener(new OnClickListener()
-            {
-                public void onClick(View v)
-                {
-                    if (mEnterPassphrase.getText().toString().length() == 0)
-                        return;
-                    // Check passphrase
-                    try {
-                        char[] passphrase = mEnterPassphrase.getText().toString().toCharArray();
-
-                        mCacheWord.setPassphrase(passphrase);
-                        ImApp.mUsingCacheword = true;
-                    } catch (Exception e) {
-                        mEnterPassphrase.setText("");
-                        // TODO implement try again and wipe if fail
-                        Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
-                        return;
-                    }
-                }
-            });
-        }
 
         mEnterPassphrase.setOnEditorActionListener(new OnEditorActionListener()
         {
@@ -292,7 +265,22 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                         protected void onReceiveResult(int resultCode, Bundle resultData)
                         {
                             super.onReceiveResult(resultCode, resultData);
-                            mBtnSignIn.performClick();
+                            
+                            if (mEnterPassphrase.getText().toString().length() == 0)
+                                return;
+                            // Check passphrase
+                            try {
+                                char[] passphrase = mEnterPassphrase.getText().toString().toCharArray();
+
+                                mCacheWord.setPassphrase(passphrase);
+                                ImApp.mUsingCacheword = true;
+                            } catch (Exception e) {
+                                mEnterPassphrase.setText("");
+                                // TODO implement try again and wipe if fail
+                                Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
+                                return;
+                            }
+                            
                         }
                     });
                     return true;

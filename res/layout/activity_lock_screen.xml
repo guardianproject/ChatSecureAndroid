@@ -46,12 +46,14 @@
                             />
                         <EditText
                             android:id="@+id/editNewPassphrase"
-                            android:layout_width="250dip"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/lock_screen_passphrase_hint"
                             android:inputType="textPassword" 
+                            
+                    android:layout_margin="15dp"
                             />
                         
                         
@@ -65,16 +67,21 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp" 
                           android:orientation="vertical"
+                          android:gravity="center"
+                          
                         >
 
                         <EditText
                             android:id="@+id/editConfirmNewPassphrase"
-                            android:layout_width="250dip"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
                             android:hint="@string/lock_screen_passphrase_not_set_confirm"
-                            android:inputType="textPassword" />
+                            android:inputType="textPassword"
+                            
+                    android:layout_margin="15dp"
+                             />
                         
                        
                    
@@ -119,11 +126,13 @@
                     android:id="@+id/llManualAdd"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5dp" >
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                     >
 
                     <EditText
                         android:id="@+id/editEnterPassphrase"
-                        android:layout_width="match_parent"
+                        android:layout_width="300dip"
                         android:layout_height="wrap_content"
                         android:ems="10"
                         android:hint="@string/lock_screen_passphrase_hint"
@@ -133,13 +142,14 @@
                         <requestFocus />
                     </EditText>
                 </LinearLayout>
-
+<!-- 
                 <Button
                     android:id="@+id/btnSignIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="15dp"
                     android:text="@string/sign_in" />
+                     -->
 
             </LinearLayout>
     </LinearLayout>
