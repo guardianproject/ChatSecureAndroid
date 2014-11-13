@@ -1968,7 +1968,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
 
                 org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());
-                contact.setPresence(new Presence(parsePresence(p), p.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
+                qPresence.push(p);
 
                 if (!cl.containsContact(contact))
                 {
@@ -2032,12 +2032,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             @Override
             public void presenceChanged(org.jivesoftware.smack.packet.Presence presence) {
-
-                Contact contact = mContactListManager.getContact(XmppAddress.stripResource(presence.getFrom()));
-
-                contact.setPresence(new Presence(parsePresence(presence), presence.getStatus(), null, null,Presence.CLIENT_TYPE_DEFAULT));
-                qPresence.push(presence);
                 
+                qPresence.push(presence);
+                 
             }
 
             @Override
