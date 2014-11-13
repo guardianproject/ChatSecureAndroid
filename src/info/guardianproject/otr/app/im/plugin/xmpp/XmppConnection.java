@@ -1498,12 +1498,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public void logoutAsync() {
 
-        execute(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 do_logout();
             }
-        });
+        }).start();
 
     }
 
@@ -2189,12 +2189,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         protected void doAddContactToListAsync(Contact contact, ContactList list) throws ImException {
             debug(TAG, "add contact to " + list.getName());
 
-            // If contact exists locally, don't create another copy
-          //  if (!list.containsContact(contact))
-                notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
-           // else
-            //  debug(TAG, "skip adding existing contact locally " + contact.getName());
-
             if (mConnection.isConnected())
             {
                 org.jivesoftware.smack.packet.Presence reqSubscribe = new org.jivesoftware.smack.packet.Presence(
@@ -2230,6 +2224,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     debug(TAG,"error updating remote roster",e);
                     throw new ImException("error updating remote roster");
                 }
+
+                do_loadContactLists();
+                notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
+
             }
         }
 
