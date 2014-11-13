@@ -17,9 +17,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import static android.provider.Contacts.ContactMethods.CONTENT_EMAIL_URI;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
-import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
@@ -27,27 +25,17 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.ui.SecureCameraActivity;
 
-import java.io.File;
 import java.util.List;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
-import android.app.Activity;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.Contacts.ContactMethods;
+import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -59,13 +47,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
 import android.widget.MultiAutoCompleteTextView;
-import android.widget.ResourceCursorAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddContactActivity extends Activity {
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
+
+public class AddContactActivity extends ActionBarActivity {
 
     private static final String[] CONTACT_LIST_PROJECTION = { Imps.ContactList._ID,
                                                              Imps.ContactList.NAME, };
@@ -86,6 +76,7 @@ public class AddContactActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         mApp = (ImApp)getApplication();
+        mApp.setAppTheme(this);
         mHandler = new SimpleAlertHandler(this);
         resolveIntent(getIntent());
 
