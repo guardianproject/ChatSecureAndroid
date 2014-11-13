@@ -923,10 +923,10 @@ public class ImApp extends Application {
                     for (IBinder binder : (List<IBinder>) mImService.getActiveConnections()) {
                         IImConnection conn = IImConnection.Stub.asInterface(binder);
                         long providerId = conn.getProviderId();
-                        if (!mConnections.containsKey(providerId)) {
+                    //    if (!mConnections.containsKey(providerId)) {
                             mConnections.put(providerId, conn);
                             conn.registerConnectionListener(mConnectionListener);
-                        }
+                      //  }
                     }
                 }
             } catch (RemoteException e) {
@@ -939,10 +939,10 @@ public class ImApp extends Application {
         public void onConnectionCreated(IImConnection conn) throws RemoteException {
             long providerId = conn.getProviderId();
             synchronized (mConnections) {
-                if (!mConnections.containsKey(providerId)) {
+              //  if (!mConnections.containsKey(providerId)) {
                     mConnections.put(providerId, conn);
                     conn.registerConnectionListener(mConnectionListener);
-                }
+               // }
             }
             broadcastConnEvent(EVENT_CONNECTION_CREATED, providerId, null);
         }
