@@ -45,8 +45,6 @@ public class ChatSessionManagerAdapter extends
         info.guardianproject.otr.app.im.IChatSessionManager.Stub {
 
     ImConnectionAdapter mConnection;
-    ChatSessionManager mChatSessionManager;
-    ChatGroupManager mGroupManager;
     ChatSessionListenerAdapter mSessionListenerAdapter;
     final RemoteCallbackList<IChatSessionListener> mRemoteListeners = new RemoteCallbackList<IChatSessionListener>();
 
@@ -56,21 +54,28 @@ public class ChatSessionManagerAdapter extends
         mConnection = connection;
         ImConnection connAdaptee = connection.getAdaptee();
 
-        mChatSessionManager = connAdaptee.getChatSessionManager();
-        mChatSessionManager.setAdapter(this);
+        connAdaptee.getChatSessionManager().setAdapter(this);
 
         mActiveChatSessionAdapters = new HashMap<String, ChatSessionAdapter>();
         mSessionListenerAdapter = new ChatSessionListenerAdapter();
-        mChatSessionManager.addChatSessionListener(mSessionListenerAdapter);
+        getChatSessionManager().addChatSessionListener(mSessionListenerAdapter);
 
-        if ((connAdaptee.getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
-            mGroupManager = connAdaptee.getChatGroupManager();
-            mGroupManager.addGroupListener(new ChatGroupListenerAdapter());
-        }
+       
     }
 
+    public ChatGroupManager getChatGroupManager ()
+    {
+        if ((mConnection.getAdaptee().getCapability() & ImConnection.CAPABILITY_GROUP_CHAT) != 0) {
+            ChatGroupManager groupManager = mConnection.getAdaptee().getChatGroupManager();
+            groupManager.addGroupListener(new ChatGroupListenerAdapter());
+            return groupManager;
+        }
+        else
+            return null;
+    }
+    
     public ChatSessionManager getChatSessionManager() {
-        return mChatSessionManager;
+        return mConnection.getAdaptee().getChatSessionManager();
     }
 
     public IChatSession createChatSession(String contactAddress, boolean isNewSession) {
@@ -91,7 +96,7 @@ public class ChatSessionManagerAdapter extends
             }
         }
 
-        ChatSession session = mChatSessionManager.createChatSession(contact, isNewSession);
+        ChatSession session = getChatSessionManager().createChatSession(contact, isNewSession);
 
         return getChatSessionAdapter(session, isNewSession);
     }
@@ -111,7 +116,7 @@ public class ChatSessionManagerAdapter extends
 
             if (chatGroup != null)
             {
-                ChatSession session = mChatSessionManager.createChatSession(chatGroup,true);
+                ChatSession session = getChatSessionManager().createChatSession(chatGroup,true);
 
                 return getChatSessionAdapter(session, true);
             }
@@ -130,7 +135,7 @@ public class ChatSessionManagerAdapter extends
     public void closeChatSession(ChatSessionAdapter adapter) {
         synchronized (mActiveChatSessionAdapters) {
             ChatSession session = adapter.getAdaptee();
-            mChatSessionManager.closeChatSession(session);
+            getChatSessionManager().closeChatSession(session);
 
             String key = Address.stripResource(adapter.getAddress());
             mActiveChatSessionAdapters.remove(key);
@@ -245,7 +250,7 @@ public class ChatSessionManagerAdapter extends
         }
 
         public void onJoinedGroup(ChatGroup group) {
-            mChatSessionManager.createChatSession(group,false);
+            getChatSessionManager().createChatSession(group,false);
         }
 
         public void onLeftGroup(ChatGroup group) {
