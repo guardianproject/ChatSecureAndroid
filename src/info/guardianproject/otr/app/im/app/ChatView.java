@@ -194,7 +194,7 @@ public class ChatView extends LinearLayout {
 
                 if (mLastSessionStatus == SessionStatus.PLAINTEXT && isConnected) {
 
-                    if (this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
+                    if (mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
                                 || this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OPPORTUNISTIC)
                     {
                            //automatically attempt to turn on OTR after 1 second
@@ -251,17 +251,18 @@ public class ChatView extends LinearLayout {
 
                             otrChatSession.startChatEncryption();
 
-
+                            Toast.makeText(getContext(),getResources().getString(R.string.starting_otr_chat), Toast.LENGTH_LONG).show();
                         }
                         else
                         {
                             otrChatSession.stopChatEncryption();
+                            Toast.makeText(getContext(),getResources().getString(R.string.stopping_otr_chat), Toast.LENGTH_LONG).show();
 
                         }
 
                         mHandler.postAtTime(new Runnable (){
                            public void run (){ updateWarningView();}
-                        }, 2000);
+                        }, 1000);
 
 
                     }
