@@ -603,14 +603,26 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             @Override
             protected String doInBackground(String... params) {
 
-                while (mApp.getActiveConnections().size() > 0)
+                boolean stillConnected = true;
+                
+                while (stillConnected)
                 {
 
                        try{
                            IImConnection conn = mApp.getActiveConnections().iterator().next();
-                           conn.logout();
+                           
+                           if (conn.getState() == ImConnection.DISCONNECTED || conn.getState() == ImConnection.LOGGING_OUT)
+                           {
+                               stillConnected = false;
+                           }
+                           else
+                           {
+                               conn.logout();
+                               stillConnected = true;
+                           }
+                           
 
-                           Thread.sleep(1000);
+                           Thread.sleep(500);
                        }catch(Exception e){}
 
 
