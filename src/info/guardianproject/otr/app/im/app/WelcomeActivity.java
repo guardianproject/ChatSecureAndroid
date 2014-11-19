@@ -43,6 +43,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -98,8 +99,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
         mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
-        mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
-        mDoLock = getIntent().getBooleanExtra("doLock", false);
+        Intent intent = getIntent();
+        mDoSignIn = intent.getBooleanExtra("doSignIn", true);
+        mDoLock = intent.getBooleanExtra("doLock", false);
 
         if (!mDoLock)
         {
@@ -116,6 +118,16 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
            } else {
                connectToCacheWord(); //first time setup
            }
+        }
+
+        // if we have an incoming contact, send it to the right place
+        String scheme = intent.getScheme();
+        if(TextUtils.equals(scheme, "xmpp"))
+        {
+            intent.setClass(this, AddContactActivity.class);
+            startActivity(intent);
+            finish();
+            return;
         }
     }
 
