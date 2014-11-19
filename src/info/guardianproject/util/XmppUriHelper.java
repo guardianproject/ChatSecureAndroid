@@ -43,31 +43,23 @@ public class XmppUriHelper {
     public static final String KEY_FRAGMENT = "fragment";
     public static final String KEY_OTR_FINGERPRINT = OTR_QUERY_PARAM;
 
-    public static String getUri (String address, String otrFingerprint)
-    {
-        /**
+    /**
+     * This creates a format that aims to be as compatible and standards-
+     * compliant as possible.
+     *
+     * @param address
+     * @param otrFingerprint
+     * @return a String representation of the {@link Uri}
+     */
+    public static String getUri(String address, String otrFingerprint) {
         Uri.Builder builder = new Uri.Builder();
         builder.scheme(SCHEME);
-        builder.appendPath(address);
-
-        if (otrFingerprint != null)
-            builder.appendQueryParameter(OTR_QUERY_PARAM, otrFingerprint);
-
-
+        String opaquePart = address + "?" + ACTION_SUBSCRIBE;
+        if (!TextUtils.isEmpty(otrFingerprint))
+            opaquePart += ";" + OTR_QUERY_PARAM + "=" + otrFingerprint;
+        builder.encodedOpaquePart(opaquePart);
         return builder.toString();
-        **/
 
-        StringBuilder builder = new StringBuilder();
-
-        builder.append(SCHEME);
-        builder.append(SCHEME_OPERATOR);
-
-        builder.append(address);
-
-        builder.append('?').append(OTR_QUERY_PARAM).append('=');
-        builder.append(otrFingerprint);
-
-        return builder.toString();
     }
 
     public static final Map<String, String> parse(Uri uri) {
