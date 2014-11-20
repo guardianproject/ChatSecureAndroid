@@ -54,6 +54,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.thoughtcrime.ssl.pinning.PinningTrustManager;
 import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -75,6 +76,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -386,33 +388,21 @@ public class ImApp extends Application {
         return updatedLocale;
     }
 
-    public boolean setNewLocale(Context context, String localeString) {
-
-        /*
-        Locale locale = new Locale(localeString);
-
-        Configuration config = context.getResources().getConfiguration();
-        config.locale = locale;
-
-        context.getResources().updateConfiguration(config,
-                context.getResources().getDisplayMetrics());
-
-        Log.d(LOG_TAG, "locale = " + locale.getDisplayName());
-        */
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void setNewLocale(Context context, String language) {
+        Configuration config = getResources().getConfiguration();
+        if (Build.VERSION.SDK_INT >= 17)
+            config.setLocale(locale);
+        else
+            config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        /* Set the preference after setting the locale in case something goes
+        wrong.  If setting the locale causes an Exception, it should be set in the
+        preferences, otherwise ChatSecure will be stuck in a crash loop. */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor prefEdit = prefs.edit();
-        prefEdit.putString(context.getString(R.string.pref_default_locale), localeString);
+        prefEdit.putString(context.getString(R.string.pref_default_locale), language);
         prefEdit.commit();
-
-        Configuration config = getResources().getConfiguration();
-
-        locale = new Locale(localeString);
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-
-        return true;
     }
 
     /**
