@@ -3,22 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical"
-    
+    android:orientation="vertical" 
      android:background="@drawable/csbackground"
-     >
+    >
 
+    
     <LinearLayout
         android:id="@+id/frameRoot"
         android:layout_width="480dip"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
-            >
+        android:orientation="vertical"
+       	android:background="#99ffffff"
+        >
 
             <LinearLayout
                 android:id="@+id/llCreatePassphrase"
@@ -40,13 +37,19 @@
                         android:orientation="vertical"
                          >
 
+                        <TextView
+                               android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                         	android:fontFamily="sans-serif"
+                            android:text="@string/lock_screen_passphrase_not_set_enter"
+                            />
                         <EditText
                             android:id="@+id/editNewPassphrase"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:ems="10"
-                            android:hint="@string/lock_screen_passphrase_not_set_enter"
+                            android:hint="@string/lock_screen_passphrase_hint"
                             android:inputType="textPassword" 
                             
                             />
@@ -130,15 +133,8 @@
                     </EditText>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/btnSignIn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="15dp"
-                    android:text="@string/sign_in" />
 
             </LinearLayout>
-        </FrameLayout>
     </LinearLayout>
 
 </LinearLayout>
