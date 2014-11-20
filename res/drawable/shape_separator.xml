@@ -18,7 +18,7 @@
  */
 -->
 
-<shape xmlns:android="http://schemas.android.com/apk/res/android" type="line">
+<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="line">
     <solid android:color="#80505050" />
     <!--
     <solid android:color="#00000000" />
