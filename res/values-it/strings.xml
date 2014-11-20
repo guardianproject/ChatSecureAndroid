@@ -306,7 +306,7 @@ Tocca per invitare qualcuno.</string>
   <string name="pref_group_looknfeel_title">Interfaccia Utente</string>
   <string name="menu_locale">Lingua</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Lingue</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Che linguaggio dovrebbe essere visualizzato da InTheClear?</string>
+
   <string name="pref_theme_dark">Usa il Dark Theme</string>
   <string name="pref_theme_dark_summary">Passa al tema scuro dell\'app</string>
   <string name="pref_in_memory_db_title">Memorizzazione messaggi solo In-Memory</string>

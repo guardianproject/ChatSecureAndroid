@@ -314,7 +314,7 @@ Kliknij aby zaprosić.</string>
   <string name="pref_group_looknfeel_title">Interfejs uzytkownika</string>
   <string name="menu_locale">Język</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Języki</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Jaki język powinien być wyświetlany w InTheClear ?</string>
+
   <string name="pref_theme_dark">Użyj ciemnej skórki</string>
   <string name="pref_theme_dark_summary">Zmień motyw aplikacji na ciemny</string>
   <string name="pref_in_memory_db_title">Przetrzymywanie wiadomości jedynie w pamięci</string>

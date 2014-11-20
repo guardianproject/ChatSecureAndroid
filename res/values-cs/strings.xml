@@ -200,7 +200,7 @@ Klikněte pro pozvání.</string>
   <!--Actions: Settings: General: User Interface-->
   <string name="menu_locale">Jazyk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Jazyky</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Jaký jazyk by měl InTheClear zobrazovat?</string>
+
   <!--Actions: Settings: General: Other Tuning-->
   <string name="hide_offline_contacts">Skrýt kontakty offline</string>
   <string name="foreground_service_title">Použít prioritu popředí</string>

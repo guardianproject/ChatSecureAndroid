@@ -301,7 +301,7 @@ Rør skærm for at invitere.</string>
   <string name="pref_group_looknfeel_title">Brugerinterface</string>
   <string name="menu_locale">Sprog</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Sprog</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Hvilket sprog skal InTheClear vise?</string>
+
   <string name="pref_theme_dark">Brug mørkt tema</string>
   <string name="pref_theme_dark_summary">Ændre applikationstemaet til mørk</string>
   <string name="pref_in_memory_db_title">Brug kun hukommelse til lagring af beskeder</string>

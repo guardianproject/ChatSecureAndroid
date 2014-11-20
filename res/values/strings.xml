@@ -383,7 +383,7 @@
 		<string name="pref_group_looknfeel_title">User Interface</string>
 		<string name="menu_locale">Language</string>
 		<string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
-		<string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+
 		<string name="pref_theme_dark">Use Dark Theme</string>
 		<string name="pref_theme_dark_summary">Change the app theme to dark</string>
 		<string name="pref_in_memory_db_title">In-Memory Message Storage Only</string>

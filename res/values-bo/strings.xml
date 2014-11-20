@@ -303,7 +303,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="pref_group_looknfeel_title">བེད་སྤྱོད་གཏོང་མཁན་གྱི་མཐུད་ངོས། </string>
   <string name="menu_locale">སྐད་ཡིག</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">སྐད་ཡིག་ཁག </string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClearནང་དུ་སྐད་ཡིག་གང་ཞིག་བསྟན་ཡོད་དམ།</string>
+
   <string name="pref_theme_dark">པར་གཞི་མུན་ནག་དེ་བེད་སྤྱོད་ཐོངས། </string>
   <string name="pref_theme_dark_summary">ཉེར་སྤྱོད་མ་ལག་གི་པར་གཞི་ནག་པོར་བསྒྱུར། </string>
   <string name="pref_in_memory_db_title">འཕྲིན་ཐུང་གི་གསོག་ཉར་བང་མཛོད་གཙོ་བོ་དེ།  </string>

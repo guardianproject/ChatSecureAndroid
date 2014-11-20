@@ -299,7 +299,7 @@ Appuyez pour inviter.</string>
   <string name="pref_group_looknfeel_title">Interface Utilisateur</string>
   <string name="menu_locale">Langue</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Langues</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Quelle langue InTheClear doit afficher ?</string>
+
   <string name="pref_theme_dark">Utiliser le thème Sombre</string>
   <string name="pref_theme_dark_summary">Changer le thème de l\'application en sombre</string>
   <string name="pref_in_memory_db_title">Enregistrement des messages en mémoire vive uniquement</string>

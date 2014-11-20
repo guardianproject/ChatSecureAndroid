@@ -173,7 +173,7 @@
   <!--Actions: Settings: General: User Interface-->
   <string name="menu_locale">언어</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">언어</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClear에 나올 언어를 선택하십시오.</string>
+
   <!--Actions: Settings: General: Other Tuning-->
   <string name="hide_offline_contacts">오프라인 주소록 숨기기</string>
   <!--Actions: Settings: General: Notifications-->

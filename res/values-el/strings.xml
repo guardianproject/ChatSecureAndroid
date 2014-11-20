@@ -284,7 +284,7 @@
   <string name="pref_group_looknfeel_title">Διεπαφή Χρήστη</string>
   <string name="menu_locale">Γλώσσα</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Γλώσσες</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Τι γλώσσα να δείχνει το InTheClear;</string>
+
   <string name="pref_theme_dark">Χρήση Σκοτεινού Θέματος</string>
   <string name="pref_theme_dark_summary">Αλλαγή θέματος εφαρμογής σε σκοτεινό</string>
   <string name="pref_in_memory_db_title">Αποθήκευση μηνυμάτων μόνο στην μνήμη</string>

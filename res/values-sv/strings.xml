@@ -319,7 +319,7 @@ Klicka för att bjuda in.</string>
   <string name="pref_group_looknfeel_title">Användargränssnitt</string>
   <string name="menu_locale">Språk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Språk</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Vilket språk ska InTheClear visa?</string>
+
   <string name="pref_theme_dark">Använd mörkt tema</string>
   <string name="pref_theme_dark_summary">Byt till mörkt apptema</string>
   <string name="pref_in_memory_db_title">Endast lagring av meddelanden i minnet</string>

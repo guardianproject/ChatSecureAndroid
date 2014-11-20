@@ -206,7 +206,7 @@
   <!--Actions: Settings: General: User Interface-->
   <string name="menu_locale">زبان</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">زبان ها</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClear چه زبانی را باید نمایش بدهد؟</string>
+
   <!--Actions: Settings: General: Other Tuning-->
   <string name="hide_offline_contacts">کاربرهایی که روی خط نیستند را مخفی کن</string>
   <string name="foreground_service_title">از اولویت پیش زمینه استفاده کن</string>

@@ -300,7 +300,7 @@ Chạm vào để mời kết nối.</string>
   <string name="pref_group_looknfeel_title">Giao Diện Sử Dụng</string>
   <string name="menu_locale">Ngôn Ngữ</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Các ngôn ngữ</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Ngôn ngữ nào nên được hiển thị trong InTheClear?</string>
+
   <string name="pref_theme_dark">Dùng định dạng nền tối</string>
   <string name="pref_theme_dark_summary">Thay đổi giao diện sang màu tối</string>
   <string name="pref_in_memory_db_title">Lưu Trữ Tin Nhắn Trong Bộ Nhớ Mà Thôi</string>

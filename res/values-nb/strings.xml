@@ -318,7 +318,7 @@ Trykk for å invitere.</string>
   <string name="pref_group_looknfeel_title">Brukergrensesnitt</string>
   <string name="menu_locale">Språk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Språk</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Hvilket språk skal InTheClear vise?</string>
+
   <string name="pref_theme_dark">Bruk mørkt tema</string>
   <string name="pref_theme_dark_summary">Bytt til mørkt fargetema</string>
   <string name="pref_in_memory_db_title">Kun lagre meldinger i minnet</string>

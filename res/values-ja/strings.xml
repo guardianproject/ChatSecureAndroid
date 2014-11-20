@@ -306,7 +306,7 @@
   <string name="pref_group_looknfeel_title">ユーザーインターフェイス</string>
   <string name="menu_locale">言語</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">言語</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">何の言語を InTheClear に表示しますか?</string>
+
   <string name="pref_theme_dark">ダーク テーマを使用</string>
   <string name="pref_theme_dark_summary">アプリのテーマをダークに変更します</string>
   <string name="pref_in_memory_db_title">インメモリ メッセージ ストレージのみ</string>
