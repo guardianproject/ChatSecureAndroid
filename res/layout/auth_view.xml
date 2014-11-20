@@ -5,7 +5,7 @@
     android:layout_height="200px">
    <TextView android:layout_width="fill_parent"
    android:layout_height="wrap_content"
-   android:text="Password please..."
+   android:text="@string/password_please"
    android:textStyle="bold"/>
    <EditText android:id="@+id/user"
    android:layout_width="fill_parent"

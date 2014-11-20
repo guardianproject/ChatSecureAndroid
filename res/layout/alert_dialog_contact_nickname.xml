@@ -15,7 +15,7 @@
     
     <EditText
         android:id="@+id/contact_nickname_edittext"
-        android:hint="Nickname"
+        android:hint="@string/nickname"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:layout_marginLeft="8dip"
