@@ -352,7 +352,7 @@ public class ImApp extends Application {
         }
     }
 
-    public boolean checkLocale ()
+    public void checkLocale ()
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -374,18 +374,13 @@ public class ImApp extends Application {
             }
         }
 
-        boolean updatedLocale = false;
-
         if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             locale = new Locale(lang);
             config.locale = locale;
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-            updatedLocale = true;
         }
 
         loadDefaultBrandingRes();
-
-        return updatedLocale;
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
