@@ -185,7 +185,7 @@ The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin
   <string name="pref_group_looknfeel_title">User Interface</string>
   <string name="menu_locale">ဘာသာစကား</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">ဘာသာစကားများ</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">ဘယ်ဘာသာစကားကို InTheClear မှာ ပြရမလဲ </string>
+
   <string name="pref_theme_dark">အရောင်ရင့်ရင့် အဆင်အယင်သုံးပါ</string>
   <string name="pref_in_memory_db_title">စာများကို မမ်မိုရီအတွင်းသာ သိမ်းရန်</string>
   <string name="pref_in_memory_db_summary">Only store messages in memory, not on flash storage, to defend against messages being extracted. (May cause lost messages)</string>

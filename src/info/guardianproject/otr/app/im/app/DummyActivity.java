@@ -40,7 +40,7 @@ public class DummyActivity extends Activity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setIcon(android.R.drawable.ic_dialog_alert).setTitle(R.string.im_label)
                 .setMessage(R.string.swipe_alert)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                     }

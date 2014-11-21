@@ -317,7 +317,7 @@ Zum Einladen antippen.</string>
   <string name="pref_group_looknfeel_title">Benutzeroberfläche</string>
   <string name="menu_locale">Sprache</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Sprachen</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Welche Sprache soll »InTheClear« anzeigen?</string>
+
   <string name="pref_theme_dark">Dunkles Design benutzen</string>
   <string name="pref_theme_dark_summary">Zu dunklem Design wechseln</string>
   <string name="pref_in_memory_db_title">Nachrichtenspeicherung nur im Arbeitsspeicher</string>

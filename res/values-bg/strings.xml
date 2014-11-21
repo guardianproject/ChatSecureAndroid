@@ -300,7 +300,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="pref_group_looknfeel_title">Потребителски Интерфейс</string>
   <string name="menu_locale">Език</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Езици</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Какъв език трябва InTheClear да ползва?</string>
+
   <string name="pref_theme_dark">Използвай Тъмна Тема</string>
   <string name="pref_theme_dark_summary">Използвай тъмната тема на програмата</string>
   <string name="pref_in_memory_db_title">Запаметяване Само във Времената Памет</string>

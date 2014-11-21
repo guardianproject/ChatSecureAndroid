@@ -17,17 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
-import info.guardianproject.otr.app.im.IContactList;
-import info.guardianproject.otr.app.im.IContactListManager;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
-import info.guardianproject.otr.app.im.provider.Imps;
-
-import java.util.List;
-
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -55,7 +44,21 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.app.im.IContactList;
+import info.guardianproject.otr.app.im.IContactListManager;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.XmppUriHelper;
+
+import java.util.List;
+import java.util.Map;
+
 public class AddContactActivity extends ActionBarActivity {
+    private static final String TAG = "AddContactActivity";
 
     private static final String[] CONTACT_LIST_PROJECTION = { Imps.ContactList._ID,
                                                              Imps.ContactList.NAME, };
@@ -78,7 +81,6 @@ public class AddContactActivity extends ActionBarActivity {
         mApp = (ImApp)getApplication();
         mApp.setAppTheme(this);
         mHandler = new SimpleAlertHandler(this);
-        resolveIntent(getIntent());
 
         setContentView(R.layout.add_contact_activity);
 
@@ -103,6 +105,13 @@ public class AddContactActivity extends ActionBarActivity {
 
         mScanButton = (Button) findViewById(R.id.scan);
         mScanButton.setOnClickListener(mScanHandler);
+
+        Intent intent = getIntent();
+        String scheme = intent.getScheme();
+        if (TextUtils.equals(scheme, "xmpp"))
+        {
+            addContactFromUri(intent.getData());
+        }
     }
 
     private void setupAccountSpinner ()
@@ -157,11 +166,6 @@ public class AddContactActivity extends ActionBarActivity {
             }
         }
         return 0;
-    }
-
-    private void resolveIntent(Intent intent) {
-       // mProviderId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, -1);
-       // mAccountId = intent.getLongExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, -1);
     }
 
     private String getDefaultDomain ()
@@ -303,45 +307,42 @@ public class AddContactActivity extends ActionBarActivity {
         Log.d(ImApp.LOG_TAG, "<AddContactActivity> " + msg);
     }
 
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent resultIntent) {
         if (resultCode == RESULT_OK) {
 
-
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
                     resultIntent);
-            String xmppUri = scanResult.getContents();
-
-            try
-            {
-
-                if (scanResult != null) {
-
-                    if (xmppUri.startsWith("xmpp"))
-                    {
-                        Uri uriXmpp = Uri.parse(xmppUri); //strip thte scheme so we can parse it properly
-                        String otrFingerprint = uriXmpp.getQueryParameter("otr-fingerprint");
-
-                        String address = uriXmpp.getUserInfo() + '@' + uriXmpp.getHost();
-
-                        this.mAddressList.setText(address);
-
-                        //store this for future use... ideally the user comes up as verified the first time!
-                        OtrAndroidKeyManagerImpl.getInstance(this).verifyUser(address, otrFingerprint);
-
-                    }
-
-
-                }
-            }
-            catch (Exception e)
-            {
-                Toast.makeText(this, "error parsing address: " + xmppUri,Toast.LENGTH_LONG).show();
+            if (scanResult != null) {
+                String qrContents = scanResult.getContents();
+                if (!TextUtils.isEmpty(qrContents))
+                    addContactFromUri(Uri.parse(qrContents));
             }
         }
     }
 
+    /**
+     * Implement {@code xmpp:} URI parsing according to the RFC: http://tools.ietf.org/html/rfc5122
+     * @param uri the URI to be parsed
+     */
+    private void addContactFromUri(Uri uri) {
+        Log.i(TAG, "addContactFromUri: " + uri + "  scheme: " + uri.getScheme());
+        Map<String, String> parsedUri = XmppUriHelper.parse(uri);
+        if (!parsedUri.containsKey(XmppUriHelper.KEY_ADDRESS)) {
+            Toast.makeText(this, "error parsing address: " + uri, Toast.LENGTH_LONG).show();
+            return;
+        }
+        String address = parsedUri.get(XmppUriHelper.KEY_ADDRESS);
+        this.mAddressList.setText(address);
+        this.mInviteButton.setBackgroundColor(R.drawable.btn_green);
+
+        //store this for future use... ideally the user comes up as verified the first time!
+        String fingerprint = parsedUri.get(XmppUriHelper.KEY_OTR_FINGERPRINT);
+        if (!TextUtils.isEmpty(fingerprint)) {
+            Log.i(TAG, "fingerprint: " + fingerprint);
+            OtrAndroidKeyManagerImpl.getInstance(this).verifyUser(address, fingerprint);
+        }
+    }
 
     private static final String[] PROVIDER_PROJECTION = {
                                                          Imps.Provider._ID,

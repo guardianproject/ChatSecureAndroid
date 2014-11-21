@@ -294,7 +294,7 @@
   <string name="pref_group_looknfeel_title">واجهة المستخدم</string>
   <string name="menu_locale">اللغة</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">اللغات</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">أي لغة تريد أن تعرض في InTheClear ؟</string>
+
   <string name="pref_theme_dark">استخدم قالب ألوان غامقة</string>
   <string name="pref_theme_dark_summary">غير ألوان الواجهة إلى الألوان الداكنة</string>
   <string name="pref_in_memory_db_title">مخزن الرسائل في الذاكرة فقط</string>

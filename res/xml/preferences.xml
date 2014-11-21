@@ -60,14 +60,10 @@
    
     
    <PreferenceCategory android:title="@string/pref_group_looknfeel_title">
- <ListPreference android:title="@string/KEY_PREF_LANGUAGE_TITLE"
-   android:key="pref_default_locale"
-   android:entryValues="@array/languages_values"
-   android:entries="@array/languages"
-  >
-  
-  
- </ListPreference>
+       <ListPreference
+            android:key="pref_language"
+            android:title="@string/KEY_PREF_LANGUAGE_TITLE" >
+        </ListPreference>
 
  
   <CheckBoxPreference

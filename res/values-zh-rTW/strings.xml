@@ -231,7 +231,7 @@
   <string name="pref_group_looknfeel_title">使用者介面</string>
   <string name="menu_locale">語言</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">語言</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClear要顯示哪種語言?</string>
+
   <string name="pref_theme_dark">採用較暗的桌面主題</string>
   <string name="pref_in_memory_db_title">訊息僅儲存在記憶體中</string>
   <string name="pref_in_memory_db_summary">只允許儲存訊息在記憶體中而非隨身儲存設備, 以防止訊息被解壓縮.(有可能會漏失訊息)</string>

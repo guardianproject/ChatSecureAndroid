@@ -81,15 +81,12 @@
             android:maxLines="4"
             android:hint="@string/compose_hint"
              android:fontFamily="sans-serif-light"             
-         android:layout_alignParentLeft="true"
             />
            
     <ImageButton
         android:id="@+id/btnSend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_toRightOf="@+id/composeMessage"
         android:background="@drawable/ad_selectable_background"
         android:fontFamily="sans-serif-light"
         android:paddingBottom="3sp"

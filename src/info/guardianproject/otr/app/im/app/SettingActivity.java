@@ -17,8 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.provider.Imps;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -37,11 +35,20 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.text.TextUtils;
+import android.util.Log;
+
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.Languages;
 
 public class SettingActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
+    private static final String TAG = "SettingActivity";
     private static final int DEFAULT_HEARTBEAT_INTERVAL = 1;
+    private String currentLanguage;
     ListPreference mOtrMode;
+    ListPreference mLanguage;
     CheckBoxPreference mHideOfflineContacts;
     CheckBoxPreference mDeleteUnsecuredMedia;
     CheckBoxPreference mEnableNotification;
@@ -150,11 +157,14 @@ public class SettingActivity extends PreferenceActivity implements
                 settings.setHeartbeatInterval((DEFAULT_HEARTBEAT_INTERVAL));
             }
         }
-        else if (key.equals("pref_default_locale"))
+        else if (key.equals("pref_language"))
         {
-           ((ImApp)getApplication()).setNewLocale(this, prefs.getString(key, ""));
-           setResult(RESULT_OK);
-
+            String newLanguage = prefs.getString(key, Languages.USE_SYSTEM_DEFAULT);
+            if (!TextUtils.equals(currentLanguage, newLanguage)) {
+                ((ImApp)getApplication()).setNewLocale(this, newLanguage);
+                setResult(RESULT_OK);
+                finish(); // go to main screen to reset language
+            }
         }
         else if (key.equals("themeDark"))
         {
@@ -170,15 +180,21 @@ public class SettingActivity extends PreferenceActivity implements
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
 
+        mOtrMode = (ListPreference) findPreference("pref_security_otr_mode");
+        mLanguage = (ListPreference) findPreference("pref_language");
         mHideOfflineContacts = (CheckBoxPreference) findPreference("pref_hide_offline_contacts");
         mDeleteUnsecuredMedia = (CheckBoxPreference) findPreference("pref_delete_unsecured_media");
-        mOtrMode = (ListPreference) findPreference("pref_security_otr_mode");
         mEnableNotification = (CheckBoxPreference) findPreference("pref_enable_notification");
         mNotificationVibrate = (CheckBoxPreference) findPreference("pref_notification_vibrate");
         mNotificationSound = (CheckBoxPreference) findPreference("pref_notification_sound");
 
         mNotificationRingtone = findPreference("pref_notification_ringtone");
 
+        Languages languages = Languages.get(this);
+        currentLanguage = getResources().getConfiguration().locale.getLanguage();
+        mLanguage.setDefaultValue(currentLanguage);
+        mLanguage.setEntries(languages.getAllNames());
+        mLanguage.setEntryValues(languages.getSupportedLocales());
 
         mNotificationRingtone.setOnPreferenceClickListener(new OnPreferenceClickListener()
         {

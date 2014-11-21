@@ -39,6 +39,8 @@
 		<string name="btn_next">Next</string>
 		<string name="btn_back">Back</string>
 		<string name="connect">Connect</string>
+		<string name="play">Play</string>
+		<string name="setup">Setup</string>
 
 		<!-- Views -->
 		<string name="lock_screen_open">Open</string>
@@ -52,6 +54,9 @@
 		<string name="lock_screen_skip">Skip &gt;&gt;</string>
 		<string name="app_passphrase_view_title_dialog">Information Prompt</string>
 		<string name="app_passphrase_view_password_question">Enter Password Please</string>
+		<string name="password_please">Password please…</string>
+		<string name="passphrase">Passphrase</string>
+		<string name="passphrase_again">Passphrase (again)</string>
 		
 		<!-- Views: Setup -->
 		<string name="landing_page_title">Select an account</string>
@@ -198,6 +203,7 @@
 		<string name="menu_block_contact">Block Contact</string>
 		<string name="menu_contact_nickname">Contact nickname</string>
 		<string name="menu_view_blocked">Blocked</string>
+		<string name="nickname">Nickname</string>
 		
 		<string name="confirm_delete_contact">The contact \"<xliff:g id="user">%1$s</xliff:g>\" will be deleted.</string>
 		<string name="confirm_block_contact">The contact \"<xliff:g id="user">%1$s</xliff:g>\" will be blocked.</string>
@@ -344,6 +350,8 @@
 		<string name="the_remote_key_fingerprint_has_been_verified_">The remote fingerprint has been verified!</string>
 		<string name="fingerprint_for_you">Fingerprint for you</string>
 		<string name="fingerprint_for_">"Fingerprint for "</string>
+		<string name="install_barcode_scanner_title">Install Barcode Scanner?</string>
+		<string name="install_barcode_scanner_message">This application requires Barcode Scanner. Would you like to install it?</string>
 		
 		<!-- Security: OTR: Verification: QA -->
 		<string name="smp_question_title">Authentication</string>
@@ -375,7 +383,8 @@
 		<string name="pref_group_looknfeel_title">User Interface</string>
 		<string name="menu_locale">Language</string>
 		<string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
-		<string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+		<string name="use_system_default">Use system default</string>
+
 		<string name="pref_theme_dark">Use Dark Theme</string>
 		<string name="pref_theme_dark_summary">Change the app theme to dark</string>
 		<string name="pref_in_memory_db_title">In-Memory Message Storage Only</string>

@@ -297,7 +297,7 @@
   <string name="pref_group_looknfeel_title">Интерфейс Пользователя</string>
   <string name="menu_locale">Язык</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Языки</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Какой язык должен быть отображен?</string>
+
   <string name="pref_theme_dark">Используйте темные темы</string>
   <string name="pref_theme_dark_summary">Изменить тему приложения на темную</string>
   <string name="pref_in_memory_db_title">Хранение Сообщений Только В Памяти</string>

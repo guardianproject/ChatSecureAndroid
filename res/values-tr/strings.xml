@@ -295,7 +295,7 @@ Davet etmek için buraya basın.</string>
   <string name="pref_group_looknfeel_title">Kullanıcı Arayüzü</string>
   <string name="menu_locale">Dil</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Diller</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">InTheClear hangi dili kullansın?</string>
+
   <string name="pref_theme_dark">Koyu Temayı Kullan</string>
   <string name="pref_theme_dark_summary">Koyu renkli uygulama teması olarak değiştir</string>
   <string name="pref_in_memory_db_title">İletileri sadece hafızaya al</string>

@@ -202,7 +202,7 @@
   <string name="pref_group_looknfeel_title">Interfície d\'usuari</string>
   <string name="menu_locale">Idioma</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Idiomes</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Quin idioma hauria de mostrar InTheClear?</string>
+
   <string name="pref_theme_dark">Empra el tema fosc</string>
   <string name="pref_in_memory_db_title">Desa els missatges només a la memòria</string>
   <string name="pref_in_memory_db_summary">Només desa els missatges a la memòria, no a l\'emmagatzematge flash, per evitar que puguin accedir-hi. (Pot causar pèrdua de missatges)</string>

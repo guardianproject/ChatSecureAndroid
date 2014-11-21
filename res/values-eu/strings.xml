@@ -300,7 +300,7 @@ Ikutu gonbidatzeko.</string>
   <string name="pref_group_looknfeel_title">Erabiltzaile interfazea</string>
   <string name="menu_locale">Hizkuntza</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Hizkuntzak</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Ze hizkuntza bistaratu behar du InTheClear-ek?</string>
+
   <string name="pref_theme_dark">Itxura iluna erabili</string>
   <string name="pref_theme_dark_summary">Aplikazioaren itxura ilunera aldatu</string>
   <string name="pref_in_memory_db_title">Memoriako mezu biltegia bakarrik</string>

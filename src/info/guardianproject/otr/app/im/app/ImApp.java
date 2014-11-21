@@ -54,6 +54,7 @@ import net.sqlcipher.database.SQLiteDatabase;
 import org.thoughtcrime.ssl.pinning.PinningTrustManager;
 import org.thoughtcrime.ssl.pinning.SystemKeyStore;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.ComponentName;
@@ -75,6 +76,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
@@ -350,7 +352,7 @@ public class ImApp extends Application {
         }
     }
 
-    public boolean checkLocale ()
+    public void checkLocale ()
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -367,52 +369,42 @@ public class ImApp extends Application {
                     lang = configuredLocale;
                     Editor editor = settings.edit();
                     editor.putString(getString(R.string.pref_default_locale), lang);
-                    editor.commit();
+                    editor.apply();
                 }
             }
         }
-
-        boolean updatedLocale = false;
 
         if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             locale = new Locale(lang);
             config.locale = locale;
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-            updatedLocale = true;
         }
 
         loadDefaultBrandingRes();
-
-        return updatedLocale;
     }
 
-    public boolean setNewLocale(Context context, String localeString) {
-
-        /*
-        Locale locale = new Locale(localeString);
-
-        Configuration config = context.getResources().getConfiguration();
-        config.locale = locale;
-
-        context.getResources().updateConfiguration(config,
-                context.getResources().getDisplayMetrics());
-
-        Log.d(LOG_TAG, "locale = " + locale.getDisplayName());
-        */
-
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+    public void setNewLocale(Context context, String language) {
+        /* handle locales with the country in it, i.e. zh_CN, zh_TW, etc */
+        String localeSplit[] = language.split("_");
+        if (localeSplit.length > 1)
+            locale = new Locale(localeSplit[0], localeSplit[1]);
+        else
+            locale = new Locale(language);
+        if (Build.VERSION.SDK_INT >= 17) {
+            getResources().getConfiguration().setLocale(locale);
+        } else {
+            Configuration config = getResources().getConfiguration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        }
+        /* Set the preference after setting the locale in case something goes
+        wrong.  If setting the locale causes an Exception, it should be set in the
+        preferences, otherwise ChatSecure will be stuck in a crash loop. */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor prefEdit = prefs.edit();
-        prefEdit.putString(context.getString(R.string.pref_default_locale), localeString);
-        prefEdit.commit();
-
-        Configuration config = getResources().getConfiguration();
-
-        locale = new Locale(localeString);
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-
-
-        return true;
+        prefEdit.putString(context.getString(R.string.pref_default_locale), language);
+        prefEdit.apply();
     }
 
     /**

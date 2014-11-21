@@ -294,7 +294,7 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="pref_group_looknfeel_title">用户界面</string>
   <string name="menu_locale">语言</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">多国语言</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">应准确显示何种语言？</string>
+
   <string name="pref_theme_dark">使用暗色主题</string>
   <string name="pref_theme_dark_summary">改为使用深色应用主题</string>
   <string name="pref_in_memory_db_title">只在内存中存储消息</string>

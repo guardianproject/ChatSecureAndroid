@@ -303,7 +303,7 @@
   <string name="pref_group_looknfeel_title">Корисничко сучеље</string>
   <string name="menu_locale">Језик</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Језици</string>
-  <string name="KEY_PREF_LANGUAGE_SUMMARY">Који језик да апликација „InTheClear“ прикаже?</string>
+
   <string name="pref_theme_dark">Тамна тема</string>
   <string name="pref_theme_dark_summary">Користи тамну тему апликације</string>
   <string name="pref_in_memory_db_title">Складиштење порука само у меморији</string>
