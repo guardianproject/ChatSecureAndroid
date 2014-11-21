@@ -18,7 +18,6 @@
 package info.guardianproject.otr.app.im.service;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ContactListActivity;
 import info.guardianproject.otr.app.im.app.NewChatActivity;
 import info.guardianproject.otr.app.im.app.WelcomeActivity;
 import info.guardianproject.otr.app.im.provider.Imps;
@@ -339,7 +338,7 @@ public class StatusBarNotifier {
         private Intent getDefaultIntent() {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setType(Imps.Contacts.CONTENT_TYPE);
-            intent.setClass(mContext, ContactListActivity.class);
+            intent.setClass(mContext, NewChatActivity.class);
             intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
        //     intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
