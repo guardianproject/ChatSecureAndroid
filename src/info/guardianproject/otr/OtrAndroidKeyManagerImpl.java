@@ -31,8 +31,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
 import net.java.otr4j.OtrKeyManager;
@@ -895,7 +893,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
         {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
 
-            prefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).commit();
+            prefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).apply();
         }
         catch (IOException ioe)
         {
