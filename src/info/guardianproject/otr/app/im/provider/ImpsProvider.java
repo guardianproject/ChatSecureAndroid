@@ -18,6 +18,8 @@ package info.guardianproject.otr.app.im.provider;
 
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.otr.app.im.provider.Imps.Contacts;
+import info.guardianproject.otr.app.im.provider.Imps.Provider;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
@@ -56,7 +58,6 @@ public class ImpsProvider extends ContentProvider {
     private static final String EMPTY_KEY_TRAIL_TAG = "empty_key";
     private static final String DATABASE_OPEN_TRAIL_TAG = "database_open";
     private static final String LOG_TAG = "imProvider";
-    private static final boolean DBG = false;
 
     private static final String AUTHORITY = "info.guardianproject.otr.app.im.provider.Imps";
 
@@ -263,6 +264,8 @@ public class ImpsProvider extends ContentProvider {
         boolean mInMemoryDB = false;
         String mKey = null;
 
+        boolean doCleanup = true;
+        
         DatabaseHelper(Context context, String key, boolean inMemoryDb) throws Exception {
             super(context, mDatabaseName, null, mDatabaseVersion);
 
@@ -281,13 +284,30 @@ public class ImpsProvider extends ContentProvider {
             if (dbWrite == null)
                 dbWrite = super.getWritableDatabase(mKey);
 
+            /*
+            if (doCleanup)
+            {
+                //clean up orphaned contacts
+                dbWrite.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE " + TABLE_CONTACTS + '.' + Contacts._ID +
+                        " IN (Select " + TABLE_CONTACTS + '.' + Contacts._ID + " from " + TABLE_CONTACTS + " LEFT JOIN " + TABLE_PROVIDERS + " ON " + Contacts.PROVIDER + "=" + TABLE_PROVIDERS + "." + Provider._ID + " WHERE " + TABLE_PROVIDERS + '.' + Provider._ID + " IS NULL)");
+                
+                
+                dbWrite.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE " + TABLE_CONTACTS + '.' + Contacts._ID + " NOT IN ("
+                        + "SELECT min(" + Contacts._ID + ") FROM " + TABLE_CONTACTS + " group by " + Contacts.USERNAME + "," + Contacts.PROVIDER + "," + Contacts.ACCOUNT                        
+                        + ")");
+                
+                
+                
+                doCleanup = false;
+            }*/
+            
             return dbWrite;
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-            if (DBG)
+            
                 log("DatabaseHelper.onCreate");
 
             db.execSQL("CREATE TABLE " + TABLE_PROVIDERS + " (" + "_id INTEGER PRIMARY KEY,"
@@ -342,6 +362,9 @@ public class ImpsProvider extends ContentProvider {
 
             db.execSQL("create TABLE " + TABLE_S2D_RMQ_IDS + " (" + "_id INTEGER PRIMARY KEY,"
                        + "rmq_id INTEGER" + ");");
+         
+            //DELETE FROM cache WHERE id IN (SELECT cache.id FROM cache LEFT JOIN main ON cache.id=main.id WHERE main.id IS NULL);
+
         }
 
         @Override
@@ -560,7 +583,7 @@ public class ImpsProvider extends ContentProvider {
         }
 
         private void createContactsTables(SQLiteDatabase db) {
-            if (DBG)
+            
                 log("createContactsTables");
 
             StringBuilder buf = new StringBuilder();
@@ -643,7 +666,7 @@ public class ImpsProvider extends ContentProvider {
 
         private void createMessageChatTables(SQLiteDatabase db,
                 boolean addShowTsColumnForMessagesTable) {
-            if (DBG)
+            
                 log("createMessageChatTables");
 
             // message table
@@ -671,7 +694,7 @@ public class ImpsProvider extends ContentProvider {
 
             String sqlStatement = buf.toString();
 
-            if (DBG)
+            
                 log("create message table: " + sqlStatement);
             db.execSQL(sqlStatement);
 
@@ -690,7 +713,7 @@ public class ImpsProvider extends ContentProvider {
             // chat sessions, including single person chats and group chats
             sqlStatement = buf.toString();
 
-            if (DBG)
+            
                 log("create chat table: " + sqlStatement);
             db.execSQL(sqlStatement);
 
@@ -704,7 +727,7 @@ public class ImpsProvider extends ContentProvider {
 
             sqlStatement = buf.toString();
 
-            if (DBG)
+            
                 log("create trigger: " + sqlStatement);
             db.execSQL(sqlStatement);
         }
@@ -735,7 +758,7 @@ public class ImpsProvider extends ContentProvider {
                 return;
             }
 
-            if (DBG)
+            
                 log("##### createTransientTables");
 
 
@@ -1334,7 +1357,7 @@ public class ImpsProvider extends ContentProvider {
         // Generate the body of the query
         int match = mUrlMatcher.match(url);
 
-        if (DBG) {
+         {
             //log("query " + url + ", match " + match + ", where " + selection);
             if (selectionArgs != null) {
                 for (String selectionArg : selectionArgs) {
@@ -1685,15 +1708,14 @@ public class ImpsProvider extends ContentProvider {
                     url = Imps.Contacts.CONTENT_URI;
                     break;
                 }
-                if (DBG)
+                
                     log("set notify url " + url);
 
 
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
 
-
-            c = new MyCrossProcessCursorWrapper(c);
+        //    c = new MyCrossProcessCursorWrapper(c);
             return c;
 
         } catch (Exception ex) {
@@ -1867,7 +1889,7 @@ public class ImpsProvider extends ContentProvider {
 
     // package scope for testing.
     boolean insertBulkContacts(ContentValues values) {
-        //if (DBG) log("insertBulkContacts: begin");
+        // log("insertBulkContacts: begin");
 
         ArrayList<String> usernames = getStringArrayList(values, Imps.Contacts.USERNAME);
         ArrayList<String> nicknames = getStringArrayList(values, Imps.Contacts.NICKNAME);
@@ -1933,7 +1955,7 @@ public class ImpsProvider extends ContentProvider {
                 }
 
                 /*
-                if (DBG) log("insertBulkContacts[" + i + "] username=" +
+                 log("insertBulkContacts[" + i + "] username=" +
                         username + ", nickname=" + nickname + ", type=" + type +
                         ", subscriptionStatus=" + subscriptionStatus + ", subscriptionType=" +
                         subscriptionType + ", qc=" + quickContact);
@@ -1962,7 +1984,7 @@ public class ImpsProvider extends ContentProvider {
                 try {
                     rowId = db.insertOrThrow(TABLE_CONTACTS, USERNAME, contactValues);
                 } catch (android.database.sqlite.SQLiteConstraintException ex) {
-                    if (DBG) log("insertBulkContacts: insert " + username + " caught " + ex);
+                     log("insertBulkContacts: insert " + username + " caught " + ex);
 
                     // append username to the selection clause
                     updateSelection.delete(0, updateSelection.length());
@@ -1984,7 +2006,7 @@ public class ImpsProvider extends ContentProvider {
                     sum++;
 
                     // seed the presence for the new contact
-                    if (DBG)
+                    
                         log("### seedPresence for contact id " + rowId);
                     presenceValues.put(Imps.Presence.CONTACT_ID, rowId);
 
@@ -2006,7 +2028,7 @@ public class ImpsProvider extends ContentProvider {
         }
 
         // We know that we succeeded becuase endTransaction throws if the transaction failed.
-        if (DBG)
+        
             log("insertBulkContacts: added " + sum + " contacts!");
         return true;
     }
@@ -2087,7 +2109,7 @@ public class ImpsProvider extends ContentProvider {
                     LogCleaner.error(LOG_TAG, "insertBulkContacts: caught ",ex);
                 }
 
-                if (DBG)
+                
                     log("updateBulkContacts[" + i + "] username=" + username + ", nickname="
                         + nickname + ", type=" + type + ", subscriptionStatus="
                         + subscriptionStatus + ", subscriptionType=" + subscriptionType + ", qc="
@@ -2129,7 +2151,7 @@ public class ImpsProvider extends ContentProvider {
             db.endTransaction();
         }
 
-        if (DBG)
+        
             log("updateBulkContacts: " + sum + " entries updated");
         return sum;
     }
@@ -2186,19 +2208,19 @@ public class ImpsProvider extends ContentProvider {
             buf.append("=?) ");
 
             String selection = buf.toString();
-            if (DBG)
+            
                 log("seedInitialPresence: reset presence selection=" + selection);
 
             int count = db.update(TABLE_PRESENCE, presenceValues, selection,
                     mQueryContactIdSelectionArgs1);
-            if (DBG)
+            
                 log("seedInitialPresence: reset " + count + " presence rows to OFFLINE");
 
             // for in-memory presence table, add a presence row for each contact that
             // doesn't have a presence. in-memory presence table isn't reliable, and goes away
             // when device reboot or IMProvider process dies, so we can't rely on each contact
             // have a corresponding presence.
-            if (DBG) {
+             {
                 log("seedInitialPresence: contacts_with_no_presence_selection => "
                     + CONTACTS_WITH_NO_PRESENCE_SELECTION);
             }
@@ -2206,7 +2228,7 @@ public class ImpsProvider extends ContentProvider {
             c = qb.query(db, CONTACT_ID_PROJECTION, CONTACTS_WITH_NO_PRESENCE_SELECTION,
                     mQueryContactIdSelectionArgs1, null, null, null, null);
 
-            if (DBG)
+            
                 log("seedInitialPresence: found " + c.getCount() + " contacts w/o presence");
 
             count = 0;
@@ -2222,13 +2244,13 @@ public class ImpsProvider extends ContentProvider {
                 } catch (SQLiteConstraintException ex) {
                     // we could possibly catch this exception, since there could be a presence
                     // row with the same contact_id. That's fine, just ignore the error
-                    if (DBG)
+                    
                         log("seedInitialPresence: insert presence for contact_id " + id
                             + " failed, caught " + ex);
                 }
             }
 
-            if (DBG)
+            
                 log("seedInitialPresence: added " + count + " new presence rows");
 
             db.setTransactionSuccessful();
@@ -2282,7 +2304,7 @@ public class ImpsProvider extends ContentProvider {
 
         String selection = buf.toString();
 
-        if (DBG)
+        
             log("updateBulkPresence: selection => " + selection);
 
         int numArgs = (whereArgs != null ? whereArgs.length + 4 : 4);
@@ -2325,11 +2347,10 @@ public class ImpsProvider extends ContentProvider {
                     LogCleaner.error(LOG_TAG, "[ImProvider] updateBulkPresence: caught",ex);
                 }
 
-                if (DBG) {
-                    log("updateBulkPresence[" + i + "] username=" + username + ", priority="
-                        + priority + ", mode=" + mode + ", status=" + status + ", resource="
-                        + jidResource + ", clientType=" + clientType);
-                }
+                 
+                log("updateBulkPresence[" + i + "] username=" + username + ", priority="
+                    + priority + ", mode=" + mode + ", status=" + status + ", resource="
+                    + jidResource + ", clientType=" + clientType);
 
                 if (modeArray != null) {
                     presenceValues.put(Imps.Presence.PRESENCE_STATUS, mode);
@@ -2372,7 +2393,7 @@ public class ImpsProvider extends ContentProvider {
             db.endTransaction();
         }
 
-        if (DBG)
+        
             log("updateBulkPresence: " + sum + " entries updated");
         return sum;
     }
@@ -2394,7 +2415,7 @@ public class ImpsProvider extends ContentProvider {
         final SQLiteDatabase db = getDBHelper().getWritableDatabase();
         int match = mUrlMatcher.match(url);
 
-        if (DBG)
+        
             log("insert to " + url + ", match " + match);
         switch (match) {
         case MATCH_PROVIDERS:
@@ -2703,7 +2724,7 @@ public class ImpsProvider extends ContentProvider {
             }
 
             if (notifyProviderAccountContentUri) {
-                if (DBG)
+                
                     log("notify insert for " + Imps.Provider.CONTENT_URI_WITH_ACCOUNT);
                 resolver.notifyChange(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, null);
             }
@@ -2910,10 +2931,10 @@ public class ImpsProvider extends ContentProvider {
 
     private void deleteWithSelection(SQLiteDatabase db, String tableName, String selection,
             String[] selectionArgs) {
-        if (DBG)
+        
             log("deleteWithSelection: table " + tableName + ", selection => " + selection);
         int count = db.delete(tableName, selection, selectionArgs);
-        if (DBG)
+        
             log("deleteWithSelection: deleted " + count + " rows");
     }
 
@@ -3158,7 +3179,7 @@ public class ImpsProvider extends ContentProvider {
                     buildContactIdSelection(Imps.Messages.THREAD_ID, Imps.Contacts.PROVIDER + "='"
                                                                      + provider + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_OTR_MESSAGES_BY_PROVIDER) sel => " + whereClause);
             notifyMessagesContentUri = true;
             break;
@@ -3172,7 +3193,7 @@ public class ImpsProvider extends ContentProvider {
                     buildContactIdSelection(Imps.Messages.THREAD_ID, Imps.Contacts.ACCOUNT + "='"
                                                                      + accountStr + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_OTR_MESSAGES_BY_ACCOUNT) sel => " + whereClause);
             notifyMessagesContentUri = true;
             break;
@@ -3231,7 +3252,7 @@ public class ImpsProvider extends ContentProvider {
                     buildContactIdSelection(Imps.Chats.CONTACT_ID, Imps.Contacts.ACCOUNT + "='"
                                                                    + accountStr + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_CHATS_BY_ACCOUNT) sel => " + whereClause);
 
             changedItemId = null;
@@ -3264,7 +3285,7 @@ public class ImpsProvider extends ContentProvider {
                     buildContactIdSelection(Imps.Presence.CONTACT_ID, Imps.Contacts.ACCOUNT + "='"
                                                                       + accountStr + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_PRESENCE_BY_ACCOUNT): sel => " + whereClause);
             changedItemId = null;
             break;
@@ -3324,7 +3345,7 @@ public class ImpsProvider extends ContentProvider {
             appendWhere(whereClause, idColumnName, "=", changedItemId);
         }
 
-        if (DBG)
+        
             log("delete from " + url + " WHERE  " + whereClause);
 
         int count = db.delete(tableToChange, whereClause.toString(), whereArgs);
@@ -3369,7 +3390,7 @@ public class ImpsProvider extends ContentProvider {
             }
 
             if (notifyProviderAccountContentUri) {
-                if (DBG)
+                
                     log("notify delete for " + Imps.Provider.CONTENT_URI_WITH_ACCOUNT);
                 resolver.notifyChange(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, null);
             }
@@ -3592,7 +3613,7 @@ public class ImpsProvider extends ContentProvider {
             break;
 
         case MATCH_PRESENCE:
-            //if (DBG) log("update presence: where='" + userWhere + "'");
+            // log("update presence: where='" + userWhere + "'");
             tableToChange = TABLE_PRESENCE;
             break;
 
@@ -3661,7 +3682,7 @@ public class ImpsProvider extends ContentProvider {
             appendWhere(whereClause, idColumnName, "=", changedItemId);
         }
 
-        if (DBG)
+        
             log("update " + url + " WHERE " + whereClause);
 
         count += db.update(tableToChange, values, whereClause.toString(), whereArgs);
@@ -3677,7 +3698,7 @@ public class ImpsProvider extends ContentProvider {
             }
 
             if (notifyMessagesContentUri) {
-                if (DBG)
+                
                     log("notify change for " + Imps.Messages.CONTENT_URI);
                 resolver.notifyChange(Imps.Messages.CONTENT_URI, null);
             }
@@ -3697,7 +3718,7 @@ public class ImpsProvider extends ContentProvider {
             }
 
             if (notifyProviderAccountContentUri) {
-                if (DBG)
+                
                     log("notify change for " + Imps.Provider.CONTENT_URI_WITH_ACCOUNT);
                 resolver.notifyChange(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, null);
             }
@@ -3739,7 +3760,7 @@ public class ImpsProvider extends ContentProvider {
     }
 
     static void log(String message) {
-           LogCleaner.debug(LOG_TAG, message);
+        LogCleaner.debug(LOG_TAG, message);
     }
 
 }
