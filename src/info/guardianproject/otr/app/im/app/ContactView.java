@@ -23,6 +23,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
+import info.guardianproject.util.Debug;
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.content.Context;
@@ -95,13 +96,26 @@ public class ContactView extends FrameLayout {
         bind(cursor, underLineText, true, scrolling);
     }
 
-
     public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
 
+        if (Debug.DEBUG_ENABLED)
+        {
+            StringBuffer debug = new StringBuffer();
+            for (int i = 0; i < cursor.getColumnCount();i++)
+            {
+                String name = cursor.getColumnName(i);
+                String value = cursor.getString(i);
+                if (value != null && value.length() < 100)
+                    debug.append(name+":" + value+",");
+                else if (value == null)
+                    debug.append(name+":(null)");
+            }
+            Log.d(ImApp.LOG_TAG,"contact:" + debug.toString());
 
+        }
+        
         ViewHolder holder = (ViewHolder)getTag();
-
-
+        
         final long providerId = cursor.getLong(COLUMN_CONTACT_PROVIDER);
         final String address = cursor.getString(COLUMN_CONTACT_USERNAME);
 
@@ -178,7 +192,7 @@ public class ContactView extends FrameLayout {
             }
             else if (cursor.getColumnIndex(Imps.Contacts.AVATAR_DATA)!=-1)
             {
-                holder.mAvatar.setVisibility(View.GONE);
+//                holder.mAvatar.setVisibility(View.GONE);
 
                 RoundedAvatarDrawable avatar = null;
 
@@ -338,7 +352,7 @@ public class ContactView extends FrameLayout {
             break;
 
         case Imps.Presence.OFFLINE:
-            avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            avatar.setBorderColor(getResources().getColor(android.R.color.transparent));
             avatar.setAlpha(100);
             break;
 
