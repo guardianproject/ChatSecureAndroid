@@ -296,8 +296,9 @@ public class ContactListManagerAdapter extends
     public void loadContactLists() {
         if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
             clearValidatedContactsAndLists();
-            mAdaptee.loadContactListsAsync();
-        }
+       }
+        mAdaptee.loadContactListsAsync();
+        
     }
 
     public int getState() {
@@ -865,25 +866,37 @@ public class ContactListManagerAdapter extends
 
     boolean updateContact(Contact contact, long listId)
     {
-        Cursor cursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts._ID },
-                Imps.Contacts.USERNAME + "=?", new String[] { contact.getAddress().getBareAddress() }, null);
-        if (cursor == null) {
-            RemoteImService.debug("query contact " +  contact.getAddress().getBareAddress() + " failed");
-            return false;
-        }
+       String addr = mAdaptee.normalizeAddress(contact.getAddress().getAddress());
+       boolean exists = updateContact(addr,getContactContentValues(contact, listId));
+       
+       if (exists)
+       {
+           String username = mAdaptee.normalizeAddress(contact.getAddress().getAddress());
+           String selection = Imps.Contacts.USERNAME + "=?";
+           String[] selectionArgs = { username };
+           String[] projection = { Imps.Contacts._ID };
 
-        boolean contactExists = cursor.moveToFirst();
-        cursor.close();
+           Cursor cursor = mResolver.query(mContactUrl, projection, selection, selectionArgs, null);
 
-        if (!contactExists)
-            return false;
-        else
-        {
-            ContentValues values = getContactContentValues(contact, listId);
-            updateContact(mAdaptee.normalizeAddress(contact.getAddress().getAddress()),values);
-
-            return true;
-        }
+           if (cursor != null)
+           {
+            
+               while (cursor.moveToNext())
+               {
+                   long contactId = cursor.getLong(0);
+                   ContentValues presenceValues = getPresenceValues(contact);
+                   selection = Imps.Presence.CONTACT_ID + "=?";                   
+                   String[] selectionArgs2 = {contactId+""};
+                   mResolver.update(Imps.Presence.CONTENT_URI,presenceValues, selection, selectionArgs2);
+               }
+               
+               cursor.close();
+           } 
+           
+          
+       }
+       
+       return exists;
     }
 
     boolean updateContact(String username, ContentValues values) {
@@ -1125,11 +1138,8 @@ public class ContactListManagerAdapter extends
         values.put(Imps.Contacts.TYPE, type);
         Uri uri = mResolver.insert(mContactUrl, values);
 
-        ContentValues presenceValues = getPresenceValues(ContentUris.parseId(uri),
-                contact.getPresence());
-
+        ContentValues presenceValues = getPresenceValues(contact);
         mResolver.insert(Imps.Presence.CONTENT_URI, presenceValues);
-
 
         return uri;
     }
@@ -1158,9 +1168,9 @@ public class ContactListManagerAdapter extends
         mResolver.delete(uri, null, null);
     }
 
-    private ContentValues getPresenceValues(long contactId, Presence p) {
-        ContentValues values = new ContentValues(3);
-        values.put(Imps.Presence.CONTACT_ID, contactId);
+    private ContentValues getPresenceValues(Contact c) {
+        Presence p = c.getPresence();
+        ContentValues values = new ContentValues(3);        
         values.put(Imps.Contacts.PRESENCE_STATUS, convertPresenceStatus(p));
         values.put(Imps.Contacts.PRESENCE_CUSTOM_STATUS, p.getStatusText());
         values.put(Imps.Presence.CLIENT_TYPE, translateClientType(p));
