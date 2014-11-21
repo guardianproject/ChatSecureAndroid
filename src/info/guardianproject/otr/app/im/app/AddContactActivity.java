@@ -355,6 +355,7 @@ public class AddContactActivity extends ActionBarActivity {
                                                          Imps.Provider.ACTIVE_ACCOUNT_KEEP_SIGNED_IN,
                                                          Imps.Provider.ACCOUNT_PRESENCE_STATUS,
                                                          Imps.Provider.ACCOUNT_CONNECTION_STATUS
+                                                         
                                                         };
 
     static final int PROVIDER_ID_COLUMN = 0;

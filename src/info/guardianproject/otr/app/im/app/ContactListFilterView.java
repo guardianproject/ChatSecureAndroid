@@ -81,12 +81,6 @@ public class ContactListFilterView extends LinearLayout {
     }
 
     @Override
-    public boolean isInEditMode() {
-        return true;
-    }
-
-
-    @Override
     protected void onFinishInflate() {
 
         mFilterList = (AbsListView) findViewById(R.id.filteredList);
@@ -260,14 +254,12 @@ public class ContactListFilterView extends LinearLayout {
 
     private class ContactAdapter extends ResourceCursorAdapter {
 
-        private int mViewLayout;
-
         public ContactAdapter(Context context, int view) {
-            super(context, view, null, 0);
+            super(context, view, null,0);
 
-            mViewLayout = view;
         }
 
+        
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
 
@@ -290,13 +282,14 @@ public class ContactListFilterView extends LinearLayout {
 
            return view;
         }
-
+        
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             ContactView v = (ContactView) view;
             v.bind(cursor, mSearchString, true);
 
         }
+        
     }
 
     public interface ContactListListener {
@@ -474,13 +467,17 @@ public class ContactListFilterView extends LinearLayout {
 
             CursorLoader loader = new CursorLoader(getContext(), mUri, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
-            loader.setUpdateThrottle(50L);
+                        
+       //     loader.setUpdateThrottle(10L);
             return loader;
         }
 
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
-            mContactAdapter.swapCursor(newCursor);
+            
+        //    newCursor.setNotificationUri(getContext().getContentResolver(), mUri);
+            
+            mContactAdapter.changeCursor(newCursor);
 
             if (newCursor != null && newCursor.getCount() == 0)
             {
@@ -496,8 +493,6 @@ public class ContactListFilterView extends LinearLayout {
         public void onLoaderReset(Loader<Cursor> loader) {
 
             mContactAdapter.swapCursor(null);
-
-
 
         }
 

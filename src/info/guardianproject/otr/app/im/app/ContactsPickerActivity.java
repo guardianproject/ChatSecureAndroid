@@ -323,7 +323,7 @@ public class ContactsPickerActivity extends ActionBarActivity  {
 
 
         public ContactAdapter(Context context, int view) {
-            super(context, view, null);
+            super(context, view, null,0);
 
         }
 

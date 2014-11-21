@@ -1970,7 +1970,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
          }
 
-
          @Override
         public void onAttach(Activity activity) {
             super.onAttach(activity);
