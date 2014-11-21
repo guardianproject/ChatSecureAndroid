@@ -390,6 +390,12 @@ public class ImApp extends Application {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     public void setNewLocale(Context context, String language) {
+        /* handle locales with the country in it, i.e. zh_CN, zh_TW, etc */
+        String localeSplit[] = language.split("_");
+        if (localeSplit.length > 1)
+            locale = new Locale(localeSplit[0], localeSplit[1]);
+        else
+            locale = new Locale(language);
         Configuration config = getResources().getConfiguration();
         if (Build.VERSION.SDK_INT >= 17)
             config.setLocale(locale);
