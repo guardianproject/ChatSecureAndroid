@@ -419,8 +419,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
 
                 if (mAutoLoadContacts)
-                {
-                 //   && mContactListManager.getState() != ContactListManager.LISTS_LOADED) {
+                {   
                     mContactListManager.loadContactLists();
                 }
 
