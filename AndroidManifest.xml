@@ -138,6 +138,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="xmpp" />
+                <data android:scheme="im" />
             </intent-filter>
         </activity>
         <activity

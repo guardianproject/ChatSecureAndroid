@@ -65,7 +65,24 @@ public class XmppUriHelper {
     public static final Map<String, String> parse(Uri uri) {
         Map<String, String> map = new HashMap<String, String>();
         try {
-            if (TextUtils.equals(uri.getScheme(), "xmpp")) {
+            if (TextUtils.equals(uri.getScheme(), "im")) {
+                if (uri.isHierarchical())
+                    uri = Uri.parse(uri.toString().replaceAll("://*", ":"));
+                String opaquePart = uri.getSchemeSpecificPart();
+                String query[] = opaquePart.split("[/\\?]");
+                map.put(KEY_ADDRESS, query[0]);
+                String[] parameters = null;
+                if (query.length > 1) {
+                    parameters = query[1].split("[;&]");
+                    for (String t : parameters) {
+                        String[] parameter = t.split("=");
+                        if (parameter.length > 1)
+                            map.put(parameter[0], parameter[1]);
+                        else
+                            map.put(parameter[0], "");
+                    }
+                }
+            } else if (TextUtils.equals(uri.getScheme(), "xmpp")) {
                 if (uri.isOpaque()) {
                     String opaquePart = uri.getSchemeSpecificPart();
                     if (!TextUtils.isEmpty(opaquePart)) {
