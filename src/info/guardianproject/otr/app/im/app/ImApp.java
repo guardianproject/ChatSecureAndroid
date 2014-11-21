@@ -369,7 +369,7 @@ public class ImApp extends Application {
                     lang = configuredLocale;
                     Editor editor = settings.edit();
                     editor.putString(getString(R.string.pref_default_locale), lang);
-                    editor.commit();
+                    editor.apply();
                 }
             }
         }
@@ -402,7 +402,7 @@ public class ImApp extends Application {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor prefEdit = prefs.edit();
         prefEdit.putString(context.getString(R.string.pref_default_locale), language);
-        prefEdit.commit();
+        prefEdit.apply();
     }
 
     /**
