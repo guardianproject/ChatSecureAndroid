@@ -16,6 +16,20 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.ContentUris;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.net.Uri.Builder;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.os.Message;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
+
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
@@ -24,31 +38,10 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.SQLCipherOpenHelper;
+
 import net.hockeyapp.android.UpdateManager;
 
 import org.apache.commons.codec.binary.Hex;
-
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentUris;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.database.Cursor;
-import android.net.Uri;
-import android.net.Uri.Builder;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.os.Message;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.widget.Toast;
 
 public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
 
@@ -83,8 +76,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     static final int ACCOUNT_PRESENCE_STATUS = 9;
     static final int ACCOUNT_CONNECTION_STATUS = 10;
 
-    private SharedPreferences mPrefs = null;
-
     private CacheWordActivityHandler mCacheWord = null;
     private boolean mDoLock;
 
@@ -96,8 +87,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mHandler = new MyHandler(this);
 
         mSignInHelper = new SignInHelper(this);
-
-        mPrefs = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         Intent intent = getIntent();
         mDoSignIn = intent.getBooleanExtra("doSignIn", true);
@@ -234,8 +223,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             // If just one account is available for auto-signin, go there immediately after service starts trying
             // to connect.
             mSignInHelper.setSignInListener(new SignInHelper.SignInListener() {
+                @Override
                 public void connectedToService() {
                 }
+                @Override
                 public void stateChanged(int state, long accountId) {
                     if (state == ImConnection.LOGGING_IN) {
                         mSignInHelper.goToAccount(accountId);
@@ -264,25 +255,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 showAccounts();
             }
         }
-            /*
-        else
-        {
-            setContentView(R.layout.welcome_activity);
-
-            Button getStarted = ((Button) findViewById(R.id.btnSplashAbout));
-
-            getStarted.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    finish();
-                    Intent intent = new Intent(getBaseContext(), AboutActivity.class);
-                    startActivity(intent);false
-                }
-            });
-
-
-        }*/
-
     }
 
 
@@ -298,38 +270,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             }
         } while (mProviderCursor.moveToNext());
         return false;
-    }
-
-
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main_list_menu, menu);
-
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_account_settings:
-            finish();
-            showAccounts();
-            return true;
-
-        case R.id.menu_about:
-            showAbout();
-            return true;
-
-        case R.id.menu_locale:
-            showLocaleDialog();
-            return true;
-
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     private void signInAll() {
@@ -445,24 +385,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         return count;
     }
 
-    //    private void showAccountSetup() {
-    //        if (!mProviderCursor.moveToFirst() || mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-    //            // add account
-    //            startActivity(getCreateAccountIntent());
-    //        } else {
-    //            // edit existing account
-    //            startActivity(getEditAccountIntent());
-    //        }
-    //    }
-
-    private void showAbout() {
-        //TODO implement this about form
-        Toast.makeText(this, getString(R.string.about_link),
-                Toast.LENGTH_LONG).show();
-    }
-
-
-
     void showAccounts() {
         //startActivity(new Intent(getBaseContext(), AccountListActivity.class));
         startActivity(new Intent(getBaseContext(), NewChatActivity.class));
@@ -512,38 +434,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             }
             super.handleMessage(msg);
         }
-    }
-
-    private void showLocaleDialog() {
-        AlertDialog.Builder ad = new AlertDialog.Builder(this);
-        ad.setTitle(getResources().getString(R.string.KEY_PREF_LANGUAGE_TITLE));
-
-        Configuration config = getResources().getConfiguration();
-        String defaultLangName = config.locale.getDefault().getDisplayName();
-        String defaultLangCode = config.locale.getDefault().getCountry();
-
-        String[] langs = getResources().getStringArray(R.array.languages);
-        langs[0] = langs[0] + " (" + defaultLangName + ")";
-
-        ad.setItems(langs,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        String[] locs = getResources().getStringArray(R.array.languages_values);
-
-                        if (which < locs.length) {
-                            ((ImApp)getApplication()).setNewLocale(WelcomeActivity.this.getBaseContext(), locs[which]);
-
-                            Intent intent = getIntent();
-                            finish();
-                            startActivity(intent);
-                        }
-                    }
-                });
-
-        ad.show();
     }
 
     @Override
@@ -616,13 +506,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             protected String doInBackground(String... params) {
 
                 boolean stillConnected = true;
-                
+
                 while (stillConnected)
                 {
 
                        try{
                            IImConnection conn = mApp.getActiveConnections().iterator().next();
-                           
+
                            if (conn.getState() == ImConnection.DISCONNECTED || conn.getState() == ImConnection.LOGGING_OUT)
                            {
                                stillConnected = false;
@@ -632,7 +522,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                                conn.logout();
                                stillConnected = true;
                            }
-                           
+
 
                            Thread.sleep(500);
                        }catch(Exception e){}

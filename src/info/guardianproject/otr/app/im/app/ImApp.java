@@ -391,13 +391,13 @@ public class ImApp extends Application {
             locale = new Locale(localeSplit[0], localeSplit[1]);
         else
             locale = new Locale(language);
-        if (Build.VERSION.SDK_INT >= 17) {
-            getResources().getConfiguration().setLocale(locale);
-        } else {
-            Configuration config = getResources().getConfiguration();
+        Configuration config = getResources().getConfiguration();
+        if (Build.VERSION.SDK_INT >= 17)
+            config.setLocale(locale);
+        else
             config.locale = locale;
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        }
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+
         /* Set the preference after setting the locale in case something goes
         wrong.  If setting the locale causes an Exception, it should be set in the
         preferences, otherwise ChatSecure will be stuck in a crash loop. */
