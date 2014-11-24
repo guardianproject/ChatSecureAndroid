@@ -1,11 +1,15 @@
+# auto-generated files from Android builds
 bin/
 gen/
+build.xml
+ant.properties
+default.properties
 local.properties
 proguard.cfg
 proguard-project.txt
+#
 assets/chatsecure.properties
 releases
 docs
 doc
-tests/
 .directory
