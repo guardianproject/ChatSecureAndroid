@@ -6,7 +6,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-
 import info.guardianproject.otr.app.im.R;
 
 import java.util.Collections;
@@ -110,6 +109,17 @@ public class Languages {
      */
     public String[] getAllNames() {
         return nameMap.values().toArray(new String[nameMap.size()]);
+    }
+
+    public int getPosition(Locale locale) {
+        String localeName = locale.getLanguage();
+        int i = 0;
+        for (String key : nameMap.keySet())
+            if(TextUtils.equals(key, localeName))
+                return i;
+            else
+                i++;
+        return -1;
     }
 
     /**
