@@ -415,7 +415,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         while (cursor.moveToNext()) {
             long accountId = cursor.getLong(ACCOUNT_ID_COLUMN);
             long providerId = cursor.getLong(ACCOUNT_PROVIDER_COLUMN);
-            IImConnection conn = createConnection(providerId, accountId);
+            IImConnection conn = do_createConnection(providerId, accountId);
 
             try
             {
@@ -524,22 +524,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         }, delay);
     }
 
-    IImConnection createConnection(final long providerId, final long accountId) {
-
-        final IImConnection[] results = new IImConnection[1];
-        Debug.wrapExceptions(new Runnable() {
-            @Override
-            public void run() {
-                // TODO Auto-generated method stub
-                results[0] = do_createConnection(providerId, accountId);
-            }
-        });
-        return results[0];
-    }
-
     private boolean mUseForeground = false;
 
-    IImConnection do_createConnection(long providerId, long accountId) {
+    private IImConnection do_createConnection(long providerId, long accountId) {
 
         //make sure OTR is init'd before you create your first connection
         initOtrChatManager();
@@ -733,7 +720,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
         @Override
         public IImConnection createConnection(long providerId, long accountId) {
-            return RemoteImService.this.createConnection(providerId, accountId);
+            return RemoteImService.this.do_createConnection(providerId, accountId);
         }
 
         @Override
