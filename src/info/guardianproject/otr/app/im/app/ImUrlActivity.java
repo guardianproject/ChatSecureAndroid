@@ -32,8 +32,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
-import java.util.regex.Pattern;
-
 import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -717,6 +715,7 @@ public class ImUrlActivity extends Activity {
 
     private void startContactPicker() {
 
+        boolean noOnlineConnections = true;
         Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
         Collection<IImConnection> listConns = ((ImApp)getApplication()).getActiveConnections();
 
@@ -737,6 +736,7 @@ public class ImUrlActivity extends Activity {
 
                         Intent i = new Intent(Intent.ACTION_PICK, data);
                         startActivityForResult(i, REQUEST_PICK_CONTACTS);
+                        noOnlineConnections = false;
                         break;
 
                     } catch (RemoteException e) {
@@ -745,6 +745,10 @@ public class ImUrlActivity extends Activity {
                 }
             }
             catch (RemoteException re){}
+        }
+        if (noOnlineConnections) {
+            Toast.makeText(this, R.string.no_connection_for_sending, Toast.LENGTH_LONG).show();
+            finish(); // quit this Activity, nothing online
         }
     }
 

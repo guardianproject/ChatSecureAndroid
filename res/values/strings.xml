@@ -272,6 +272,7 @@
 		<string name="transfer_in_progress">Transfer in progress</string>
 		<string name="accept_transfer_">Accept transfer?</string>
 		<string name="wants_to_send_you_the_file">wants to send you the file</string>
+		<string name="no_connection_for_sending">No connection available for sending your share!</string>
 		
 		<string name="send">Send</string>
 		<string name="compose_hint">Send a message</string>
