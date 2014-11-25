@@ -609,8 +609,11 @@ public class ImUrlActivity extends Activity {
                 mSendType = type != null ? type : info.type;
 
                 startContactPicker();
+                return;
             }
         }
+        Toast.makeText(this, R.string.unsupported_incoming_data, Toast.LENGTH_LONG).show();
+        finish(); // make sure not to show this Activity's blank white screen
     }
 
     @Override

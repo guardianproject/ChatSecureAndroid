@@ -504,6 +504,7 @@
 		<string name="sorry_we_cannot_share_that_file_type">Sorry we cannot share that file type</string>
 		<string name="err_otr_share_no_encryption">You must enable encryption to share files</string>
 		<string name="please_enable_chat_encryption_to_share_files">Please enable chat encryption to share files</string>
+		<string name="unsupported_incoming_data">Unsupported incoming data, cannot share!</string>
 		<string name="swipe_alert">ChatSecure detected that a request was made to remove its task.  ChatSecure will likely crash.  Please use the Sign out all menu item from the account list screen instead.</string>
 		<string name="there_is_no_viewer_available_for_this_file_format">There is no viewer available for this file format</string>
 		<string name="please_start_a_secure_conversation_before_scanning_codes">Please start a secure conversation before scanning codes</string>
