@@ -3,22 +3,25 @@
  */
 package info.guardianproject.util;
 
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.IocVfs;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
+
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.IocVfs;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
 
 /**
  *
@@ -171,4 +174,28 @@ public class SystemServices {
 
         return info;
     }
+
+    public static FileInfo getContactAsVCardFile(Context context, Uri uri) {
+        AssetFileDescriptor fd;
+        try {
+            fd = context.getContentResolver().openAssetFileDescriptor(uri, "r");
+            java.io.FileInputStream in = fd.createInputStream();
+            byte[] buf = new byte[(int) fd.getDeclaredLength()];
+            in.read(buf);
+            in.close();
+            String vCardText = new String(buf);
+            Log.d("Vcard", vCardText);
+            List<String> pathSegments = uri.getPathSegments();
+            String targetPath = "/" + pathSegments.get(pathSegments.size() - 1) + ".vcf";
+            IocVfs.copyToVfs(buf, targetPath);
+            FileInfo info = new FileInfo();
+            info.path = IocVfs.vfsUri(targetPath).toString();
+            info.type = "text/vcard";
+            return info;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

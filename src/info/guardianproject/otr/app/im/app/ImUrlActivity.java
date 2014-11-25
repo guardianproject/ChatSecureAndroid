@@ -16,23 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.OtrDataHandler;
-import info.guardianproject.otr.app.im.IChatSession;
-import info.guardianproject.otr.app.im.IChatSessionManager;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.engine.ImConnection;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.util.LogCleaner;
-import info.guardianproject.util.SystemServices;
-import info.guardianproject.util.SystemServices.FileInfo;
-
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
-import net.java.otr4j.session.SessionStatus;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -51,7 +34,27 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import info.guardianproject.otr.OtrDataHandler;
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.SystemServices;
+import info.guardianproject.util.SystemServices.FileInfo;
+
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.UUID;
+
+import net.java.otr4j.session.SessionStatus;
+
 public class ImUrlActivity extends Activity {
+    private static final String TAG = "ImUrlActivity";
 
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
@@ -600,14 +603,16 @@ public class ImUrlActivity extends Activity {
             if (localUrl.startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND))
                 localUrl = localUrl.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, "");
 
+            FileInfo info = null;
+            if (TextUtils.equals(data.getAuthority(), "com.android.contacts")) {
+                info = SystemServices.getContactAsVCardFile(this, data);
+            } else {
+                info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, data);
+            }
 
-            FileInfo info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, data);
-
-            if (info != null && info.path != null)
-            {
+            if (info != null && !TextUtils.isEmpty(info.path)) {
                 mSendUrl = info.path;
                 mSendType = type != null ? type : info.type;
-
                 startContactPicker();
                 return;
             }
@@ -632,6 +637,7 @@ public class ImUrlActivity extends Activity {
 
                 mHandlerRouter.postDelayed(new Runnable()
                 {
+                    @Override
                     public void run ()
                     {
                         doOnCreate();
@@ -669,11 +675,12 @@ public class ImUrlActivity extends Activity {
                     try {
 
                             String offerId = UUID.randomUUID().toString();
-
-                            //String sessionId = getCurrentSessionId();
-
-                            Uri vfsUri = IocVfs.importContent(session.getId()+"", mSendUrl);
-
+                            Log.i(TAG, "mSendUrl " +mSendUrl);
+                            Uri vfsUri = null;
+                            if (IocVfs.isVfsUri(mSendUrl))
+                                vfsUri = Uri.parse(mSendUrl);
+                            else
+                                vfsUri = IocVfs.importContent(session.getId() + "", mSendUrl);
                             FileInfo info = SystemServices.getFileInfoFromURI(this, vfsUri);
                             session.offerData(offerId, info.path, mSendType );
 
