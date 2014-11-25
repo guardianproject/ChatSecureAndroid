@@ -27,6 +27,7 @@ import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -56,6 +57,7 @@ import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -265,6 +267,16 @@ public class MessageView extends FrameLayout {
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
     {
+        /* Guess the MIME type in case we received a file that we can display or play*/
+        if (TextUtils.isEmpty(mimeType) || mimeType.startsWith("application")) {
+            String guessed = URLConnection.guessContentTypeFromName(mediaUri.toString());
+            if (!TextUtils.isEmpty(guessed)) {
+                if (TextUtils.equals(guessed, "video/3gpp"))
+                    mimeType = "audio/3gpp";
+                else
+                    mimeType = guessed;
+            }
+        }
         holder.setOnClickListenerMediaThumbnail(mimeType, mediaUri);
 
         holder.mMediaThumbnail.setVisibility(View.VISIBLE);
