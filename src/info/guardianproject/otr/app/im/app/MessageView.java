@@ -20,9 +20,9 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.ui.AudioPlayerActivity;
 import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
+import info.guardianproject.util.AudioPlayer;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
@@ -337,10 +337,7 @@ public class MessageView extends FrameLayout {
                 return;
             }
             if (mimeType.startsWith("audio")) {
-                Intent intent = new Intent(context, AudioPlayerActivity.class);
-                intent.putExtra( AudioPlayerActivity.FILENAME, mediaUri.getPath());
-                intent.putExtra( AudioPlayerActivity.MIMETYPE, mimeType);
-                context.startActivity(intent);
+                new AudioPlayer(getContext(), mediaUri.getPath(), mimeType).play();
                 return;
             }
             return;

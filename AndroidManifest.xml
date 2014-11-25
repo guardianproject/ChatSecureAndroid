@@ -480,9 +480,6 @@
         <activity
             android:name="info.guardianproject.otr.app.im.ui.ImageViewActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="info.guardianproject.otr.app.im.ui.AudioPlayerActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name="info.guardianproject.otr.app.im.ui.SecureCameraActivity" />
     </application>
 
