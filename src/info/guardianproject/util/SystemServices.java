@@ -102,7 +102,7 @@ public class SystemServices {
 
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
-        if (IocVfs.isVfsScheme(uri.getScheme())) {
+        if (IocVfs.isVfsUri(uri)) {
             info.path = uri.getPath();
             return info;
         }

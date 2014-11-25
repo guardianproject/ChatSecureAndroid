@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
 
 /**
@@ -108,8 +109,15 @@ public class IocVfs {
         return Uri.parse(VFS_SCHEME + ":" + filename);
     }
 
-    public static boolean isVfsScheme(String scheme) {
-        return VFS_SCHEME.equals(scheme);
+    public static boolean isVfsUri(Uri uri) {
+        return TextUtils.equals(VFS_SCHEME, uri.getScheme());
+    }
+
+    public static boolean isVfsUri(String uriString) {
+        if (TextUtils.isEmpty(uriString))
+            return false;
+        else
+            return uriString.startsWith(VFS_SCHEME + ":/");
     }
 
     public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
@@ -217,6 +225,20 @@ public class IocVfs {
 
         fos.close();
         fis.close();
+    }
+
+    /**
+     * Write a {@link byte[]} into an IOCipher File
+     * @param sessionId
+     * @param buf
+     * @return
+     * @throws IOException
+     */
+    public static void copyToVfs(byte buf[], String targetPath) throws IOException {
+        File file = new File(targetPath);
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(buf);
+        out.close();
     }
 
     public static void copyToExternal(String sourcePath, java.io.File targetPath) throws IOException {

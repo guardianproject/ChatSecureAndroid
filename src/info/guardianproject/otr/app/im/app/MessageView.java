@@ -32,8 +32,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import org.jivesoftware.smack.packet.Message;
-
 import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -104,7 +102,7 @@ public class MessageView extends FrameLayout {
     private final static char DELIVERED_SUCCESS = '\u2714';
     private final static char DELIVERED_FAIL = '\u2718';
     private final static String LOCK_CHAR = "Secure";
-    		
+
 
     class ViewHolder
     {
@@ -221,7 +219,7 @@ public class MessageView extends FrameLayout {
                     lastMessage = formatMessage(body);
                 }
             }
-	}	
+	}
 
         if (lastMessage.length() > 0)
         {
@@ -331,7 +329,7 @@ public class MessageView extends FrameLayout {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
 
-        if (IocVfs.isVfsScheme(mediaUri.getScheme())) {
+        if (IocVfs.isVfsUri(mediaUri)) {
             if (mimeType.startsWith("image")) {
                 Intent intent = new Intent(context, ImageViewActivity.class);
                 intent.putExtra( ImageViewActivity.FILENAME, mediaUri.getPath());
@@ -414,6 +412,7 @@ public class MessageView extends FrameLayout {
         .setTitle(context.getString(R.string.export_media))
         .setMessage(context.getString(R.string.export_media_file_to, exportPath.getAbsolutePath()))
         .setPositiveButton(R.string.export, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
                     IocVfs.exportContent(mimeType, mediaUri, exportPath);
@@ -430,6 +429,7 @@ public class MessageView extends FrameLayout {
             }
         })
         .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 return;
             }
@@ -508,7 +508,7 @@ public class MessageView extends FrameLayout {
 
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
      //   Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
-        if (IocVfs.isVfsScheme(uri.getScheme())) {
+        if (IocVfs.isVfsUri(uri)) {
             return IocVfs.getThumbnailVfs(cr, uri);
         }
         return getThumbnailFile(cr, uri);
@@ -647,7 +647,7 @@ public class MessageView extends FrameLayout {
     {
         if (mHolder.mAvatar == null)
             return;
-        
+
         mHolder.mAvatar.setVisibility(View.GONE);
 
         if (address != null)
@@ -716,15 +716,15 @@ public class MessageView extends FrameLayout {
             if (delivery == DeliveryState.DELIVERED) {
 
                 deliveryText.append(DELIVERED_SUCCESS);
-                
+
             } else if (delivery == DeliveryState.UNDELIVERED) {
 
                 deliveryText.append(DELIVERED_FAIL);
 
             }
-            
+
         }
-        
+
         if (messageType != Imps.MessageType.POSTPONED)
             deliveryText.append(DELIVERED_SUCCESS);//this is for sent, so we know show 2 checks like WhatsApp!
 
