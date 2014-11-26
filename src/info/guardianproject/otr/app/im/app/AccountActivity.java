@@ -73,6 +73,7 @@ import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.XmppUriHelper;
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public class AccountActivity extends ActionBarActivity {
 
@@ -691,7 +692,7 @@ public class AccountActivity extends ActionBarActivity {
         mPort = 0;
 
         if (splitAt.length > 1) {
-            mDomain = splitAt[1].toLowerCase();
+            mDomain = splitAt[1].toLowerCase(Locale.US);
             String[] splitColon = mDomain.split(":");
             mDomain = splitColon[0];
             if (splitColon.length > 1) {
