@@ -461,33 +461,36 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     }
 
+    private IOtrChatSession getCurrentOtrChatSession() throws RemoteException {
+        IChatSession chatSession = getCurrentChatSession();
+        if (chatSession == null)
+            return null;
+        else
+            return chatSession.getOtrChatSession();
+    }
+
     private void displayQRCode ()
     {
-
         try
         {
-            if ( getCurrentChatSession() != null
-                    &&  getCurrentChatSession().getOtrChatSession() != null)
+            IOtrChatSession iOtr = getCurrentOtrChatSession();
+            if (iOtr != null)
             {
-
-                IOtrChatSession iOtr = getCurrentChatSession().getOtrChatSession();
-
                 String localUser = iOtr.getLocalUserId();
                 String localFingerprint = iOtr.getLocalFingerprint();
 
                 if (localFingerprint != null)
-                 {
+                {
                     String otrKeyURI = XmppUriHelper.getUri(localUser, localFingerprint);
 
                     new IntentIntegrator(this).shareText(otrKeyURI);
                     return;
                  }
-
             }
-
         }
         catch (RemoteException re)
-        {}
+        {
+        }
 
         //did not work
         Toast.makeText(this, R.string.please_start_a_secure_conversation_before_scanning_codes, Toast.LENGTH_LONG).show();
@@ -958,6 +961,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
 
     private void endCurrentChatPrompt( final String sessionId ) {
+        OtrChatManager otrChatManager = OtrChatManager.getInstance();
+        if (otrChatManager != null) {
+            try {
+                IOtrChatSession otrSession = getCurrentOtrChatSession();
+                otrSession.stopChatEncryption();
+            } catch (RemoteException e) {
+            }
+        }
         // if no files to delete - just end the session
         if (!IocVfs.sessionExists(sessionId)) {
             endCurrentChat();
