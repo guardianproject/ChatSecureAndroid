@@ -598,7 +598,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         else
                         {
                             mHandler.showAlert("Connection Error", "Unable to find a connection to join a group chat from. Please sign in and try again.");
-                            setResult(this.RESULT_CANCELED);
+                            setResult(Activity.RESULT_CANCELED);
                             finish();
                         }
 
