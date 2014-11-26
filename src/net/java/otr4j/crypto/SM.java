@@ -163,8 +163,10 @@ public class SM {
             ByteArrayInputStream in = new ByteArrayInputStream(bytes);
             OtrInputStream ois = new OtrInputStream(in);
             int len = ois.readInt();
-            if (len > 100)
+            if (len > 100) {
+                ois.close();
                 throw new SMException("Too many ints");
+            }
             BigInteger[] ints = new BigInteger[len];
             for (int i = 0; i < len; i++) {
                 ints[i] = ois.readBigInt();

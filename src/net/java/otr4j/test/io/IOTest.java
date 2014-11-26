@@ -46,12 +46,14 @@ public class IOTest extends junit.framework.TestCase {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OtrOutputStream oos = new OtrOutputStream(out);
         oos.writeShort(source);
+        oos.close();
 
         byte[] converted = out.toByteArray();
 
         ByteArrayInputStream bin = new ByteArrayInputStream(converted);
         OtrInputStream ois = new OtrInputStream(bin);
         int result = ois.readShort();
+        ois.close();
 
         assertEquals(source, result);
     }
@@ -62,12 +64,14 @@ public class IOTest extends junit.framework.TestCase {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OtrOutputStream oos = new OtrOutputStream(out);
         oos.writeData(source);
+        oos.close();
 
         byte[] converted = out.toByteArray();
 
         ByteArrayInputStream bin = new ByteArrayInputStream(converted);
         OtrInputStream ois = new OtrInputStream(bin);
         byte[] result = ois.readData();
+        ois.close();
 
         assertTrue(java.util.Arrays.equals(source, result));
     }
@@ -80,12 +84,14 @@ public class IOTest extends junit.framework.TestCase {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OtrOutputStream oos = new OtrOutputStream(out);
         oos.writeBigInt(source);
+        oos.close();
 
         byte[] converted = out.toByteArray();
 
         ByteArrayInputStream bin = new ByteArrayInputStream(converted);
         OtrInputStream ois = new OtrInputStream(bin);
         BigInteger result = ois.readBigInt();
+        ois.close();
 
         assertTrue(source.compareTo(result) == 0);
     }
@@ -98,12 +104,14 @@ public class IOTest extends junit.framework.TestCase {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         OtrOutputStream oos = new OtrOutputStream(out);
         oos.writeDHPublicKey(source);
+        oos.close();
 
         byte[] converted = out.toByteArray();
 
         ByteArrayInputStream bin = new ByteArrayInputStream(converted);
         OtrInputStream ois = new OtrInputStream(bin);
         DHPublicKey result = ois.readDHPublicKey();
+        ois.close();
 
         assertTrue(source.getY().compareTo(result.getY()) == 0);
     }

@@ -73,6 +73,7 @@ public class SerializationUtils {
         oos.writeMysteriousT(t);
         byte[] b = out.toByteArray();
         out.close();
+        oos.close();
         return b;
     }
 
@@ -83,6 +84,7 @@ public class SerializationUtils {
         oos.writeData(b);
         byte[] otrb = out.toByteArray();
         out.close();
+        oos.close();
         return otrb;
     }
 

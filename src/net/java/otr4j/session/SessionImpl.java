@@ -645,6 +645,7 @@ public class SessionImpl implements Session {
                     try {
                         eoos.writeShort(tlv.type);
                         eoos.writeTlvData(tlv.value);
+                        eoos.close();
                     } catch (IOException e) {
                         throw new OtrException(e);
                     }
