@@ -15,25 +15,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.onionkit.ui.OrbotHelper;
-import info.guardianproject.otr.IOtrChatSession;
-import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.engine.ImConnection;
-import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
-import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
-import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
-import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
-import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
-import info.guardianproject.otr.app.im.service.ImServiceConstants;
-import info.guardianproject.util.LogCleaner;
-import info.guardianproject.util.XmppUriHelper;
-
-import java.util.HashMap;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -62,7 +43,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -74,6 +54,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
+
+import info.guardianproject.onionkit.ui.OrbotHelper;
+import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.plugin.BrandingResourceIDs;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
+import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.Imps.AccountColumns;
+import info.guardianproject.otr.app.im.provider.Imps.AccountStatusColumns;
+import info.guardianproject.otr.app.im.provider.Imps.CommonPresenceColumns;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.XmppUriHelper;
+
+import java.util.HashMap;
 
 public class AccountActivity extends ActionBarActivity {
 
@@ -131,7 +130,7 @@ public class AccountActivity extends ActionBarActivity {
 
     private boolean mIsNewAccount = false;
 
-    private AsyncTask<String, Void, String> mCreateAccountTask = null;
+    private AsyncTask<Void, Void, String> mCreateAccountTask = null;
 
     @Override
     protected void onCreate(Bundle icicle) {
@@ -151,8 +150,10 @@ public class AccountActivity extends ActionBarActivity {
 
         mSignInHelper = new SignInHelper(this);
         SignInHelper.SignInListener signInListener = new SignInHelper.SignInListener() {
+            @Override
             public void connectedToService() {
             }
+            @Override
             public void stateChanged(int state, long accountId) {
                 if (state == ImConnection.LOGGED_IN)
                 {
@@ -1052,17 +1053,16 @@ public class AccountActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void createNewAccount (String usernameNew, String passwordNew, final long newAccountId, final boolean useTor)
+    public void createNewAccount (final String usernameNew, final String passwordNew, final long newAccountId, final boolean useTor)
     {
         if (mCreateAccountTask != null && (!mCreateAccountTask.isCancelled()))
         {
             mCreateAccountTask.cancel(true);
         }
 
-        mCreateAccountTask = new AsyncTask<String, Void, String>() {
+        mCreateAccountTask = new AsyncTask<Void, Void, String>() {
 
             private ProgressDialog dialog;
-
 
             @Override
             protected void onPreExecute() {
@@ -1073,8 +1073,7 @@ public class AccountActivity extends ActionBarActivity {
             }
 
             @Override
-            protected String doInBackground(String... params) {
-
+            protected String doInBackground(Void... params) {
                 ContentResolver cr = getContentResolver();
                 Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
 
@@ -1090,7 +1089,7 @@ public class AccountActivity extends ActionBarActivity {
                     XmppConnection xmppConn = new XmppConnection(AccountActivity.this);
 
                     xmppConn.initUser(mProviderId, newAccountId);
-                    xmppConn.registerAccount(settings, params[0], params[1], aParams);
+                    xmppConn.registerAccount(settings, usernameNew, passwordNew, aParams);
                     // settings closed in registerAccount
                 } catch (Exception e) {
                     LogCleaner.error(ImApp.LOG_TAG, "error registering new account", e);
@@ -1125,38 +1124,24 @@ public class AccountActivity extends ActionBarActivity {
                     Toast.makeText(AccountActivity.this, "error creating account: " + result, Toast.LENGTH_LONG).show();
                     //AccountActivity.this.setResult(Activity.RESULT_CANCELED);
                     //AccountActivity.this.finish();
-
-
-
                 }
                 else
                 {
-
                     mSignInHelper.activateAccount(mProviderId, newAccountId);
+                    mSignInHelper.signIn(passwordNew, mProviderId, newAccountId, true);
 
                     AccountActivity.this.setResult(Activity.RESULT_OK);
                     AccountActivity.this.finish();
                 }
-
-
             }
-        }.execute(usernameNew, passwordNew);
-
-
+        }.execute();
     }
 
     public void showQR ()
     {
-
            String localFingerprint = OtrAndroidKeyManagerImpl.getInstance(this).getLocalFingerprint(mOriginalUserAccount);
-
            String uri = XmppUriHelper.getUri(mOriginalUserAccount, localFingerprint);
-
            new IntentIntegrator(this).shareText(uri);
-
-
-
-
     }
 
     private void setAccountKeepSignedIn(final boolean rememberPass) {
