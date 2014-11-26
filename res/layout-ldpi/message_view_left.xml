@@ -65,7 +65,7 @@
                 android:layout_marginLeft="24dp"
                  android:layout_marginBottom="1dp"
                  android:padding="6dp"
-            	android:textSize="10dp"                 
+            	android:textSize="10sp"                 
             	   android:color="?messageTextSecondary"
                 />
                    
