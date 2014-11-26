@@ -18,6 +18,7 @@
 package info.guardianproject.otr.app.im.engine;
 
 // import info.guardianproject.otr.app.im.plugin.loopback.LoopbackConnection;
+import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.plugin.xmpp.LLXmppConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppConnection;
 
@@ -52,7 +53,8 @@ public class ConnectionFactory {
      */
     public synchronized ImConnection createConnection(Map<String, String> settings, Context context)
             throws ImException {
-        if ("XMPP".equals(settings.get("im.protocol"))) {
+        String protocolName = settings.get(ImConfigNames.PROTOCOL_NAME);
+        if ("XMPP".equals(protocolName)) {
 
             try
             {
@@ -63,14 +65,14 @@ public class ConnectionFactory {
                 throw new ImException(e.getMessage());
             }
         }
-        if ("LLXMPP".equals(settings.get("im.protocol"))) {
+        if ("LLXMPP".equals(protocolName)) {
             return new LLXmppConnection(context);
         }
-        /*else if ("LOOPBACK".equals(settings.get("im.protocol"))) {
+        /*else if ("LOOPBACK".equals(protocolName)) {
         	return new SMSConnection();
         } */
         else {
-            throw new ImException("Unsupported protocol: " + settings.get("im.protocol"));
+            throw new ImException("Unsupported protocol: " + protocolName);
         }
     }
 }
