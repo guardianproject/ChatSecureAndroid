@@ -49,6 +49,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -80,6 +81,11 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
 
     private static final int REQUEST_CREATE_ACCOUNT = RESULT_FIRST_USER + 2;
 
+    private static final String GOOGLE_ACCOUNT = "google_account";
+    private static final String EXISTING_ACCOUNT = "existing_account";
+    private static final String NEW_ACCOUNT = "new_account";
+    private static final String BONJOUR_ACCOUNT = "bonjour_account";
+    private static final String BURNER_ACCOUNT = "secret_account";
 
     /**
      * The pager widget, which handles animation and allows swiping horizontally to access previous
@@ -238,28 +244,42 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
 
     private void buildAccountList ()
     {
+        int i = 0;
+        int accountProviders = 0;
         List<String> listProviders = helper.getProviderNames();
 
         mGoogleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
 
-        mAccountList = new String[listProviders.size()+3][2]; //potentialProviders + google + create account + burner
-
-        int i = 0;
-
-        mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
-        mAccountList[i++][1] = getString(R.string.account_google_full);
+        if (mGoogleAccounts.length > 0) {
+            accountProviders = listProviders.size() + 3; //potentialProviders + google + create account + burner
+            mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
+            mAccountList[i][1] = getString(R.string.account_google_full);
+            mAccountList[i][2] = GOOGLE_ACCOUNT;
+            i++;
+        } else {
+            accountProviders = listProviders.size() + 2; //potentialProviders + create account + burner
+        }
+        mAccountList = new String[accountProviders][3];
 
         mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);
-        mAccountList[i++][1] = getString(R.string.account_existing_full);
+        mAccountList[i][1] = getString(R.string.account_existing_full);
+        mAccountList[i][2] = EXISTING_ACCOUNT;
+        i++;
 
         mAccountList[i][0] = getString(R.string.i_need_a_new_account);
-        mAccountList[i++][1] = getString(R.string.account_new_full);
+        mAccountList[i][1] = getString(R.string.account_new_full);
+        mAccountList[i][2] = NEW_ACCOUNT;
+        i++;
 
         mAccountList[i][0] = getString(R.string.i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_);
-        mAccountList[i++][1] = getString(R.string.account_wifi_full);
+        mAccountList[i][1] = getString(R.string.account_wifi_full);
+        mAccountList[i][2] = BONJOUR_ACCOUNT;
+        i++;
 
         mAccountList[i][0] = getString(R.string.i_need_a_burner_one_time_throwaway_account_);
-        mAccountList[i++][1] = getString(R.string.account_burner_full);
+        mAccountList[i][1] = getString(R.string.account_burner_full);
+        mAccountList[i][2] = BURNER_ACCOUNT;
+        i++;
 
     }
 
@@ -351,6 +371,7 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
 
                         Thread thread = new Thread ()
                         {
+                            @Override
                             public void run ()
                             {
                                 //get the oauth token
@@ -706,30 +727,32 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
 
                 @Override
                 public void onClick(View v) {
-
-                    if (pos == mAccountList.length-4) //xmpp
+                    String accountType = mAccountList[pos][2];
+                    if (TextUtils.equals(accountType, EXISTING_ACCOUNT))
                     {
                         //otherwise support the actual plugin-type
                         showSetupAccountForm(helper.getProviderNames().get(0),null, null, false,helper.getProviderNames().get(0),false);
                     }
-                    else if (pos == mAccountList.length-2) //create account
+                    else if (TextUtils.equals(accountType, BONJOUR_ACCOUNT))
                     {
                         String username = "";
                         String passwordPlaceholder = "password";//zeroconf doesn't need a password
                         showSetupAccountForm(helper.getProviderNames().get(1),username,passwordPlaceholder, false,helper.getProviderNames().get(1),true);
                     }
-                    else if (pos == mAccountList.length-3) //create account
+                    else if (TextUtils.equals(accountType, NEW_ACCOUNT))
                     {
                         showSetupAccountForm(helper.getProviderNames().get(0), null, null, true, null,false);
                     }
-                    else if (pos == mAccountList.length-1) //create account
+                    else if (TextUtils.equals(accountType, BURNER_ACCOUNT))
                     {
                         createBurnerAccount();
                     }
-                    else
+                    else if (TextUtils.equals(accountType, GOOGLE_ACCOUNT))
                     {
                         addGoogleAccount();
                     }
+                    else
+                        throw new IllegalArgumentException("Mystery account type!");
                 }
 
             });
