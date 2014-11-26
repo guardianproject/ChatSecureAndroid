@@ -26,7 +26,6 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.ISubscriptionListener;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
-import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
@@ -40,8 +39,6 @@ import info.guardianproject.util.XmppUriHelper;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -99,7 +96,6 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -141,7 +137,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mDrawerToggle;
-    
+
     private int mLastPagePosition = -1;
 
     private SimpleAlertHandler mHandler;
@@ -176,7 +172,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         super.onCreate(icicle);
 
         checkCustomFont ();
-        
+
         mApp = (ImApp)getApplication();
         mApp.maybeInit(this);
 
@@ -191,14 +187,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         setupMenu ();
 
         setTitle(R.string.app_name);
-        
+
         mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(
             this,  mDrawer, mToolbar,
             R.string.ok, R.string.cancel
         );
         // Set the drawer toggle as the DrawerListener
-        mDrawer.setDrawerListener(mDrawerToggle);        
+        mDrawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerToggle.syncState();
         mDrawerToggle.setToolbarNavigationClickListener(new OnClickListener ()
@@ -206,18 +202,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
             @Override
             public void onClick(View v) {
-                
+
                 int currentPos = mChatPager.getCurrentItem();
                 if (currentPos > 0) {
                     mChatPager.setCurrentItem(0);
 
                 }
-               
+
             }
-            
-            
+
+
         });
-        
+
         mHandler = new MyHandler(this);
         mRequestedChatId = -1;
 
@@ -256,7 +252,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         mMenu.setGroupVisible(R.id.menu_group_contacts, false);
 
                     }
-                    
+
                     mDrawerToggle.setHomeAsUpIndicator(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
                     mDrawerToggle.setDrawerIndicatorEnabled(false);
                     mDrawerToggle.syncState();
@@ -346,8 +342,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         });
     }
-    
-    
+
+
 
     @Override
     public void setTitle(CharSequence title) {
@@ -443,7 +439,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     @Override
     public void onBackPressed() {
-        
+
         int currentPos = mChatPager.getCurrentItem();
         if (currentPos > 0) {
             mChatPager.setCurrentItem(0);
@@ -576,7 +572,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
            if (intent.getBooleanExtra("showaccounts", false))
                mDrawer.openDrawer(GravityCompat.START);
-           
+
             if (data != null)
             {
                 if (data.getScheme() != null && data.getScheme().equals("immu"))
@@ -802,13 +798,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
             }
         }
-        
+
         mToolbar.setOnMenuItemClickListener(new OnMenuItemClickListener ()
         {
 
             @Override
             public boolean onMenuItemClick(MenuItem item) {
-                
+
                 switch (item.getItemId()) {
 
                 case R.id.menu_send_image:
@@ -910,7 +906,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         mChatPager.setCurrentItem(0);
 
                     }
-                   
+
                     return true;
 
                 case R.id.menu_view_accounts:
@@ -939,11 +935,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
 
                 return false;
-                
+
             }
-            
+
         });
-        
+
 
     }
     
@@ -1047,77 +1043,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private boolean requireOpenDashboardOnStart(Intent intent) {
         return intent.getBooleanExtra(ImServiceConstants.EXTRA_INTENT_SHOW_MULTIPLE, false);
     }
-
-    private void sendCallInvite ()
-    {
-
-       // getChatView().sendMessage("&#9742; Click to start call <a href=\"https://foo.com\">sip:" + this.mSipAccount + "</a>");
-
-    }
-
-
-
-    /*
-    public void updateOtrMenuState() {
-
-        ChatView chatView = getCurrentChatView ();
-
-        if (menuOtr == null || chatView == null)
-            return;
-
-        IOtrChatSession otrChatSession =  chatView.getOtrChatSession();
-
-        if (otrChatSession != null) {
-            try {
-                SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
-
-                if (sessionStatus != SessionStatus.PLAINTEXT) {
-                    menuOtr.setTitle(R.string.menu_otr_stop);
-                    menuOtr.setIcon(this.getResources().getDrawable(R.drawable.ic_menu_encrypt));
-
-                } else {
-                    menuOtr.setTitle(R.string.menu_otr_start);
-                    menuOtr.setIcon(this.getResources().getDrawable(R.drawable.ic_menu_unencrypt));
-
-                }
-
-            } catch (RemoteException e) {
-                Log.d("NewChat", "Error accessing remote service", e);
-            }
-        } else {
-            menuOtr.setTitle(R.string.menu_otr_start);
-
-        }
-    }*/
-
-
-    /*
-    private void switchChat(int delta) {
-
-        ChatView chatView = getCurrentChatView ();
-        long providerId =  chatView.getProviderId();
-        long accountId =  chatView.getAccountId();
-        String contact =  chatView.getUserName();
-
-        mChatSwitcher.rotateChat(delta, contact, accountId, providerId);
-    }*/
-
-    /*
-    private void startContactPicker() {
-        Uri.Builder builder = Imps.Contacts.CONTENT_URI_ONLINE_CONTACTS_BY.buildUpon();
-        ContentUris.appendId(builder,  getChatView().getProviderId());
-        ContentUris.appendId(builder,  getChatView().getAccountId());
-        Uri data = builder.build();
-
-        try {
-            Intent i = new Intent(Intent.ACTION_PICK, data);
-            i.putExtra(ContactsPickerActivity.EXTRA_EXCLUDED_CONTACTS,  getChatView()
-                    .getCurrentChatSession().getParticipants());
-            startActivityForResult(i, REQUEST_PICK_CONTACTS);
-        } catch (RemoteException e) {
-            mHandler.showServiceErrorAlert();
-        }
-    }*/
 
     void startImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK);
@@ -1286,6 +1211,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 MediaScannerConnection.scanFile(
                         this, new String[] { file.toString() }, null,
                         new MediaScannerConnection.OnScanCompletedListener() {
+                            @Override
                             public void onScanCompleted(String path, final Uri uri) {
 
                                 handler.post( new Runnable() {
@@ -1323,7 +1249,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 String username = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 long providerId = resultIntent.getLongExtra(ContactsPickerActivity.EXTRA_RESULT_PROVIDER,-1);
-                long accountId = resultIntent.getLongExtra(ContactsPickerActivity.EXTRA_RESULT_ACCOUNT,-1);
 
                 try {
 
@@ -1333,10 +1258,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         showInvitationHasSent(username);
                     } else {
                         startChat(providerId, username,true);
-
-                    //    chatSession.convertToGroupChat();
-                     //   new ContactInvitor(chatSession, username).start();
-
                     }
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert("Error picking contacts");
@@ -1371,17 +1292,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
             }
         }
-    }
-
-    private void testSendIntent(Uri uri) {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        try {
-            String url = OtrDataHandler.URI_PREFIX_OTR_IN_BAND + URLEncoder.encode(uri.toString(), "UTF-8");
-            intent.setData(Uri.parse(url));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
-        startActivity(intent);
     }
 
     IChatSession getCurrentChatSession() {
@@ -1493,45 +1403,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     void showInvitationHasSent(String contact) {
         Toast.makeText(NewChatActivity.this, getString(R.string.invitation_sent_prompt, contact),
                 Toast.LENGTH_SHORT).show();
-    }
-
-    private class ContactInvitor extends ChatListenerAdapter {
-        private final IChatSession mChatSession;
-        String mContact;
-
-        public ContactInvitor(IChatSession session, String data) {
-            mChatSession = session;
-            mContact = data;
-        }
-
-        @Override
-        public void onConvertedToGroupChat(IChatSession ses) {
-            try {
-                final long chatId = mChatSession.getId();
-                mChatSession.inviteContact(mContact);
-                mHandler.post(new Runnable() {
-                    public void run() {
-
-                        ChatView chatView = getCurrentChatView ();
-
-                        if (chatView != null)
-                        {
-                            chatView.bindChat(chatId);
-                            showInvitationHasSent(mContact);
-                        }
-                    }
-                });
-                mChatSession.unregisterChatListener(this);
-            } catch (RemoteException e) {
-
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "group chat error",e);
-            }
-        }
-
-        public void start() throws RemoteException {
-            mChatSession.registerChatListener(this);
-        }
     }
 
     /** Show the context menu on a history item. */
@@ -1752,9 +1623,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public Object instantiateItem(ViewGroup container, int pos) {
             Object item = super.instantiateItem(container, pos);
-            if (pos > 0) {
-                ChatViewFragment frag = (ChatViewFragment)item;
-            }
             return item;
         }
 
@@ -2032,6 +1900,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         }
 
+        @Override
         public void showProfile (Cursor c)
         {
             if (c != null) {
@@ -2143,6 +2012,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 //            Log.d(TAG, "CVF construct " + super.toString());
         }
 
+        @Override
         public String toString() {
             return super.toString() + " -> " + getArguments().getString("contactName");
         }
@@ -2251,6 +2121,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             .setTitle(R.string.create_or_join_group_chat)
             .setView(dialogGroup)
             .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     /* User clicked OK so do some stuff */
@@ -2287,6 +2158,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
             })
             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
 
                     /* User clicked cancel so do some stuff */
@@ -2395,11 +2267,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
 
               }
-			
-			protected void onProgressUpdate(Long... showChatId) {
+
+			@Override
+            protected void onProgressUpdate(Long... showChatId) {
                 showChat(showChatId[0]);
             }
-			
+
             @Override
             protected void onPostExecute(String result) {
                 super.onPostExecute(result);
@@ -2456,12 +2329,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             mHandler.postDelayed(new Runnable()
             {
 
+                @Override
                 public void run ()
                 {
                     new AlertDialog.Builder(NewChatActivity.this)
                     .setTitle(getString(R.string.subscriptions))
                     .setMessage(getString(R.string.subscription_prompt,subFrom))
                     .setPositiveButton(R.string.approve_subscription, new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int whichButton) {
 
                             approveSubscription(subProviderId, subFrom);
@@ -2469,6 +2344,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         }
                     })
                     .setNegativeButton(R.string.decline_subscription, new DialogInterface.OnClickListener() {
+                        @Override
                         public void onClick(DialogInterface dialog, int whichButton) {
 
                             declineSubscription(subProviderId, subFrom);
@@ -2527,6 +2403,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
 
     public class ProviderListItemFactory implements LayoutInflater.Factory {
+        @Override
         public View onCreateView(String name, Context context, AttributeSet attrs) {
             if (name != null && name.equals(ProviderListItem.class.getName())) {
                 return new ProviderListItem(context, NewChatActivity.this, null);
@@ -2565,15 +2442,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private final ISubscriptionListener.Stub mSubscriptionListener = new ISubscriptionListener.Stub() {
 
+        @Override
         public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
             showSubscriptionDialog (providerId, from.getAddress().getAddress());
 
         }
 
+        @Override
         public void onSubscriptionApproved(Contact contact, long providerId, long accountId) {
 
         }
 
+        @Override
         public void onSubscriptionDeclined(Contact contact, long providerId, long accountId) {
 
         }

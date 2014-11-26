@@ -391,14 +391,7 @@ public class MessageView extends FrameLayout {
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             //set a general mime type not specific
-            if (mimeType != null)
-            {
-                intent.setDataAndType(Uri.parse( body ), mimeType);
-            }
-            else
-            {
-                intent.setData(Uri.parse( body ));
-            }
+            intent.setDataAndType(Uri.parse( body ), mimeType);
 
             Context context = getContext().getApplicationContext();
 
@@ -499,11 +492,6 @@ public class MessageView extends FrameLayout {
 
                     // confirm the holder is still paired to this uri
                     if( ! uri.equals( aHolder.mMediaUri ) ) {
-                        return ;
-                    }
-                    // thumbnail extraction failed, use bropken image icon
-                    if( result == null ) {
-                        mHolder.mMediaThumbnail.setImageResource(R.drawable.ic_broken_image);
                         return ;
                     }
                     // set the thumbnail
