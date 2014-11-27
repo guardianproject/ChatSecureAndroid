@@ -37,7 +37,7 @@
            android:id="@+id/menu_otr"
         />
         
-             <item android:id="@+id/menu_view_profile"
+             <item android:id="@+id/menu_verify_or_view"
         android:title="@string/menu_verify"
         android:icon="@drawable/ic_white_encrypted_not_verified"
          app:showAsAction="always"
@@ -58,7 +58,7 @@
         > <menu>
             
             
-         <item android:id="@+id/menu_view_profile"
+         <item android:id="@+id/menu_verify_or_view"
         android:title="@string/menu_verify"
         android:icon="@drawable/ic_white_encrypted_not_verified"
          app:showAsAction="always"
@@ -92,7 +92,7 @@
           app:showAsAction="always"
         >
               <menu>
-         <item android:id="@+id/menu_view_profile"
+         <item android:id="@+id/menu_verify_or_view"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_white_encrypted_and_verified"
          app:showAsAction="always"

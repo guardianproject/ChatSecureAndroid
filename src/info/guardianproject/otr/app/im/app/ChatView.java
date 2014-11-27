@@ -87,7 +87,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -389,6 +388,7 @@ public class ChatView extends LinearLayout {
                 b.setTitle(R.string.select_link_title);
                 b.setCancelable(true);
                 b.setAdapter(a, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Uri uri = Uri.parse(linkUrls.get(which));
                         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -399,6 +399,7 @@ public class ChatView extends LinearLayout {
                     }
                 });
                 b.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                    @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
                     }
@@ -407,7 +408,7 @@ public class ChatView extends LinearLayout {
             }
             else
             {
-                viewProfile();
+                showVerifyDialog();
             }
         }
     };
@@ -671,17 +672,14 @@ public class ChatView extends LinearLayout {
 
             @Override
             public void onClick(View v) {
-               viewProfile();
-
+                showVerifyDialog();
             }
-
-
-
         });
 
         //mOtrSwitch.setOnCheckedChangeListener(mOtrListener);
 
         mComposeMessage.setOnKeyListener(new OnKeyListener() {
+            @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     switch (keyCode) {
@@ -1361,27 +1359,6 @@ public class ChatView extends LinearLayout {
 
     }
 
-    public void viewProfile() {
-        if (getChatId() == -1)
-            return;
-
-        showVerifyDialog();
-        /**
-
-        Uri data = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, getChatId());
-
-        Intent intent = new Intent(Intent.ACTION_VIEW, data);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_PROVIDER_ID, mProviderId);
-        intent.putExtra(ImServiceConstants.EXTRA_INTENT_ACCOUNT_ID, mAccountId);
-
-            if (mRemoteAddress != null)
-                intent.putExtra("jid", mRemoteAddress);
-
-        mNewChatActivity.startActivity(intent);
-        */
-
-    }
-
     public void verifyScannedFingerprint (String scannedFingerprint)
     {
         try
@@ -1398,48 +1375,56 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    private void showVerifyDialog() {
+    public void showVerifyDialog() {
+        if (getChatId() == -1)
+            return;
 
-        try
-        {
+        try {
             IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
+            if (otrChatSession == null) {
+                return;
+            }
 
             String localFingerprint = otrChatSession.getLocalFingerprint();
             String remoteFingerprint = otrChatSession.getRemoteFingerprint();
-
-            if (localFingerprint == null || remoteFingerprint == null)
-            {
-                //show a message
+            if (TextUtils.isEmpty(localFingerprint) || TextUtils.isEmpty(remoteFingerprint)) {
+                return;
             }
-            else
-            {
-                StringBuffer message = new StringBuffer();
-                message.append(mContext.getString(R.string.fingerprint_for_you)).append("\n").append(prettyPrintFingerprint(localFingerprint)).append("\n\n");
-                message.append(mContext.getString(R.string.fingerprint_for_)).append(otrChatSession.getRemoteUserId()).append("\n").append(prettyPrintFingerprint(otrChatSession.getRemoteFingerprint())).append("\n\n");
 
-                message.append(mContext.getString(R.string.are_you_sure_you_want_to_confirm_this_key_));
+            StringBuffer message = new StringBuffer();
+            message.append(mContext.getString(R.string.fingerprint_for_you)).append("\n")
+                    .append(prettyPrintFingerprint(localFingerprint)).append("\n\n");
+            message.append(mContext.getString(R.string.fingerprint_for_))
+                    .append(otrChatSession.getRemoteUserId()).append("\n")
+                    .append(prettyPrintFingerprint(remoteFingerprint)).append("\n\n");
 
-                new AlertDialog.Builder(mContext).setTitle(R.string.verify_key_).setMessage(message.toString())
-                        .setPositiveButton(R.string.menu_verify_fingerprint, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                verifyRemoteFingerprint();
-                            }
-                        }).setNegativeButton(R.string.menu_verify_secret, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                initSmpUI();
-                            }
-                        })
-                        .setNeutralButton(R.string.menu_scan, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                new IntentIntegrator(mNewChatActivity).initiateScan();
+            message.append(mContext.getString(R.string.are_you_sure_you_want_to_confirm_this_key_));
 
-                            }
-                        })
-                        .show();
-            }
-        }
-        catch (RemoteException e)
-        {
+            new AlertDialog.Builder(mContext)
+                    .setTitle(R.string.verify_key_)
+                    .setMessage(message.toString())
+                    .setPositiveButton(R.string.menu_verify_fingerprint,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    verifyRemoteFingerprint();
+                                }
+                            })
+                    .setNegativeButton(R.string.menu_verify_secret,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    initSmpUI();
+                                }
+                            })
+                    .setNeutralButton(R.string.menu_scan, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            new IntentIntegrator(mNewChatActivity).initiateScan();
+
+                        }
+                    }).show();
+        } catch (RemoteException e) {
             LogCleaner.error(ImApp.LOG_TAG, "unable to perform manual key verification", e);
         }
     }
