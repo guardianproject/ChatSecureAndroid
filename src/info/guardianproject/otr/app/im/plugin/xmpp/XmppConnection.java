@@ -81,7 +81,6 @@ import org.jivesoftware.smack.packet.Message.Body;
 import org.jivesoftware.smack.packet.Packet;
 import org.jivesoftware.smack.packet.Presence.Mode;
 import org.jivesoftware.smack.packet.Presence.Type;
-import org.jivesoftware.smack.packet.RosterPacket.ItemStatus;
 import org.jivesoftware.smack.provider.PrivacyProvider;
 import org.jivesoftware.smack.provider.ProviderManager;
 import org.jivesoftware.smack.proxy.ProxyInfo;
@@ -2215,13 +2214,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     else if (rEntry == null)
                     {
                             roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
-                        
+
                     }
 
                 } catch (XMPPException e) {
 
                     debug(TAG,"error updating remote roster",e);
                     throw new ImException("error updating remote roster");
+                } catch (IllegalStateException e) {
+                    String msg = "Not logged in to server while updating remote roster";
+                    debug(TAG, msg, e);
+                    throw new ImException(msg);
                 }
 
                 do_loadContactLists();
