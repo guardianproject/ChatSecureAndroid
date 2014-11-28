@@ -128,7 +128,8 @@ public class AddContactActivity extends ActionBarActivity {
                 new int[] { android.R.id.text1 });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        if (mCursorProviders.getCount() > 0)
+        // TODO Something is causing the managedQuery() to return null, use null guard for now
+        if (mCursorProviders != null && mCursorProviders.getCount() > 0)
         {
             mCursorProviders.moveToFirst();
             mProviderId = mCursorProviders.getLong(PROVIDER_ID_COLUMN);
@@ -141,6 +142,8 @@ public class AddContactActivity extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                     int arg2, long arg3) {
+                if (mCursorProviders == null)
+                    return;
                 mCursorProviders.moveToPosition(arg2);
                 mProviderId = mCursorProviders.getLong(PROVIDER_ID_COLUMN);
                 mAccountId = mCursorProviders.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
