@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
+import android.widget.Toast;
 
 public class AudioPlayer {
     private static final String TAG = "AudioPlayer";
@@ -27,7 +28,7 @@ public class AudioPlayer {
         try {
             initPlayer();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            Toast.makeText(mContext, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
