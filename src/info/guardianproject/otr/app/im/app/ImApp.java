@@ -610,6 +610,8 @@ public class ImApp extends Application {
                 String fullName = c.getString(2);
                 String signUpUrl = c.getString(3);
 
+                if (mProviders == null) // mProviders has been reset
+                    break;
                 mProviders.put(id, new ProviderDef(id, providerName, fullName, signUpUrl));
             }
         } finally {
