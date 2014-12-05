@@ -676,7 +676,7 @@
 			<string name="account_existing_full">Connect to my existing account on a specific Jabber / XMPP server.</string>
 			
 			<string name="i_want_to_chat_using_my_google_account">Google Account </string>
-			<string name="account_google_full">Chat with other Google Hangouts (formerly Google Talk) users using your devices existing Google Account(s).</string>
+			<string name="account_google_full">Chat with other Google users using your existing Google account.</string>
 			
 			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi Mesh Chat</string>
 			<string name="account_wifi_full">Chat with others on the same local WiFi network or mesh - no Internet or server required!</string>
