@@ -11,6 +11,9 @@ http://www.bouncycastle.org/java.html
 and SQLCipher for Android:
 https://guardianproject.info/code/sqlcipher/
 
+and some beautiful images from Trey Ratcliff:
+https://www.flickr.com/photos/stuckincustoms/6960953088/
+https://creativecommons.org/licenses/by-nc-sa/2.0/
 
 ## Bug reports
 
