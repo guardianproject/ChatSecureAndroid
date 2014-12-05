@@ -252,14 +252,19 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
 
         if (mGoogleAccounts.length > 0) {
             accountProviders = listProviders.size() + 3; //potentialProviders + google + create account + burner
+
+            mAccountList = new String[accountProviders][3];
+            
             mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
             mAccountList[i][1] = getString(R.string.account_google_full);
             mAccountList[i][2] = GOOGLE_ACCOUNT;
             i++;
         } else {
             accountProviders = listProviders.size() + 2; //potentialProviders + create account + burner
+
+            mAccountList = new String[accountProviders][3];
         }
-        mAccountList = new String[accountProviders][3];
+        
 
         mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);
         mAccountList[i][1] = getString(R.string.account_existing_full);
