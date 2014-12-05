@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -929,6 +930,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 case R.id.menu_group_chat:
                     showGroupChatDialog();
                     return true;
+                case R.id.menu_import_keys:
+                    importKeyStore();
+                    return true;
                 }
 
                 return false;
@@ -937,6 +941,19 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             
         });
         
+
+    }
+    
+
+    private void importKeyStore ()
+    {
+        boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
+
+    }
+
+    private void exportKeyStore ()
+    {
+        //boolean doKeyStoreExport = OtrAndroidKeyManagerImpl.getInstance(this).doKeyStoreExport(password);
 
     }
 

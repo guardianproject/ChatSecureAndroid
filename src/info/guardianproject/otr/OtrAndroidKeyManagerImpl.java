@@ -860,7 +860,7 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
             doKeyStoreImport = true;
             importOtrKeyStore(otrKeystoreAES, activity);
         }
-        else if (intent.getData() != null)
+        else if (intent != null && intent.getData() != null)
         {
             Uri uriData = intent.getData();
             String path = null;

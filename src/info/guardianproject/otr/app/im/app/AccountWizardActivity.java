@@ -54,6 +54,7 @@ import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -226,53 +227,12 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //MenuInflater inflater = getSupportMenuInflater();
-       // inflater.inflate(R.menu.accounts_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-        case R.id.menu_sign_out_all:
-            doHardShutdown();
-            return true;
-        case R.id.menu_add_account:
-         //   showExistingAccountListDialog();
-            return true;
-        case R.id.menu_settings:
-            Intent sintent = new Intent(this, SettingActivity.class);
-            startActivityForResult(sintent,0);
-            return true;
-        case R.id.menu_import_keys:
-            importKeyStore();
-            return true;
-       // case R.id.menu_exit:
-      //      signOutAndKillProcess();
-
-          //  return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
+   
     private String[][] mAccountList;
     private String mNewUser;
 
     private ImPluginHelper helper = ImPluginHelper.getInstance(this);
 
-    private void importKeyStore ()
-    {
-        boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
-
-    }
-
-    private void exportKeyStore ()
-    {
-        //boolean doKeyStoreExport = OtrAndroidKeyManagerImpl.getInstance(this).doKeyStoreExport(password);
-
-    }
 
     Account[] mGoogleAccounts;
 
