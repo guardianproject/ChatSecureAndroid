@@ -23,7 +23,6 @@
         android:text="@string/swipe_hint"
          android:fontFamily="sans-serif-light"
         android:textColor="#aaaaaa"
-        android:layout_marginTop="100dp"
         android:gravity="center"
          />
 
