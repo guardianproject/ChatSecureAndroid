@@ -2,8 +2,8 @@
     package="info.guardianproject.otr.app.im"
     android:installLocation="auto"
     android:sharedUserLabel="@string/perm_label"
-    android:versionCode="1407002"
-    android:versionName="14.0.7-BETA-2" >
+    android:versionCode="1408000"
+    android:versionName="14.0.8" >
 
     <supports-screens
         android:anyDensity="true"
@@ -231,7 +231,6 @@
         </activity>
         <activity
             android:name="info.guardianproject.otr.app.im.app.AccountWizardActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="false" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
