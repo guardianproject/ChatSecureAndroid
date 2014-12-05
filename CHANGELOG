@@ -1,6 +1,40 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.0.8 / 2014-12-05 / c5e5c38d9ffda8a19addd5ee10ff88e980a62b7f
+
+* Misc fixes
+d9c1b2d only auto-start OTR if the other person is also using chatsecure
+a2fcd17 added beautiful new background from trey ratcliff https://www.flickr.com/photos/stuckincustoms/6960953088/ https://creativeco
+aa5658c re-implemented keysync
+af4b270 improve account setup screen with left/right swipe hint
+6c6ad63 simplify connection creation code
+
+* Improve support for locale/language switching
+21e741c Merge branch 'xmpp-urls-and-languages' of https://github.com/eighthave/ChatSecureAndroid into eighthave-xmpp-urls-and-languag
+2a2e0e0 purge unused menu from WelcomeActivity
+05ff8cb add button to first launch lock screen to change language
+5893eb0 don't use android.R.string, it might not have Tibetan and others
+a012cf4 ImApp.checkLocale() removed unused return value
+75bd214 use system names for Languages preferences menu
+bb130cb check status of pref.commit() otherwise just use pref.apply()
+3111d91 remove empty translations so they don't show up in the languages list
+16f1dbe ImApp.setNewLocale uses new setLocale() method on >= android-17
+e2b3536 move all strings to resources so they can be translated
+
+* Improve presence/contact list loading
+7d8e2bf always load lists
+383bd85 always reload lists even if previously loaded
+da31c36 improve presence handling
+00d84de clean up UI lists and contact views
+
+* Standardize handler URI logic
+40b50d0 receive clicked im: URLs (syntax defined in RFC3860)
+a78ecc3 tweak displayed xmpp: URL to work on more apps and follow RFC5122
+dd16cb3 handle all incoming xmpp: URIs using XmppUriHandler.parse()
+0c566ec XmppUriHelper.parse() parses xmpp:, xmpp://, and xmpp:/// URLs
+
+
 14.0.7 / 2014-11-13 / 9914be3aad11880bbeb7616934d6056e35957b03 
 
 * Connection management improvements
