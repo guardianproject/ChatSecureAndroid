@@ -192,10 +192,16 @@ public class ChatView extends LinearLayout {
             {
                 boolean isConnected = (mConn == null) ? false : mConn.getState() != ImConnection.SUSPENDED;
 
+                        
                 if (mLastSessionStatus == SessionStatus.PLAINTEXT && isConnected) {
 
-                    if (mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
-                                || this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OPPORTUNISTIC)
+
+                    boolean otrPolicyAuto = mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
+                            || this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OPPORTUNISTIC;
+                    
+                    boolean isChatSecure = (mRemoteAddress != null && mRemoteAddress.contains("ChatSecure"));
+                        
+                    if (otrPolicyAuto && isChatSecure) //if set to auto, and is chatsecure, then start encryption
                     {
                            //automatically attempt to turn on OTR after 1 second
                             mHandler.postAtTime(new Runnable (){
@@ -251,12 +257,12 @@ public class ChatView extends LinearLayout {
 
                             otrChatSession.startChatEncryption();
 
-                            Toast.makeText(getContext(),getResources().getString(R.string.starting_otr_chat), Toast.LENGTH_LONG).show();
+                         //   Toast.makeText(getContext(),getResources().getString(R.string.starting_otr_chat), Toast.LENGTH_LONG).show();
                         }
                         else
                         {
                             otrChatSession.stopChatEncryption();
-                            Toast.makeText(getContext(),getResources().getString(R.string.stopping_otr_chat), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getContext(),getResources().getString(R.string.stopping_otr_chat), Toast.LENGTH_LONG).show();
 
                         }
 
