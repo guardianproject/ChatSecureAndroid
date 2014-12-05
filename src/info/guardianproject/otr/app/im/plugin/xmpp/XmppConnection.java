@@ -3023,7 +3023,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         Log.e(ImApp.LOG_TAG,"wtf is this?",e);
                     }
                     
-                    Log.d(ImApp.LOG_TAG,"XMPP processed presence q=" + alUpdate.size());
+                    //Log.d(ImApp.LOG_TAG,"XMPP processed presence q=" + alUpdate.size());
 
                     mContactListManager.notifyContactsPresenceUpdated(alUpdate.toArray(new Contact[alUpdate.size()]));
                     loadVCardsAsync();
