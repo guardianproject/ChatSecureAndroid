@@ -32,7 +32,7 @@
         <menu>
          <item 
         android:title="@string/menu_otr_start"
-         android:icon="@drawable/ic_white_encrypted_not_verified"
+         android:icon="@drawable/ic_white_encrypted_and_verified"
           app:showAsAction="always"
            android:id="@+id/menu_otr"
         />
