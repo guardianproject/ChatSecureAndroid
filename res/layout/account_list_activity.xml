@@ -4,13 +4,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-     android:background="?listBackground"
+     
+    android:background="@drawable/csbackground"
     >
 <android.support.v4.view.ViewPager
     android:id="@+id/pager"
     android:layout_width="match_parent"
      android:layout_height="0dp"
         android:layout_weight="1" />
+
+
+ <TextView style="?android:textAppearanceSmall"
+        android:padding="8dp"
+        android:paddingTop="0dp"
+        android:lineSpacingMultiplier="1.2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/swipe_hint"
+         android:fontFamily="sans-serif-light"
+        android:textColor="#aaaaaa"
+        android:layout_marginTop="100dp"
+        android:gravity="center"
+         />
 
  <com.viewpagerindicator.CirclePageIndicator
         android:id="@+id/indicator"

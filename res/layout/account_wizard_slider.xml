@@ -1,17 +1,23 @@
 <!-- fragment_screen_slide_page.xml -->
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:layout_gravity="center"
      >
-    
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical|center_horizontal"
+    android:gravity="center"
     android:orientation="vertical"
     android:padding="12dp"
+    android:layout_gravity="center"
+    android:background="#cccccccc"
      >
 
     <TextView style="?android:textAppearanceLarge"
@@ -48,9 +54,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_gravity="center"
-			android:background="@drawable/btn_green"
-				style="@style/btn_white"
          />
+    
+    
+</LinearLayout>
 </LinearLayout>
     
-</ScrollView>
