@@ -10,8 +10,8 @@
         android:id="@+id/frameRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="0dp"
-        android:background="#99ffffff"
+        android:layout_margin="12dp"
+        android:background="#ddffffff"
         android:orientation="vertical" >
 
         <LinearLayout

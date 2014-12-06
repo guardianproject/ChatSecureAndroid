@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:text="@string/swipe_hint"
          android:fontFamily="sans-serif-light"
-        android:textColor="#aaaaaa"
+        android:textColor="#cccccc"
+        android:background="#dd333333"
         android:gravity="center"
          />
 
@@ -35,5 +36,6 @@
         app:fillColor="@color/holo_blue_light"
         app:strokeColor="#FF000000"
         app:strokeWidth="2dp"
+           android:background="#dd333333"
         />
 </LinearLayout>
