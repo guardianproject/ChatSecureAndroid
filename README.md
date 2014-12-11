@@ -12,13 +12,10 @@ and SQLCipher for Android:
 https://guardianproject.info/code/sqlcipher/
 
 and some CC0 public domain beautiful images:
-Sylwia Bartyzel
-https://unsplash.com/sylwiabartyzel
-https://unsplash.com/license
 
- from Trey Ratcliff:
-https://www.flickr.com/photos/stuckincustoms/6960953088/
-https://creativecommons.org/licenses/by-nc-sa/2.0/
+Ry Van
+https://unsplash.com/ryvanveluwen
+https://unsplash.com/license
 
 ## Bug reports
 
