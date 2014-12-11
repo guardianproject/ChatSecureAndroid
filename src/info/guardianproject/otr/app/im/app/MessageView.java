@@ -21,6 +21,7 @@ import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.ImageViewActivity;
+import info.guardianproject.otr.app.im.ui.LetterAvatar;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.AudioPlayer;
 import info.guardianproject.util.LogCleaner;
@@ -189,13 +190,13 @@ public class MessageView extends FrameLayout {
             String[] nickParts = nickname.split("/");
 
             lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
-            showAvatar(address,true,presenceStatus);
+            showAvatar(address,nickname,true,presenceStatus);
 
         }
         else
         {
             lastMessage = formatMessage(body);
-            showAvatar(address,true,presenceStatus);
+            showAvatar(address,nickname,true,presenceStatus);
 
             mHolder.resetOnClickListenerMediaThumbnail();
             if( mimeType != null ) {
@@ -638,16 +639,14 @@ public class MessageView extends FrameLayout {
 
     }
 
-    private static RoundedAvatarDrawable AVATAR_DEFAULT;
-
-    private void showAvatar (String address, boolean isLeft, int encryptionState)
+    private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)
     {
         if (mHolder.mAvatar == null)
             return;
 
         mHolder.mAvatar.setVisibility(View.GONE);
 
-        if (address != null)
+        if (address != null && isLeft)
         {
 
             RoundedAvatarDrawable avatar = null;
@@ -657,28 +656,61 @@ public class MessageView extends FrameLayout {
 
             if (avatar != null)
             {
-                if (isLeft)
-                {
-                    mHolder.mAvatar.setVisibility(View.VISIBLE);
-                    mHolder.mAvatar.setImageDrawable(avatar);
-                }
+                mHolder.mAvatar.setVisibility(View.VISIBLE);
+                mHolder.mAvatar.setImageDrawable(avatar);
+
+                setAvatarBorder(presenceStatus, avatar);
+
             }
             else
             {
+                int color = getAvatarBorder(presenceStatus);
+                int padding = 16;
+                LetterAvatar lavatar = new LetterAvatar(getContext(), color, nickname.substring(0,1).toUpperCase(), padding);
+
+                mHolder.mAvatar.setVisibility(View.VISIBLE);
+                mHolder.mAvatar.setImageDrawable(lavatar);
+                
+                /*
                 if (AVATAR_DEFAULT == null)
                 {
                     AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
                             R.drawable.avatar_unknown));
+                    
+                    
+                    
                 }
 
                 avatar = AVATAR_DEFAULT;
                 mHolder.mAvatar.setVisibility(View.VISIBLE);
                 mHolder.mAvatar.setImageDrawable(avatar);
+                */
 
             }
 
-            setAvatarBorder(encryptionState, avatar);
         }
+    }
+    
+    public int getAvatarBorder(int status) {
+        switch (status) {
+        case Imps.Presence.AVAILABLE:
+            return (getResources().getColor(R.color.holo_green_light));
+
+        case Imps.Presence.IDLE:
+            return (getResources().getColor(R.color.holo_green_dark));
+        case Imps.Presence.AWAY:
+            return (getResources().getColor(R.color.holo_orange_light));
+
+        case Imps.Presence.DO_NOT_DISTURB:
+            return(getResources().getColor(R.color.holo_red_dark));
+
+        case Imps.Presence.OFFLINE:
+            return(getResources().getColor(R.color.holo_grey_dark));
+
+        default:
+        }
+        
+        return Color.TRANSPARENT;
     }
 
     public void bindPresenceMessage(String contact, int type, boolean isGroupChat, boolean scrolling) {

@@ -21,7 +21,9 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.R.color;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.LetterAvatar;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.Debug;
 import net.java.otr4j.session.SessionStatus;
@@ -29,6 +31,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -215,11 +218,15 @@ public class ContactView extends FrameLayout {
                     }
                     else
                     {
-                        avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
-                                R.drawable.avatar_unknown));
-
-                        setAvatarBorder(presence,avatar);
-                        holder.mAvatar.setImageDrawable(avatar);
+                       // avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
+                         //       R.drawable.avatar_unknown));
+                        
+                        int color = getAvatarBorder(presence);
+                        int padding = 16;
+                        LetterAvatar lavatar = new LetterAvatar(getContext(), color, nickname.substring(0,1).toUpperCase(), padding);
+                        
+                      //  setAvatarBorder(presence,avatar);
+                        holder.mAvatar.setImageDrawable(lavatar);
 
                     }
 
@@ -359,6 +366,28 @@ public class ContactView extends FrameLayout {
 
         default:
         }
+    }
+    
+    public int getAvatarBorder(int status) {
+        switch (status) {
+        case Imps.Presence.AVAILABLE:
+            return (getResources().getColor(R.color.holo_green_light));
+
+        case Imps.Presence.IDLE:
+            return (getResources().getColor(R.color.holo_green_dark));
+        case Imps.Presence.AWAY:
+            return (getResources().getColor(R.color.holo_orange_light));
+
+        case Imps.Presence.DO_NOT_DISTURB:
+            return(getResources().getColor(R.color.holo_red_dark));
+
+        case Imps.Presence.OFFLINE:
+            return(getResources().getColor(R.color.holo_grey_dark));
+
+        default:
+        }
+        
+        return Color.TRANSPARENT;
     }
     /*
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
