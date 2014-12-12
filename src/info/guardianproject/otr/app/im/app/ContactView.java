@@ -222,7 +222,7 @@ public class ContactView extends FrameLayout {
                          //       R.drawable.avatar_unknown));
                         
                         int color = getAvatarBorder(presence);
-                        int padding = 16;
+                        int padding = 24;
                         LetterAvatar lavatar = new LetterAvatar(getContext(), color, nickname.substring(0,1).toUpperCase(), padding);
                         
                       //  setAvatarBorder(presence,avatar);
