@@ -1,6 +1,48 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.0.9 / 2014-12-15 / ac8027fe74409cf2afb2ad22e3a0e76118017ced
+
+* Design and usability
+2d811fd make lock, wizard screens user user background fix lookup of file path from returned URI of images
+c6c1e4b add new default material images original images generated with Tapet app
+831c7cc fixes #4277 and issue with blank frag after rotate
+f899c96 update background image to material style
+caba6fa sync up file layout with portrait version for easy comparing
+98e7533 include languageButton in landscape layout
+c0536d2 make Orbot install link a direct link to app in Google Play and F-Droid
+a8a79ab update LetterAvatar to better match Gmail material style
+a607d49 add round letter avatar for contact w/o image
+5d86664 make start OTR menu the green/verified one
+3f651c8 don't throw unhandled Exception if audio message is unplayable
+6134d31 handle "opaque" xmpp: URIs from QR scan
+51d7d3d in "New Account", only show Google option if there are Google accounts
+
+* Core fixes
+4536135 test whether pinned domains are working properly with the pins
+e397110 remove defunct XMPP server from recommended list: rkquery.de
+a2f7511 fix crash when setting presence to "not subscribed"
+e5f42c1 fix crash when timer runs XmppConnection.handlePresenceChanged()
+4942329 fix crash if logout during contacts list sync
+d875409 fix NPE
+e37adab purge defunct XMPP cert pin for dukgo.com, the main COMODO one covers this
+1c6f772 fix crash if mProviders is reset while loading
+22d0a8a fix crash when selecting "verify" from a chat
+6ae9dfc CLOSE ALL THE THINGS! aka "Resource leak: 'foo' is never closed"
+12b1545 when user selects "End chat", also send OTR FINISHED message
+b79ffbc after creating a new account, automatically sign in
+47bac15 make MessageView also guess the MIME type to display uploaded media
+113a59d strip down inline Audio Player to make it more responsive
+a62a32b send contacts that are shared to ChatSecure
+a1ab729 standardize on IocVfs.isVfsUri(Uri) for testing VFS URLs
+3c9702d show error message if shared URL is not understood
+9fc3be5 make ChatSecure claim .ofcaes files that are opened in file managers
+0227fe2 show error message if sharing data when all accounts are offline
+
+* Tests!
+6110556 port basic tests from robo-tests/ to an Android Test Project
+
+
 14.0.8 / 2014-12-05 / c5e5c38d9ffda8a19addd5ee10ff88e980a62b7f
 
 * Misc fixes
