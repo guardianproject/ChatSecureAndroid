@@ -37,7 +37,7 @@ import info.guardianproject.util.Languages;
 import java.security.GeneralSecurityException;
 import org.apache.commons.codec.binary.Hex;
 
-public class LockScreenActivity extends ActionBarActivity implements ICacheWordSubscriber {
+public class LockScreenActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
 
     private final static int MIN_PASS_LENGTH = 4;
@@ -65,12 +65,7 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
     {
         super.onCreate(savedInstanceState);
 
-        setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
         mApp = (ImApp)getApplication();
-
-        ThemeableActivity.setBackgroundImage(this);
 
         getSupportActionBar().hide();
 
@@ -115,6 +110,11 @@ public class LockScreenActivity extends ActionBarActivity implements ICacheWordS
                 builder.show();
             }
         });
+        
+        if (!mHasBackground)
+        {
+            findViewById(R.id.llRoot).setBackgroundResource(R.drawable.csbackground);
+        }
     }
 
     @Override

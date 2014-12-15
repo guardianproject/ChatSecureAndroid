@@ -11,8 +11,10 @@ http://www.bouncycastle.org/java.html
 and SQLCipher for Android:
 https://guardianproject.info/code/sqlcipher/
 
-and some CC0 public domain beautiful images:
+Original wallpaper generated using Tapet app and Gimp:
+https://play.google.com/store/apps/details?id=com.sharpregion.tapet
 
+and previously included some CC0 public domain beautiful images:
 Ry Van
 https://unsplash.com/ryvanveluwen
 https://unsplash.com/license
