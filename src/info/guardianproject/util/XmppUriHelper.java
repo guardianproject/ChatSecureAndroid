@@ -2,7 +2,6 @@ package info.guardianproject.util;
 
 import android.net.Uri;
 import android.text.TextUtils;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,6 +59,14 @@ public class XmppUriHelper {
         builder.encodedOpaquePart(opaquePart);
         return builder.toString();
 
+    }
+
+    public static String getOtrFingerprint(String uriString) {
+        return getOtrFingerprint(Uri.parse(uriString));
+    }
+
+    public static String getOtrFingerprint(Uri uri) {
+        return parse(uri).get(KEY_OTR_FINGERPRINT);
     }
 
     public static final Map<String, String> parse(Uri uri) {

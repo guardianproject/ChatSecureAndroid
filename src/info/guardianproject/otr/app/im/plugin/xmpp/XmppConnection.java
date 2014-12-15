@@ -123,6 +123,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.util.Log;
 import de.duenndns.ssl.MemorizingTrustManager;
 
@@ -2876,7 +2877,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (presence == null)
             return null;
 
-        XmppAddress xaddress = new XmppAddress(presence.getFrom());
+        String from = presence.getFrom();
+        if (TextUtils.isEmpty(from))
+            return null;
+        XmppAddress xaddress = new XmppAddress(from);
 
         if (mUser.getAddress().getBareAddress().equals(xaddress.getBareAddress())) //ignore presence from yourself
             return null;

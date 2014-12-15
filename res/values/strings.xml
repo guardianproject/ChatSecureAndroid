@@ -701,9 +701,9 @@
 			
 			<string name="install_orbot_">Install Orbot?</string>
 	
-		<string name="market_orbot">market://search?q=pname:org.torproject.android</string>
+		<string name="market_orbot">market://details?id=org.torproject.android</string>
 		
-		<string name="you_must_have_orbot">You must have Orbot installed and activated to proxy traffic through it. Would you like to install it from Google Play?</string>
+		<string name="you_must_have_orbot">You must have Orbot installed and activated to proxy traffic through it. Would you like to install it?</string>
 		
 		<string name="always">Always</string>
 		

@@ -17,11 +17,11 @@
 
 package info.guardianproject.otr.app.im.engine;
 
-import java.util.Collections;
-import java.util.Map;
-
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.Collections;
+import java.util.Map;
 
 /**
  * A <code>Presence</code> is an abstract presentation of the user's presence
@@ -34,13 +34,15 @@ import android.os.Parcelable;
  * presence data won't be saved or sent to the server.
  */
 public final class Presence implements Parcelable {
+    public static final int MIN_PRESENCE = 0;
     public static final int OFFLINE = 0;
     public static final int DO_NOT_DISTURB = 1;
     public static final int AWAY = 2;
     public static final int IDLE = 3;
     public static final int AVAILABLE = 4;
     public static final int NOT_SUBSCRIBED = 5;
-    
+    public static final int MAX_PRESENCE = 5;
+
     public static final int CLIENT_TYPE_DEFAULT = 0;
     public static final int CLIENT_TYPE_MOBILE = 1;
 
@@ -141,7 +143,7 @@ public final class Presence implements Parcelable {
     }
 
     public void setStatus(int status) {
-        if (status < OFFLINE || status > AVAILABLE) {
+        if (status < MIN_PRESENCE || status > MAX_PRESENCE) {
             throw new IllegalArgumentException("invalid presence status value");
         }
         mStatus = status;
@@ -169,6 +171,7 @@ public final class Presence implements Parcelable {
         mClientType = clientType;
     }
 
+    @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(mStatus);
         dest.writeString(mStatusText);
@@ -179,15 +182,18 @@ public final class Presence implements Parcelable {
         dest.writeString(mResource);
     }
 
+    @Override
     public int describeContents() {
         return 0;
     }
 
     public static final Parcelable.Creator<Presence> CREATOR = new Parcelable.Creator<Presence>() {
+        @Override
         public Presence createFromParcel(Parcel source) {
             return new Presence(source);
         }
 
+        @Override
         public Presence[] newArray(int size) {
             return new Presence[size];
         }

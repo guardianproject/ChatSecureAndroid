@@ -108,14 +108,6 @@ public class XMPPCertPins
              */
             PINLIST.add("95F9D7434B1CE71DEF4211EE6BE3C0E0256FAD95");
 
-            /* dukgo.com
-            SubjectDN: CN=COMODO High-Assurance Secure Server CA, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
-            IssuerDN: CN=AddTrust External CA Root, OU=AddTrust External TTP Network, O=AddTrust AB, C=SE
-            Fingerprint: B9B4C7A488C0885EC1C83AA87E4EBD2B215F9FA4
-            SPKI Pin: 4DC08738FE301627BF02D49EE265BD4B7C15D54E
-             */
-            PINLIST.add("4DC08738FE301627BF02D49EE265BD4B7C15D54E");
-
             /* gmail.com
             SubjectDN: CN=GeoTrust Global CA, O=GeoTrust Inc., C=US
             IssuerDN: OU=Equifax Secure Certificate Authority, O=Equifax, C=US
@@ -124,7 +116,7 @@ public class XMPPCertPins
              */
             PINLIST.add("C07A98688D89FBAB05640C117DAA7D65B8CACC4E");
 
-            /* im.mayfirst.org jabberpl.org neko.im riseup.net
+            /* duck.co/dukgo.com im.mayfirst.org jabberpl.org neko.im riseup.net
             SubjectDN: CN=COMODO RSA Certification Authority, O=COMODO CA Limited, L=Salford, ST=Greater Manchester, C=GB
             IssuerDN: CN=AddTrust External CA Root, OU=AddTrust External TTP Network, O=AddTrust AB, C=SE
             Fingerprint: F5AD0BCC1AD56CD150725B1C866C30AD92EF21B0

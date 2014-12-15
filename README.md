@@ -1,9 +1,9 @@
 ChatSecure for Android (previously known as Gibberbot) is a secure messaging
 app built on open standards like XMPP/Jabber and OTR encryption:
-https://guardianproject.info/apps/chatsecure/
+https://guardianproject.info/apps/chatsecure
 
 It includes OTR4J:
-https://code.google.com/p/otr4j/
+https://github.com/otr4j/otr4j
 
 and BouncyCastle for Java:
 http://www.bouncycastle.org/java.html
@@ -22,7 +22,7 @@ https://unsplash.com/license
 Please report any and all bugs or problems that you find.  This is essential
 for us to be able to improve this software!
 
-https://dev.guardianproject.info/projects/gibberbot/issues/
+https://dev.guardianproject.info/projects/chatsecure/issues
 
 
 ## Build Instructions

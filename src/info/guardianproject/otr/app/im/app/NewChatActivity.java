@@ -1270,18 +1270,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     resultIntent);
 
             if (scanResult != null) {
-
-
                 String xmppUri = scanResult.getContents();
-
                 String result = null;
-
                 if (xmppUri.startsWith("xmpp"))
-                {
-                    Uri uriXmpp = Uri.parse(xmppUri);
-                    result = uriXmpp.getQueryParameter("otr-fingerprint");
-
-                }
+                    result = XmppUriHelper.getOtrFingerprint(xmppUri);
 
                 if (getCurrentChatView()!=null && result != null)
                     getCurrentChatView().verifyScannedFingerprint(result);
