@@ -155,7 +155,23 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
         if (mAdapter != null)
             mAdapter.swapCursor(null);
 
+
+        unbindDrawables(findViewById(R.id.RootView));
+        System.gc();
+        
         super.onDestroy();
+    }
+    
+    private void unbindDrawables(View view) {
+        if (view.getBackground() != null) {
+            view.getBackground().setCallback(null);
+        }
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                unbindDrawables(((ViewGroup) view).getChildAt(i));
+            }
+            ((ViewGroup) view).removeAllViews();
+        }
     }
 
 
@@ -697,6 +713,8 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
             mAccountInfo.setText(mAccountInfoText);
             mAccountDetail.setText(mAccountDetailText);
             mButtonAddAccount.setOnClickListener(mOcl);
+            
+            setRetainInstance(true);
 
             return rootView;
         }

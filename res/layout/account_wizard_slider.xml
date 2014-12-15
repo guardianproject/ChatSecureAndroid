@@ -8,6 +8,7 @@
     android:orientation="vertical"
     android:padding="12dp"
     android:layout_gravity="center"
+    
      >
 
 <LinearLayout
