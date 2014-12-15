@@ -20,18 +20,20 @@ public class ThemeableActivity extends ActionBarActivity {
 
     private static String mThemeBg = null;
     private static Drawable mThemeDrawable = null;
+    
+    protected static boolean mHasBackground = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         ((ImApp)this.getApplication()).setAppTheme(this);
 
-        setBackgroundImage (this);
+        mHasBackground = setBackgroundImage (this);
 
         super.onCreate(savedInstanceState);
     }
 
-    public static void setBackgroundImage (Activity activity)
+    public static boolean setBackgroundImage (Activity activity)
     {
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(activity);
         boolean themeDark = settings.getBoolean("themeDark", false);
@@ -57,7 +59,7 @@ public class ThemeableActivity extends ActionBarActivity {
 
             File fileThemeBg = new File(themebg);
             if (!fileThemeBg.exists())
-                return;
+                return false;
 
             if (mThemeBg == null || (!mThemeBg.equals(themebg)))
             {
@@ -84,10 +86,11 @@ public class ThemeableActivity extends ActionBarActivity {
 
             }
 
-
             activity.getWindow().setBackgroundDrawable(mThemeDrawable);
-
+            return true;
         }
+        
+        return false;
 
     }
 

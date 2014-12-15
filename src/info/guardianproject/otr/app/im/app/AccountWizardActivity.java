@@ -69,7 +69,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
 
-public class AccountWizardActivity extends ActionBarActivity implements View.OnCreateContextMenuListener {
+public class AccountWizardActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
 
     private static final String TAG = ImApp.LOG_TAG;
 
@@ -132,6 +132,11 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
 
         PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
         titleIndicator.setViewPager(mPager);
+        
+        if (!mHasBackground)
+        {
+            findViewById(R.id.RootView).setBackgroundResource(R.drawable.csbackground);
+        }
 
     }
 
@@ -163,14 +168,17 @@ public class AccountWizardActivity extends ActionBarActivity implements View.OnC
     }
     
     private void unbindDrawables(View view) {
-        if (view.getBackground() != null) {
-            view.getBackground().setCallback(null);
-        }
-        if (view instanceof ViewGroup) {
-            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
-                unbindDrawables(((ViewGroup) view).getChildAt(i));
+        if (view != null)
+        {
+            if (view.getBackground() != null) {
+                view.getBackground().setCallback(null);
             }
-            ((ViewGroup) view).removeAllViews();
+            if (view instanceof ViewGroup) {
+                for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                    unbindDrawables(((ViewGroup) view).getChildAt(i));
+                }
+                ((ViewGroup) view).removeAllViews();
+            }
         }
     }
 

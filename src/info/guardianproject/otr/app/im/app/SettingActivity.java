@@ -17,6 +17,9 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.Languages;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
@@ -35,12 +38,8 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
+import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.util.Languages;
 
 public class SettingActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
@@ -237,18 +236,15 @@ public class SettingActivity extends PreferenceActivity implements
             Uri _uri = data.getData();
 
             if (_uri != null) {
-                //User had pick an image.
-                Cursor cursor = getContentResolver().query(_uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
-
-                if (cursor != null)
-                {
-                    cursor.moveToFirst();
 
                     //Link to the image
-                    final String imageFilePath = cursor.getString(0);
-                    mThemeBackground.setText(imageFilePath);
+                    String imageFilePath = getRealPathFromURI(_uri);
+                    
+                    if (imageFilePath != null)                    
+                        mThemeBackground.setText(imageFilePath);
+                    
                     mThemeBackground.getDialog().cancel();
-                }
+
             }
 
         }
@@ -276,6 +272,21 @@ public class SettingActivity extends PreferenceActivity implements
         }
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+    
+
+    private String getRealPathFromURI(Uri contentURI) {
+        Cursor cursor = getContentResolver().query(contentURI, null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            return contentURI.getPath();
+        } else { 
+            cursor.moveToFirst(); 
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA); 
+            if (idx > -1)
+                return cursor.getString(idx);
+            else
+                return contentURI.toString();
+        }
     }
 
 
