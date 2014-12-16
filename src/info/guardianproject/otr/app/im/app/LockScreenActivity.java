@@ -5,11 +5,9 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.ResultReceiver;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -32,6 +30,7 @@ import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.BackgroundBitmapLoaderTask;
 import info.guardianproject.util.Languages;
 
 import java.security.GeneralSecurityException;
@@ -110,10 +109,11 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
                 builder.show();
             }
         });
-        
-        if (!mHasBackground)
-        {
-            findViewById(R.id.llRoot).setBackgroundResource(R.drawable.csbackground);
+
+        if (!mHasBackground) {
+            LinearLayout llRoot = (LinearLayout) findViewById(R.id.llRoot);
+            BackgroundBitmapLoaderTask task = new BackgroundBitmapLoaderTask(this, llRoot);
+            task.execute(R.drawable.csbackground);
         }
     }
 

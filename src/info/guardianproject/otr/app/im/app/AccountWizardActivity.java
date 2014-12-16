@@ -16,17 +16,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.onionkit.ui.OrbotHelper;
-import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
-import info.guardianproject.otr.OtrDebugLogger;
-import info.guardianproject.otr.app.im.IImConnection;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
-import info.guardianproject.otr.app.im.provider.Imps;
-
-import java.util.List;
-import java.util.UUID;
-
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
@@ -48,26 +37,36 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.viewpagerindicator.PageIndicator;
+
+import info.guardianproject.onionkit.ui.OrbotHelper;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.OtrDebugLogger;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.BackgroundBitmapLoaderTask;
+
+import java.util.List;
+import java.util.UUID;
 
 public class AccountWizardActivity extends ThemeableActivity implements View.OnCreateContextMenuListener {
 
@@ -132,10 +131,11 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
 
         PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
         titleIndicator.setViewPager(mPager);
-        
-        if (!mHasBackground)
-        {
-            findViewById(R.id.RootView).setBackgroundResource(R.drawable.csbackground);
+
+        if (!mHasBackground) {
+            LinearLayout rootView = (LinearLayout) findViewById(R.id.RootView);
+            BackgroundBitmapLoaderTask task = new BackgroundBitmapLoaderTask(this, rootView);
+            task.execute(R.drawable.csbackground);
         }
 
     }
@@ -163,10 +163,10 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
 
         unbindDrawables(findViewById(R.id.RootView));
         System.gc();
-        
+
         super.onDestroy();
     }
-    
+
     private void unbindDrawables(View view) {
         if (view != null)
         {
@@ -257,7 +257,7 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
         return true;
     }
 
-   
+
     private String[][] mAccountList;
     private String mNewUser;
 
@@ -278,7 +278,7 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
             accountProviders = listProviders.size() + 3; //potentialProviders + google + create account + burner
 
             mAccountList = new String[accountProviders][3];
-            
+
             mAccountList[i][0] = getString(R.string.i_want_to_chat_using_my_google_account);
             mAccountList[i][1] = getString(R.string.account_google_full);
             mAccountList[i][2] = GOOGLE_ACCOUNT;
@@ -288,7 +288,7 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
 
             mAccountList = new String[accountProviders][3];
         }
-        
+
 
         mAccountList[i][0] = getString(R.string.i_have_an_existing_xmpp_account);
         mAccountList[i][1] = getString(R.string.account_existing_full);
@@ -721,7 +721,7 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
             mAccountInfo.setText(mAccountInfoText);
             mAccountDetail.setText(mAccountDetailText);
             mButtonAddAccount.setOnClickListener(mOcl);
-            
+
             setRetainInstance(true);
 
             return rootView;
