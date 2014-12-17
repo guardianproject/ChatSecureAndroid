@@ -197,15 +197,22 @@ public class ChatView extends LinearLayout {
 
                     boolean otrPolicyAuto = mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
                             || this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OPPORTUNISTIC;
+
+                    IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
                     
-                    boolean isChatSecure = (mRemoteAddress != null && mRemoteAddress.contains("ChatSecure"));
-                        
-                    if (otrPolicyAuto && isChatSecure) //if set to auto, and is chatsecure, then start encryption
+                    if (otrChatSession != null)
                     {
-                           //automatically attempt to turn on OTR after 1 second
-                            mHandler.postAtTime(new Runnable (){
-                                public void run (){  setOTRState(true);}
-                             },1000);
+                        String remoteJID = otrChatSession.getRemoteUserId();
+                        
+                        boolean isChatSecure = (remoteJID != null && remoteJID.contains("ChatSecure"));
+                            
+                        if (otrPolicyAuto && isChatSecure) //if set to auto, and is chatsecure, then start encryption
+                        {
+                               //automatically attempt to turn on OTR after 1 second
+                                mHandler.postAtTime(new Runnable (){
+                                    public void run (){  setOTRState(true);}
+                                 },1000);
+                        }
                     }
 
                 }
