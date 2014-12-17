@@ -739,7 +739,7 @@ public class SessionImpl implements Session {
             tlvs.add(new TLV(1, null));
             String msg = this.transformSending(null, tlvs);
             getHost().injectMessage(getSessionID(), msg);
-            this.setSessionStatus(SessionStatus.PLAINTEXT);
+            setSessionStatus(SessionStatus.PLAINTEXT);
             break;
         case FINISHED:
             this.setSessionStatus(SessionStatus.PLAINTEXT);
