@@ -129,11 +129,11 @@ public class ContactListManagerAdapter extends
         mContactUrl = builder.build();
 
         seedInitialPresences();
-        loadOfflineContacts();
+       // loadOfflineContacts();
     }
 
     private void loadOfflineContacts() {
-        Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME },
+        Cursor contactCursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts.USERNAME, Imps.Contacts.NICKNAME },
                 null, null, null);
 
         String[] addresses = new String[contactCursor.getCount()];
@@ -145,7 +145,7 @@ public class ContactListManagerAdapter extends
         }
 
         Contact[] contacts = mAdaptee.createTemporaryContacts(addresses);
-        for (Contact contact : contacts)
+        for (Contact contact : contacts)            
                 mOfflineContacts.put(contact.getAddress().getBareAddress(), contact);
 
         contactCursor.close();
@@ -911,18 +911,20 @@ public class ContactListManagerAdapter extends
             return;
 
         ArrayList<String> usernames = new ArrayList<String>();
+        ArrayList<String> nicknames = new ArrayList<String>();
         ArrayList<String> statusArray = new ArrayList<String>();
         ArrayList<String> customStatusArray = new ArrayList<String>();
         ArrayList<String> clientTypeArray = new ArrayList<String>();
 
         for (Contact c : contacts) {
-            String username = mAdaptee.normalizeAddress(c.getAddress().getAddress());
+            String username = mAdaptee.normalizeAddress(c.getAddress().getAddress());            
             Presence p = c.getPresence();
             int status = convertPresenceStatus(p);
             String customStatus = p.getStatusText();
             int clientType = translateClientType(p);
 
             usernames.add(username);
+            nicknames.add(c.getName());
             statusArray.add(String.valueOf(status));
             customStatusArray.add(customStatus);
             clientTypeArray.add(String.valueOf(clientType));
@@ -931,6 +933,7 @@ public class ContactListManagerAdapter extends
         ContentValues values = new ContentValues();
         values.put(Imps.Contacts.ACCOUNT, mAccountId);
         putStringArrayList(values, Imps.Contacts.USERNAME, usernames);
+        putStringArrayList(values, Imps.Contacts.NICKNAME, nicknames);
         putStringArrayList(values, Imps.Presence.PRESENCE_STATUS, statusArray);
         putStringArrayList(values, Imps.Presence.PRESENCE_CUSTOM_STATUS, customStatusArray);
         putStringArrayList(values, Imps.Presence.CONTENT_TYPE, clientTypeArray);
@@ -1219,7 +1222,7 @@ public class ContactListManagerAdapter extends
     public void clearOnLogout() {
         clearValidatedContactsAndLists();
         clearTemporaryContacts();
-        clearPresence();
+       // clearPresence();
     }
 
     /**
