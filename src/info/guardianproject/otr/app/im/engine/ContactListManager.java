@@ -164,8 +164,9 @@ public abstract class ContactListManager {
     }
 
     public Contact getContact(String address) {
-        for (ContactList list : mContactLists) {
-            Contact c = list.getContact(normalizeAddress(address));
+        for (int i = 0; i < mContactLists.size(); i++)       
+        {
+            Contact c = mContactLists.get(i).getContact(normalizeAddress(address));
             if (c != null) {
                 return c;
             }

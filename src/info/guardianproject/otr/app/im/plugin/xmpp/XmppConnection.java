@@ -185,6 +185,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private int heartbeatSequence = 0;
 
     LinkedList<String> qAvatar = new LinkedList <String>();
+    
     LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
     LinkedList<org.jivesoftware.smack.packet.Packet> qPacket = new LinkedList<org.jivesoftware.smack.packet.Packet>();
 
@@ -824,6 +825,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "logged in");
             mNeedReconnect = false;
 
+            
 
         } catch (XMPPException e) {
             debug(TAG, "exception thrown on connection",e);
@@ -1657,8 +1659,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             }
             
-            //mRoster.getPresence(xaddress.getBareAddress())
-            
             msgXmpp.setFrom(message.getFrom().getAddress());
             msgXmpp.setBody(message.getBody());
 
@@ -1679,7 +1679,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         public ChatSession createChatSession(ImEntity participant, boolean isNewSession) {
 
             qAvatar.push(participant.getAddress().getAddress());
-
+            requestPresenceRefresh(participant.getAddress().getAddress());
+            
             ChatSession session = super.createChatSession(participant,isNewSession);
 
          //   mSessions.put(Address.stripResource(participant.getAddress().getAddress()),session);
@@ -1688,7 +1689,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     }
 
-
+    
+    private void requestPresenceRefresh (String address)
+    {
+        org.jivesoftware.smack.packet.Presence p = new org.jivesoftware.smack.packet.Presence(Type.error);
+        p.setFrom(address);
+        qPresence.push(p);
+    }
 
     public class XmppContactListManager extends ContactListManager {
 
@@ -1899,8 +1906,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 }
                 
-                //org.jivesoftware.smack.packet.Presence p = roster.getPresence(contact.getAddress().getBareAddress());
-                //qPresence.push(p);
+                requestPresenceRefresh(address);
                                 
                 if (!cl.containsContact(contact))
                 {
@@ -1926,8 +1932,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             if (mConnection == null)
                 return;
-
-            Roster roster = mConnection.getRoster();
 
             ContactList cl;
 
@@ -2046,7 +2050,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     qPresence.push(p);
                     
                 }*/
-
             }
 
             @Override
@@ -2058,6 +2061,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     for (String address : addresses)
                     {
+                        requestPresenceRefresh(address);
+
                         Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
                         mContactListManager.notifyContactListUpdated(cl, ContactListListener.LIST_CONTACT_REMOVED, contact);
                     }
@@ -2080,11 +2085,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         for (String address : addresses)
                         {
         
-                           // org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(Address.stripResource(address));
-                           // qPresence.push(p);
-        
                             Contact contact = getContact(address);
-        
+                            
+                            requestPresenceRefresh(address);
+
                             if (contact == null)
                             {
                                 XmppAddress xAddr = new XmppAddress(address);
@@ -2585,18 +2589,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
             sendPresencePacket();            
         }
-    }
-    
-    private void refreshPresence ()
-    {        
-        for (RosterEntry rEntry : mRoster.getEntries())
-        {            
-            org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(rEntry.getUser());
-            qPresence.push(p);
-         
-        }
-    }
-    
+    }    
 
     public void debug(String tag, String msg) {
         //  if (Log.isLoggable(TAG, Log.DEBUG)) {
@@ -2877,9 +2870,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (presence == null)
             return null;
 
+        if (presence.getType() == Type.error)
+        {            
+            if (mRoster == null)
+                return null;
+            
+            presence = mRoster.getPresence(presence.getFrom());
+        }
+        
         String from = presence.getFrom();
         if (TextUtils.isEmpty(from))
             return null;
+        
         XmppAddress xaddress = new XmppAddress(from);
 
         if (mUser.getAddress().getBareAddress().equals(xaddress.getBareAddress())) //ignore presence from yourself
@@ -2979,7 +2981,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         else 
         {
             //this is typical presence, let's get the latest/highest priority
-
+            debug(TAG,"got presence:: " + presence.getFrom() + "=" + p.getStatusText());
             contact.setPresence(p);
             
             /*
@@ -3014,24 +3016,16 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     org.jivesoftware.smack.packet.Presence p = null;
                     Contact contact = null;
 
-                    try
+                    while (qPresence.peek() != null)
                     {
-                        while (qPresence.peek() != null)
-                        {
-                            p = qPresence.pop();
-                            contact = handlePresenceChanged(p);
-                            if (contact != null)
-                                alUpdate.add(contact);
-                            
-                        }
-                    }
-                    catch (NoSuchElementException e)
-                    {
-                        Log.e(ImApp.LOG_TAG,"wtf is this?",e);
+                        p = qPresence.pop();
+                        contact = handlePresenceChanged(p);
+                        if (contact != null)
+                            alUpdate.add(contact);
+                        
                     }
                     
-                    //Log.d(ImApp.LOG_TAG,"XMPP processed presence q=" + alUpdate.size());
-
+                    //Log.d(ImApp.LOG_TAG,"XMPP processed presence q=" + alUpdate.size());                    
                     mContactListManager.notifyContactsPresenceUpdated(alUpdate.toArray(new Contact[alUpdate.size()]));
                     loadVCardsAsync();
 

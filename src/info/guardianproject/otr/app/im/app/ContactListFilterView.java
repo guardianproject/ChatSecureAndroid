@@ -468,7 +468,7 @@ public class ContactListFilterView extends LinearLayout {
             CursorLoader loader = new CursorLoader(getContext(), mUri, ContactView.CONTACT_PROJECTION,
                     buf == null ? null : buf.toString(), null, Imps.Contacts.DEFAULT_SORT_ORDER);
                         
-       //     loader.setUpdateThrottle(10L);
+            //     loader.setUpdateThrottle(10L);
             return loader;
         }
 

@@ -234,7 +234,7 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         try {
 
             mOtrEngine.startSession(sessionId);
-
+            
             return sessionId;
 
         } catch (OtrException e) {

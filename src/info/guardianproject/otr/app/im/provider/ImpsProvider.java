@@ -18,8 +18,6 @@ package info.guardianproject.otr.app.im.provider;
 
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.app.ImApp;
-import info.guardianproject.otr.app.im.provider.Imps.Contacts;
-import info.guardianproject.otr.app.im.provider.Imps.Provider;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
@@ -2262,7 +2260,7 @@ public class ImpsProvider extends ContentProvider {
         }
     }
 
-    private int updateBulkPresence(ContentValues values, String userWhere, String[] whereArgs) {
+    private int updateBulkPresence(ContentValues values, SQLiteDatabase db, String userWhere, String[] whereArgs) {
         ArrayList<String> usernames = getStringArrayList(values, Imps.Contacts.USERNAME);
         int count = usernames.size();
         Long account = values.getAsLong(Imps.Contacts.ACCOUNT);
@@ -2274,6 +2272,7 @@ public class ImpsProvider extends ContentProvider {
         ArrayList<String> clientTypeArray = getStringArrayList(values, Imps.Presence.CLIENT_TYPE);
         ArrayList<String> resourceArray = getStringArrayList(values, Imps.Presence.JID_RESOURCE);
 
+        
         // append username to the selection clause
         StringBuilder buf = new StringBuilder();
 
@@ -2293,7 +2292,10 @@ public class ImpsProvider extends ContentProvider {
 
         // use username LIKE ? for case insensitive comparison
         buf.append(Imps.Contacts.USERNAME);
-        buf.append(" LIKE ?) AND (");
+        buf.append(" LIKE ?)");
+        
+        /*
+        AND (");
 
         buf.append(Imps.Presence.PRIORITY);
         buf.append("<=? OR ");
@@ -2301,13 +2303,14 @@ public class ImpsProvider extends ContentProvider {
         buf.append(" IS NULL OR ");
         buf.append(Imps.Presence.JID_RESOURCE);
         buf.append("=?)");
+        */
 
         String selection = buf.toString();
 
         
             log("updateBulkPresence: selection => " + selection);
 
-        int numArgs = (whereArgs != null ? whereArgs.length + 4 : 4);
+        int numArgs = (whereArgs != null ? whereArgs.length + 2 : 2);
         String[] selectionArgs = new String[numArgs];
         int selArgsIndex = 0;
 
@@ -2316,8 +2319,6 @@ public class ImpsProvider extends ContentProvider {
                 selectionArgs[selArgsIndex] = whereArgs[selArgsIndex];
             }
         }
-
-        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         db.beginTransaction();
         int sum = 0;
@@ -2346,43 +2347,37 @@ public class ImpsProvider extends ContentProvider {
                 } catch (NumberFormatException ex) {
                     LogCleaner.error(LOG_TAG, "[ImProvider] updateBulkPresence: caught",ex);
                 }
-
-                 
-                log("updateBulkPresence[" + i + "] username=" + username + ", priority="
+ 
+                log("updateBulkPresence[" + i + "] account=" + account + " username=" + username + ", priority="
                     + priority + ", mode=" + mode + ", status=" + status + ", resource="
                     + jidResource + ", clientType=" + clientType);
 
-                if (modeArray != null) {
-                    presenceValues.put(Imps.Presence.PRESENCE_STATUS, mode);
-                }
-                if (priorityArray != null) {
-                    presenceValues.put(Imps.Presence.PRIORITY, priority);
-                }
+                presenceValues.put(Imps.Presence.PRESENCE_STATUS, mode);
+                presenceValues.put(Imps.Presence.PRIORITY, priority);                                
                 presenceValues.put(Imps.Presence.PRESENCE_CUSTOM_STATUS, status);
-                if (clientTypeArray != null) {
-                    presenceValues.put(Imps.Presence.CLIENT_TYPE, clientType);
-                }
-
-                if (!TextUtils.isEmpty(jidResource)) {
-                    presenceValues.put(Imps.Presence.JID_RESOURCE, jidResource);
-                }
+                presenceValues.put(Imps.Presence.CLIENT_TYPE, clientType);
+                presenceValues.put(Imps.Presence.JID_RESOURCE, jidResource);
 
                 // fill in the selection args
                 int idx = selArgsIndex;
                 selectionArgs[idx++] = String.valueOf(account);
                 selectionArgs[idx++] = username;
-                selectionArgs[idx++] = String.valueOf(priority);
-                selectionArgs[idx] = jidResource;
-
+                
+                //selectionArgs[idx++] = String.valueOf(priority);
+                //selectionArgs[idx] = jidResource;
+            
                 int numUpdated = db
                         .update(TABLE_PRESENCE, presenceValues, selection, selectionArgs);
-                if (numUpdated == 0) {
-                    // this is really generating a lot of log output that doesn't seem necessary
-                   // LogCleaner.warn(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
-                } else {
+                
+                if (numUpdated == 0)
+                {
+                    LogCleaner.debug(LOG_TAG, "[ImProvider] updateBulkPresence: " + username + " updated " + numUpdated);
+                }
+                else
+                {            
                     sum += numUpdated;
                 }
-
+                
                 // yield the lock if anyone else is trying to
                 // perform a db operation here.
                 db.yieldIfContended();
@@ -2393,8 +2388,7 @@ public class ImpsProvider extends ContentProvider {
             db.endTransaction();
         }
 
-        
-            log("updateBulkPresence: " + sum + " entries updated");
+        log("updateBulkPresence: " + sum + " entries updated");
         return sum;
     }
 
@@ -3613,7 +3607,7 @@ public class ImpsProvider extends ContentProvider {
             break;
 
         case MATCH_PRESENCE:
-            // log("update presence: where='" + userWhere + "'");
+            log("update presence: where='" + userWhere + "'");
             tableToChange = TABLE_PRESENCE;
             break;
 
@@ -3624,15 +3618,21 @@ public class ImpsProvider extends ContentProvider {
             break;
 
         case MATCH_PRESENCE_BULK:
-            count = updateBulkPresence(values, userWhere, whereArgs);
+            
+            tableToChange = null;
+            
+            count = updateBulkPresence(values, db, userWhere, whereArgs);
             // notify change using the "content://im/contacts" url,
             // so the change will be observed by listeners interested
             // in contacts changes.
-            if (count > 0) {
+            
+            if (count > 0)
+            {
+                getContext().getContentResolver().notifyChange(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, null);
                 getContext().getContentResolver().notifyChange(Imps.Contacts.CONTENT_URI, null);
+                notifyContactListContentUri = true;
             }
-
-            return count;
+            break;
 
         case MATCH_INVITATION:
             tableToChange = TABLE_INVITATIONS;
@@ -3682,17 +3682,17 @@ public class ImpsProvider extends ContentProvider {
             appendWhere(whereClause, idColumnName, "=", changedItemId);
         }
 
-        
-            log("update " + url + " WHERE " + whereClause);
+        log("update " + url + " WHERE " + whereClause);
 
-        count += db.update(tableToChange, values, whereClause.toString(), whereArgs);
+        if (tableToChange != null)
+            count += db.update(tableToChange, values, whereClause.toString(), whereArgs);
 
         if (count > 0) {
             ContentResolver resolver = getContext().getContentResolver();
 
             // In most case, we query contacts with presence and chats joined, thus
             // we should also notify that contacts changes when presence or chats changed.
-            if (match == MATCH_CHATS || match == MATCH_CHATS_ID || match == MATCH_PRESENCE
+            if (match == MATCH_CHATS || match == MATCH_CHATS_ID || match == MATCH_PRESENCE || match == MATCH_PRESENCE_BULK
                 || match == MATCH_PRESENCE_ID || match == MATCH_CONTACTS_BAREBONE) {
                 resolver.notifyChange(Imps.Contacts.CONTENT_URI, null);
             }
