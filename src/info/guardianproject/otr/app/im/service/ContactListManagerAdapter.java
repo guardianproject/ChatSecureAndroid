@@ -1199,24 +1199,24 @@ public class ContactListManagerAdapter extends
     public static int convertPresenceStatus(Presence presence) {
         switch (presence.getStatus()) {
         case Presence.AVAILABLE:
-            return Imps.Presence.AVAILABLE;
+            return Presence.AVAILABLE;
 
         case Presence.IDLE:
-            return Imps.Presence.IDLE;
+            return Presence.IDLE;
 
         case Presence.AWAY:
-            return Imps.Presence.AWAY;
+            return Presence.AWAY;
 
         case Presence.DO_NOT_DISTURB:
-            return Imps.Presence.DO_NOT_DISTURB;
+            return Presence.DO_NOT_DISTURB;
 
         case Presence.OFFLINE:
-            return Imps.Presence.OFFLINE;
+            return Presence.OFFLINE;
         }
 
         // impossible...
         RemoteImService.debug("Illegal presence status value " + presence.getStatus());
-        return Imps.Presence.AVAILABLE;
+        return Presence.AVAILABLE;
     }
 
     public void clearOnLogout() {

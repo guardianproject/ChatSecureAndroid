@@ -1453,7 +1453,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
 
     protected int parsePresence(org.jivesoftware.smack.packet.Presence presence) {
-        int type = Presence.AVAILABLE;
+        int type = Imps.Presence.AVAILABLE;
         Mode rmode = presence.getMode();
         Type rtype = presence.getType();
 
@@ -1475,15 +1475,17 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     type = Presence.OFFLINE;
             }
         }*/
-
-        if (rmode == Mode.away || rmode == Mode.xa)
-            type = Presence.AWAY;
+                
+        if (rmode == Mode.chat)
+            type = Imps.Presence.AVAILABLE;
+        else if (rmode == Mode.away || rmode == Mode.xa)
+            type = Imps.Presence.AWAY;
         else if (rmode == Mode.dnd)
-            type = Presence.DO_NOT_DISTURB;
+            type = Imps.Presence.DO_NOT_DISTURB;
         else if (rtype == Type.unavailable || rtype == Type.error)
-            type = Presence.OFFLINE;
+            type = Imps.Presence.OFFLINE;
         else if (rtype == Type.unsubscribed)
-            type = Presence.NOT_SUBSCRIBED;
+            type = Imps.Presence.OFFLINE;
         
         return type;
     }
@@ -2544,7 +2546,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     debug(TAG, "reconnection on network change failed: " + mUser.getAddress().getAddress());
 
                     mConnection = null;
-                    mNeedReconnect = false;
+                    mNeedReconnect = true;
                     setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, null));
 
                     while (mNeedReconnect)
@@ -2561,8 +2563,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 mNeedReconnect = false;
                 setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, e.getMessage()));
 
-                while (mNeedReconnect)
-                    do_login();
+                //while (mNeedReconnect)
+                  //  do_login();
 
             }
         } else {
@@ -2573,8 +2575,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR,
                     "reconnection on network change failed"));
 
-            while (mNeedReconnect)
-                do_login();
+            //while (mNeedReconnect)
+              //  do_login();
 
         }
     }
@@ -2892,6 +2894,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         Presence p = new Presence(parsePresence(presence), status, null, null,
                 Presence.CLIENT_TYPE_DEFAULT);
 
+        //this is only persisted in memory
+        p.setPriority(presence.getPriority());
+        
         // Get presence from the Roster to handle priorities and such
         // TODO: this causes bad network and performance issues
         //   if (presence.getType() == Type.available) //get the latest presence for the highest priority
@@ -2982,20 +2987,41 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             //this is typical presence, let's get the latest/highest priority
             debug(TAG,"got presence:: " + presence.getFrom() + "=" + p.getStatusText());
-            contact.setPresence(p);
             
-            /*
-            presence = mRoster.getPresence(contact.getAddress().getBareAddress());
-            p = new Presence(parsePresence(presence), status, null, null,
-                    Presence.CLIENT_TYPE_DEFAULT);
+            if (contact.getPresence() != null)
+            {                
+                Presence pOld = contact.getPresence();
 
-            presenceParts = presence.getFrom().split("/");
-            if (presenceParts.length > 1)
-                p.setResource(presenceParts[1]);
-            */
+                if (pOld.getResource() != null && pOld.getResource().equals(p.getResource())) //if the same resource as the existing one, then update it
+                {                    
+                    contact.setPresence(p);
+                }
+                else if (p.getPriority() >= pOld.getPriority()) //if priority is higher, then override    
+                {
+                    contact.setPresence(p);                   
+                }
+                
+                if (p.getStatus() != Imps.Presence.AVAILABLE)
+                {
+                    //if offline, let's check for another online presence
+                    presence = mRoster.getPresence(presence.getFrom());
+                    p = new Presence(parsePresence(presence), status, null, null,
+                            Presence.CLIENT_TYPE_DEFAULT);
+
+                    //this is only persisted in memory
+                    p.setPriority(presence.getPriority());
+                    contact.setPresence(p);
+                }
+            }
+            else
+            {
+                //we don't have a presence yet so set one
+                contact.setPresence(p);
+            }
+            
         }
-
         
+
         
         return contact;
     }

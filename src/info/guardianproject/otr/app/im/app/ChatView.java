@@ -36,6 +36,7 @@ import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -168,12 +169,10 @@ public class ChatView extends LinearLayout {
     private ImageView mDeliveryIcon;
     private boolean mExpectingDelivery;
 
-    //private CompoundButton mOtrSwitch;
-    //private boolean mOtrSwitchTouched = false;
-
     private boolean mIsSelected = false;
 
     private SessionStatus mLastSessionStatus = null;
+    private boolean mIsStartingOtr = false;
     private boolean mIsVerified = false;
 
     public void setSelected (boolean isSelected)
@@ -250,7 +249,7 @@ public class ChatView extends LinearLayout {
             if (isConnected)
             {
                 if (mCurrentChatSession == null)
-                    mCurrentChatSession = mConn.getChatSessionManager().getChatSession(Address.stripResource(mRemoteAddress));
+                    mCurrentChatSession = getChatSession();
 
                 if (mCurrentChatSession != null)
                 {
@@ -261,8 +260,10 @@ public class ChatView extends LinearLayout {
 
                         if (otrEnabled) {
 
-                            otrChatSession.startChatEncryption();
-
+                            otrChatSession.startChatEncryption();                  
+                            mIsStartingOtr = true;
+                            mProgressBarOtr.setVisibility(View.VISIBLE);
+                            
                          //   Toast.makeText(getContext(),getResources().getString(R.string.starting_otr_chat), Toast.LENGTH_LONG).show();
                         }
                         else
@@ -430,7 +431,8 @@ public class ChatView extends LinearLayout {
         public boolean onIncomingMessage(IChatSession ses,
                 info.guardianproject.otr.app.im.engine.Message msg) {
             scheduleRequery(FAST_QUERY_INTERVAL);
-
+            updatePresenceDisplay();
+            
             return mIsSelected;
         }
 
@@ -458,6 +460,8 @@ public class ChatView extends LinearLayout {
         @Override
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
+            updatePresenceDisplay();
+
         };
 
 
@@ -579,6 +583,10 @@ public class ChatView extends LinearLayout {
         }
 
         public void onContactChange(int type, IContactList list, Contact contact) {
+            
+           if (contact != null && contact.getPresence() != null)
+               mPresenceStatus = contact.getPresence().getStatus();
+           
         }
 
         public void onContactError(int errorType, ImErrorInfo error, String listName,
@@ -590,14 +598,21 @@ public class ChatView extends LinearLayout {
             if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                 log("onContactsPresenceUpdate()");
             }
-            /*
+            
             for (Contact c : contacts) {
                 if (c.getAddress().getBareAddress().equals(Address.stripResource(mRemoteAddress))) {
+                    
+                    if (c != null && c.getPresence() != null)
+                    {
+                        mPresenceStatus = c.getPresence().getStatus();
+                        updatePresenceDisplay();
+                    }
+                        
                     mHandler.post(mUpdateChatCallback);
                     scheduleRequery(DEFAULT_QUERY_INTERVAL);
                     break;
                 }
-            }*/
+            }
         }
     };
 
@@ -625,6 +640,8 @@ public class ChatView extends LinearLayout {
         mApp.unregisterForConnEvents(mHandler);
     }
 
+    ProgressBar mProgressBarOtr;
+    
     @Override
     protected void onFinishInflate() {
       //  mStatusIcon = (ImageView) findViewById(R.id.statusIcon);
@@ -640,7 +657,8 @@ public class ChatView extends LinearLayout {
 
         mProgressTransfer = (ProgressBar)findViewById(R.id.progressTransfer);
        // mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
-
+        mProgressBarOtr = (ProgressBar)findViewById(R.id.progressBarOtr);
+        
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
         {
 
@@ -1037,33 +1055,35 @@ public class ChatView extends LinearLayout {
         }
     }
 
-    public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
-        switch (status) {
-        case Imps.Presence.AVAILABLE:
-            avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
-            avatar.setAlpha(255);
+    private void updatePresenceDisplay ()
+    {        
+        if (mRemoteAvatar == null)
+            return;
+        
+        switch (mPresenceStatus) {
+        case Presence.AVAILABLE:
+            mRemoteAvatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
+            mRemoteAvatar.setAlpha(255);
             break;
 
-        case Imps.Presence.IDLE:
-            avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
-            avatar.setAlpha(255);
-
+        case Presence.IDLE:
+            mRemoteAvatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
+            mRemoteAvatar.setAlpha(255);
             break;
 
-        case Imps.Presence.AWAY:
-            avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
-            avatar.setAlpha(255);
+        case Presence.AWAY:
+            mRemoteAvatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
+            mRemoteAvatar.setAlpha(255);
             break;
 
-        case Imps.Presence.DO_NOT_DISTURB:
-            avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
-            avatar.setAlpha(255);
-
+        case Presence.DO_NOT_DISTURB:
+            mRemoteAvatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
+            mRemoteAvatar.setAlpha(255);
             break;
 
-        case Imps.Presence.OFFLINE:
-            avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
-            avatar.setAlpha(100);
+        case Presence.OFFLINE:
+            mRemoteAvatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
+            mRemoteAvatar.setAlpha(100);
             break;
 
 
@@ -1166,8 +1186,6 @@ public class ChatView extends LinearLayout {
 
             updateSessionInfo(c);
 
-
-
             if (mRemoteAvatar == null)
             {
                 try {mRemoteAvatar =DatabaseUtils.getAvatarFromCursor(c, AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
@@ -1180,7 +1198,7 @@ public class ChatView extends LinearLayout {
 
                 }
 
-                setAvatarBorder(mPresenceStatus, mRemoteAvatar);
+                updatePresenceDisplay();
 
             }
 
@@ -1588,9 +1606,6 @@ public class ChatView extends LinearLayout {
 
                             IChatSession session = sessionMgr.getChatSession(Address.stripResource(mRemoteAddress));
 
-                         //   if (session == null)
-                           //     session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress));
-
                             return session;
 
                     }
@@ -1625,7 +1640,6 @@ public class ChatView extends LinearLayout {
     void sendMessage() {
 
         mEmojiPager.setVisibility(View.GONE);
-        //mActionBox.setVisibility(View.GONE);
 
         String msg = mComposeMessage.getText().toString();
 
@@ -1635,6 +1649,9 @@ public class ChatView extends LinearLayout {
 
         IChatSession session = getChatSession();
 
+        if (session == null)
+            session = createChatSession();
+        
         if (session != null) {
             try {
                 session.sendMessage(msg);
@@ -1648,23 +1665,6 @@ public class ChatView extends LinearLayout {
             } catch (Exception e) {
 
               //  mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-                LogCleaner.error(ImApp.LOG_TAG, "send message error",e);
-            }
-        }
-    }
-
-    void sendMessage(String msg) {
-
-        if (TextUtils.isEmpty(msg.trim())) {
-            return;
-        }
-
-        if (getChatSession() != null) {
-            try {
-                getChatSession().sendMessage(msg);
-                requeryCursor();
-            } catch (Exception e) {
-                mHandler.showServiceErrorAlert(e.getLocalizedMessage());
                 LogCleaner.error(ImApp.LOG_TAG, "send message error",e);
             }
         }
@@ -1786,7 +1786,12 @@ public class ChatView extends LinearLayout {
             }
             else if (mLastSessionStatus == SessionStatus.ENCRYPTED) {
 
-
+                if (mIsStartingOtr)
+                {
+                    mIsStartingOtr = false; //it's started!
+                    mProgressBarOtr.setVisibility(View.GONE);
+                }
+                
                 mComposeMessage.setHint(R.string.compose_hint_secure);
                 visibility = View.GONE;
 

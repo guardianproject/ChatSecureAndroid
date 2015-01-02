@@ -83,10 +83,10 @@ public class ChatSessionManagerAdapter extends
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
 
-        Contact contact = listManager.getContactByAddress(contactAddress);
+        Contact contact = listManager.getContactByAddress(Address.stripResource(contactAddress));
         if (contact == null) {
             try {
-                String[] address = {contactAddress};
+                String[] address = {Address.stripResource(contactAddress)};
                 contact = listManager.createTemporaryContacts(address)[0];
             } catch (IllegalArgumentException e) {
                 mSessionListenerAdapter.notifyChatSessionCreateFailed(contactAddress,

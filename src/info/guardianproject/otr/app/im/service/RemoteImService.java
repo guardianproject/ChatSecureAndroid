@@ -632,8 +632,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                 if (mNetworkType != oldType) {
 
                     for (ImConnectionAdapter conn : mConnections.values()) {
-                        if (conn.getState() == ImConnection.LOGGED_IN || conn.getState() == ImConnection.LOGGING_IN) {
-
+                        if (conn.getState() == ImConnection.LOGGED_IN || conn.getState() == ImConnection.LOGGING_IN
+                                || conn.getState() == ImConnection.SUSPENDED || conn.getState() == ImConnection.SUSPENDED
+                                ) {
                             conn.networkTypeChanged();
                         }
                     }

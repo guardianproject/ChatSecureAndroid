@@ -34,14 +34,27 @@ import java.util.Map;
  * presence data won't be saved or sent to the server.
  */
 public final class Presence implements Parcelable {
+    
     public static final int MIN_PRESENCE = 0;
     public static final int OFFLINE = 0;
-    public static final int DO_NOT_DISTURB = 1;
+    public static final int INVISIBLE = 1;    
     public static final int AWAY = 2;
     public static final int IDLE = 3;
-    public static final int AVAILABLE = 4;
-    public static final int NOT_SUBSCRIBED = 5;
+    public static final int DO_NOT_DISTURB = 4;
+    public static final int AVAILABLE = 5;
+    //public static final int NOT_SUBSCRIBED = 5;
     public static final int MAX_PRESENCE = 5;
+    
+    
+    /**
+     * 
+        int OFFLINE = 0;
+        int INVISIBLE = 1;
+        int AWAY = 2;
+        int IDLE = 3;
+        int DO_NOT_DISTURB = 4;
+        int AVAILABLE = 5;
+     */
 
     public static final int CLIENT_TYPE_DEFAULT = 0;
     public static final int CLIENT_TYPE_MOBILE = 1;
@@ -52,7 +65,7 @@ public final class Presence implements Parcelable {
     private String mAvatarType;
     private int mClientType;
     private String mResource;
-
+    private int mPriority = 0;
     private Map<String, String> mExtendedInfo;
 
     public Presence() {
@@ -94,7 +107,7 @@ public final class Presence implements Parcelable {
 
         //this may not exist for older persisted presence data
         if (source.dataAvail() > 0)
-            mResource = source.readString();
+            mResource = source.readString();        
     }
 
     /**
@@ -208,4 +221,14 @@ public final class Presence implements Parcelable {
     {
         mResource = resource;
     }
+
+    public int getPriority() {
+        return mPriority;
+    }
+
+    public void setPriority(int mPriority) {
+        this.mPriority = mPriority;
+    }
+
+    
 }

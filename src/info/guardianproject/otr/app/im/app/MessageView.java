@@ -19,6 +19,7 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.LetterAvatar;
@@ -693,18 +694,18 @@ public class MessageView extends FrameLayout {
     
     public int getAvatarBorder(int status) {
         switch (status) {
-        case Imps.Presence.AVAILABLE:
+        case Presence.AVAILABLE:
             return (getResources().getColor(R.color.holo_green_light));
 
-        case Imps.Presence.IDLE:
+        case Presence.IDLE:
             return (getResources().getColor(R.color.holo_green_dark));
-        case Imps.Presence.AWAY:
+        case Presence.AWAY:
             return (getResources().getColor(R.color.holo_orange_light));
 
-        case Imps.Presence.DO_NOT_DISTURB:
+        case Presence.DO_NOT_DISTURB:
             return(getResources().getColor(R.color.holo_red_dark));
 
-        case Imps.Presence.OFFLINE:
+        case Presence.OFFLINE:
             return(getResources().getColor(R.color.holo_grey_dark));
 
         default:
@@ -837,29 +838,29 @@ public class MessageView extends FrameLayout {
 
     public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
         switch (status) {
-        case Imps.Presence.AVAILABLE:
+        case Presence.AVAILABLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
             avatar.setAlpha(255);
             break;
 
-        case Imps.Presence.IDLE:
+        case Presence.IDLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
             avatar.setAlpha(255);
 
             break;
 
-        case Imps.Presence.AWAY:
+        case Presence.AWAY:
             avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
             avatar.setAlpha(255);
             break;
 
-        case Imps.Presence.DO_NOT_DISTURB:
+        case Presence.DO_NOT_DISTURB:
             avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
             avatar.setAlpha(255);
 
             break;
 
-        case Imps.Presence.OFFLINE:
+        case Presence.OFFLINE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_grey_light));
             avatar.setAlpha(150);
             break;

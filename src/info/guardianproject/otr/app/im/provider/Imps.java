@@ -1135,13 +1135,14 @@ public class Imps {
         String PRESENCE_STATUS = "mode";
 
         /** Presence Status definition */
+        
         int OFFLINE = 0;
         int INVISIBLE = 1;
         int AWAY = 2;
         int IDLE = 3;
         int DO_NOT_DISTURB = 4;
         int AVAILABLE = 5;
-
+        
         int NEW_ACCOUNT = -99;
 
 
