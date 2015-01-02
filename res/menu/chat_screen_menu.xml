@@ -36,12 +36,12 @@
           app:showAsAction="always"
            android:id="@+id/menu_otr"
         />
-        
+        <!-- 
              <item android:id="@+id/menu_verify_or_view"
         android:title="@string/menu_verify"
         android:icon="@drawable/ic_white_encrypted_not_verified"
          app:showAsAction="always"
-         />
+         /> -->
              
         </menu>
          </item>
