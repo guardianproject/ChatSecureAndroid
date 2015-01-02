@@ -711,6 +711,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     public void refreshChatViews ()
     {
         mChatPagerAdapter.notifyDataSetChanged();
+        
     }
 
     private Menu mMenu;
@@ -1001,8 +1002,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
             getCurrentChatView().closeChatSession(true);
         }
+        
         updateChatList();
-
+        mChatPager.setCurrentItem(0);
+        
     }
 
     private void deleteSessionVfs( final String sessionId ) throws Exception {
@@ -1472,13 +1475,15 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             mCursor = newCursor;
             if (newCursor != null) {
                 mDataValid = true;
-                // notify the observers about the new cursor
-                refreshChatViews();
+
 
             } else {
                 mDataValid = false;
             }
             notifyDataSetChanged();
+            // notify the observers about the new cursor
+            refreshChatViews();
+            
             return oldCursor;
         }
 
@@ -1768,6 +1773,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
               mContactList.mFilterView.doFilter(builder.build(), null);
         }
+        
+        mChatPager.invalidate();
     }
 
 
