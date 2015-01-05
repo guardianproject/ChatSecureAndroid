@@ -21,7 +21,7 @@ eval `grep '^target=' project.properties`
 projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' res/values/strings.xml`
 
 for lib in `sed -n 's,^android\.library\.reference\.[0-9][0-9]*=\(.*\),\1,p' project.properties`; do
-    android update lib-project --path $lib
+    android update lib-project --path $lib --target $target
 done
 
 android update project --path . --name $projectname --target $target --subprojects
