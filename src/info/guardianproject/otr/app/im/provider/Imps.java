@@ -1385,6 +1385,7 @@ public class Imps {
          */
         public static final String AUTOMATICALLY_START_SERVICE = "auto_start_service";
 
+        public static final String LINKIFY_ON_TOR = "linkify_on_tor";
         /**
          * Global setting which controls whether the offline contacts will be
          * hid.
@@ -1768,6 +1769,11 @@ public class Imps {
             putBooleanValue(contentResolver, providerId, AUTOMATICALLY_CONNECT_GTALK, autoConnect);
         }
 
+        public static void setLinkifyOnTor(ContentResolver contentResolver, long providerId,
+                boolean linkifyOnTor) {
+            putBooleanValue(contentResolver, providerId, LINKIFY_ON_TOR, linkifyOnTor);
+        }
+
         /**
          * A convenience method to set whether or not the offline contacts
          * should be hided
@@ -2043,6 +2049,14 @@ public class Imps {
 
             public String getOtrMode() {
                 return getString(OTR_MODE, ImApp.DEFAULT_XMPP_OTR_MODE /* by default, try to use OTR */);
+            }
+
+            public void setLinkifyOnTor(boolean value) {
+                ProviderSettings.setLinkifyOnTor(mContentResolver, mProviderId, value);
+            }
+
+            public boolean getLinkifyOnTor() {
+                return getBoolean(LINKIFY_ON_TOR, false /* default do not linkify */);
             }
 
             public void setUseTor(boolean value) {

@@ -381,6 +381,8 @@
 		<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
 		
 		<!-- Actions: Settings: General: User Interface -->
+		<string name="pref_linkify_on_tor_title">Clickable links on Tor</string>
+		<string name="pref_linkify_on_tor_summary">For accounts using Tor, make the links in chats clickable (WARNING, possible privacy leak!)</string>
 		<string name="pref_group_looknfeel_title">User Interface</string>
 		<string name="menu_locale">Language</string>
 		<string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>

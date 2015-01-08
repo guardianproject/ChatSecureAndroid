@@ -18,15 +18,11 @@ import info.guardianproject.util.LogCleaner;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -223,6 +219,11 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     @Override
+    public boolean isUsingTor() {
+        return false; // link-local will never use Tor
+    }
+
+    @Override
     public void loginAsync(long accountId, String passwordTemp, long providerId, boolean retry) {
         mAccountId = accountId;
         mProviderId = providerId;
@@ -260,6 +261,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         }
     }
 
+    @Override
     public void setProxy(String type, String host, int port) {
         // Ignore proxies for mDNS
     }
@@ -289,10 +291,12 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         mService = JmDNSService.create(presence, ipAddress);
         mService.addServiceStateListener(new LLServiceStateListener() {
+            @Override
             public void serviceNameChanged(String newName, String oldName) {
                 debug(TAG, "Service named changed from " + oldName + " to " + newName + ".");
             }
 
+            @Override
             public void serviceClosed() {
                 debug(TAG, "Service closed");
                 if (getState() != SUSPENDED) {
@@ -301,6 +305,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                 releaseLocks();
             }
 
+            @Override
             public void serviceClosedOnError(Exception e) {
                 debug(TAG, "Service closed on error");
                 ImErrorInfo info = new ImErrorInfo(ImErrorInfo.UNKNOWN_ERROR, e.getMessage());
@@ -308,6 +313,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                 releaseLocks();
             }
 
+            @Override
             public void unknownOriginMessage(org.jivesoftware.smack.packet.Message m) {
                 debug(TAG, "This message has unknown origin:");
                 debug(TAG, m.toXML());
@@ -316,16 +322,20 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         // Adding presence listener.
         mService.addPresenceListener(new LLPresenceListener() {
+            @Override
             public void presenceRemove(final LLPresence presence) {
                 execute(new Runnable() {
+                    @Override
                     public void run() {
                         mContactListManager.handlePresenceChanged(presence, true);
                     }
                 });
             }
 
+            @Override
             public void presenceNew(final LLPresence presence) {
                 execute(new Runnable() {
+                    @Override
                     public void run() {
                         mContactListManager.handlePresenceChanged(presence, false);
                     }
@@ -340,8 +350,10 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
 
         // Start listen for Link-local chats
         mService.addLLChatListener(new LLChatListener() {
+            @Override
             public void newChat(LLChat chat) {
                 chat.addMessageListener(new LLMessageListener() {
+                    @Override
                     public void processMessage(LLChat chat,
                             org.jivesoftware.smack.packet.Message message) {
                         String address = message.getFrom();
@@ -372,6 +384,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
                 });
             }
 
+            @Override
             public void chatInvalidated(LLChat chat) {
                 // TODO
             }
@@ -386,6 +399,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         setState(LOGGED_IN, null);
     }
 
+    @Override
     public void initUser(long providerId, long accountId) throws ImException
     {
         ContentResolver contentResolver = mContext.getContentResolver();
@@ -536,6 +550,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     }
 
     // Force immediate logout
+    @Override
     public void logout() {
         if (mService != null) {
             mService.close();
@@ -821,6 +836,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     @Override
     public void reestablishSessionAsync(Map<String, String> sessionContext) {
         execute(new Runnable() {
+            @Override
             public void run() {
                 do_login();
             }
@@ -833,6 +849,7 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
         if (newAddress != null && !ipAddress.equals(newAddress)) {
             debug(TAG, "new address, reconnect");
             execute(new Runnable() {
+                @Override
                 public void run() {
                     do_suspend();
                     do_login();

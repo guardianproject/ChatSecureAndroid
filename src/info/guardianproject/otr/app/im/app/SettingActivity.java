@@ -48,6 +48,7 @@ public class SettingActivity extends PreferenceActivity implements
     private String currentLanguage;
     ListPreference mOtrMode;
     ListPreference mLanguage;
+    CheckBoxPreference mLinkifyOnTor;
     CheckBoxPreference mHideOfflineContacts;
     CheckBoxPreference mDeleteUnsecuredMedia;
     CheckBoxPreference mEnableNotification;
@@ -66,6 +67,7 @@ public class SettingActivity extends PreferenceActivity implements
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
                 Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,     false /* keep updated */, null /* no handler */);
         mOtrMode.setValue(settings.getOtrMode());
+        mLinkifyOnTor.setChecked(settings.getLinkifyOnTor());
         mHideOfflineContacts.setChecked(settings.getHideOfflineContacts());
         mDeleteUnsecuredMedia.setChecked(settings.getDeleteUnsecuredMedia());
         mEnableNotification.setChecked(settings.getEnableNotification());
@@ -119,6 +121,8 @@ public class SettingActivity extends PreferenceActivity implements
 
         if (key.equals("pref_security_otr_mode")) {
             settings.setOtrMode(prefs.getString(key, "auto"));
+        } else if (key.equals("pref_linkify_on_tor")) {
+            settings.setLinkifyOnTor(prefs.getBoolean(key, false));
         } else if (key.equals("pref_hide_offline_contacts")) {
             settings.setHideOfflineContacts(prefs.getBoolean(key, false));
         } else if (key.equals("pref_delete_unsecured_media")) {
@@ -181,6 +185,7 @@ public class SettingActivity extends PreferenceActivity implements
 
         mOtrMode = (ListPreference) findPreference("pref_security_otr_mode");
         mLanguage = (ListPreference) findPreference("pref_language");
+        mLinkifyOnTor = (CheckBoxPreference) findPreference("pref_linkify_on_tor");
         mHideOfflineContacts = (CheckBoxPreference) findPreference("pref_hide_offline_contacts");
         mDeleteUnsecuredMedia = (CheckBoxPreference) findPreference("pref_delete_unsecured_media");
         mEnableNotification = (CheckBoxPreference) findPreference("pref_enable_notification");
@@ -299,6 +304,7 @@ public class SettingActivity extends PreferenceActivity implements
 
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
 
+            @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent();
                 intent.setType("image/*");

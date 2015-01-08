@@ -30,7 +30,13 @@
     android:summary="@string/how_encrypted_chats_are_started"
     android:defaultValue="auto">
   </ListPreference>
-  
+
+  <CheckBoxPreference
+          android:key="pref_linkify_on_tor"
+          android:title="@string/pref_linkify_on_tor_title"
+          android:summary="@string/pref_linkify_on_tor_summary"
+          android:defaultValue="false" />
+
  <!--
    <EditTextPreference 
           android:key="pref_sip_account"

@@ -88,6 +88,7 @@ public class MessageView extends FrameLayout {
     private CharSequence lastMessage = null;
 
     private Context context;
+    private boolean linkify = false;
 
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -162,11 +163,13 @@ public class MessageView extends FrameLayout {
             setTag(mHolder);
 
         }
-
     }
 
-    public void setMessageBackground (Drawable d)
-    {
+    public void setLinkify(boolean linkify) {
+        this.linkify = linkify;
+    }
+
+    public void setMessageBackground (Drawable d) {
         mHolder.mContainer.setBackgroundDrawable(d);
     }
 
@@ -265,8 +268,8 @@ public class MessageView extends FrameLayout {
             //mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
 
         }
-
-        LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
+        if (linkify)
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
     }
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
@@ -636,8 +639,8 @@ public class MessageView extends FrameLayout {
             mHolder.mTextViewForTimestamp.setText("");
 
         }
-
-        LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
+        if (linkify)
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
     }
 
     private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)

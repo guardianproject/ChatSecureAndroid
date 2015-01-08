@@ -1546,7 +1546,6 @@ public class ChatView extends LinearLayout {
         return mAccountId;
     }
 
-
     public long getChatId() {
         return mLastChatId;
     }
@@ -2297,8 +2296,6 @@ public class ChatView extends LinearLayout {
         }
 
         private void resolveColumnIndex(Cursor c) {
-
-
             mNicknameColumn = c.getColumnIndexOrThrow(Imps.Messages.NICKNAME);
 
             mBodyColumn = c.getColumnIndexOrThrow(Imps.Messages.BODY);
@@ -2320,7 +2317,6 @@ public class ChatView extends LinearLayout {
             }
         }
 
-
         @Override
         public int getItemViewType(int position) {
 
@@ -2341,6 +2337,23 @@ public class ChatView extends LinearLayout {
             return 2;
         }
 
+        void setLinkifyForMessageView(MessageView messageView) {
+            try {
+                ContentResolver cr = getContext().getContentResolver();
+                Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,
+                        new String[] { Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE },
+                        Imps.ProviderSettings.PROVIDER + "=?", new String[] { Long
+                                .toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS) },
+                        null);
+                Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                        pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
+                        false /* keep updated */, null /* no handler */);
+                messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                messageView.setLinkify(false);
+            }
+        }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -2360,6 +2373,8 @@ public class ChatView extends LinearLayout {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             MessageView messageView = (MessageView) view;
+
+            setLinkifyForMessageView(messageView);
 
             if (mApp.isThemeDark())
             {

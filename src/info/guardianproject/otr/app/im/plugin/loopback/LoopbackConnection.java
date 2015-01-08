@@ -24,7 +24,6 @@ import java.util.Map;
 
 import android.content.ContentResolver;
 import android.os.Parcel;
-import android.os.Parcelable;
 
 public class LoopbackConnection extends ImConnection {
 
@@ -57,6 +56,7 @@ public class LoopbackConnection extends ImConnection {
         mContactListManager.doPresence(contacts_array);
     }
 
+    @Override
     public void initUser(long providerId, long accountId)
     {
 
@@ -117,6 +117,11 @@ public class LoopbackConnection extends ImConnection {
     public int[] getSupportedPresenceStatus() {
         return new int[] { Presence.AVAILABLE, Presence.AWAY, Presence.IDLE, Presence.OFFLINE,
                           Presence.DO_NOT_DISTURB, };
+    }
+
+    @Override
+    public boolean isUsingTor() {
+        return false; // loopback will never use Tor
     }
 
     @Override
@@ -299,9 +304,11 @@ public class LoopbackConnection extends ImConnection {
 
     }
 
+    @Override
     public void sendHeartbeat(long heartbeatInterval) {
     }
 
+    @Override
     public void setProxy(String type, String host, int port) {
     }
 

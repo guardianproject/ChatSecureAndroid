@@ -241,6 +241,12 @@ public abstract class ImConnection {
      */
     public abstract ChatGroupManager getChatGroupManager();
 
+    /**
+     * Whether this connection is going over Tor or not.
+     * @return boolean
+     */
+    public abstract boolean isUsingTor();
+
     protected abstract void doUpdateUserPresenceAsync(Presence presence);
 
     /**
