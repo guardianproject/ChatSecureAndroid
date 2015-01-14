@@ -87,7 +87,7 @@
       <artifactId>asmack</artifactId>
       <version>4-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>${basedir}/libs/asmack-android-7.jar</systemPath>
+      <systemPath>${basedir}/libs/asmack-android-8.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>gp-bcc-lib</groupId>
