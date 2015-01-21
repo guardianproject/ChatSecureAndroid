@@ -132,11 +132,12 @@ public class AccountWizardActivity extends ThemeableActivity implements View.OnC
         PageIndicator titleIndicator = (PageIndicator) findViewById(R.id.indicator);
         titleIndicator.setViewPager(mPager);
 
+        /*
         if (!mHasBackground) {
             LinearLayout rootView = (LinearLayout) findViewById(R.id.RootView);
             BackgroundBitmapLoaderTask task = new BackgroundBitmapLoaderTask(this, rootView);
             task.execute(R.drawable.csbackground);
-        }
+        }*/
 
     }
 
