@@ -2387,6 +2387,7 @@ public class ChatView extends LinearLayout {
                         pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
                         false /* keep updated */, null /* no handler */);
                 messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+                pCursor.close();
             } catch (RemoteException e) {
                 e.printStackTrace();
                 messageView.setLinkify(false);
