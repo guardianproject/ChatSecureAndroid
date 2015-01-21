@@ -1219,11 +1219,12 @@ public class ContactListManagerAdapter extends
         return Presence.AVAILABLE;
     }
 
+    /*
     public void clearOnLogout() {
         clearValidatedContactsAndLists();
         clearTemporaryContacts();
        // clearPresence();
-    }
+    }*/
 
     /**
      * Clears the list of validated contacts and contact lists. As contacts and
