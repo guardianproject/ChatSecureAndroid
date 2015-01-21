@@ -543,7 +543,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="resent">[reenviado]</string>
   <string name="unable_to_securely_share_this_file">No se pudo compartir este fichero de forma segura</string>
   <string name="install_orbot_">¿Instalar Orbot?</string>
-  <string name="market_orbot">market://search?q=pname:org.torproject.android</string>
+
   <string name="you_must_have_orbot">Debe tener Orbot instalado y activado para proxyficar el tráfico a través de él. ¿Desa instalarlo desde Google Play?</string>
   <string name="always">Siempre</string>
   <string name="start_orbot_">¿Iniciar Orbot?</string>

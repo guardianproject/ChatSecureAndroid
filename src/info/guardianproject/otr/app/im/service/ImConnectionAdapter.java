@@ -26,7 +26,6 @@ import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ConnectionListener;
 import info.guardianproject.otr.app.im.engine.Contact;
-import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
@@ -98,14 +97,22 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return mService;
     }
 
+    @Override
     public long getProviderId() {
         return mProviderId;
     }
 
+    @Override
     public long getAccountId() {
         return mAccountId;
     }
 
+    @Override
+    public boolean isUsingTor() {
+        return mConnection.isUsingTor();
+    }
+
+    @Override
     public int[] getSupportedPresenceStatus() {
         return mConnection.getSupportedPresenceStatus();
     }
@@ -143,6 +150,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return builder.build();
     }
 
+    @Override
     public void login(final String passwordTemp, final boolean autoLoadContacts, final boolean retry) {
         Debug.wrapExceptions(new Runnable() {
             @Override
@@ -221,6 +229,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         mConnection.logout();
     }
 
+    @Override
     public synchronized void cancelLogin() {
         if (mConnectionState >= ImConnection.LOGGED_IN) {
             // too late
@@ -235,18 +244,21 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         mConnection.suspend();
     }
 
+    @Override
     public void registerConnectionListener(IConnectionListener listener) {
         if (listener != null) {
             mRemoteConnListeners.register(listener);
         }
     }
 
+    @Override
     public void unregisterConnectionListener(IConnectionListener listener) {
         if (listener != null) {
             mRemoteConnListeners.unregister(listener);
         }
     }
 
+    @Override
     public void setInvitationListener(IInvitationListener listener) {
         if (mInvitationListener != null) {
             mInvitationListener.mRemoteListener = listener;
@@ -255,14 +267,17 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
 
 
+    @Override
     public IChatSessionManager getChatSessionManager() {
         return mChatSessionManager;
     }
 
+    @Override
     public IContactListManager getContactListManager() {
         return mContactListManager;
     }
 
+    @Override
     public int getChatSessionCount() {
         if (mChatSessionManager == null) {
             return 0;
@@ -274,10 +289,12 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return mConnection.getLoginUser();
     }
 
+    @Override
     public Presence getUserPresence() {
         return mConnection.getUserPresence();
     }
 
+    @Override
     public int updateUserPresence(Presence newPresence) {
         try {
 
@@ -292,14 +309,17 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return ImErrorInfo.NO_ERROR;
     }
 
+    @Override
     public int getState() {
         return mConnectionState;
     }
 
+    @Override
     public void rejectInvitation(long id) {
         handleInvitation(id, false);
     }
 
+    @Override
     public void acceptInvitation(long id) {
         handleInvitation(id, true);
     }
@@ -394,6 +414,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     }
 
     final class ConnectionListenerAdapter implements ConnectionListener {
+        @Override
         public void onStateChanged(final int state, final ImErrorInfo error) {
 
             synchronized (this) {
@@ -419,7 +440,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
 
                 if (mAutoLoadContacts)
-                {   
+                {
                     mContactListManager.loadContactLists();
                 }
 
@@ -472,6 +493,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             }
         }
 
+        @Override
         public void onUserPresenceUpdated() {
             updateAccountStatusInDb();
 
@@ -488,6 +510,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             mRemoteConnListeners.finishBroadcast();
         }
 
+        @Override
         public void onUpdatePresenceError(final ImErrorInfo error) {
             final int N = mRemoteConnListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
@@ -506,6 +529,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     final class InvitationListenerAdapter implements InvitationListener {
         IInvitationListener mRemoteListener;
 
+        @Override
         public void onGroupInvitation(Invitation invitation) {
             String sender = invitation.getSender().getUser();
             ContentValues values = new ContentValues(7);

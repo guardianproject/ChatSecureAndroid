@@ -54,6 +54,7 @@ import net.java.otr4j.session.SessionStatus;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.AsyncQueryHandler;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -108,6 +109,40 @@ import android.widget.Toast;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.zxing.integration.android.IntentIntegrator;
+
+import info.guardianproject.emoji.EmojiGroup;
+import info.guardianproject.emoji.EmojiManager;
+import info.guardianproject.emoji.EmojiPagerAdapter;
+import info.guardianproject.otr.IOtrChatSession;
+import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IContactList;
+import info.guardianproject.otr.app.im.IContactListListener;
+import info.guardianproject.otr.app.im.IContactListManager;
+import info.guardianproject.otr.app.im.IImConnection;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.MessageView.DeliveryState;
+import info.guardianproject.otr.app.im.app.MessageView.EncryptionState;
+import info.guardianproject.otr.app.im.app.adapter.ChatListenerAdapter;
+import info.guardianproject.otr.app.im.engine.Address;
+import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.ImpsAddressUtils;
+import info.guardianproject.otr.app.im.service.ImServiceConstants;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
+import info.guardianproject.util.LogCleaner;
+import info.guardianproject.util.SystemServices;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+
+import net.java.otr4j.OtrPolicy;
+import net.java.otr4j.session.SessionStatus;
 
 public class ChatView extends LinearLayout {
     // This projection and index are set for the query of active chats
@@ -1562,7 +1597,6 @@ public class ChatView extends LinearLayout {
         return mAccountId;
     }
 
-
     public long getChatId() {
         return mLastChatId;
     }
@@ -1881,8 +1915,16 @@ public class ChatView extends LinearLayout {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        userActionDetected();
-        return super.dispatchTouchEvent(ev);
+        try {
+            userActionDetected();
+            return super.dispatchTouchEvent(ev);
+        } catch (ActivityNotFoundException e) {
+            /* if the user clicked a link, e.g. geo:60.17,24.829, and there is
+             * no app to handle that kind of link, catch the exception */
+            Toast.makeText(getContext(), R.string.error_no_app_to_handle_url, Toast.LENGTH_SHORT)
+                    .show();
+            return true;
+        }
     }
 
     @Override
@@ -2292,8 +2334,6 @@ public class ChatView extends LinearLayout {
         }
 
         private void resolveColumnIndex(Cursor c) {
-
-
             mNicknameColumn = c.getColumnIndexOrThrow(Imps.Messages.NICKNAME);
 
             mBodyColumn = c.getColumnIndexOrThrow(Imps.Messages.BODY);
@@ -2315,7 +2355,6 @@ public class ChatView extends LinearLayout {
             }
         }
 
-
         @Override
         public int getItemViewType(int position) {
 
@@ -2336,6 +2375,23 @@ public class ChatView extends LinearLayout {
             return 2;
         }
 
+        void setLinkifyForMessageView(MessageView messageView) {
+            try {
+                ContentResolver cr = getContext().getContentResolver();
+                Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,
+                        new String[] { Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE },
+                        Imps.ProviderSettings.PROVIDER + "=?", new String[] { Long
+                                .toString(Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS) },
+                        null);
+                Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                        pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
+                        false /* keep updated */, null /* no handler */);
+                messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                messageView.setLinkify(false);
+            }
+        }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
@@ -2355,6 +2411,8 @@ public class ChatView extends LinearLayout {
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
             MessageView messageView = (MessageView) view;
+
+            setLinkifyForMessageView(messageView);
 
             if (mApp.isThemeDark())
             {
