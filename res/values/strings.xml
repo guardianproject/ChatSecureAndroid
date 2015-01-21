@@ -381,6 +381,8 @@
 		<string name="pref_cacheword_timeout_summary">Time that app encryption should say unlocked</string>
 		
 		<!-- Actions: Settings: General: User Interface -->
+		<string name="pref_linkify_on_tor_title">Clickable links on Tor</string>
+		<string name="pref_linkify_on_tor_summary">For accounts using Tor, make the links in chats clickable (WARNING, possible privacy leak!)</string>
 		<string name="pref_group_looknfeel_title">User Interface</string>
 		<string name="menu_locale">Language</string>
 		<string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
@@ -520,8 +522,7 @@
 		<string name="error_chat_file_transfer_title">Transfer Error</string>
 		<string name="error_chat_file_transfer_body">Unable to read file to storage</string>
 		<string name="error_welcome_database">Major Error: Unable to unlock or load app database. Please re-install the app or clear data.</string>
-	
-	   
+		<string name="error_no_app_to_handle_url">No app installed that can handle that link!</string>
 
 	<string name="account_settings_title">Account Settings</string>
 	<string name="pref_default_locale">defLoc</string>
@@ -700,9 +701,7 @@
 			<string name="unable_to_securely_share_this_file">Unable to securely share this file</string>
 			
 			<string name="install_orbot_">Install Orbot?</string>
-	
-		<string name="market_orbot">market://details?id=org.torproject.android</string>
-		
+
 		<string name="you_must_have_orbot">You must have Orbot installed and activated to proxy traffic through it. Would you like to install it?</string>
 		
 		<string name="always">Always</string>

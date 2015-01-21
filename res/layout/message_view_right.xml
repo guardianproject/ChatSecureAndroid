@@ -41,7 +41,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-light"
-                    android:autoLink="web|email|phone|map"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:padding="6dp"
                     android:layout_gravity="top|right"

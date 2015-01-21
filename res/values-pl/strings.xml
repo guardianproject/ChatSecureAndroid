@@ -540,7 +540,7 @@ Kliknij aby zaprosić.</string>
   <string name="resent">[wyślij ponownie]</string>
   <string name="unable_to_securely_share_this_file">Nie można bezpiecznie podzielić się tym plikiem</string>
   <string name="install_orbot_">Zainstalować Orbot?</string>
-  <string name="market_orbot">market://search?q=pname:org.torproject.android</string>
+
   <string name="you_must_have_orbot">Musisz mieć zainstalowany i włączony Orbot, aby transportować przez niego swoje połączenie. Czy chciałbyś zainstalować Orbot używając sklep Google Play?</string>
   <string name="always">Zawsze</string>
   <string name="start_orbot_">Uruchomić Orbot?</string>

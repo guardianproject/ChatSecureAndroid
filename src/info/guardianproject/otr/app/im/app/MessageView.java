@@ -64,7 +64,6 @@ import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.style.URLSpan;
-import android.text.util.Linkify;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -72,6 +71,24 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import info.guardianproject.emoji.EmojiManager;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.ImageViewActivity;
+import info.guardianproject.otr.app.im.ui.LetterAvatar;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
+import info.guardianproject.util.AudioPlayer;
+import info.guardianproject.util.LinkifyHelper;
+import info.guardianproject.util.LogCleaner;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 public class MessageView extends FrameLayout {
 
@@ -89,6 +106,7 @@ public class MessageView extends FrameLayout {
     private CharSequence lastMessage = null;
 
     private Context context;
+    private boolean linkify = false;
 
     public MessageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -110,7 +128,6 @@ public class MessageView extends FrameLayout {
 
     class ViewHolder
     {
-
         TextView mTextViewForMessages = (TextView) findViewById(R.id.message);
         TextView mTextViewForTimestamp = (TextView) findViewById(R.id.messagets);
         ImageView mAvatar = (ImageView) findViewById(R.id.avatar);
@@ -121,6 +138,11 @@ public class MessageView extends FrameLayout {
         // save the media uri while the MediaScanner is creating the thumbnail
         // if the holder was reused, the pair is broken
         Uri mMediaUri = null;
+
+        ViewHolder() {
+            // disable built-in autoLink so we can add custom ones
+            mTextViewForMessages.setAutoLinkMask(0);
+        }
 
         public void setOnClickListenerMediaThumbnail( final String mimeType, final Uri mediaUri ) {
             mMediaThumbnail.setOnClickListener( new OnClickListener() {
@@ -159,11 +181,13 @@ public class MessageView extends FrameLayout {
             setTag(mHolder);
 
         }
-
     }
 
-    public void setMessageBackground (Drawable d)
-    {
+    public void setLinkify(boolean linkify) {
+        this.linkify = linkify;
+    }
+
+    public void setMessageBackground (Drawable d) {
         mHolder.mContainer.setBackgroundDrawable(d);
     }
 
@@ -262,9 +286,8 @@ public class MessageView extends FrameLayout {
             //mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
 
         }
-
-        Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
-
+        if (linkify)
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
     }
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
@@ -634,10 +657,8 @@ public class MessageView extends FrameLayout {
             mHolder.mTextViewForTimestamp.setText("");
 
         }
-
-
-        Linkify.addLinks(mHolder.mTextViewForMessages, Linkify.ALL);
-
+        if (linkify)
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
     }
 
     private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)
@@ -671,15 +692,15 @@ public class MessageView extends FrameLayout {
 
                 mHolder.mAvatar.setVisibility(View.VISIBLE);
                 mHolder.mAvatar.setImageDrawable(lavatar);
-                
+
                 /*
                 if (AVATAR_DEFAULT == null)
                 {
                     AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
                             R.drawable.avatar_unknown));
-                    
-                    
-                    
+
+
+
                 }
 
                 avatar = AVATAR_DEFAULT;
@@ -691,7 +712,7 @@ public class MessageView extends FrameLayout {
 
         }
     }
-    
+
     public int getAvatarBorder(int status) {
         switch (status) {
         case Presence.AVAILABLE:
@@ -710,7 +731,7 @@ public class MessageView extends FrameLayout {
 
         default:
         }
-        
+
         return Color.TRANSPARENT;
     }
 

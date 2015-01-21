@@ -42,7 +42,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -135,6 +134,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private XmppContactListManager mContactListManager;
     private Contact mUser;
+    private boolean mUseTor;
 
     // watch out, this is a different XMPPConnection class than XmppConnection! ;)
     // Synchronized by executor thread
@@ -185,7 +185,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private int heartbeatSequence = 0;
 
     LinkedList<String> qAvatar = new LinkedList <String>();
-    
+
     LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
     LinkedList<org.jivesoftware.smack.packet.Packet> qPacket = new LinkedList<org.jivesoftware.smack.packet.Packet>();
 
@@ -230,6 +230,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         mProviderId = providerId;
         mAccountId = accountId;
         mUser = makeUser(providerSettings, contentResolver);
+        mUseTor = providerSettings.getUseTor();
 
         providerSettings.close();
     }
@@ -746,6 +747,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     }
 
     @Override
+    public boolean isUsingTor() {
+        return mUseTor;
+    }
+
+    @Override
     public void loginAsync(long accountId, String passwordTemp, long providerId, boolean retry) {
 
         mAccountId = accountId;
@@ -825,7 +831,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             debug(TAG, "logged in");
             mNeedReconnect = false;
 
-            
+
 
         } catch (XMPPException e) {
             debug(TAG, "exception thrown on connection",e);

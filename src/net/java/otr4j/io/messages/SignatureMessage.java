@@ -46,7 +46,7 @@ public class SignatureMessage extends AbstractEncodedMessage {
 
         byte[] xEncryptedMAC = new OtrCryptoEngineImpl().sha256Hmac160(xbEncrypted, key);
         // Verify signature.
-        return Arrays.equals(xEncryptedMAC, xEncryptedMAC);
+        return Arrays.equals(this.xEncryptedMAC, xEncryptedMAC);
     }
 
     @Override
