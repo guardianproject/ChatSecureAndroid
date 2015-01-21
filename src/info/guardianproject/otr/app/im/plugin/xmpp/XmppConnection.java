@@ -794,11 +794,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Runs in executor thread
     private void do_login() {
 
+        /*
         if (mConnection != null) {
             setState(getState(), new ImErrorInfo(ImErrorInfo.CANT_CONNECT_TO_SERVER,
                     "still trying..."));
             return;
-        }
+        }*/
 
         ContentResolver contentResolver = mContext.getContentResolver();
 
@@ -2051,13 +2052,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             @Override
             public void entriesUpdated(Collection<String> addresses) {
 
-                /*
+                
                 for (String address :addresses)
                 {
                     org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(XmppAddress.stripResource(address));
                     qPresence.push(p);
                     
-                }*/
+                }
             }
 
             @Override
@@ -2556,8 +2557,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     setState(LOGGING_IN, new ImErrorInfo(ImErrorInfo.NETWORK_ERROR, null));
 
                     while (mNeedReconnect)
+                    {
                         do_login();
-
+                        
+                        if (mNeedReconnect)
+                            try { Thread.sleep(3000);}
+                            catch (Exception e){}
+                    }
+                    
                 }
             } catch (Exception e) {
                 if (mStreamHandler != null)
