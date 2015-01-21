@@ -422,8 +422,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             values.put(Imps.Chats.LAST_UNREAD_MESSAGE, (String) null);
             mConnection.getContext().getContentResolver().update(mChatURI, values, null, null);
 */
-
-            mStatusBarNotifier.dismissChatNotification(mConnection.getProviderId(), getAddress());
+            String baseUsername = mChatSession.getParticipant().getAddress().getBareAddress();
+            mStatusBarNotifier.dismissChatNotification(mConnection.getProviderId(), baseUsername);
 
             mHasUnreadMessages = false;
         }

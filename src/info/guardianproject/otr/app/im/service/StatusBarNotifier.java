@@ -232,12 +232,13 @@ public class StatusBarNotifier {
                 info = new NotificationInfo(providerId, accountId);
                 mNotificationInfos.put(sender, info);
             }
-            info.addItem(sender, title, message, intent);
+            info.addItem(sender, title, message, intent);            
         }
 
         mNotificationManager.notify(info.computeNotificationId(),
                 info.createNotification(tickerText, lightWeightNotify, icon));
 
+        
     }
 
     private void setRinger(long providerId, NotificationCompat.Builder builder) {
@@ -325,14 +326,14 @@ public class StatusBarNotifier {
                 .setContentTitle(getTitle())
                 .setContentText(getMessage())
                 .setContentIntent(PendingIntent.getActivity(mContext, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT))
-                .setAutoCancel(true)
-                ;
+                .setAutoCancel(true);
+                
 
             if (!(lightWeightNotify || shouldSuppressSoundNotification())) {
                 setRinger(mProviderId, builder);
             }
 
-            return builder.getNotification();
+            return builder.build();
         }
 
         private Intent getDefaultIntent() {

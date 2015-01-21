@@ -220,6 +220,7 @@ public class ChatView extends LinearLayout {
             setTitle();
             updateWarningView();
             mComposeMessage.requestFocus();
+            userActionDetected();
 
             try
             {
