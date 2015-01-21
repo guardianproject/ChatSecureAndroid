@@ -1205,7 +1205,6 @@ public class ChatView extends LinearLayout {
         Uri contactUri = ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, chatId);
         Cursor c = mNewChatActivity.getContentResolver().query(contactUri, CHAT_PROJECTION, null, null, null);
 
-
         if (c == null)
             return;
 
@@ -2387,6 +2386,7 @@ public class ChatView extends LinearLayout {
                         pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
                         false /* keep updated */, null /* no handler */);
                 messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+                settings.close();
                 pCursor.close();
             } catch (RemoteException e) {
                 e.printStackTrace();
