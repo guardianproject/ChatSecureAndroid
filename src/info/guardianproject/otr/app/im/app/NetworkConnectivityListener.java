@@ -70,23 +70,36 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
         boolean noConnectivity = intent.getBooleanExtra(
                 ConnectivityManager.EXTRA_NO_CONNECTIVITY, false);
 
-        ConnectivityManager manager = (ConnectivityManager) context
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        // Getting from intent is deprecated - get from manager
-        mNetworkInfo = manager.getActiveNetworkInfo();
-        mOtherNetworkInfo = (NetworkInfo) intent
-                .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
-
-        mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
-        mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
-
-        //let's just check the state of our active network to set this value
-        if (ImApp.isNetworkAvailableAndConnected(context.getApplicationContext())) {
-            mState = State.CONNECTED;
-        } else {
+        if (noConnectivity)
+        {
             mState = State.NOT_CONNECTED;
         }
-
+        else
+        {
+            ConnectivityManager manager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            // Getting from intent is deprecated - get from manager
+            mNetworkInfo = manager.getActiveNetworkInfo();
+            mOtherNetworkInfo = (NetworkInfo) intent
+                    .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
+    
+            mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
+            mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
+    
+            if (mNetworkInfo.isConnected())
+            {
+                mState = State.CONNECTED;
+            } 
+            else if (mOtherNetworkInfo.isConnected())
+            {                
+                //well still need to switch socket/IPs so let's say its not connected
+                mState = State.NOT_CONNECTED;                
+            }
+            else {
+                mState = State.NOT_CONNECTED;
+            }
+        }
+        
         /*
         Log.d(TAG, "onReceive(): mNetworkInfo="
      utoConnect              + mNetworkInfo
