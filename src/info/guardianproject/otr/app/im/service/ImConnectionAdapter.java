@@ -457,9 +457,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 clearSessionCookie(cr);
                 // mContactListManager might still be null if we fail
                 // immediately in loginAsync (say, an invalid host URL)
-                if (mContactListManager != null) {
-                    mContactListManager.clearOnLogout();
-                }
+               // if (mContactListManager != null) { // n8fr8 2015-01-21 Why are we clearing this?
+                 //   mContactListManager.clearOnLogout();
+               // }
 
                 mConnectionState = state;
             } else if (state == ImConnection.SUSPENDED && error != null) {
