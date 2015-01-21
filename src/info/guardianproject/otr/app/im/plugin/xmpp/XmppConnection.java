@@ -1665,7 +1665,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 msgXmpp = new org.jivesoftware.smack.packet.Message(
                         message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
                 msgXmpp.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
-
+                
+                Contact contact = mContactListManager.getContact(message.getTo().getBareAddress());
+                if (!contact.getPresence().isOnline())
+                    requestPresenceRefresh(message.getTo().getBareAddress());
+                
             }
             
             msgXmpp.setFrom(message.getFrom().getAddress());
@@ -2055,8 +2059,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
                 for (String address :addresses)
                 {
-                    org.jivesoftware.smack.packet.Presence p = mRoster.getPresence(XmppAddress.stripResource(address));
-                    qPresence.push(p);
+
+                    requestPresenceRefresh(address);
                     
                 }
             }
