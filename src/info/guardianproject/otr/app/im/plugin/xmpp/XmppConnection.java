@@ -1667,7 +1667,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 msgXmpp.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
                 
                 Contact contact = mContactListManager.getContact(message.getTo().getBareAddress());
-                if (!contact.getPresence().isOnline())
+                
+                if (contact != null && contact.getPresence() !=null && ()!contact.getPresence().isOnline()))
                     requestPresenceRefresh(message.getTo().getBareAddress());
                 
             }
