@@ -86,11 +86,11 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
             mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
             mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
     
-            if (mNetworkInfo.isConnected())
+            if (mNetworkInfo != null && mNetworkInfo.isConnected())
             {
                 mState = State.CONNECTED;
             } 
-            else if (mOtherNetworkInfo.isConnected())
+            else if (mOtherNetworkInfo != null && mOtherNetworkInfo.isConnected())
             {                
                 //well still need to switch socket/IPs so let's say its not connected
                 mState = State.NOT_CONNECTED;                
