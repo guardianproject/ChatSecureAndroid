@@ -413,7 +413,7 @@ public class MessageView extends FrameLayout {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (Build.VERSION.SDK_INT >= 11)
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 
             //set a general mime type not specific
             intent.setDataAndType(Uri.parse( body ), mimeType);
