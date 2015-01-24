@@ -1,6 +1,57 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.0-beta-2 / 2015-01-24 / b2fb94fa8c98b29ea922d864dff88968e57af7c1
+
+6a69d43 fixes #4448 makes sure cursor is closed
+975f1c3 fixes #4447 sometimes cursor is null if not init'd yet
+b962e20 fixes #4437 - flag should be added, not set (which overrides NEW flag) the CLEAR flag must be used in conjunction with the NEW
+63841f8 typo fix
+6d96780 fixes #4441 - networkinfo or other network info could be null
+68c532c fixes #4438 - presence might be null
+
+14.1.0-beta-1 / 2015-01-21 / 424927dfa7778bc0a9a64a9202029f15bcb4255c
+
+* Network
+3992ac2 if remote connect is offline when you send message, refresh presence
+2575942 ignore stale XMPP Connection instance, and re-init/login
+f4dc7b4 Improves the connectivity monitoring listener accuracy
+
+* Usability 
+9b9412f ensuring message notifications are cleared when chat is displayed
+905da53 let's not show a background in the account setup
+5f78377 only single background image file needed, its dynamically resized
+09e5efe don't automatically linkify in chat windows of accounts running on Tor
+9256651 add custom URI scheme linkifying to handle geo:, xmpp:, etc.
+41dfdd3 Ensure presence is updated all the way to the UI/View Also fix mismatches in int values for presence status types Small improv
+01b3562 go back to main conversation list when chat is ended this fixes the issue with chat name/titles not properly updating on some 
+9909501 remove profile menu if OTR is not init'd we need an active session/fingerprint for this to work
+8db20d9 add horizontal progress bar for otr status
+5a06cdd make sure avatars show up on medium screens
+1cbe65d Merge pull request #598 from n8fr8/master
+
+* Core Stability 
+a38da81 Don't clear list/contacts data from memory on logout
+20e262c Clearing data causes issues on network disconnect/reconnects We don't need to so aggressively clear data anymore, now that we 
+31db61f remove unneeded duplicate contact cleanup code
+6570d85 closes the settings cursor
+c3d8532 cursor needs to be closed manually
+eb76c46 Fix verify method : the 2 arrays compared were the same -> use this.xEncryptedMAC instead of xEncryptedMAC
+d9e40c4 move Orbot market: link to donottranslate.xml
+cf596a2 Merge pull request #607 from raphaelm/fix-build-scripts
+baf7842 Adjust pom.xml version of asmack to the one actually included in the project
+762651e Update update-ant-build.sh to work correctly on current build tool versions
+0b2926e simplify presence updating to make it more reliable
+92f3ba1 don't clear presence table ever, and don't load offline contacts these were causing problems with presence table being incorre
+5439b75 add ability to request an async presence refresh from roster
+3ba2a8f avoid concurrent mode problem by using idx
+c0cfa8d fix code for detecting OTR capable resource
+f6f1a91 nothing changed
+0a040b2 add new low-res versions of default background
+a44e1ad Merge branch 'eighthave-fix-crashes-related-to-large-background-bitmap'
+43e213a load background bitmaps in a custom AsyncTask
+7806e7a remove drawables targeted at android < 9 since minSdk is 9
+
 14.0.9 / 2014-12-15 / ac8027fe74409cf2afb2ad22e3a0e76118017ced
 
 * Design and usability
