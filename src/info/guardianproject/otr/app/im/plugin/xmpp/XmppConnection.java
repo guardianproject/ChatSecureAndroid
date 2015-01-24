@@ -891,6 +891,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
         finally {
             providerSettings.close();
+            
+            if (!cursor.isClosed())
+                cursor.close();
         }
 
     }
