@@ -688,6 +688,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     public boolean showChat (long requestedChatId)
     {
         Cursor cursorChats = mChatPagerAdapter.getCursor();
+        
+        if (cursorChats == null)
+            return false;
+        
         cursorChats.moveToPosition(-1);
         int posIdx = 1;
 
