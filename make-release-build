@@ -5,6 +5,16 @@
 set -e
 set -x
 
+# make sure we're on a signed tag that matches the version name
+versionName=`sed -n 's,.*versionName="\([^"]*\)".*,\1,p' AndroidManifest.xml`
+describe=`git describe`
+if [ $versionName != $describe ]; then
+    echo "WARNING: checking out release tag $versionName"
+   git checkout $versionName
+fi
+git tag -v $versionName
+
+
 if [ -z $ANDROID_HOME ]; then
     if [ -e ~/.android/bashrc ]; then
         . ~/.android/bashrc
@@ -36,7 +46,7 @@ git submodule update --init
 if [ -e ~/.android/ant.properties ]; then
     cp ~/.android/ant.properties $projectroot/
 # TODO remove me once cacheword is updated to v0.1
-    cp ~/.android/ant.properties $projectroot/external/cacheword/cachewordlib/
+    cat ~/.android/ant.properties >> $projectroot/external/cacheword/cachewordlib/ant.properties
 else
     echo "skipping release ant.properties"
 fi
