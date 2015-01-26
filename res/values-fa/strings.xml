@@ -1,6 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--General: Names-->
+  <string name="app_name">چت امن</string>
+  <string name="im_label">چت امن</string>
   <!--General: Permissions-->
   <string name="ro_perm_label">خواندن پیام های فوری</string>
   <string name="ro_perm_desc">
@@ -20,7 +22,23 @@
   <string name="no">انصراف</string>
   <string name="btn_next">بعدی</string>
   <string name="btn_back">بازگشت</string>
+  <string name="connect">اتصال</string>
+  <string name="play">بازی</string>
+  <string name="setup">راه اندازی</string>
   <!--Views-->
+  <string name="lock_screen_open">باز</string>
+  <string name="title_activity_lock_screen">چت امن قفل شده</string>
+  <string name="lock_screen_create_passphrase">تنظیم رمز عبور</string>
+  <string name="lock_screen_confirm_passphrase">تایید رمز عبور</string>
+  <string name="lock_screen_passphrase_hint">رمز عبور</string>
+  <string name="lock_screen_passphrase_not_set_confirm">تایید رمز عبور جدید</string>
+  <string name="lock_screen_passphrases_not_matching">رمز عبور مطابقت ندارد، لطفا دوباره سعی کنید</string>
+  <string name="lock_screen_skip">درشدن &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">اطلاعات سریع</string>
+  <string name="app_passphrase_view_password_question">ورود رمز عبور لطفا</string>
+  <string name="password_please">رمز عبور لطفا …</string>
+  <string name="passphrase">عبارت عبور</string>
+  <string name="passphrase_again">عبارت عبور (دوباره)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">یک حساب کاربری انتخاب کنید</string>
   <string name="choose_account_title"> یک حساب کاربری انتخاب کنید</string>
@@ -29,13 +47,16 @@
   <string name="menu_sign_out_all">خروج کامل از سیستم</string>
   <string name="signout_all_confirm_message">آیا میخواهید از همه خدمات خارج شوید؟</string>
   <string name="signed_out_prompt">شما با حساب کاربری <xliff:g id="account">%1$s</xliff:g> از سیستم خارج شدید</string>
+  <string name="welcome_first">اولین بار با استفاده از چت امن؟</string>
   <string name="welcome_skip">نمیتوانید برای شروع منتظر شوید؟</string>
   <string name="welcome_about">شروع کنید</string>
   <string name="welcome_account">راه اندازی حساب کاربری</string>
   <string name="setup_passphrase_title">راه اندازی گذرواژه</string>
   <string name="setup_passphrase_label1">گذرواژه:</string>
   <string name="setup_passphrase_label2">گذرواژه (دوباره):</string>
+  <string name="enter_pass">کلمه عبور خود را وارد کنید:</string>
   <!--Views: About: Welcome-->
+  <string name="about_welcome_title">درباره چت امن</string>
   <!--Views: About: OTR-->
   <string name="about_otr_title">چگونه امن است؟</string>
   <string name="about_otr">\'پیام رسانی محرمانه\' یک سیستم امنیتی است که برای بوجود آوردن حریم خصوصی، بر مبنای تقلید از ویژگیهای یک مکالمه خصوصی در دنیای حقیقی طراحی شده است، که شامل رمزگذاری، احراز هویت، قابلیت انکار و رازداری میشود. پروتکل محرمانه با کلاینتهای گفتگوی دستکتاپ از قبیل Pidgin و Adium سازگار است.</string>
@@ -46,6 +67,7 @@
   <string name="menu_add_account">اضافه کردن حساب کاربری</string>
   <string name="menu_edit_account">ویرایش حساب کاربری</string>
   <string name="menu_remove_account">حذف حساب کاربری</string>
+  <string name="menu_use_existing_account">حساب های موجود</string>
   <!--Views: Setup: Account-->
   <string name="label_username">کاربر@میزبان</string>
   <string name="label_password">رمز عبور:</string>
@@ -57,14 +79,19 @@
   <string name="check_auto_sign_in">این گزینه شما را هربار بصورت خودکار وارد برنامه میکند. برای غیرفعال کردن این گزینه، از حساب کاربری خود خارج شوید و گزینه ؛بصورت خودکار من را وارد کن؛ را غیر فعال کنید</string>
   <string name="use_tor">اتصال به واسطه تور (به برنامه رباط پیازی احتیاج دارد)</string>
   <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">نام کاربری جدید</string>
   <string name="account_setup_password">رمزعبور</string>
+  <string name="account_setup_password_confirm">تایید رمز عبور</string>
   <string name="account_setup_advanced_button">تنظیمات پیشرفته حساب کاربری</string>
   <string name="account_select_type">نوع حساب کاربری</string>
+  <string name="btn_create_new_account">ثبت نام حساب کاربری</string>
   <string name="account_setup_pers_sub">ماندگاری</string>
   <string name="account_setup_pers_pw_title">رمز عبور را بخاطر بسپار</string>
   <string name="account_setup_pers_pw_on">رمز عبور کش شده</string>
   <string name="account_setup_pers_pw_off">رمز عبور کش نشده</string>
   <string name="account_setup_pers_auto_title">ورود خودکار</string>
+  <string name="account_setup_pers_auto_on">بهنگام راه اندازی چت امن متصل شد</string>
+  <string name="account_setup_pers_auto_off">بهنگام راه اندازی چت امن متصل نشد</string>
   <string name="account_setup_pers_now_title">الان وارد شوید</string>
   <string name="account_setup_pers_now_on">پس از انجام تنظیمات، متصل شو</string>
   <string name="account_setup_pers_now_off">پس از انجام تنظیمات، متصل نشو</string>
@@ -86,9 +113,14 @@
   <string name="account_wizard_ready_title">آماده اید؟</string>
   <string name="account_wizard_account_body">لطفا حساب کاربری خود را وارد کنید (user@hostname):</string>
   <string name="account_wizard_host_body">لطفا عدد پورت (پیشفرض 5222 است) و نام میزبان سرور خود را وارد و یا ویرایش کنید.</string>
+  <string name="_via_orbot">اوربات(تور)</string>
+  <string name="select_domain_new_account">دامنه خدمات چت</string>
+  <string name="registering_new_account_">ثبت نام در حساب کاربری جدید …</string>
+  <string name="signing_in_to">گرفتن رفتن …</string>
   <string name="menu_cancel_signin">انصراف از ورود</string>
   <string name="signing_in_wait">امضا\u2026
 </string>
+  <string name="signing_out_wait">خروج از سیستم \U2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">جستجوی SRV انجام بده</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">از DNS SRV برای پیدا کردن سرور حقیقی XMPP از نام دامنه، استفاده کن</string>
@@ -96,6 +128,7 @@
   <string name="allow_plain_text_auth">اجازه احراز هویت با متن ساده</string>
   <string name="verify_that_the_certificate_is_trusted">تایید کن که گواهی مورد اطمینان است</string>
   <string name="tls_verification">تایید TLS</string>
+  <string name="require_tls_ssl_connection">نیاز به اتصال TLS</string>
   <string name="transport_encryption">رمزگذاری حمل و نقل</string>
   <string name="how_encrypted_chats_are_started">گفتگوهای رمزگذاری شده چطور شروع شده اند</string>
   <string name="the_server_to_connect_to_if_needed">سرور برای برقراری ارتباط، در شرایط نیاز</string>
@@ -115,7 +148,9 @@
   <string name="menu_add_contact">افزودن تماس</string>
   <string name="menu_remove_contact">حذف تماس</string>
   <string name="menu_block_contact">انسداد تماس</string>
+  <string name="menu_contact_nickname">تماس با نام مستعار</string>
   <string name="menu_view_blocked">مسدود شده</string>
+  <string name="nickname">نام مستعار</string>
   <string name="confirm_delete_contact">تماس "<xliff:g id="user">%1$s</xliff:g>" حذف شد.</string>
   <string name="confirm_block_contact">تماس "<xliff:g id="user">%1$s</xliff:g>" مسدود شد.</string>
   <string name="confirm_unblock_contact">تماس "<xliff:g id="user">%1$s</xliff:g>" دیگر مسدود نیست.</string>
@@ -125,7 +160,10 @@
   <string name="unblock_contact_success">این تماس "<xliff:g id="user">%1$s</xliff:g>" دیگر مسدود نخواهد بود.</string>
   <string name="menu_new_chat">گفتگوی تازه</string>
   <string name="menu_search_contacts">جستجوی تماس ها</string>
+  <string name="menu_show_grid">نمایش شبکه</string>
   <string name="menu_start_chat">شروع گفتگو</string>
+  <string name="menu_view_profile">نمایش مشخصات</string>
+  <string name="menu_verify">بررسی تماس با</string>
   <string name="ongoing_conversation">گفتگوهای درحال انجام (<xliff:g id="number">%1$d</xliff:g>)</string>
   <string name="online_count"><xliff:g id="number">%1$d</xliff:g> روی خط</string>
   <string name="subscriptions">دعوتنامه های دوستی</string>
@@ -157,7 +195,19 @@
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> روی خط نیست</string>
   <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> پیوست</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> ترک کرد</string>
+  <string name="menu_send_image">ارسال عکس</string>
+  <string name="menu_send_file">ارسال فایل</string>
+  <string name="menu_send_audio">ارسال صوتی</string>
+  <string name="menu_take_picture">عکس گرفتن</string>
+  <string name="file_transfer">انتقال فایل</string>
+  <string name="transfer_complete">انتقال کامل شد</string>
+  <string name="transfer_in_progress">انتقال در حال پیشرفت است</string>
+  <string name="accept_transfer_">پذیرفتن انتقال؟</string>
+  <string name="wants_to_send_you_the_file">می خواهید فایل خود را ارسال کنید</string>
+  <string name="no_connection_for_sending">بدون اتصال در دسترس برای ارسال سهم خود!</string>
   <string name="send">ارسال</string>
+  <string name="compose_hint">ارسال یک پیام</string>
+  <string name="compose_hint_secure">ارسال پیام امن</string>
   <string name="menu_resend">ارسال دوباره</string>
   <string name="menu_end_conversation">پایان گفتگو</string>
   <string name="menu_clear_chat">پاک کردن گفتگو</string>
@@ -165,11 +215,20 @@
   <string name="menu_switch_chats">تعویض گفتگو</string>
   <string name="menu_plus">فهرست + \"</string>
   <string name="select_link_title">لینک را انتخاب کنید</string>
+  <string name="delete">حذف</string>
+  <string name="keep_files">نگاه داشتن فایل</string>
+  <string name="delete_chat_session_secured_storage">حدف ذخیره شده های برنامه چت امن</string>
+  <string name="keep">نگهداری</string>
+  <string name="export">خروجی</string>
+  <string name="export_media">خروجی فایل رسانه ای؟</string>
+  <string name="end_chat_title">اتمام چت؟</string>
+  <string name="end_chat_and_delete">پایان دادن به چت و حذف فایل ها</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> از شما برای پیوستن به یک گفتگوی گروهی دعوت کرده است.</string>
   <string name="invitation_sent_prompt">دعوت نامه فرستاده شده است<xliff:g id="user">٪ 1 $ ثانیه</xliff:g>.</string>
   <string name="accept_invitation">بپذیر</string>
   <string name="decline_invitation">رد کن</string>
+  <string name="menu_new_group_chat">گروه چت</string>
   <string name="menu_invite_contact">دعوت کن\u2026</string>
   <string name="contacts_picker_title">انتخاب تماس(ها) برای دعوت</string>
   <string name="contact_filter_hint">برای پیدا کردن تماس، تایپ کنید</string>
@@ -183,12 +242,20 @@
   <string name="menu_otr_stop">توقف رمزگذاری</string>
   <string name="starting_otr_chat">شروع رمزگذاری جلسه گفتگو…</string>
   <string name="stopping_otr_chat">توقف رمزگذاری جلسه گفتگو…</string>
+  <string name="label_fingerprint_remote">امنیت اثر انگشت</string>
+  <string name="label_fingerprint_local">امنیت اثر انگشت</string>
   <string name="menu_sign_in">ورود</string>
   <string name="menu_gen_key">تولید دوباره کلید</string>
+  <string name="otr_session_status_plaintext">رمزنگاری خاموش است</string>
+  <string name="otr_session_status_encrypted">رمزنگاری روشن است (به منظور بررسی ضربه بزنید)</string>
+  <string name="otr_session_status_verified">رمزنگاری شده و تایید!</string>
   <string name="otr_gen_key">درحال تولید یک جفت کلید OTR…</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
+  <string name="menu_scan">اسکن QR</string>
   <string name="menu_fingerprint">اثر انگشت شما</string>
+  <string name="menu_verify_fingerprint">دستی</string>
+  <string name="menu_verify_secret">سوال</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">تصدیق</string>
   <string name="smp_question_summary">بمنظور تایید ارتباط و هویت، یک سوال و پاسخی که از ایشان انتظار دارید را وارد کنید.</string>
@@ -206,7 +273,6 @@
   <!--Actions: Settings: General: User Interface-->
   <string name="menu_locale">زبان</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">زبان ها</string>
-
   <!--Actions: Settings: General: Other Tuning-->
   <string name="hide_offline_contacts">کاربرهایی که روی خط نیستند را مخفی کن</string>
   <string name="foreground_service_title">از اولویت پیش زمینه استفاده کن</string>
@@ -226,12 +292,16 @@
   <string name="bg_data_prompt_message"><xliff:g id="provider">%1$s</xliff:g> احتیاج دارد که داده های پس زمینه فعال باشد.</string>
   <string name="bg_data_prompt_ok">فعال</string>
   <string name="bg_data_prompt_cancel">خارج شو</string>
+  <string name="prompt_create_new_account_">ایجاد حساب کاربری جدید؟</string>
+  <string name="dialog_settings_choose_background_title">تصویر زمینه</string>
+  <string name="dialog_settings_choose_background_picker">انتخاب تصویر</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">پیام <xliff:g id="provider">%1$s</xliff:g> جدید</string>
   <string name="notify_groupchat_label">دعوتنامه گفتگوی گروهی</string>
   <string name="new_messages_notify">پیام(های) تازه از طرف</string>
   <!--Alerts: Exceptions-->
   <string name="error">توجه</string>
+  <string name="error_prefix">خطا:</string>
   <string name="general_error">خطای شماره <xliff:g id="code">%1$d</xliff:g></string>
   <string name="add_list_failed">لیست اضافه نشد.</string>
   <string name="block_contact_failed">تماس مسدود نشد.</string>
@@ -283,6 +353,7 @@
   <string name="menu_view_contact_list">لیست تماس</string>
   <!--Other: Provider-->
   <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="google_account">حساب گوگل</string>
   <!--Other: Development Strings [Do not localize!]-->
   <!--Other: Presence States-->
   <string name="presence_available">روی خط</string>
@@ -350,5 +421,9 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">حساب های موجود</string>
   <string name="i_need_a_new_account">حساب کاربری جدید</string>
+  <string name="install_orbot_">نصب اوربات؟</string>
+  <string name="always">همیشه</string>
+  <string name="start_orbot_">شروع اوربات؟</string>
 </resources>

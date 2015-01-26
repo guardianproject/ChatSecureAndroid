@@ -19,17 +19,17 @@
   <string name="btn_next">Successivo</string>
   <string name="btn_back">Precedente</string>
   <string name="connect">Connetti</string>
+  <string name="play">Riproduci</string>
   <!--Views-->
   <string name="lock_screen_open">Aperto</string>
   <string name="title_activity_lock_screen">ChatSecure Bloccato</string>
   <string name="lock_screen_create_passphrase">Imposta Password</string>
   <string name="lock_screen_confirm_passphrase">Conferma Password</string>
   <string name="lock_screen_passphrase_hint">Password</string>
-  <string name="lock_screen_passphrase_not_set_enter">Nuova Password</string>
   <string name="lock_screen_passphrase_not_set_confirm">Conferma Nuova Password</string>
   <string name="lock_screen_passphrases_not_matching">La password non corrisponde, per favore riprova</string>
-  <string name="lock_screen_skip">Sono Pigro (No Password!)</string>
-  <string name="app_passphrase_view_password_question">Inserisci Password Perfavore</string>
+  <string name="lock_screen_skip">Salta &gt;&gt;</string>
+  <string name="app_passphrase_view_password_question">Inserire la Password</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Chat - selezionare un account</string>
   <string name="choose_account_title">Chat - selezionare un account</string>
@@ -98,7 +98,7 @@ Iniziamo!</string>
   <string name="account_setup_pers_sub">Persistenza</string>
   <string name="account_setup_pers_pw_title">Ricorda la password</string>
   <string name="account_setup_pers_pw_on">Password memorizzata nella cache</string>
-  <string name="account_setup_pers_pw_off">La password non memorizzati nella cache</string>
+  <string name="account_setup_pers_pw_off">Password non memorizzata nella cache</string>
   <string name="account_setup_pers_auto_title">Accesso automatico</string>
   <string name="account_setup_pers_auto_on">Connetti all\'avvio di ChatSecure</string>
   <string name="account_setup_pers_auto_off">Non connettere all\'avvio di ChatSecure</string>
@@ -234,7 +234,9 @@ Tocca qui per aggiungerne uno!</string>
   <string name="keep">Mantieni</string>
   <string name="export">Esporta</string>
   <string name="export_media">Esporta Media File?</string>
+  <string name="export_media_file_to">Questo file multimediale verrà esportato in %1$s</string>
   <string name="end_chat_title">Termina conversazione?</string>
+  <string name="end_chat_and_delete">Chiudi Chat ed Elimina File</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> ti ha invitato a unirti a una conversazione di gruppo.</string>
   <string name="invitation_sent_prompt">L\'invito è stato inviato a <xliff:g id="USER">%1$s</xliff:g>.</string>
@@ -282,6 +284,8 @@ Tocca per invitare qualcuno.</string>
   <string name="the_remote_key_fingerprint_has_been_verified_">L\'impronta digitale remota è stata verificata!</string>
   <string name="fingerprint_for_you">Impronta digitale per te</string>
   <string name="fingerprint_for_">Impronta digitale per</string>
+  <string name="install_barcode_scanner_title">Installare Barcode Scanner?</string>
+  <string name="install_barcode_scanner_message">Questa applicazione richiede Barcode Scanner. Vuoi installarlo?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Autenticazione</string>
   <string name="smp_question_summary">Inserisci una domanda da inviare ai propri contatti e la risposta che ci si attende da loro, in modo da verificare che solo siano veramente chi dicano di essere.</string>
@@ -306,7 +310,6 @@ Tocca per invitare qualcuno.</string>
   <string name="pref_group_looknfeel_title">Interfaccia Utente</string>
   <string name="menu_locale">Lingua</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Lingue</string>
-
   <string name="pref_theme_dark">Usa il Dark Theme</string>
   <string name="pref_theme_dark_summary">Passa al tema scuro dell\'app</string>
   <string name="pref_in_memory_db_title">Memorizzazione messaggi solo In-Memory</string>
@@ -316,6 +319,8 @@ Tocca per invitare qualcuno.</string>
   <string name="pref_show_grid">Mostra Griglia Contatti</string>
   <string name="pref_show_grid_summary">Mostra la lista contatti come griglia di avatar</string>
   <string name="button_yes_accept_all">Sì, Accetta Tutti</string>
+  <string name="pref_delete_unsecured_media_title">Elimina Media Non Protetti</string>
+  <string name="pref_delete_unsecured_media_summary">Quando condividi una foto o un file, questi verranno eliminati automaticamente dalla posizione originale non protetta dopo l\'importazione.</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Altre Impostazioni</string>
   <string name="start_on_boot">Avvia ChatSecure automaticamente</string>
@@ -343,14 +348,22 @@ Tocca per invitare qualcuno.</string>
   <string name="bg_data_prompt_cancel">Esci</string>
   <string name="signout_kill_confirm_message">Vuoi uscire E uccidere tutti i processi (hard exit)?</string>
   <string name="prompt_create_new_account_">Creare un nuovo account?</string>
+  <string name="dialog_cert_title">Info Certificato</string>
+  <string name="dialog_cert_subject">Certificato:</string>
+  <string name="dialog_settings_choose_background_title">Seleziona Sfondo</string>
+  <string name="dialog_settings_choose_background_body">Vuoi selezionare un\'immagine di sfondo dalla Galleria?</string>
+  <string name="dialog_settings_choose_background_picker">Seleziona Immagine</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Nuovi messaggi <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="file_notify_text">Nuovo file <xliff:g id="filename">%s</xliff:g> da <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">Invito a conversazione di gruppo</string>
   <string name="new_messages_notify">Nuovo messaggio(i) da</string>
   <string name="starting_the_chatsecure_service_">Avviamento servizio ChatSecure…</string>
   <string name="app_unlocked">Attivato &amp; sbloccato</string>
+  <string name="toast_chat_copied_to_clipboard">messaggio copiato negli appunti</string>
   <!--Alerts: Exceptions-->
   <string name="error">Attenzione</string>
+  <string name="error_prefix">Errore:</string>
   <string name="general_error">Codice errore <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">Impossibile accedere al servizio <xliff:g id="SERVICE">%1$s</xliff:g>. Riprova più tardi."\n"(Dettagli: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">L\'elenco non è stato aggiunto.</string>
@@ -403,6 +416,8 @@ Tocca per invitare qualcuno.</string>
   <string name="disconnected_warning">I messaggi saranno inviati quando verrà ristabilita la connessione</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> è offline. I messaggi inviati saranno consegnati non appena <xliff:g id="USER_1">%1$s</xliff:g> torna online.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> non presente nell\'elenco contatti.</string>
+  <string name="error_account_settings_priority">La priorità dev\'essere un numero compreso nell\'intervallo [0 .. 127]</string>
+  <string name="error_account_settings_port">Il numero di porta dev\'essere un numero</string>
   <string name="account_settings_title">Impostazioni Account</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">ATTENZIONE: Questa versione prematura di ChatSecure che può contenere falle o bug di sicurezza.</string>
@@ -415,6 +430,7 @@ Tocca per invitare qualcuno.</string>
   <string name="contacts">Contatti</string>
   <string name="mtm_accept_cert">Accettare il certificato del server?</string>
   <string name="menu_sidebar_qr">Impronta Digitale</string>
+  <string name="loading">caricamento…</string>
   <!--Other-->
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">Lista di contatti</string>
@@ -495,5 +511,18 @@ Tocca per invitare qualcuno.</string>
     <item>o_O</item>
   </string-array>
   <string name="i_have_an_existing_xmpp_account">Account Esistente</string>
+  <string name="i_want_to_chat_using_my_google_account">Account Google</string>
+  <string name="account_google_full">Chatta con altri utenti Google utilizzando il tuo account Google esistente.</string>
+  <string name="account_wifi_button">Abilita Chat WiFi</string>
   <string name="i_need_a_new_account">Nuovo Account</string>
+  <string name="account_new_button">Crea Nuovo Account</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Identità Segreta!</string>
+  <string name="this_is_a_group_chat">Questa è una chat di gruppo</string>
+  <string name="unable_to_securely_share_this_file">Impossibile condividere questo file in modo sicuro</string>
+  <string name="install_orbot_">Installare Orbot?</string>
+  <string name="always">Sempre</string>
+  <string name="start_orbot_">Avviare Orbot?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot non è attivo. Vuoi avviarlo e connetterti a Tor?</string>
+  <string name="muc_dialog_server">server chat di gruppo (conferenza.foo.com)</string>
+  <string name="you_received_an_unreadable_encrypted_message">Hai ricevuto un messaggio criptato illeggibile</string>
 </resources>

@@ -23,6 +23,8 @@
   <string name="btn_next">Verder</string>
   <string name="btn_back">Terug</string>
   <string name="connect">Verbind</string>
+  <string name="play">Spelen</string>
+  <string name="setup">Setup</string>
   <!--Views-->
   <string name="lock_screen_open">Openen</string>
   <string name="title_activity_lock_screen">ChatSecure vergrendeld</string>
@@ -33,6 +35,11 @@
   <string name="lock_screen_passphrase_not_set_confirm">Bevestig nieuw wachtwoord</string>
   <string name="lock_screen_passphrases_not_matching">Wachtwoorden kwamen niet overeen, probeer opnieuw</string>
   <string name="lock_screen_skip">Ik voel me lui (Geen Paswoord!)</string>
+  <string name="app_passphrase_view_title_dialog">Informatie prompt</string>
+  <string name="app_passphrase_view_password_question">Voer wachtwoord in</string>
+  <string name="password_please">Geef je wachtwoord in…</string>
+  <string name="passphrase">Geheime vraag</string>
+  <string name="passphrase_again">Geheime vraag (opnieuw)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Chat - Selecteer een account</string>
   <string name="choose_account_title">Chat - Selecteer een account</string>
@@ -42,6 +49,7 @@
   <string name="menu_sign_out_all">Log alles uit</string>
   <string name="signout_all_confirm_message">Wil je uitloggen bij alle servers?</string>
   <string name="signed_out_prompt">U bent afgemeld bij <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">U bent afgemeld bij <xliff:g id="ACCOUNT">%1$s</xliff:g> vanwege <xliff:g id="REASON">%2$s</xliff:g></string>
   <string name="welcome_first">Eerste keer dat u met ChatSecure werkt?</string>
   <string name="welcome_skip">Kunt u niet wachten om te beginnen?</string>
   <string name="welcome_about">Aan de slag</string>
@@ -78,6 +86,7 @@ Aan de slag!</string>
   <string name="menu_add_account">Account toevoegen</string>
   <string name="menu_edit_account">Bewerk account</string>
   <string name="menu_remove_account">Verwijder account</string>
+  <string name="menu_use_existing_account">Bestaand account</string>
   <!--Views: Setup: Account-->
   <string name="label_username">Gebruikersnaam:</string>
   <string name="label_password">Wachtwoord:</string>
@@ -166,6 +175,7 @@ Klik hier om er één toe te voegen!</string>
   <string name="menu_block_contact">Contact blokkeren</string>
   <string name="menu_contact_nickname">Contact bijnaam</string>
   <string name="menu_view_blocked">Geblokkeerd</string>
+  <string name="nickname">Gebruikersnaam</string>
   <string name="confirm_delete_contact">Contact \'<xliff:g id="USER">%1$s</xliff:g>\' wordt verwijderd.</string>
   <string name="confirm_block_contact">Contact \'<xliff:g id="USER">%1$s</xliff:g>\' wordt geblokkeerd.</string>
   <string name="confirm_unblock_contact">Contact \'<xliff:g id="USER">%1$s</xliff:g>\' wordt gedeblokkeerd.</string>
@@ -229,6 +239,19 @@ Klik hier om er één toe te voegen!</string>
   <string name="menu_switch_chats">Schakelen tussen chats</string>
   <string name="menu_plus">Menu+</string>
   <string name="select_link_title">Link selecteren</string>
+  <string name="delete">Verwijderen</string>
+  <string name="keep_files">Bestanden behouden</string>
+  <string name="delete_chat_session_secured_storage">Verwijder Chat Sessie Beveiligde Opslag?</string>
+  <string name="all_files_will_be_deleted">Al de sessie\'s up- en downloadbestanden zullen permanent verwijderd worden. Waarschuwing: deze actie kan niet ongedaan worden!</string>
+  <string name="delete_original">Verwijder origineel</string>
+  <string name="this_file_will_be_copied">Dit bestand zal in de beveiligde opslag gekopiëerd worden voor het verzenden. Wil je het originele bestand uit de onbeveiligde opslag van het apparaat wissen?</string>
+  <string name="keep">Behouden</string>
+  <string name="export">Exporteren</string>
+  <string name="export_media">Exporteer media bestand</string>
+  <string name="export_media_file_to">Dit media bestand zal worden geëxporteerd naar %1$s</string>
+  <string name="end_chat_title">Chat beëindigen</string>
+  <string name="end_chat_summary">Alle veilige media items van deze sessie zullen verwijderd worden. Exporteer een media item door lang te tikken op het miniatuur icoon.</string>
+  <string name="end_chat_and_delete">Beëindig chat en verwijder bestanden</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> heeft u uitgenodigd deel te nemen aan een groepchat</string>
   <string name="invitation_sent_prompt">Er is een uitnodiging verzonden naar <xliff:g id="USER">%1$s</xliff:g>.</string>
@@ -277,12 +300,16 @@ Klik hier om uit te nodigen.</string>
   <string name="the_remote_key_fingerprint_has_been_verified_">De externe vingerafdruk werd geverifieerd!</string>
   <string name="fingerprint_for_you">Vingerafdruk voor jou</string>
   <string name="fingerprint_for_">Vingerafdruk voor</string>
+  <string name="install_barcode_scanner_title">Barcode Scanner installeren?</string>
+  <string name="install_barcode_scanner_message">Deze applicatie vereist Barcode Scanner. Will je dit installeren?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Authentificatie</string>
   <string name="smp_question_summary">Voer een vraag in om naar de ander te sturen en het antwoord wat je verwacht te krijgen, zodat je de identiteit van de ander kan verifieren.</string>
   <string name="smp_question_hint">de vraag om te stellen</string>
   <string name="qmp_answer_hint">het verwachte antwoord</string>
   <string name="remote_verified_us">Uw contact heeft u succesvol geauthentificeerd. Authentificeer nu uw contact door uw eigen vraag te stellen.</string>
+  <string name="otr_qa_title">OTR Vraag &amp; Antwoord verificatie</string>
+  <string name="chat_encryption_title">Chat Encryptie</string>
   <string name="otr_qa_send">Verzenden</string>
   <string name="otr_qa_cancel">Annuleren</string>
   <!--Views: VoIP-->
@@ -301,7 +328,7 @@ Klik hier om uit te nodigen.</string>
   <string name="pref_group_looknfeel_title">Gebruikersinterface</string>
   <string name="menu_locale">Taal</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Talen</string>
-
+  <string name="use_system_default">Gebruik systeem standaard</string>
   <string name="pref_theme_dark">Gebruik Donker Thema</string>
   <string name="pref_theme_dark_summary">Verander de app vormgeving naar donker</string>
   <string name="pref_in_memory_db_title">Uitsluitend Berichten Opslag in het Geheugen</string>
@@ -311,6 +338,8 @@ Klik hier om uit te nodigen.</string>
   <string name="pref_show_grid">Toon Contact Raster</string>
   <string name="pref_show_grid_summary">Toon contactlijst als avatar raster</string>
   <string name="button_yes_accept_all">Ja, aanvaard alle</string>
+  <string name="pref_delete_unsecured_media_title">Verwijder onveilige media</string>
+  <string name="pref_delete_unsecured_media_summary">Verwijder automatisch een foto of bestand van de originele onveilige opslag na het importeren voor het delen.</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Overige Tuning</string>
   <string name="start_on_boot">Start ChatSecure Automatisch</string>
@@ -340,14 +369,31 @@ Klik hier om uit te nodigen.</string>
   <string name="signout_kill_confirm_message">Wilt u uitloggen bij alle services EN alle processen stopzetten (ruwe stopzetting)?</string>
   <string name="prompt_create_new_account_">Nieuwe account aanmaken?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Nieuwe chat account aanmaken voor gebruikersnaam \'%1$s\'?</string>
+  <string name="dialog_cert_title">Certificaat info</string>
+  <string name="dialog_cert_subject">Certificaat:</string>
+  <string name="dialog_cert_issuer">Uitgegeven door:</string>
+  <string name="dialog_cert_fingerprint">SHA1 vingerafdruk:</string>
+  <string name="dialog_cert_issue_date">Uitgegeven</string>
+  <string name="dialog_cert_expires">Verstrijkt:</string>
+  <string name="dialog_connect_chatroom_title">Deelnemen aan groepsgesprek?</string>
+  <string name="dialog_connect_chatroom_message">Een externe app probeert je te connecteren met een groepsgesprek. Toelaten?</string>
+  <string name="dialog_settings_choose_background_title">Achtergrond kiezen</string>
+  <string name="dialog_settings_choose_background_body">Wil je een achtergrond afbeelding selecteren uit de galerij?</string>
+  <string name="dialog_settings_choose_background_picker">Selecteer foto</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Nieuwe berichten van <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="NUMBER">%1$d</xliff:g> ongelezen chats</string>
+  <string name="subscription_notify_text">Nieuw vriendschapsverzoek van <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Nieuw bestand <xliff:g id="filename">%s</xliff:g> van <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">Uitnodiging voor groepchat</string>
+  <string name="group_chat_invite_notify_text">Nieuwe uitnodiging voor groepchat van <xliff:g id="USER">%s</xliff:g></string>
   <string name="new_messages_notify">Nieuw(e) bericht(en) van</string>
   <string name="starting_the_chatsecure_service_">De ChatSecure service wordt gestart…</string>
   <string name="app_unlocked">Geactiveerd &amp; ontgrendeld</string>
+  <string name="toast_chat_copied_to_clipboard">bericht gekopieerd naar het klembord</string>
   <!--Alerts: Exceptions-->
   <string name="error">Aandacht vereist</string>
+  <string name="error_prefix">Fout:</string>
   <string name="general_error">Foutcode <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">Kan niet aanmelden bij de <xliff:g id="SERVICE">%1$s</xliff:g>-service. Probeer het later opnieuw."\n"(Details: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">De lijst is niet toegevoegd.</string>
@@ -405,6 +451,12 @@ ChatSecure zal waarschijnlijk crashen. Gebruik in de plaats a.u.b. het \"Log all
   <string name="disconnected_warning">Berichten zullen na herverbinding verstuurd worden.</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> is offline. Berichten die u verzendt, worden afgeleverd wanneer <xliff:g id="USER_1">%1$s</xliff:g> online komt.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> staat niet in uw lijst met contacten</string>
+  <string name="error_account_password_mismatch">Je wachtwoorden komen niet overeen</string>
+  <string name="error_account_settings_priority">Prioriteit moet een getal zijn tussen [0 .. 127]</string>
+  <string name="error_account_settings_port">De poort moet een getal zijn</string>
+  <string name="error_chat_file_transfer_title">Overdrachtsfout</string>
+  <string name="error_chat_file_transfer_body">Kon het bestand niet lezen</string>
+  <string name="error_welcome_database">Grote Fout: Kan de app database niet laden of ontgrendelen. Gelive de app opnieuw te installeren of de data te wissen.</string>
   <string name="account_settings_title">Account Instellingen</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">LET OP: Dit is een prille versie van ChatSecure die beveiligingslekken of fouten kan bevatten.</string>
@@ -417,7 +469,9 @@ ChatSecure zal waarschijnlijk crashen. Gebruik in de plaats a.u.b. het \"Log all
   <string name="contacts">Contacten</string>
   <string name="mtm_accept_cert">Aanvaard Server Certificaat?</string>
   <string name="menu_sidebar_qr">Vingerafdruk</string>
+  <string name="loading">Laden…</string>
   <!--Other-->
+  <string name="about_link">Over ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">Contact Lijst</string>
   <string name="menu_settings">Instellingen</string>
@@ -496,5 +550,30 @@ ChatSecure zal waarschijnlijk crashen. Gebruik in de plaats a.u.b. het \"Log all
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Bestaand account</string>
+  <string name="account_existing_full">Verbinding maken met een bestaand account op een specifieke Jabber / XMPP server.</string>
+  <string name="i_want_to_chat_using_my_google_account">Google Account</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi Mesh Chat</string>
+  <string name="account_wifi_full">Chat met anderen op hetzelfde lokale WiFi netwerk of mesh - geen internet of server nodig!</string>
+  <string name="account_wifi_button">WiFi Chat inschakelen</string>
   <string name="i_need_a_new_account">Nieuwe Account</string>
+  <string name="account_new_full">Registreer een nieuwe, gratis account bij een service van onze ingebouwde lijst, of naar eigen keuze.</string>
+  <string name="account_new_button">Maak account aan</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Geheime identiteit!</string>
+  <string name="account_burner_full">Creëer een anonieme, wegwerp chat-account in één simpele tik (vereist Orbot: Tor voor Android)</string>
+  <string name="account_burner_button">Maak identiteit</string>
+  <string name="this_is_a_group_chat">Dit is een groepsgesprek</string>
+  <string name="_resent_">[opnieuw verzonden]</string>
+  <string name="resent">[opnieuw verzonden]</string>
+  <string name="unable_to_securely_share_this_file">Niet mogelijk dit bestand veilig te delen</string>
+  <string name="install_orbot_">Installeer Orbot?</string>
+  <string name="always">Altijd</string>
+  <string name="start_orbot_">Start Orbot?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot lijkt niet te worden uitgevoerd. Wilt u het opstarten en verbinding maken met Tor?</string>
+  <string name="muc_dialog_nickname">Alias in het groepsgesprek</string>
+  <string name="muc_dialog_room">naam van het te starten of toe te treden groepsgesprek </string>
+  <string name="muc_dialog_server">groepschat server (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Je sleutelopslag is corrupt. Gelieve ChatSecure opnieuw te installeren of \'wis de data\' van de app.</string>
+  <string name="you_received_an_unreadable_encrypted_message">Je hebt een onleesbaar geëncrypteerd bericht ontvangen</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Ik kon je verstuurde bericht niet decrypteren</string>
 </resources>

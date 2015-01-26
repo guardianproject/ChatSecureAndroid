@@ -21,17 +21,23 @@
   <string name="btn_next">རྗེས་མ། </string>
   <string name="btn_back">རྒྱབ་ངོས།</string>
   <string name="connect">མཐུད་། </string>
+  <string name="play">ཁ་ཕྱེས། </string>
+  <string name="setup">སྒྲིག</string>
   <!--Views-->
   <string name="lock_screen_open">ཁ་ཕྱེས། </string>
   <string name="title_activity_lock_screen">ཉེན་སྲུང་གླེང་མོལ་སྒོ་བརྒྱབ་འདུག </string>
   <string name="lock_screen_create_passphrase">གསང་ཚིག་བཟོས། </string>
   <string name="lock_screen_confirm_passphrase">གསང་ཚིག་ངེས་གཏན་བཟོས། </string>
   <string name="lock_screen_passphrase_hint">གསང་ཚིག </string>
-  <string name="lock_screen_passphrase_not_set_enter">གསང་ཚིག་གསར་པ། </string>
-  <string name="lock_screen_passphrase_not_set_confirm">གསང་ཚིག་གསར་པ་གཏན་འཇགས་བཟོས།</string>
+  <string name="lock_screen_passphrase_not_set_enter">ཁྱོད་ཀྱིས་ཉེན་སྲུང་གླེང་མོལ་ལ་གདམ་ཀ་ཡོད་པའི་སྒོ་ནས་གསང་ཚིག་གཙོ་བོ་ཞིག་བཟོས་ཆོག་ཅིང་། དེ་ཡིས་གསང་ཚིག་མེད་པར་ཁྱོད་ཀྱི་འབྲེལ་མིང་དང་འཕྲིན་ཐུང་རིགས་ལ་བལྟ་མི་ཐུབ་པ་བྱེད་གི་རེད་། </string>
+  <string name="lock_screen_passphrase_not_set_confirm">གསང་ཚིག་གསར་པ་ངེས་གཏན་བཟོས།</string>
   <string name="lock_screen_passphrases_not_matching">གསང་ཚིག་གཉིས་མཐུན་གི་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
-  <string name="lock_screen_skip">ང་ལེ་ལོ་ཚོར་གི་འདུག (གསང་ཚིག་མེད་།)</string>
+  <string name="lock_screen_skip">མཆོང་རྒྱག་རྒྱག</string>
+  <string name="app_passphrase_view_title_dialog">གནས་ཚུལ་རོགས་འདེགས། </string>
   <string name="app_passphrase_view_password_question">སྐུ་མཁྱེན། གསང་ཚིག་ནང་འཇུག་བྱོས། </string>
+  <string name="password_please">སྐུ་མཁྱེན། གསང་ཚིག་ནང་འཇུག་བྱོས། </string>
+  <string name="passphrase">གསང་ཚིག</string>
+  <string name="passphrase_again">གསང་ཚིག (སླར་ཡང་བཅུག)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">ཐོ་བྱང་ཞིག་འདེམས། </string>
   <string name="choose_account_title">ཐོ་བྱང་ཞིག་འདེམས། </string>
@@ -43,7 +49,7 @@
   <string name="signed_out_prompt">ཁྱེད་རང་<xliff:g id="account">%1$s</xliff:g>ནས་ཕྱིར་ཕུད་འདུག </string>
   <string name="signed_out_prompt_with_error">ཁྱེད་རང་<xliff:g id="account">%1$s</xliff:g>ནས་ཕྱིར་ཕུད་འདུག  རྒྱུ་མཚན་ནི་<xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">ཐེངས་དང་པོར་ཉེན་སྲུང་གླེང་མོལ་བེད་སྤྱོད་གཏོང་གི་ཡོད་དམ། </string>
-  <string name="welcome_skip">འགོ་འཛུགས་པར་རྔམས་ཀྱི་འདུག</string>
+  <string name="welcome_skip">འགོ་འཛུགས་པར་རྔམས་ཀྱི་འདུག་གམ།</string>
   <string name="welcome_about">འགོ་བཙུགས་།</string>
   <string name="welcome_account">ཐོ་བྱང་སྒྲིག་འཇུག</string>
   <string name="setup_passphrase_title">གསང་ཚིག་སྒྲིག་སྦྱོར། </string>
@@ -78,10 +84,11 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="menu_add_account">ཐོ་བྱང་ཞིག་ཁ་སྣོན་བྱོས། </string>
   <string name="menu_edit_account">ཐོ་བྱང་རྩོམ་སྒྲིག་བྱོས། </string>
   <string name="menu_remove_account">ཐོ་བྱང་གསུབ།</string>
+  <string name="menu_use_existing_account">ཐོ་བྱང་ཡོད་བཞིན་པ།</string>
   <!--Views: Setup: Account-->
   <string name="label_username">User@Host</string>
   <string name="label_password">གསང་ཚིག</string>
-  <string name="remember_password">ངའི་གསང་ཚིག་དྲན་པར་བྱེད།</string>
+  <string name="remember_password">ངའི་གསང་ཚིག་དྲན་པར་གྱིས།།</string>
   <string name="keep_me_signed_in">ངར་ རང་འགུལ་གྱིས་ནང་དུ་འཇུག</string>
   <string name="sign_up">ཁྱེད་རང་ལ་ཐོ་བྱང་མེད་དམ།</string>
   <string name="sign_in">ནང་དུ་ཞུགས།</string>
@@ -93,7 +100,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="account_setup_new_username">མིང་གསར་པ། </string>
   <string name="account_setup_service_provider">ཞབས་ཞུ་སྤྲོད་མཁན (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">གསང་ཚིག</string>
-  <string name="account_setup_password_confirm">གསང་ཚིག་གཏན་འཇགས་བཟོས།</string>
+  <string name="account_setup_password_confirm">གསང་ཚིག་ངེས་གཏན་བཟོས།</string>
   <string name="account_setup_advanced_button">ཚད་མཐོའི་ཐོ་བྱང་སྒྲིག་བཟོ།</string>
   <string name="account_select_type">ཐོ་བྱང་གི་རིགས། </string>
   <string name="btn_create_new_account">ཐོ་བྱང་དེབ་སྐྱེལ་བྱོས། </string>
@@ -165,6 +172,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="menu_block_contact">འབྲེལ་མིང་བཀག</string>
   <string name="menu_contact_nickname">འབྲེལ་གཏུགས་ཀྱི་སྙུག་མིང་། </string>
   <string name="menu_view_blocked">བཀག་ཟིན།</string>
+  <string name="nickname">སྙུག་མིང་།</string>
   <string name="confirm_delete_contact">འབྲེལ་མིང་འདི་"<xliff:g id="user">%1$s</xliff:g>"གསུབ་ཀྱི་རེད།</string>
   <string name="confirm_block_contact">འབྲེལ་མིང་འདི་"<xliff:g id="user">%1$s</xliff:g>" བཀག་གི་རེད།</string>
   <string name="confirm_unblock_contact">འབྲེལ་གཏུགས"<xliff:g id="user">%1$s</xliff:g>"ཁ་ཕྱེས་གི་རེད་། </string>
@@ -174,6 +182,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="unblock_contact_success">འབྲེལ་མིང་"<xliff:g id="user">%1$s</xliff:g>"ཁ་ཕྱེས་ཟིན། </string>
   <string name="menu_new_chat">གླེང་མོལ་གསར་བ།</string>
   <string name="menu_search_contacts">འབྲེལ་མིང་འཚོལ།</string>
+  <string name="menu_show_grid">ཕྱི་བསྒྲགས་ཀྱི་སྒྲོམ། </string>
   <string name="menu_start_chat">གླེང་མོལ་འགོ་འཛུགས།</string>
   <string name="menu_view_profile">ངོ་སྤྲོད་ལ་གཟིགས། </string>
   <string name="menu_verify">ལྡེ་མིག་ར་སྤྲོད་བྱོས། </string>
@@ -217,6 +226,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="transfer_in_progress">བརྗེ་སྒྱུར་བྱེད་བཞིན་ཡོད། </string>
   <string name="accept_transfer_">བརྗེ་སྒྱུར་ངོས་ལེན་བྱས་སམ། </string>
   <string name="wants_to_send_you_the_file">ནས་ཁྱོད་ལ་ཡིག་ཆ་ཞིག་གཏོང་འདོད་། </string>
+  <string name="no_connection_for_sending">ཁྱེད་ཀྱི་བགོ་དངོས་དེ་གཏོང་བར་དྲ་འབྲེལ་མི་འདུག </string>
   <string name="send">གཏོང་།</string>
   <string name="compose_hint">འཕྲིན་ཐུང་ཞིག་ཐོངས། </string>
   <string name="compose_hint_secure">ཉེན་སྲུང་ཅན་གྱི་འཕྲིན་ཐུང་ཐོངས། </string>
@@ -229,8 +239,17 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="select_link_title">འབྲེལ་ཐག་འདེམས།</string>
   <string name="delete">གསུབ། </string>
   <string name="keep_files">ཡིག་ཆ་རྣམས་ཉོར།</string>
+  <string name="delete_chat_session_secured_storage">གླེང་མོལ་གྱི་ཉར་སྣོད་གསུབ་གི་ཡིན་ནམ། </string>
+  <string name="all_files_will_be_deleted">འཚོགས་འདུ་ཚང་མའི་སྐབས་ཀྱི་ཡིག་ཆ་ཕབ་ལེན་དང་ནང་འཇུག་བྱས་བ་སོགས་དུས་གཏན་དུ་གསུབ་གི་རེད་། ཉེན་བརྡ། བྱ་འགུལ་འདི་མེད་པར་བཟོ་ཐུབ་གི་མ་རེད་། </string>
+  <string name="delete_original">འགོ་ཁུངས་གསུབ་གི་ཡིན་ནམ། </string>
+  <string name="this_file_will_be_copied">ཡིག་ཆ་འདི་མ་བཏང་སྔོན་དུ་ཉེན་སྲུང་ཡོད་པའི་ཉར་ཚགས་ཁོངས་སུ་འཇོག་དགོས། ཁྱོད་ཀྱིས་ཉེན་སྲུང་མེད་པའི་ཉར་ཚགས་ཁོངས་ཀྱི་ཡིག་ཆ་ཨ་མ་དེ་གསུབ་གི་ཡིན་ནམ། </string>
   <string name="keep">ཉོར།</string>
+  <string name="export">ཕྱིར་ཐོངས།</string>
+  <string name="export_media">བརྒྱུད་ལམ་གྱི་ཡིག་ཆ་ཕྱི་ལ་བོར་གྱི་ཡིན་ནམ། </string>
+  <string name="export_media_file_to">%1$sལ་བརྒྱུད་ལམ་གྱི་ཡིག་ཆ་འདི་ཐོངས། </string>
   <string name="end_chat_title">གླེང་མོལ་མཚམས་བཞག་གི་ཡིན་ནམ།</string>
+  <string name="end_chat_summary">ཚོགས་ཐུན་འདིའི་ཉེན་སྲུང་ལྡན་པའི་བརྒྱུད་ལམ་གྱི་ལག་ཆ་རིགས་གསུབ་གི་རེད་། མཐེབ་གོང་གི་སེན་མོའི་འདྲ་གཟུགས་དེའི་སྒང་ལ་་བསྣུན་ནས་བརྒྱུད་ལམ་གྱི་ཡིག་ཆ་ཕྱི་ལ་ཐངས། </string>
+  <string name="end_chat_and_delete">གླེང་མོལ་མཚམས་བཞག་ནས་ཡིག་ཆ་གསུབ། </string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> ཡིས་ཁྱེད་རང་མཉམ་འདུས་གླེང་མོལ་ལ་མགྲོན་འབོད་བཏང་ཟིན། </string>
   <string name="invitation_sent_prompt"><xliff:g id="user">%1$s</xliff:g> ལ་མགྲོན་འབོད་བཏང་ཟིན།</string>
@@ -279,12 +298,16 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="the_remote_key_fingerprint_has_been_verified_">རྒྱང་བཀོལ་མཛུབ་རིས་དེ་ར་སྤྲོད་བྱས་ཟིན། </string>
   <string name="fingerprint_for_you">ཁྱེད་ཀྱི་ཆེད་དུ་མཛུབ་རིས། </string>
   <string name="fingerprint_for_">ཆེད་དུ་མཛུབ་རིས། </string>
+  <string name="install_barcode_scanner_title">ཨང་ཚབ་འཚག་སེལ་བྱེད་མཁན་ནང་འཇུག་བྱོས། </string>
+  <string name="install_barcode_scanner_message">མཉེན་ཆས་མ་ལག་འདི་ལ་ཨང་ཚབ་འཚག་སེལ་དགོས་ཀྱི་འདུག ཁྱེད་ཀྱིས་དེ་ནང་འཇུག་བྱེད་གི་ཡིན་ནམ། </string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">ར་སྤྲོད་ཁུངས་སྐྱེལ།</string>
   <string name="smp_question_summary">ཁོང་ཚོ་སུ་ཡིན་མིན་ར་སྤྲོད་ཕྱིར་། སོ་སོའི་འབྲེལ་མིང་ལ་དྲི་བ་གཏོང་བ་དང་དྲི་ལན་འགྲིག་པ་དེ་ཡང་མཉམ་དུ་ཞོག </string>
   <string name="smp_question_hint">དྲི་བ་གཏོང་རྒྱུ་དེ། </string>
   <string name="qmp_answer_hint">དྲི་ལན་འགྲིག་པ་དེ། </string>
   <string name="remote_verified_us">ཁྱེད་ཀྱི་འབྲེལ་མིང་དེས་ཁྱེད་རང་ར་སྤྲོད་ལེགས་འགྲུབ་བྱས་འདུག ད། ཁྱེད་ཀྱི་དྲི་བ་དག་དྲིས་ནས་ཁྱེད་ཀྱི་འབྲེལ་མིང་དེ་ར་སྤྲོད་བྱེད་དགོས། </string>
+  <string name="otr_qa_title"> OTR Q&amp;ར་སྤྲོད་ཞིག </string>
+  <string name="chat_encryption_title">གླེང་མོལ་གསང་སྡོམ།</string>
   <string name="otr_qa_send">གཏོང་།</string>
   <string name="otr_qa_cancel">ཕྱིར་འཐེན་བྱེད།</string>
   <!--Views: VoIP-->
@@ -303,14 +326,18 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="pref_group_looknfeel_title">བེད་སྤྱོད་གཏོང་མཁན་གྱི་མཐུད་ངོས། </string>
   <string name="menu_locale">སྐད་ཡིག</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">སྐད་ཡིག་ཁག </string>
-
+  <string name="use_system_default">མ་ལག་འཆར་ཅན་དེ་བེད་སྤྱོད་ཐོངས། </string>
   <string name="pref_theme_dark">པར་གཞི་མུན་ནག་དེ་བེད་སྤྱོད་ཐོངས། </string>
   <string name="pref_theme_dark_summary">ཉེར་སྤྱོད་མ་ལག་གི་པར་གཞི་ནག་པོར་བསྒྱུར། </string>
   <string name="pref_in_memory_db_title">འཕྲིན་ཐུང་གི་གསོག་ཉར་བང་མཛོད་གཙོ་བོ་དེ།  </string>
   <string name="pref_in_memory_db_summary">འཕྲིན་ཐུང་ཕྱིར་གྱར་མ་འབྱུང་བའི་ཆེད་དུ། འཕྲིན་ཐུང་དག་གསོག་ཉར་ཡོ་ཆས་ཀྱི་ཁོངས་སུ་ཉོར། flashཧྤི་ལ་ཞེས་ཉར་གསོག་ཁོངས་སུ་མ་ཉར། (དེ་ཡིས་འཕྲིན་ཐུང་བརླག་པར་རྐྱེན་བྱེད་སྲིད)</string>
   <string name="pref_background_title">རྒྱབ་ལྗོངས་ཀྱི་སྣང་བརྙན། </string>
   <string name="pref_background_summary">བཀོལ་སྤྱོད་མ་ལག་འདིའི་ཆེད་དུ། རྒྱབ་ལྗོངས་སྣང་བརྙན་དེ་ལ་ (\"/sdcard/foo.jpg\")ཁ་ཕྱོགས་སྟོན། </string>
+  <string name="pref_show_grid">འབྲེལ་མིང་གི་སྒྲོམ་དེ་སྟོན། </string>
+  <string name="pref_show_grid_summary">འབྲེལ་མིང་གི་ཐོ་དེ་སྟོན། </string>
   <string name="button_yes_accept_all">རེད་། ཚང་མ་ངོས་ལེན་བྱོས། </string>
+  <string name="pref_delete_unsecured_media_title">ཉེན་སྲུང་མིན་པའི་བརྒྱུད་ལམ་དེ་གསུབ། </string>
+  <string name="pref_delete_unsecured_media_summary">ཡིག་ཆའམ་ཡང་ན་འདྲ་པར་ཞིག་བགོ་བའི་རྗེས་སུ། དེ་ཁོངས་ཨ་མ་ནས་རང་བཞིན་གྱིས་གསུབ་འགྲོ་གི་རེད་། </string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">ཉར་གསོག་གཞན་པ། </string>
   <string name="start_on_boot">ཉེན་སྲུང་གླེང་མོལ་དེ་རང་བཞིན་གྱིས་འགོ་ཚུགས། </string>
@@ -330,6 +357,8 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="notification_sound_summary">འཕྲིན་ཐུང་འབྱོར་སྐབས་དྲིལ་སྒྲ་གཏོང་།</string>
   <string name="notification_ringtone_title">ཉེན་སྲུང་གླེང་མོལ་གྱི་དྲིལ་སྒྲ་བེད་སྤྱོད་ཐོངས། </string>
   <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Debug བྱེད་ལས་ཅན་བཟོས། </string>
+  <string name="pref_debug_summary">Output app log data to standard out / logcat for debugging</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">དྲ་འབྲེལ་གྱི་གནས་ཚུལ་ནུས་མེད་བཟོས།</string>
   <string name="bg_data_prompt_message">
@@ -342,15 +371,33 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="signout_kill_confirm_message">ཁྱེད་ཀྱིས་ཞབས་ཞུ་ཚང་མ་སྒོ་བརྒྱབ་ནས་བརྒྱུད་རིམ་ཚང་མ་མེད་པར་གཏོང་འདོད་དམ། (hard exit)?</string>
   <string name="prompt_create_new_account_">ཐོ་བྱང་གསར་བ་ཞིག་བཟོ་གི་ཡིན་ནམ། </string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">%1$s\'་ཡི་མིང་ཐོག་ལ་གླེང་མོལ་ཐོ་བྱང་གསར་བ་ཞིག་བཟོ་གི་ཡིན་ནམ། </string>
+  <string name="dialog_cert_title">ལག་འཁྱེར་གྱི་སྐོར།</string>
+  <string name="dialog_cert_subject">ལག་འཁྱེར།</string>
+  <string name="dialog_cert_issuer">ལག་འཁྱེར་སྤྲོད་མཁན།</string>
+  <string name="dialog_cert_fingerprint">SHA1མཛུབ་ཐེལ། </string>
+  <string name="dialog_cert_issue_date">བཏོན་ཚར། </string>
+  <string name="dialog_cert_expires">དུས་རྫོགས། </string>
+  <string name="dialog_connect_chatroom_title">གླེང་མོལ་ལ་ཞུགས་སམ། </string>
+  <string name="dialog_connect_chatroom_message">ཕྱི་རོལ་གྱི་མཉེན་ཆས་ཤིག་གིས་ཁྱོད་རང་གླེང་མོལ་གྱི་ཚོམས་སུ་སྦྲེལ་གྱི་འདུག སྦྲེལ་འཇུག་གམ། </string>
+  <string name="dialog_settings_choose_background_title">རྒྱབ་ལྗོངས་འདེམས།</string>
+  <string name="dialog_settings_choose_background_body">ཁྱེད་ཀྱིས་པར་ཚོམས་ནས་རྒྱབ་ལྗོངས་ཀྱི་པར་རིས་དེ་འདེམས་ཀྱི་ཡིན་ནམ། </string>
+  <string name="dialog_settings_choose_background_picker">འདྲ་པར་འདེམས།</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">འཕྲིན་ཐུང་གསར་པ <xliff:g id="provider">%1$s</xliff:g> </string>
+  <string name="num_unread_chats">གླེང་མོལ་མ་ཀློག་པ་ <xliff:g id="number">%1$d</xliff:g></string>
+  <string name="subscription_notify_text"><xliff:g id="user">%s</xliff:g> ནས་གྲོགས་པའི་མགྲོན་འབོད་ཞིག </string>
+  <string name="file_notify_text"><xliff:g id="user">%s</xliff:g>ནས་  <xliff:g id="filename">%s</xliff:g>   ཡིག་ཆ་གསར་བ་ཞིག </string>
   <string name="notify_groupchat_label">མཉམ་འདུས་གླེང་མོལ་མགྲོན་འབོད་།</string>
+  <string name="group_chat_invite_notify_text"><xliff:g id="user">%s</xliff:g>ནས་གླེང་མོལ་གྱི་ཚོམས་གསར་བའི་མགྲོན་ཤོག་ཞིག </string>
   <string name="new_messages_notify">ནས་འཕྲིན་ཐུང་(རྣམས)གསར་པ། </string>
   <string name="starting_the_chatsecure_service_">ཉེན་སྲུང་གླེང་མོལ་གྱི་ཞབས་ཞུ་འགོ་ཚུགས། </string>
   <string name="app_unlocked">&amp; ནུས་ཅན་བཟོས་ཚར། སྒོ་ཕྱེས་ཡོད། </string>
+  <string name="toast_chat_copied_to_clipboard">འཕྲིན་ཐུང་དེ་ནག་པང་ཆུང་ངུ་དེར་ཕབ་བཤུ་བྱས་ཚར། </string>
   <!--Alerts: Exceptions-->
   <string name="error">དོ་སྣང་བྱོས། </string>
+  <string name="error_prefix">ནོར་འཁྲུལ།</string>
   <string name="general_error">ཨང་ཚབ་ནོར་བ། <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="login_service_failed"> <xliff:g id="service">%1$s</xliff:g> འདི་ལ་འཛུལ་ཐུབ་ཀྱི་མི་འདུག རྗེས་སུ་བསྐྱར་དུ་ཚོད་ལྟ་བྱེད་རོགས།(ཞིབ་ཕྲ། <xliff:g id="description">%2$s</xliff:g>)</string>
   <string name="add_list_failed">ཐོ་གཞུང་དེ་བསྣན་མི་འདུག</string>
   <string name="block_contact_failed">འབྲེལ་མིང་དེ་བཀག་མེད།</string>
   <string name="unblock_contact_failed">བཀག་ཟིན་པའི་འབྲེལ་མིང་དེ་མུ་མཐུད་དུ་བཀག་ཡོད། </string>
@@ -391,10 +438,13 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="account_wizard_no_root_domain_warning">ཁྱེད་རང་གི་དྲ་ཐོག་ཞབས་ཞུར .com དང་ .net   ཡང་ན་ཟུར་སྣོན་སོགས་ཅི་ཡང་མི་འདུག བསྐྱར་དུ་ཚོད་ལྟ་བྱོས། </string>
   <string name="signin_password_prompt">ཁྱེད་རང་གི་གསང་ཚིག་ནང་འཇུག་བྱོས། </string>
   <string name="warning_tor_connect">ཁྱེད་ཀྱིས་ བེད་སྤྱོད་གཏོང་གི་ཡོད་པར་བརྟེན། ཁྱེད་ཀྱིས་ངེས་པར་དུ་ XMPP ཡི་འབྲེལ་མཐུད་མཁོ་སྤྲོད་མཁན་གྱི་མིང་གཙོ་བོ་དེ་ཐད་ཀར་རྒྱ་ཆེ་བའི་ཐོ་མཛོད་སྒྲིག་བཟོའི་ཁོངས་སུ་འཇུག་དགོས་རེད། </string>
+  <string name="warning_weak_crypto">ཉེན་བརྡ། ཞབས་ཞུ་འདི་ཡིས་གསང་ཚིག་ཞན་པ་ཞིག་དང་ལྷན་དུ་ངོས་སྦྱོར་ཞིག་བེད་སྤྱོད་ཀྱི་ཡོད་། དེར་བརྟེན། འཛིན་སྐྱོང་གིས་གསང་ཚིག་དེ་ཡར་རྒྱས་གཏོང་རོགས། </string>
+  <string name="warning_pinned_cert_mismatch">ད་ཡོད་ཀྱི་ངོས་སྦྱོར་དེ་ཡང་མཁོ་སྤྲོད་བྱས་བའི་ངོས་སྦྱོར་གཉིས་གཅིག་མཚུངས་མི་འདུག </string>
   <string name="unable_to_create_or_join_group_chat">མཉམ་འདུས་གླེང་མོལ་ལ་འཛུལ་བའམ་ཡང་ན་གསར་བ་ཞིག་འགོ་འཛུགས་རྒྱུ་དེ་ཐུབ་གི་མི་འདུག </string>
   <string name="sorry_we_cannot_share_that_file_type">དགོངས་དག ང་ཚོས་ཡིག་ཆ་འདིའི་རིགས་བགོ་འགྲེམས་ཐུབ་ཀྱི་མི་འདུག </string>
   <string name="err_otr_share_no_encryption">ཡིག་ཆ་འདི་དག་བགོ་འགྲེམས་བྱེད་པ་ལ་ཁྱོད་ཀྱིས་ངེས་པར་དུ་གསང་སྡོམ་བྱེད་དགོས། </string>
   <string name="please_enable_chat_encryption_to_share_files">ཡིག་ཆ་བགོ་འགྲེམས་ཐུབ་པའི་ཆེད་དུ་གླེང་མོལ་གསང་སྡོམ་བྱོས། </string>
+  <string name="unsupported_incoming_data">རྒྱབ་སྐྱོར་མེད་པའི་ཡིག་ཆའི་རིགས་བགོ་འགྲེམས་བྱེད་མི་ཐུབ། </string>
   <string name="swipe_alert">ཉེན་སྲུང་གླེང་མོལ་གྱིས་ལས་ཀ་ཚང་མ་རྩ་མེད་གཏོང་བའི་རེ་སྐུལ་ཞིག་སླེབས་པ་ཤེས་རྟོགས་བྱུང་འདུག ཉེན་སྲུང་གླེང་མོལ་ལ་སྐྱོན་ཤོར་སྲིད། ཐོ་མཛོད་ནས་ཕྱིར་འབུད་ཚང་མ་བེད་སྤྱོད་ཐོངས། </string>
   <string name="there_is_no_viewer_available_for_this_file_format">ཡིག་ཆ་རིགས་འདི་ལ་བལྟ་མཁན་མི་འདུག </string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">ཨང་ཚབ་འཚག་སེལ་མ་བྱས་སྔོན་དུ་ཉེན་སྲུང་ཅན་གྱི་གླེང་མོལ་འགོ་འཛུགས་རོགས།</string>
@@ -404,6 +454,12 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="disconnected_warning">བསྐྱར་མཐུད་བྱུང་མཚམས་འཕྲིན་ཐུང་དེ་གཏོང་གི་རེད། </string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g>དྲ་ཐོག་ཏུ་མི་འདུག ཁྱེད་ནས་བཏང་བའི་འཕྲིན་ཐུང་དེ་།<xliff:g id="user">%1$s</xliff:g> དྲ་ལམ་དུ་སླེབས་པ་དང་སྐྱེལ་ཐུབ།</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g>ཁྱེད་ཀྱི་འབྲེལ་ཐོའི་ནང་མི་འདུག</string>
+  <string name="error_account_password_mismatch">ཁྱེད་ཀྱི་ནང་འཇུག་བྱེད་པའི་གསང་ཚིག་དེ་མཚུངས་ཀྱི་མི་འདུག</string>
+  <string name="error_account_settings_priority">གལ་ཆེ་ཆུང་གི་གོ་རིམ་དེ་གཙོ་བོ་ཨང་གྲངས་ཀླད་གོར་ནས་བརྒྱ་དང་ཉེར་བདུན་བར་ཡིན། [0 .. 127]</string>
+  <string name="error_account_settings_port">གཞོགས་ཀྱི་ཨང་གྲངས་དེ་ངེས་པར་དུ་ཨང་ཀི་ཡིན་དགོས། </string>
+  <string name="error_chat_file_transfer_title">ནོར་འཁྲུལ་ཕར་ཐོངས། </string>
+  <string name="error_chat_file_transfer_body">ཡིག་ཆ་དེ་གསོག་ཉར་ལ་འཇོག་ཐུབ་ཀྱི་མི་འདུག </string>
+  <string name="error_welcome_database">ནོར་འཁྲུལ་ཆེ་ཤོས། སྒོ་ཕྱེས་མི་ཐུབ་པའམ་ཡང་ན་མཉེན་ཆས་ཀྱི་རེའུ་མིག་ནང་འཇུག་མི་ཐུབ་པ། མཉེན་ཆས་དེ་བསྐྱར་དུ་ནང་འཇུག་བྱེད་པའམ་ཡང་ན་རེའུ་མིག་གཙང་མ་བཟོ་རོགས། </string>
   <string name="account_settings_title">ཐོ་བྱང་སྒྲིག་བཟོ།</string>
   <string name="pref_default_locale">སྒེ་ཧྥི་ལོ་ཁུ།</string>
   <string name="warning_alpha">ཉེན་བརྡ། འདི་ནི་ཉེན་སྲུང་གླེང་མོལ་ཕྱིར་བསྒྲགས་སྔ་མའི་གྲས་ཡིན་པས། འདི་ལ་ད་དུང་ཉེན་སྲུང་གི་དཀའ་ངལ་དང་ནོར་འཁྲུལ་སོགས་ཡོད་སྲིད། </string>
@@ -416,7 +472,9 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="contacts">འབྲེལ་ཐོ། </string>
   <string name="mtm_accept_cert">ཞབས་ཞུ་མཁན་གྱི་ངོས་སྦྱོར་ལ་མོས་མཐུན་བྱོས། </string>
   <string name="menu_sidebar_qr">མཛུབ་རིས། </string>
+  <string name="loading">ཕབ་ལེན་བྱེད་བཞིན་པ། </string>
   <!--Other-->
+  <string name="about_link">ཉེན་སྲུང་གླེང་མོལ་གྱི་སྐོར།\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">འབྲེལ་མིང་ཐོ་གཞུང་།</string>
   <string name="menu_settings">སྒྲིག་བཟོ།</string>
@@ -495,5 +553,33 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">ཐོ་བྱང་ཡོད་བཞིན་པ།</string>
+  <string name="account_existing_full">XMPP serverཡང་ན་ Jabber ཡི་སྒང་དུ་ཡོད་པའི་ངའི་ད་ཡོད་ཐོ་མིང་དེར་སྦྲེལ་རོགས། </string>
+  <string name="i_want_to_chat_using_my_google_account">གྷོ་རྒལ་ཐོ་མིང་། </string>
+  <string name="account_google_full">ད་ཡོད་ཀྱི་ཁྱོད་ཀྱི་གྷོ་རྒལ་ཐོ་མིང་བེད་སྤྱོད་བཏང་ནས་གྷོ་རྒལ་བེད་སྤྱོད་གཏོང་མཁན་གཞན་པ་དེར་གླེང་མོལ་བྱོས། </string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">སྐུད་མེད་དྲ་འབྲེལ་གླེང་མོལ། </string>
+  <string name="account_wifi_full">གཞན་པ་དག་དང་ལྷན་དུ་ས་གནས་ཀྱི་སྐུད་མེད་དྲ་འབྲེལ་ཐོག་གླེང་མོལ་བྱོས། </string>
+  <string name="account_wifi_button">སྐུད་མེད་གླེང་མོལ་ཡོད་པ་བྱོས། </string>
   <string name="i_need_a_new_account">ཐོ་བྱང་གསར་བ།</string>
+  <string name="account_new_full">ང་ཚོས་བཟོས་བའམ་ཡང་ན་ཁྱོད་ཀྱིས་གདེམ་ཀ་གང་རུང་གི་ཞབས་ཞུའི་སྟེང་དུ་། ཐོ་མིང་གསར་བ་ཞིག་དེབ་སྐྱེལ་བྱེད་རོགས། </string>
+  <string name="account_new_button">ཐོ་བྱང་གསར་བ་ཞིག་བཟོས།</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">གསང་བའི་ངོ་བོ།</string>
+  <string name="account_burner_full">མིང་མེད་ཀྱི་གླེང་མོལ་ཐོ་མིང་ཞིག་སྒོ་ཕྱེས།(དེ་ལ Orbot: Tor for Android དགོས)</string>
+  <string name="account_burner_button">ཡོངས་ཁྱབ་ཀྱི་ངོ་བོ།</string>
+  <string name="this_is_a_group_chat">འདི་མཉམ་འདུས་གླེང་མོལ་རེད།</string>
+  <string name="_resent_">[བསྐྱར་དུ་ཐོངས།]</string>
+  <string name="resent">[བསྐྱར་དུ་ཐོངས]</string>
+  <string name="unable_to_securely_share_this_file">ཡིག་ཆ་འདི་ཉེན་སྲུང་ཡོད་པའི་སྒོ་ནས་བསྐུར་ཐུབ་པ་མི་འདུག </string>
+  <string name="install_orbot_">Orbot ནང་འཇུག་བྱེད་ཀྱི་ཡིན་ནམ།</string>
+  <string name="you_must_have_orbot">ཨང་ཚབ་ཅན་གྱི་གླེང་མོལ་སོགས་ཀྱི་སླད་དུ་ཁྱེད་ཀྱིས་ངེས་པར་དུ་ Orbot ནང་འཇུག་དང་བྱེད་ལས་ཅན་བཟོ་དགོས། ཁྱེད་ཀྱིས་དེ་ནང་འཇུག་བྱེད་འདོད་མ། </string>
+  <string name="always">དུས་རྟག་དུ།</string>
+  <string name="start_orbot_">Orbot འགོ་ཚུགས་ཀྱི་ཡིན་ནམ།</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbotཡིས་ལས་ཀ་བྱེད་ཀྱི་མེད་པ་ལྟ་བུ་འདུག ཁྱེད་ཀྱིས་དེ་བསྐྱར་དུ་འགོ་བཙུགས་ནས་Torལ་སྦྲེལ་འདོད་དམ། </string>
+  <string name="muc_dialog_nickname">གླེང་མོལ་ཁོངས་སུ་བེད་སྤྱོད་གཏོང་གཞིའི་སྨྱུག་མིང་། </string>
+  <string name="muc_dialog_room">གླེང་མོལ་ལ་འཛུལ་བར་དྲ་ཁང་གི་མིང་ཞིག་བཟོས། </string>
+  <string name="muc_dialog_server">མཉམ་འདུས་གླེང་མོལ་གྱི་ཞབས་ཞུ། (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">ཁྱོད་ཀྱི་ཉར་ཁང་ལྟེ་བ་དེ་འཕྲོ་བརླགས་ལ་ཕྱིན་འདུག ཉེན་སྲུང་གླེང་མོལ་ལམ་ \'clear data\' ཡང་ན་བསྐྱར་དུ་ནང་འཇུག་བྱོས། </string>
+  <string name="you_received_an_unreadable_encrypted_message">ཁྱོད་ལ་ཀློག་མི་ཐུབ་པའི་གསང་སྡོམ་འཕྲིན་ཐུང་ཞིག་འབྱོར་འདུག </string>
+  <string name="i_could_not_decrypt_the_message_you_sent">ཁྱོད་ཀྱིས་ང་ལ་བཏང་བའི་འཕྲིན་ཐུང་དེ་བལྟ་ཐུབ་གི་མི་འདུག </string>
+  <string name="swipe_hint">གདམ་ཁ་མང་པོའི་སླད་དུ་གཡས་དང་གཡོན་ལ་བསྐོར་རོགས། </string>
 </resources>

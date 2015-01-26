@@ -5,7 +5,9 @@
   <string name="im_label">ChatSecure</string>
   <!--General: Permissions-->
   <string name="ro_perm_label">llegiu missatges instantanis</string>
+  <string name="ro_perm_desc">Permet als programes llegir dades del proveïdor de contingut de missatgeria instantània.</string>
   <string name="wo_perm_label">escriviu missatges instantanis</string>
+  <string name="wo_perm_desc">Permet a les aplicacions escriure dades al proveïdor de contingut de missatgeria instantània.</string>
   <string name="perm_label">inicia el servei de MI</string>
   <string name="perm_desc">Permet a les aplicacions iniciar el servei de MI mitjançant intent</string>
   <!--General: Actions-->
@@ -17,9 +19,23 @@
   <string name="btn_next">Següent</string>
   <string name="btn_back">Enrera</string>
   <string name="connect">Connecta</string>
+  <string name="play">Reprodueix</string>
+  <string name="setup">Configuració</string>
   <!--Views-->
   <string name="lock_screen_open">Obre</string>
   <string name="title_activity_lock_screen">ChatSecure és bloquejat</string>
+  <string name="lock_screen_create_passphrase">Estableix una contrasenya</string>
+  <string name="lock_screen_confirm_passphrase">Confirmeu la contrasenya</string>
+  <string name="lock_screen_passphrase_hint">Contrasenya</string>
+  <string name="lock_screen_passphrase_not_set_enter">Opcionalment, podeu definir una contrasenya mestra pel ChatSecure per prevenir l\'accés als vostres contactes i missatges sense contrasenya:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Confirmeu la nova contrasenya</string>
+  <string name="lock_screen_passphrases_not_matching">Les contrasenyes no coincideixen. Torneu-ho a provar</string>
+  <string name="lock_screen_skip">Omet &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Indicador d\'informació</string>
+  <string name="app_passphrase_view_password_question">Introduïu la contrasenya</string>
+  <string name="password_please">Contrasenya:</string>
+  <string name="passphrase">Contrasenya</string>
+  <string name="passphrase_again">Contrasenya (un altre cop):</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Trieu un compte</string>
   <string name="choose_account_title">Trieu un compte</string>
@@ -39,6 +55,7 @@
   <string name="setup_passphrase_label1">Contrasenya:</string>
   <string name="setup_passphrase_label2">Contrasenya (un altre cop):</string>
   <string name="rekey_message">Introduïu una contrasenya *nova*. Ha de tenir com a mínim una majúscula, una minúscula i un nombre i ser més llarga de sis caràcters.</string>
+  <string name="do_rekey">S\'estan xifrant les vostres notes amb la nova contrasenya (sigueu pacients…)</string>
   <string name="enter_pass">Introduïu la vostra contrasenya:</string>
   <string name="new_pass">Benvinguts! Introduïu una contrasenya forta per assegurar les vostres anotacions. Ha de tenir com a mínim una majúscula, una minúsculam un nombre i ser més llarga de sis caràcters.</string>
   <string name="pass_err_length">La vostra contrasenya no és prou llarga</string>
@@ -47,12 +64,22 @@
   <string name="pass_err_num">La vostra contrasenya no té cap nombre</string>
   <!--Views: About: Welcome-->
   <string name="about_welcome_title">Quant al ChatSecure</string>
+  <string name="about_welcome">ChatSecure és una aplicació mòbil de missatgeria instantània que proporciona funcionalitats extres de seguretat que eviten que d\'altres puguin xafardejar les vostres converses i comunicacions.
+La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jabber o XMPP, com Google GTalk o Jabber.org.</string>
   <!--Views: About: OTR-->
   <string name="about_otr_title">Quant n\'és de segur?</string>
+  <string name="about_otr">La \"missatgeria Off-the-Record\" és un sistema de seguretat dissenyat per permetre privacitat mimetitzant les característiques d\'una conversa privada al món real, incloent xifrat, autenticació, rebuig i Forward Secrecy.\n\nEl protocol OTR és compatible amb clients de xat d\'escriptori com l\'Adium o el Pidgin.
+</string>
   <!--Views: About: Security-->
   <string name="about_security_title">Els meus xats són segurs?</string>
+  <string name="about_security">La funcionalitat de xifrat de xat de ChatSecure només funciona quan s\'està xatejant amb altres que emprin programes compatibles, així que us hauríeu d\'assegurar que els vostres contactes empren ChatSecure per a mòbil i Adium o Pidgin a l\'ordinador. Podeu afinar la configuració de com i quan prova el ChatSecure de xifrar els xats a \'Paràmetres del compte\'.
+</string>
   <!--Views: Account list-->
   <string name="menu_new_account">Nou compte</string>
+  <string name="menu_add_account">Afegeix un compte</string>
+  <string name="menu_edit_account">Edita un compte</string>
+  <string name="menu_remove_account">Esborra un compte</string>
+  <string name="menu_use_existing_account">Compte existent</string>
   <!--Views: Setup: Account-->
   <string name="label_username">User@Host</string>
   <string name="label_password">Contrasenya:</string>
@@ -63,6 +90,7 @@
   <string name="check_save_password">Per la vostra seguretat, si perdeu el telèfon o us el roben, aneu al lloc web al vostre ordinador i canvieu la contrasenya.</string>
   <string name="check_auto_sign_in">Aquesta opció us autentifica automàticament cada cop que obriu aquesta aplicació. Per inhabilitar-la, sortiu i desmarqueu la caixa \"Autentifica\'m automàticament\".</string>
   <string name="use_tor">Connecta amb Tor (requereix l\'aplicació Orbot)</string>
+  <string name="account_setup_example_email_address">usuari@domini</string>
   <string name="account_setup_new_username">nou nom d\'usuari</string>
   <string name="account_setup_service_provider">proveïdor del servei (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">contrasenya</string>
@@ -89,6 +117,9 @@
   <string name="account_setup_advanced_enc_auto">Quan sigui possible, xifra els xats automàticametn</string>
   <string name="account_setup_advanced_enc_req">Xifra els xats quan es demani</string>
   <string name="account_setup_advanced_enc_off">Inhabilita el xifrat del xat</string>
+  <string name="account_setup_signin_a">S\'estan validant les credencials…</string>
+  <string name="account_setup_signin_b">S\'està generant el parell de claus…</string>
+  <string name="account_setup_signin_c">S\'està accedint…</string>
   <string name="account_wizard_setup_title">Assistent de comptes</string>
   <string name="account_wizard_account_title">La ID del vostre compte</string>
   <string name="account_wizard_host_title">Configureu el servidor</string>
@@ -98,8 +129,12 @@
   <string name="account_wizard_host_body">Introduïu o editeu el nom de màquina del vostre servidor de xat jabber/xmpp i el número de port (el predeterminat és el 5222).</string>
   <string name="account_wizard_ready_body">S\'ha configurat correctament el ChatSecure i ara podeu connectar-vos al vostre servei i començar a xatejar de forma segura i privada!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Domini del servei de xat</string>
+  <string name="registering_new_account_">S\'està registrant un compte nou…</string>
+  <string name="signing_in_to">anem fent…</string>
   <string name="menu_cancel_signin">Cancel·la l\'autenticació</string>
   <string name="signing_in_wait">Entrant\u2026</string>
+  <string name="signing_out_wait">S\'està sortint\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Fes una cerca SRV</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Empra DNS SRV per trobar el servidor XMPP del nom de domini</string>
@@ -120,24 +155,43 @@
   <string name="xmpp_resource_prio_summary">Els missatges a clients amb diversos recursos actius s\'enviaran al recurs amb la prioritat més alta</string>
   <!--Views: Contact list-->
   <string name="title_chats">Converses</string>
+  <string name="no_messages">No hi ha converses.\n\nToqueu per a començar-ne una!</string>
+  <string name="empty_account_message">No teniu cap configurat cap compte.\n\nToqueu per afegir-ne un!</string>
+  <string name="buddy_list_title">Llista de contactes - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Afegeix un contacte</string>
+  <string name="menu_remove_contact">Esborra el contacte</string>
+  <string name="menu_block_contact">Bloca el contacte</string>
+  <string name="menu_contact_nickname">Àlies del contacte</string>
   <string name="menu_view_blocked">Bloquejat</string>
+  <string name="nickname">Àlies</string>
   <string name="confirm_delete_contact">S\'eliminarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <string name="confirm_block_contact">Es blocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <string name="confirm_unblock_contact">Es desblocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="add_contact_success">S\'ha afegit el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="delete_contact_success">S\'ha esborrat el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="block_contact_success">S\'ha blocat el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="unblock_contact_success">S\'ha desblocat el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
   <string name="menu_new_chat">Nou xat</string>
   <string name="menu_search_contacts">Cerca contactes</string>
+  <string name="menu_show_grid">Mostra la graella</string>
   <string name="menu_start_chat">Inicia un xat</string>
+  <string name="menu_view_profile">Mostra el perfil</string>
+  <string name="menu_verify">Verifica el contacte</string>
   <string name="ongoing_conversation">Xats actius (<xliff:g id="number">%1$d</xliff:g>)</string>
   <string name="online_count"><xliff:g id="number">%1$d</xliff:g> en línia</string>
   <string name="subscriptions">Invitacions d\'amics</string>
   <string name="unknown_contact">(<i>Desconegut</i>) </string>
   <string name="empty_contact_group">Buit</string>
+  <string name="empty_conversation_group">No hi ha cap conversa en curs!</string>
   <string name="search_label">Contate</string>
   <string name="search_hint">escriviu el nom del contacte amb el que voleu xatejar</string>
   <string name="search_button_text">Som-hi</string>
   <string name="empty_chat_list">No hi ha xats actius.</string>
   <string name="add_contact_title">Afegeix un contacte</string>
+  <string name="input_contact_label">Nom d\'usuari o JabberID de la persona a afegir:</string>
+  <string name="choose_list_label">Compte al que s\'ha d\'afegir:</string>
   <string name="invite_instruction">Escriviu un nom per afegir dels contactes.</string>
+  <string name="invite_label">Envia la invitació</string>
   <string name="contact_profile_title">Perfil de contacte</string>
   <string name="label_status">Estat:</string>
   <string name="label_client_type">Tipus de client:</string>
@@ -149,13 +203,42 @@
   <string name="chat_with">Xategeu amb <xliff:g id="user">%1$s</xliff:g></string>
   <string name="me">Jo</string>
   <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> és en línia</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> no hi és</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> està ocupat/da</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> no està connectat/da</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> s\'ha unit</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> ha marxat</string>
+  <string name="menu_send_image">Envia la fotografia</string>
+  <string name="menu_send_file">Envia el fitxer</string>
+  <string name="menu_send_audio">Envia l\'àudio</string>
+  <string name="menu_take_picture">Fes una fotografia</string>
+  <string name="file_transfer">Transferència de fitxer</string>
+  <string name="transfer_complete">Ha finalitzat la transferència</string>
+  <string name="transfer_in_progress">S\'està efectuant la transferència</string>
+  <string name="accept_transfer_">Accepteu la transferència?</string>
+  <string name="wants_to_send_you_the_file">us vol enviar un fitxer</string>
+  <string name="no_connection_for_sending">No hi ha cap connexió disponible per fer l\'enviament!</string>
   <string name="send">Envia</string>
+  <string name="compose_hint">Envia un missatge</string>
+  <string name="compose_hint_secure">Envia un missatge segur</string>
   <string name="menu_resend">Torna a enviar</string>
   <string name="menu_end_conversation">Finalitza el xat</string>
+  <string name="menu_clear_chat">Neteja el xat</string>
   <string name="menu_insert_smiley">Insereix una emoticona</string>
   <string name="menu_switch_chats">Canvia de xat</string>
   <string name="menu_plus">Menú+</string>
   <string name="select_link_title">Seleccioneu un enllaç</string>
+  <string name="delete">Esborra</string>
+  <string name="keep_files">Conserva els fitxers</string>
+  <string name="delete_chat_session_secured_storage">Voleu esborrar l\'emmagatzematge segur de la sessió del xat?</string>
+  <string name="all_files_will_be_deleted">S\'esborrarà de forma permanent tots els fitxers pujats i baixats de la sessió. Avís: l\'acció no es pot desfer!</string>
+  <string name="delete_original">Voleu esborrar l\'original?</string>
+  <string name="this_file_will_be_copied">Aquest fitxer es copiarà a l\'emmagatzematge segur abans d\'enviar-se. Voleu esborrar el fitxer original de l\'emmagatzematge segur del dispositiu?</string>
+  <string name="keep">Conserva</string>
+  <string name="export">Exporta</string>
+  <string name="export_media">Voleu exportar el fitxer multimèdia?</string>
+  <string name="export_media_file_to">S\'exportarà aquest fitxer multimèdia a %1$s</string>
+  <string name="end_chat_title">Voleu tancar el xat?</string>
   <!--Views: Chat: Group-->
   <string name="accept_invitation">Accepta</string>
   <string name="decline_invitation">Rebutja</string>
@@ -202,7 +285,6 @@
   <string name="pref_group_looknfeel_title">Interfície d\'usuari</string>
   <string name="menu_locale">Idioma</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Idiomes</string>
-
   <string name="pref_theme_dark">Empra el tema fosc</string>
   <string name="pref_in_memory_db_title">Desa els missatges només a la memòria</string>
   <string name="pref_in_memory_db_summary">Només desa els missatges a la memòria, no a l\'emmagatzematge flash, per evitar que puguin accedir-hi. (Pot causar pèrdua de missatges)</string>
@@ -358,5 +440,6 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
-  <string name="i_need_a_new_account">Nou compte</string>
+  <string name="i_have_an_existing_xmpp_account">Compte existent</string>
+  <string name="i_need_a_new_account">Compte nou</string>
 </resources>

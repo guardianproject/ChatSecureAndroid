@@ -19,6 +19,8 @@
   <string name="btn_next">Следеће</string>
   <string name="btn_back">Назад</string>
   <string name="connect">Повежи</string>
+  <string name="play">Пусти</string>
+  <string name="setup">Поставка</string>
   <!--Views-->
   <string name="lock_screen_open">Отвори</string>
   <string name="title_activity_lock_screen">Сигурно ћаскање је закључано</string>
@@ -31,6 +33,9 @@
   <string name="lock_screen_skip">Прескочи &gt;&gt;</string>
   <string name="app_passphrase_view_title_dialog">Упит за податке</string>
   <string name="app_passphrase_view_password_question">Унесите лозинку</string>
+  <string name="password_please">Лозинку, молим…</string>
+  <string name="passphrase">Лозинка</string>
+  <string name="passphrase_again">Лозинка (поново)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Изаберите налог</string>
   <string name="choose_account_title">Изаберите налог</string>
@@ -155,6 +160,7 @@
   <string name="menu_block_contact">Блокирај контакт</string>
   <string name="menu_contact_nickname">Надимак контакта</string>
   <string name="menu_view_blocked">Блокиран</string>
+  <string name="nickname">Надимак</string>
   <string name="confirm_delete_contact">Контакт „<xliff:g id="user">%1$s</xliff:g>“ ће бити обрисан.</string>
   <string name="confirm_block_contact">Контакт „<xliff:g id="user">%1$s</xliff:g>“ ће бити блокиран.</string>
   <string name="confirm_unblock_contact">Контакт „<xliff:g id="user">%1$s</xliff:g>“ ће бити деблокиран.</string>
@@ -208,6 +214,7 @@
   <string name="transfer_in_progress">Пренос у току</string>
   <string name="accept_transfer_">Да прихватим пренос?</string>
   <string name="wants_to_send_you_the_file">жели да вам пошаље фајл</string>
+  <string name="no_connection_for_sending">Нема доступне везе за слање вашег дељења!</string>
   <string name="send">Пошаљи</string>
   <string name="compose_hint">Пошаљи поруку</string>
   <string name="compose_hint_secure">Пошаљи сигурну поруку</string>
@@ -277,6 +284,8 @@
   <string name="the_remote_key_fingerprint_has_been_verified_">Удаљени отисак је оверен!</string>
   <string name="fingerprint_for_you">Отисак за вас</string>
   <string name="fingerprint_for_">Отисак за </string>
+  <string name="install_barcode_scanner_title">Да инсталирам Баркод Скенер?</string>
+  <string name="install_barcode_scanner_message">Ова апликација захтева Баркод Скенер. Желите ли да је инсталирате?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Аутентификација</string>
   <string name="smp_question_summary">Укуцајте питајте које ће бити послато вашем контакту, и очекивани одговор, да бисте потврдили да су они за које се издају.</string>
@@ -300,10 +309,12 @@
   <string name="pref_cacheword_timeout_title">Време истека лозинке</string>
   <string name="pref_cacheword_timeout_summary">Време за које апликација остаје откључана</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Кликабилне везе на Тору</string>
+  <string name="pref_linkify_on_tor_summary">За налоге које користе Тор, учини везе у ћаскањима кликабилним (ПАЖЊА, могуће цурење приватних података!)</string>
   <string name="pref_group_looknfeel_title">Корисничко сучеље</string>
   <string name="menu_locale">Језик</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Језици</string>
-
+  <string name="use_system_default">Системски подразумевано</string>
   <string name="pref_theme_dark">Тамна тема</string>
   <string name="pref_theme_dark_summary">Користи тамну тему апликације</string>
   <string name="pref_in_memory_db_title">Складиштење порука само у меморији</string>
@@ -416,6 +427,7 @@
   <string name="sorry_we_cannot_share_that_file_type">Не можете да поделите тај тип фајла</string>
   <string name="err_otr_share_no_encryption">Морате да омогућите шифровање да бисте делили фајлове</string>
   <string name="please_enable_chat_encryption_to_share_files">Омогућите шифровање ћаскања да бисте делили фајлове</string>
+  <string name="unsupported_incoming_data">Неподржани долазни подаци, не могу да делим!</string>
   <string name="swipe_alert">Сигурно ћаскање је открило захтев за уклањањем свог процеса.  Сигурно ћаскање ће вероватно да се сруши.  Уместо тога користите „Одјави све“ ставку менија са екрана списка налога.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Нема доступног прегледача за овај формат фајлова</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Почните сигурну преписку пре очитавања кодова</string>
@@ -431,6 +443,7 @@
   <string name="error_chat_file_transfer_title">Грешка преноса</string>
   <string name="error_chat_file_transfer_body">Не могу да очитам фајл за складиштење</string>
   <string name="error_welcome_database">Кобна грешка: Не могу да откључам или учитам базу података апликације. Инсталирајте поново апликацију или очистите податке.</string>
+  <string name="error_no_app_to_handle_url">Нема апликације за руковање том везом!</string>
   <string name="account_settings_title">Поставке налога</string>
   <string name="pref_default_locale">српски</string>
   <string name="warning_alpha">УПОЗОРЕЊЕ: Ово је рано издање Сигурних порука које може да има сигурносне пропусте или грешке.</string>
@@ -527,7 +540,7 @@
   <string name="i_have_an_existing_xmpp_account">Постојећи налог</string>
   <string name="account_existing_full">Повежи се на мој постојећи налог на одређеном Џабер/ИксМПП серверу.</string>
   <string name="i_want_to_chat_using_my_google_account">Гугл налог</string>
-  <string name="account_google_full">Ћаскајте са „Google Hangouts“ корисницима (некада „Google Talk“) користећи постојеће Гугл налоге на вашем уређају.</string>
+  <string name="account_google_full">Ћаскајте са другим Гугл корисницима користећи ваш постојећи Гугл налог.</string>
   <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Бежично мрежно ћаскање</string>
   <string name="account_wifi_full">Ћаскајте са другима на истој бежичној мрежи — интернет или сервер нису потребни!</string>
   <string name="account_wifi_button">Омогући бежично ћаскање</string>
@@ -542,7 +555,6 @@
   <string name="resent">[поново послато] </string>
   <string name="unable_to_securely_share_this_file">Не могу да безбедно делим овај фајл</string>
   <string name="install_orbot_">Да инсталирам Орбот?</string>
-
   <string name="you_must_have_orbot">Требате имати Орбот инсталиран и активиран да преусмерава саобраћај. Желите ли да га инсталирате?</string>
   <string name="always">Увек</string>
   <string name="start_orbot_">Да покренем Орбот?</string>
@@ -553,4 +565,5 @@
   <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Ваше складиште кључева је оштећено. Поново инсталирајте Сигурно ћаскање или „обришите податке“ за апликацију</string>
   <string name="you_received_an_unreadable_encrypted_message">Примили сте нечитљиву шифровану поруку</string>
   <string name="i_could_not_decrypt_the_message_you_sent">Нисам могао да дешифрујем поруку коју сте послали</string>
+  <string name="swipe_hint">&lt; превуците прстом лево и десно за још опција &gt;</string>
 </resources>
