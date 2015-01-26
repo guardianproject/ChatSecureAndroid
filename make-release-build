@@ -41,7 +41,6 @@ git submodule sync
 git submodule foreach git submodule sync
 git submodule update --init
 
-./update-ant-build.sh
 
 if [ -e ~/.android/ant.properties ]; then
     cp ~/.android/ant.properties $projectroot/
@@ -51,6 +50,7 @@ else
     echo "skipping release ant.properties"
 fi
 
+./update-ant-build.sh
 faketime -f "$TIMESTAMP" ant release
 
 apk=$projectroot/bin/$projectname-*-release.apk
