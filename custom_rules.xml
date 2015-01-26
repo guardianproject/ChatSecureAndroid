@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+
+  <target name="rename-release-with-version-number">
+    <xmlproperty file="AndroidManifest.xml"
+                 prefix="themanifest"
+                 collapseAttributes="true"/>
+    <!--  see ${sdk.dir}/tools/ant/build.xml -set-release-mode -->
+    <property name="out.packaged.file"
+              location="${out.absolute.dir}/${ant.project.name}-${themanifest.manifest.android:versionName}-release-unsigned.apk" />
+    <property name="out.final.file"
+              location="${out.absolute.dir}/${ant.project.name}-${themanifest.manifest.android:versionName}-release.apk" />
+  </target>
+
+  <target name="-set-release-mode"
+          depends="rename-release-with-version-number,android_rules.-set-release-mode">
+    <echo message="target: ${build.target}"></echo>
+  </target>
+
+</project>
