@@ -35,6 +35,8 @@ git submodule update --init
 
 if [ -e ~/.android/ant.properties ]; then
     cp ~/.android/ant.properties $projectroot/
+# TODO remove me once cacheword is updated to v0.1
+    cp ~/.android/ant.properties $projectroot/external/cacheword/cachewordlib/
 else
     echo "skipping release ant.properties"
 fi
