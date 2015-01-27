@@ -48,6 +48,7 @@ import info.guardianproject.util.SystemServices.FileInfo;
 
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
@@ -374,7 +375,7 @@ public class ImUrlActivity extends Activity {
             mFromAddress = data.getUserInfo();
 
             //remove username non-letters
-            mFromAddress = mFromAddress.replaceAll(USERNAME_ONLY_ALPHANUM, "");
+            mFromAddress = mFromAddress.replaceAll(USERNAME_ONLY_ALPHANUM, "").toLowerCase(Locale.ENGLISH);
 
             String chatRoom = null;
 
