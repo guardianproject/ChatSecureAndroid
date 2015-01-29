@@ -2377,6 +2377,10 @@ public class ChatView extends LinearLayout {
 
         void setLinkifyForMessageView(MessageView messageView) {
             try {
+                
+                if (messageView == null)
+                    return;
+                
                 ContentResolver cr = getContext().getContentResolver();
                 Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,
                         new String[] { Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE },
@@ -2386,7 +2390,13 @@ public class ChatView extends LinearLayout {
                 Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
                         pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
                         false /* keep updated */, null /* no handler */);
-                messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+                
+                if (settings == null)
+                    return;
+                
+                if (mConn !=null)
+                    messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+                
                 settings.close();
                 pCursor.close();
             } catch (RemoteException e) {
