@@ -2931,6 +2931,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             XmppAddress xAddr = new XmppAddress(presence.getFrom());
 
+            if (mRoster == null)
+                return null;
+            
             RosterEntry rEntry = mRoster.getEntry(xAddr.getBareAddress());
 
             String name = null;
