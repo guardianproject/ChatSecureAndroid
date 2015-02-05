@@ -2229,21 +2229,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 reqSubscribed.setTo(contact.getAddress().getBareAddress());
                 sendPacket(reqSubscribed);
 
-                Roster roster = mConnection.getRoster();
+               
                 String[] groups = new String[] { list.getName() };
                 try {
-                    RosterEntry rEntry = roster.getEntry(contact.getAddress().getBareAddress());
-                    RosterGroup rGroup = roster.getGroup(list.getName());
+                    RosterEntry rEntry = mRoster.getEntry(contact.getAddress().getBareAddress());
+                    RosterGroup rGroup = mRoster.getGroup(list.getName());
 
                     if (rGroup == null)
                     {
                         if (rEntry == null)
-                            roster.createEntry (contact.getAddress().getBareAddress(), contact.getName(), null);
+                            mRoster.createEntry (contact.getAddress().getBareAddress(), contact.getName(), null);
 
                     }
                     else if (rEntry == null)
                     {
-                            roster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
+                        mRoster.createEntry(contact.getAddress().getBareAddress(), contact.getName(), groups);
 
                     }
 
@@ -2281,24 +2281,35 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public void approveSubscriptionRequest(final Contact contact) {
             
-            debug(TAG, "approve subscription: " + contact.getAddress().getAddress());
-            org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
-                    org.jivesoftware.smack.packet.Presence.Type.subscribed);
-            response.setTo(contact.getAddress().getBareAddress());
-            sendPacket(response);
-            try
+            
+            new Thread(new Runnable()
             {
-                mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
-
-                doAddContactToListAsync(contact, getContactListManager().getDefaultContactList());
-            } catch (ImException e) {
-                debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
-
-            }
-            catch (RemoteException e) {
-                debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
-
-            }
+                
+                public void run ()
+                {
+                    debug(TAG, "approve subscription: " + contact.getAddress().getAddress());
+                    
+                    try
+                    {
+                        mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
+                        doAddContactToListAsync(contact, getContactListManager().getDefaultContactList());
+       
+                        org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
+                                org.jivesoftware.smack.packet.Presence.Type.subscribed);
+                        response.setTo(contact.getAddress().getBareAddress());
+                        sendPacket(response);
+                        
+                    } catch (ImException e) {
+                        debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
+        
+                    }
+                    catch (RemoteException e) {
+                        debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
+        
+                    }
+                }
+            }).start();
+                
         }
 
         @Override

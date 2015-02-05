@@ -807,10 +807,9 @@ public class ChatView extends LinearLayout {
             @Override
             public void onClick(View v) {
 
-                mHandler.postDelayed(new Runnable () { public void run () {
-                    mNewChatActivity.approveSubscription(mProviderId, mRemoteAddress);
-                    
-                } }, 500);
+                mNewChatActivity.approveSubscription(mProviderId, mRemoteAddress);
+                
+                mHandler.postDelayed(new Runnable () { public void run () {bindChat(mLastChatId); } }, 2000);
                 
 
             }
@@ -1283,7 +1282,7 @@ public class ChatView extends LinearLayout {
 
                 TextView mInvitationText = (TextView) findViewById(R.id.txtInvitation);
                 mInvitationText.setText(mContext.getString(R.string.invitation_prompt, sender));
-                mNewChatActivity.setTitle(mContext.getString(R.string.chat_with, sender));
+              //  mNewChatActivity.setTitle(mContext.getString(R.string.chat_with, sender));
             }
         } finally {
             cursor.close();
@@ -1303,7 +1302,7 @@ public class ChatView extends LinearLayout {
         TextView text = (TextView) findViewById(R.id.txtSubscription);
         String displayableAddr = ImpsAddressUtils.getDisplayableAddress(from);
         text.setText(mContext.getString(R.string.subscription_prompt, displayableAddr));
-        mNewChatActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
+    //.displayableAdd    mNewChatActivity.setTitle(mContext.getString(R.string.chat_with, displayableAddr));
 
         mApp.dismissChatNotification(providerId, from);
     }
@@ -1844,23 +1843,6 @@ public class ChatView extends LinearLayout {
                     String rFingerprint = otrChatSession.getRemoteFingerprint();
                     mIsVerified = otrChatSession.isKeyVerified(mRemoteAddress);
 
-                    if (rFingerprint != null) {
-                        if (!mIsVerified) {
-                            message = mContext.getString(R.string.otr_session_status_encrypted);
-                            mStatusWarningView.setBackgroundResource(R.color.otr_yellow);
-
-                        } else {
-                            message = mContext.getString(R.string.otr_session_status_verified);
-                            mStatusWarningView.setBackgroundResource(R.color.otr_green);
-
-
-                        }
-                    } else {
-
-                      //  mStatusWarningView.setBackgroundResource(R.color.otr_red);
-                      // message = mContext.getString(R.string.otr_session_status_plaintext);
-
-                    }
                 }
                 catch (RemoteException re){}
 

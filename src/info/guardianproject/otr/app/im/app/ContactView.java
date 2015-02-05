@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.R.color;
+import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.LetterAvatar;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
@@ -370,25 +371,27 @@ public class ContactView extends FrameLayout {
     
     public int getAvatarBorder(int status) {
         switch (status) {
-        case Imps.Presence.AVAILABLE:
+        case Presence.AVAILABLE:
             return (getResources().getColor(R.color.holo_green_light));
 
-        case Imps.Presence.IDLE:
+        case Presence.IDLE:
             return (getResources().getColor(R.color.holo_green_dark));
-        case Imps.Presence.AWAY:
+        case Presence.AWAY:
             return (getResources().getColor(R.color.holo_orange_light));
 
-        case Imps.Presence.DO_NOT_DISTURB:
+        case Presence.DO_NOT_DISTURB:
             return(getResources().getColor(R.color.holo_red_dark));
 
-        case Imps.Presence.OFFLINE:
+        case Presence.OFFLINE:
             return(getResources().getColor(R.color.holo_grey_dark));
 
         default:
         }
-        
+
         return Color.TRANSPARENT;
     }
+
+    
     /*
     private String queryGroupMembers(ContentResolver resolver, long groupId) {
         String[] projection = { Imps.GroupMembers.NICKNAME };

@@ -1116,10 +1116,14 @@ public class ContactListManagerAdapter extends
         if (list != null && list.getAddress() != null)
         {
             String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
-            long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
-            String[] selectionArgs = { username, Long.toString(listId) };
-            mResolver.delete(mContactUrl, selection, selectionArgs);
-
+            ContactListAdapter cla = getContactListAdapter(list.getAddress());
+            
+            if (cla != null)
+            {
+                long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
+                String[] selectionArgs = { username, Long.toString(listId) };
+                mResolver.delete(mContactUrl, selection, selectionArgs);
+            }
         }
         else //if it is null, delete from all
         {

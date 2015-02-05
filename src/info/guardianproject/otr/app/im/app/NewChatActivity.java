@@ -1278,6 +1278,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 String username = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 long providerId = resultIntent.getLongExtra(ContactsPickerActivity.EXTRA_RESULT_PROVIDER,-1);
 
+                String message = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_MESSAGE);
                 try {
 
                     IChatSession chatSession = this.getCurrentChatSession();
@@ -1285,7 +1286,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         chatSession.inviteContact(username);
                         showInvitationHasSent(username);
                     } else {
-                        startChat(providerId, username,true);
+                        startChat(providerId, username,true, message);
                     }
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert("Error picking contacts");
@@ -1954,13 +1955,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
 
-            startChat(providerId,username, false);
+            startChat(providerId,username, false, null);
         }
         else
             updateChatList();
     }
 
-    private void startChat (long providerId, String username, boolean isNewChat)
+    private void startChat (long providerId, String username, boolean isNewChat, String message)
     {
         IImConnection conn = mApp.getConnection(providerId);
 
@@ -1980,6 +1981,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         mRequestedChatId = session.getId();
                         session.reInit();
                     }
+                    
+                    if (message != null)
+                        session.sendMessage(message);
 
                 } else {
                     // Already have session
@@ -2466,8 +2470,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
-           // showSubscriptionDialog (providerId, from.getAddress().getAddress());
-
+           
+            //showSubscriptionDialog (providerId, from.getAddress().getAddress());
+            
         }
 
         @Override

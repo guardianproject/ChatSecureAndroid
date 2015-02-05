@@ -240,6 +240,7 @@ public class AddContactActivity extends ActionBarActivity {
                     if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("addContact:" + username);
                     }
+                    
                     int res = list.addContact(username);
                     if (res != ImErrorInfo.NO_ERROR) {
                         fail = true;

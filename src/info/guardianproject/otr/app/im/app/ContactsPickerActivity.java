@@ -54,6 +54,8 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     public final static String EXTRA_RESULT_USERNAME = "result";
     public final static String EXTRA_RESULT_PROVIDER = "provider";
     public final static String EXTRA_RESULT_ACCOUNT = "account";
+    public final static String EXTRA_RESULT_MESSAGE = "message";
+    
 
     private int REQUEST_CODE_ADD_CONTACT = 9999;
 
@@ -160,11 +162,11 @@ public class ContactsPickerActivity extends ActionBarActivity  {
 
                     if (cursor.moveToFirst())
                     {
-
-                        dataNew.putExtra(EXTRA_RESULT_USERNAME, cursor.getString(ContactView.COLUMN_CONTACT_USERNAME));
+                        String username = cursor.getString(ContactView.COLUMN_CONTACT_USERNAME);
+                        dataNew.putExtra(EXTRA_RESULT_USERNAME, username);
                         dataNew.putExtra(EXTRA_RESULT_PROVIDER, cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
                         dataNew.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
-
+                        dataNew.putExtra(EXTRA_RESULT_MESSAGE, getString(R.string.subscription_notify_text,username));
                         setResult(RESULT_OK, dataNew);
                     }
 

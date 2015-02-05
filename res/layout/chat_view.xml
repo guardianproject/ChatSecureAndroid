@@ -126,13 +126,13 @@
     
    
     <LinearLayout android:id="@+id/invitationPanel"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
         android:visibility="gone"
-        
-        android:background="@drawable/text_divider_horizontal">
+        android:background="?toolbarBackground"
+      	>
 
         <TextView android:id="@+id/txtInvitation"
             android:layout_width="wrap_content"
@@ -157,11 +157,11 @@
     </LinearLayout>
 
     <LinearLayout android:id="@+id/subscription"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:orientation="horizontal"
-        
+        android:background="?toolbarBackground"
         android:visibility="gone">
 
         <TextView android:id="@+id/txtSubscription"

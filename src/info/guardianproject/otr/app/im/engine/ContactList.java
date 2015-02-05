@@ -83,7 +83,7 @@ public class ContactList extends ImEntity {
      * @throws NullPointerException if the address string is null
      * @throws ImException if the contact is not allowed to be added
      */
-    public void addContact(String address) throws ImException {
+    public void addContact(final String address) throws ImException {
 
         if (null == address) {
             throw new NullPointerException();
@@ -96,15 +96,26 @@ public class ContactList extends ImEntity {
             }
         }
 
-        //String aKey = mManager.normalizeAddress(address);
-        Contact contact = getContact(address);
-
-        if (contact == null)
+        new Thread ()
         {
-            contact = new Contact (new XmppAddress(address),address);
-        }
-
-        mManager.addContactToListAsync(contact, this);
+            
+            public void run ()
+            {
+                Contact contact = getContact(address);
+        
+                if (contact == null)
+                {
+                    contact = new Contact (new XmppAddress(address),address);
+                }
+        
+                try {
+                    mManager.addContactToListAsync(contact, ContactList.this);
+                } catch (ImException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     /**
