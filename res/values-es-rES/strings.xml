@@ -19,6 +19,8 @@
   <string name="btn_next">Siguiente</string>
   <string name="btn_back">Atrás</string>
   <string name="connect">Conectarse</string>
+  <string name="play">Reproducir</string>
+  <string name="setup">Configuración</string>
   <!--Views-->
   <string name="lock_screen_open">Abierto</string>
   <string name="title_activity_lock_screen">ChatSecure bloqueado</string>
@@ -31,6 +33,9 @@
   <string name="lock_screen_skip">Omitir &gt;&gt;</string>
   <string name="app_passphrase_view_title_dialog">Solicitud de información</string>
   <string name="app_passphrase_view_password_question">Por favor introduzca la contraseña</string>
+  <string name="password_please">Contraseña por favor…</string>
+  <string name="passphrase">Frase-contraseña</string>
+  <string name="passphrase_again">Frase-contraseña (de nuevo)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Seleccionar una cuenta</string>
   <string name="choose_account_title">Seleccionar una cuenta</string>
@@ -156,6 +161,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="menu_block_contact">Bloquear contacto</string>
   <string name="menu_contact_nickname">Alias (nickname) de contacto</string>
   <string name="menu_view_blocked">Bloqueados</string>
+  <string name="nickname">Apodo</string>
   <string name="confirm_delete_contact">El contacto "<xliff:g id="USER">%1$s</xliff:g>" se eliminará.</string>
   <string name="confirm_block_contact">El contacto "<xliff:g id="USER">%1$s</xliff:g>" se bloqueará.</string>
   <string name="confirm_unblock_contact">El contacto "<xliff:g id="USER">%1$s</xliff:g>" se desbloqueará.</string>
@@ -209,6 +215,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="transfer_in_progress">Transferencia en marcha</string>
   <string name="accept_transfer_">¿Aceptar transferencia?</string>
   <string name="wants_to_send_you_the_file">quiere enviarle el fichero</string>
+  <string name="no_connection_for_sending">¡No hay conexiones disponibles para enviar su compartido!</string>
   <string name="send">Enviar</string>
   <string name="compose_hint">Enviar un mensaje</string>
   <string name="compose_hint_secure">Enviar mensaje seguro</string>
@@ -278,6 +285,8 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="the_remote_key_fingerprint_has_been_verified_">Se ha verificado la huella digital</string>
   <string name="fingerprint_for_you">Identificador algorítmico (\'fingerprint\') para usted</string>
   <string name="fingerprint_for_">Identificador algorítmico (\'fingerprint\') para</string>
+  <string name="install_barcode_scanner_title">¿Instalar Barcode Scanner?</string>
+  <string name="install_barcode_scanner_message">Esta aplicación requiere Barcode Scanner. ¿Desea instalarlo?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Autenticación</string>
   <string name="smp_question_summary">Introduzca una pregunta para enviar a su contacto junto a la respuesta que espera recibir para verificar que se trata de la persona que dice ser.</string>
@@ -301,10 +310,12 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="pref_cacheword_timeout_title">Tiempo de expiración de la contraseña</string>
   <string name="pref_cacheword_timeout_summary">Tiempo de expiración de la clave en caché</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">URLs pulsables sobre Tor</string>
+  <string name="pref_linkify_on_tor_summary">Para cuentas que utilizan Tor, hace que las URLs en el texto de los chats sean enlaces pulsables (¡ADVERTENCIA, posible filtración de detalles privados!)</string>
   <string name="pref_group_looknfeel_title">Interfaz de usuario</string>
   <string name="menu_locale">Idioma</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Idiomas</string>
-
+  <string name="use_system_default">Usar la configuración por defecto del sistema</string>
   <string name="pref_theme_dark">Utilizar tema oscuro</string>
   <string name="pref_theme_dark_summary">Cambiar el tema de la aplicación a oscuro</string>
   <string name="pref_in_memory_db_title">Guardar conversaciones</string>
@@ -417,6 +428,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="sorry_we_cannot_share_that_file_type">Perdón, pero no podemos compartir ese tipo de archivo</string>
   <string name="err_otr_share_no_encryption">Debe activar el cifrado para compartir archivos</string>
   <string name="please_enable_chat_encryption_to_share_files">Por favor habilite el cifrado del chat para compartir ficheros</string>
+  <string name="unsupported_incoming_data">¡Datos entrantes no soportados, no se pudo compartir!</string>
   <string name="swipe_alert">ChatSecure detectó que se hizo una petición para eliminar su tarea. ChatSecure probablemente fallará. Por favor use el elemento del menú Cerrar Todas las Sesiones de la pantalla de lista de cuentas en su lugar.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">No hay ningún visor disponible para este formato de fichero</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Por favor inicie una conversación segura antes de escanear códigos</string>
@@ -432,6 +444,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="error_chat_file_transfer_title">Error de transferencia</string>
   <string name="error_chat_file_transfer_body">No se pudo leer el fichero a almacenar</string>
   <string name="error_welcome_database">Error importante: No se pudo desbloquear o cargar la base de datos de la aplicación. Por favor reinstale la aplicación o borre los datos.</string>
+  <string name="error_no_app_to_handle_url">¡No hay ninguna aplicación instalada que pueda manejar ese enlace!</string>
   <string name="account_settings_title">Configuración de la cuenta</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">Advertencia: Esta es una primera versión de ChatSecure y puede que aun contenga fallos de seguridad y errores.</string>
@@ -528,7 +541,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="i_have_an_existing_xmpp_account">Cuenta existente</string>
   <string name="account_existing_full">Conectar con mi cuenta existente en un servidor Jabber / XMPP específico.</string>
   <string name="i_want_to_chat_using_my_google_account">Cuenta de Google</string>
-  <string name="account_google_full">Chatee con otros usuarios de Google Hangouts (anteriormente Google Talk) usando la(s) cuenta(s) de Google existente(s) en sus dispositivos.</string>
+  <string name="account_google_full">Charle con otros usuarios de Google usando su cuenta de Google existente.</string>
   <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Chat en red de malla o en WiFi</string>
   <string name="account_wifi_full">Chatee con otros en la misma red WiFi o red de malla (mesh) local - ¡no se requiere Internet ni servidor!</string>
   <string name="account_wifi_button">Habilitar chat por WiFi</string>
@@ -543,8 +556,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="resent">[reenviado]</string>
   <string name="unable_to_securely_share_this_file">No se pudo compartir este fichero de forma segura</string>
   <string name="install_orbot_">¿Instalar Orbot?</string>
-
-  <string name="you_must_have_orbot">Debe tener Orbot instalado y activado para proxyficar el tráfico a través de él. ¿Desa instalarlo desde Google Play?</string>
+  <string name="you_must_have_orbot">Debe tener Orbot instalado y activado para proxyficar tráfico a través de él. ¿Desea instalarlo?</string>
   <string name="always">Siempre</string>
   <string name="start_orbot_">¿Iniciar Orbot?</string>
   <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot no parece estar ejecutándose. ¿Desea inicializarlo y conectarlo a Tor?</string>
@@ -554,4 +566,5 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Su almacen de claves está estropeado. Por favor re-instale ChatSecure o limpie los datos para la aplicación</string>
   <string name="you_received_an_unreadable_encrypted_message">Ha recibido un mensaje cifrado ilegible</string>
   <string name="i_could_not_decrypt_the_message_you_sent">No pude descifrar el mensaje que envíó</string>
+  <string name="swipe_hint">&lt; haga un gesto de barrido a la izquierda y la derecha para más opciones &gt;</string>
 </resources>

@@ -21,6 +21,8 @@
   <string name="btn_next">Следващ</string>
   <string name="btn_back">Назад</string>
   <string name="connect">Свържи се</string>
+  <string name="play">Пусни</string>
+  <string name="setup">Настройки</string>
   <!--Views-->
   <string name="lock_screen_open">Отворено</string>
   <string name="title_activity_lock_screen">ChatSecure Заключен</string>
@@ -31,6 +33,11 @@
   <string name="lock_screen_passphrase_not_set_confirm">Потвърди Новата Паролата</string>
   <string name="lock_screen_passphrases_not_matching">Паролите не съвпадат, моля, опитай отново</string>
   <string name="lock_screen_skip">Мързи ме (Без Парола!)</string>
+  <string name="app_passphrase_view_title_dialog">Информационно поле</string>
+  <string name="app_passphrase_view_password_question">Моля, въведи парола</string>
+  <string name="password_please">Паролата моля…</string>
+  <string name="passphrase">Фразова парола</string>
+  <string name="passphrase_again">Фразова парола(повторно)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Избери профил</string>
   <string name="choose_account_title">Избери профил</string>
@@ -77,6 +84,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="menu_add_account">Добави профил</string>
   <string name="menu_edit_account">Промени профила</string>
   <string name="menu_remove_account">Премахни профила</string>
+  <string name="menu_use_existing_account">Съществуващ профил</string>
   <!--Views: Setup: Account-->
   <string name="label_username">Потребител@Сървър</string>
   <string name="label_password">Парола:</string>
@@ -165,6 +173,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="menu_block_contact">Блокирай контакта</string>
   <string name="menu_contact_nickname">Прякор на контакта</string>
   <string name="menu_view_blocked">Блокиран</string>
+  <string name="nickname">Прякор</string>
   <string name="confirm_delete_contact">Контактът "<xliff:g id="user">%1$s</xliff:g>" ще бъде премахнат.</string>
   <string name="confirm_block_contact">Контактът "<xliff:g id="user">%1$s</xliff:g>" ще бъде блокиран.</string>
   <string name="confirm_unblock_contact">Контактът "<xliff:g id="user">%1$s</xliff:g>" ще бъде разблокиран.</string>
@@ -218,6 +227,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="transfer_in_progress">Прехвърля се в момента</string>
   <string name="accept_transfer_">Приеми прехвърляне?</string>
   <string name="wants_to_send_you_the_file">иска да ти изпрати файл</string>
+  <string name="no_connection_for_sending">Няма активна връзка за споделяне!</string>
   <string name="send">Изпрати</string>
   <string name="compose_hint">Прати съобщение</string>
   <string name="compose_hint_secure">Прати поверително съобщение </string>
@@ -228,6 +238,20 @@ OTR протоколът е съвместим с други приложени�
   <string name="menu_switch_chats">Смени чата</string>
   <string name="menu_plus">Меню+</string>
   <string name="select_link_title">Избери препратка</string>
+  <string name="delete">Изтрий</string>
+  <string name="keep_files">Запази файлове</string>
+  <string name="delete_chat_session_secured_storage">Изтрий мястото на диска заделено за този чат?</string>
+  <string name="all_files_will_be_deleted">Всички свалени и качени файлове в тази сесия ще бъдат невъзвратимо изтритие.
+Предупреждение: тази операция не може да бъде върната.</string>
+  <string name="delete_original">Изтрий оригинала?</string>
+  <string name="this_file_will_be_copied">Файлът ще бъде копиран на специално подсигурено място на диска преди да бъде изпратен. Искате ли да изтриете оригиналния файл, който е на неподсигурено място на диска?</string>
+  <string name="keep">Запази</string>
+  <string name="export">Експортирай</string>
+  <string name="export_media">Експортирай медийния файл?</string>
+  <string name="export_media_file_to">Този медиен файл ще бъде експортиран до %1$s</string>
+  <string name="end_chat_title">Прекрати чата?</string>
+  <string name="end_chat_summary">Всички подсигурени елементи от тази сесия ще бъдат изтрити. Експортирайте медиен елемент като продължително натиснете иконата му.</string>
+  <string name="end_chat_and_delete">Прекрати чата и изтрий файловете</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> те кани да се присъединиш към групов чат.</string>
   <string name="invitation_sent_prompt">Покана бе изпратена на <xliff:g id="user">%1$s</xliff:g>.</string>
@@ -276,12 +300,16 @@ OTR протоколът е съвместим с други приложени�
   <string name="the_remote_key_fingerprint_has_been_verified_">Дистанционния електронен отпечатък потвърден!</string>
   <string name="fingerprint_for_you">Електронен отпечатък за теб</string>
   <string name="fingerprint_for_">Електронен отпечатък за</string>
+  <string name="install_barcode_scanner_title">Инсталирай баркод скенер?</string>
+  <string name="install_barcode_scanner_message">Тази програма се нуждае от скенер за баркодове. Желаете ли да го инстралирате?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Проверка на Самоличостта</string>
   <string name="smp_question_summary">Въведи въпрос, който да бъде изпратен на контакта и отговорът, който очакваш да получиш от него. Това е с цел да провериш, че контактът е този, за който се представя.</string>
   <string name="smp_question_hint">въпроса ти</string>
   <string name="qmp_answer_hint">очакваният отговор</string>
   <string name="remote_verified_us">Твоят контакт потвърди самоличността ти. Сега ти потвърди неговата  като му зададеш въпрос.</string>
+  <string name="otr_qa_title">OTR Q&amp;A проверка</string>
+  <string name="chat_encryption_title">Чат криптиране</string>
   <string name="otr_qa_send">Изпрати</string>
   <string name="otr_qa_cancel">Откажи</string>
   <!--Views: VoIP-->
@@ -297,10 +325,12 @@ OTR протоколът е съвместим с други приложени�
   <string name="pref_cacheword_timeout_title">Превишен период на неактивност за въвеждане на паролата</string>
   <string name="pref_cacheword_timeout_summary">Продължителност на разшифрованост на програмата</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Аквитни препратки към Tor</string>
+  <string name="pref_linkify_on_tor_summary">За профили, използващи Тор, направи препратките активни(ПРЕДУПРЕЖДЕНИЕ, потенциален теч на информация за самоличноста)</string>
   <string name="pref_group_looknfeel_title">Потребителски Интерфейс</string>
   <string name="menu_locale">Език</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Езици</string>
-
+  <string name="use_system_default">Използвай системата по подразбиране</string>
   <string name="pref_theme_dark">Използвай Тъмна Тема</string>
   <string name="pref_theme_dark_summary">Използвай тъмната тема на програмата</string>
   <string name="pref_in_memory_db_title">Запаметяване Само във Времената Памет</string>
@@ -310,6 +340,8 @@ OTR протоколът е съвместим с други приложени�
   <string name="pref_show_grid">Покажи Таблица с Абонати</string>
   <string name="pref_show_grid_summary">Покажи списъка с контакти като таблица с аватари</string>
   <string name="button_yes_accept_all">Да, Приеми Всички</string>
+  <string name="pref_delete_unsecured_media_title">Изтрий неподсигурения файл</string>
+  <string name="pref_delete_unsecured_media_summary">След споделяне на снимка или файл, автоматично го изтрий от оригиналното, неподсигурено място на диска</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Други Настройки</string>
   <string name="start_on_boot">Старирай ChatSecure Автоматично</string>
@@ -340,15 +372,33 @@ OTR протоколът е съвместим с други приложени�
   <string name="signout_kill_confirm_message">Искаш ли да се отпишеш от всички профили И да спреш всички процеси(твърд изход)?</string>
   <string name="prompt_create_new_account_">Създай нов профил?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Създай нов чат профил за потребител \'%1$s\'?</string>
+  <string name="dialog_cert_title">Информация за сертификата</string>
+  <string name="dialog_cert_subject">Сертификат:</string>
+  <string name="dialog_cert_issuer">Издаден от:</string>
+  <string name="dialog_cert_fingerprint">SHA1 отпечатък:</string>
+  <string name="dialog_cert_issue_date">Издаден:</string>
+  <string name="dialog_cert_expires">Изтича:</string>
+  <string name="dialog_connect_chatroom_title">Присъедини се в чат стаята:</string>
+  <string name="dialog_connect_chatroom_message">Външна програма се опитва да те свърже с чат стая. Разреши?</string>
+  <string name="dialog_settings_choose_background_title">Избери тапет</string>
+  <string name="dialog_settings_choose_background_body">Желаете ли да изберете тапет от Галерия?</string>
+  <string name="dialog_settings_choose_background_picker">Изберете картинка</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Нови <xliff:g id="provider">%1$s</xliff:g> съобщения</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> непрочетени съобщения</string>
+  <string name="subscription_notify_text">Нова покана за приятелство от <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Нов файл <xliff:g id="filename">%s</xliff:g> от <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">Покана за групов чат</string>
+  <string name="group_chat_invite_notify_text">Нова покана за групов чат от <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Ново съобщение от</string>
   <string name="starting_the_chatsecure_service_">Стартиране на ChatSecure…</string>
   <string name="app_unlocked">Активиран &amp; отключен</string>
+  <string name="toast_chat_copied_to_clipboard">съобщение копирано</string>
   <!--Alerts: Exceptions-->
   <string name="error">Внимание</string>
+  <string name="error_prefix">Грешка:</string>
   <string name="general_error">Грешка с код <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="login_service_failed">Неуспешен опит за вписване в <xliff:g id="service">%1$s</xliff:g>. Моля, опитайте отново по-късно\n(Информация: <xliff:g id="description">%2$s</xliff:g>)</string>
   <string name="add_list_failed">Списъкът не е добавен.</string>
   <string name="block_contact_failed">Контактът не е блокиран.</string>
   <string name="unblock_contact_failed">Контактът не е разблокиран.</string>
@@ -388,10 +438,13 @@ OTR протоколът е съвместим с други приложени�
   <string name="account_wizard_no_root_domain_warning">.com или подобен идентификатор липсваше от края на сървъра. Опитай отново!</string>
   <string name="signin_password_prompt">Въведи паролата:</string>
   <string name="warning_tor_connect">Тъй като ползваш Тор, трябва да зададеш XMPP \'Connect Server\' сървър саморъчно в Допълните Настройки на Профила</string>
+  <string name="warning_weak_crypto">ПРЕДУПРЕЖДЕНИЕ: Тази услуга използва сертификат със СЛАБА криптография. Моля, пишете на администратора да го обнови.</string>
+  <string name="warning_pinned_cert_mismatch">Полученият сертификат не съвпада с ВГРАДЕНИЯ сертификат:</string>
   <string name="unable_to_create_or_join_group_chat">Неуспешен опит за създаване или присъединяване към групов чат</string>
   <string name="sorry_we_cannot_share_that_file_type">Съжаляваме, но не можем да споделим този тип файл</string>
   <string name="err_otr_share_no_encryption">Трябва да разрешиш шифроването, за да споделяш файлове</string>
   <string name="please_enable_chat_encryption_to_share_files">Моля включи шифроването, за да споделяш файлове</string>
+  <string name="unsupported_incoming_data">Неподържан поток от информация, споделянето невъзможно!</string>
   <string name="swipe_alert">ChatSecure усети, че е отправена заявка за спиране на програмата. ChatSecure най-вероятно ще спре. За в бъдеще, моля, използвай опцията Отпиши от всички в менюто със списъка с профили.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Липсва подходяща програма за възпроизвеждане на файл в този формат</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Моля, започнете подсигурен чат преди да сканирате кодове</string>
@@ -401,6 +454,13 @@ OTR протоколът е съвместим с други приложени�
   <string name="disconnected_warning">Съобщенията ще бъдат пратени, когато се свържеш</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> не е вписан. Изпратени съобщения ще бъдат доставени, когато <xliff:g id="user">%1$s</xliff:g> се появи на линия.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> не е в списъка с Контакти.</string>
+  <string name="error_account_password_mismatch">Паролите не съвпадат</string>
+  <string name="error_account_settings_priority">Приоритетът трябва да е число в диапозона [0..127]</string>
+  <string name="error_account_settings_port">Портът трябва да е число</string>
+  <string name="error_chat_file_transfer_title">Грешка в трансфера</string>
+  <string name="error_chat_file_transfer_body">Неуспешно прочитане на файл от диска</string>
+  <string name="error_welcome_database">Голям проблем: Неуспешно отключванеи зареждане на базата данни. Моля, преинсталирайте програмата или изтрийте информацията.</string>
+  <string name="error_no_app_to_handle_url">Не е намерено инсталирано приложение, което да може да изпозлва тази препратки!</string>
   <string name="account_settings_title">Account Settings</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">ВНИМАНИЕ: Тази стара версия на ChatSecure може да има бъгове или да не сигурна.</string>
@@ -413,7 +473,9 @@ OTR протоколът е съвместим с други приложени�
   <string name="contacts">Контакти</string>
   <string name="mtm_accept_cert">Приеми Сертификата на Сървъра?</string>
   <string name="menu_sidebar_qr">Електронен Отпечатък</string>
+  <string name="loading">зареждане…</string>
   <!--Other-->
+  <string name="about_link">За ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">Списък с Контакти</string>
   <string name="menu_settings">Настройки</string>
@@ -492,5 +554,33 @@ OTR протоколът е съвместим с други приложени�
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Съществуващ профил</string>
+  <string name="account_existing_full">Свържи ме със съществуващият ми профил на точно определен Jabber / XMPP сървър.</string>
+  <string name="i_want_to_chat_using_my_google_account">Google профил</string>
+  <string name="account_google_full">Чатвай с други Google потребители използвайки съществуващия си Google профил.</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi мeш чат</string>
+  <string name="account_wifi_full">Чатвай с други на същата WiFi мрежа или меш - не е нужна интернет връзка или сървър!</string>
+  <string name="account_wifi_button">Включи WiFi чат</string>
   <string name="i_need_a_new_account">Нов Профил</string>
+  <string name="account_new_full">Регистрирайте нов, безплатен профил от вградения ни списък с услуги, или която и да друга.</string>
+  <string name="account_new_button">Създай нов профил</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Тайна самоличност!</string>
+  <string name="account_burner_full">Създай анонимен, еднократен чат акаунт с едно лесно натискане (изисква Orbot: Tor за Андроид)</string>
+  <string name="account_burner_button">Създай самоличност</string>
+  <string name="this_is_a_group_chat">Това е групов чат</string>
+  <string name="_resent_">[повторно изпратено]</string>
+  <string name="resent">[повторно изпратено]</string>
+  <string name="unable_to_securely_share_this_file">Не е възможно сигурно споделяне на този файл</string>
+  <string name="install_orbot_">Инсталирай Orbot?</string>
+  <string name="you_must_have_orbot">Трябва да имате Orbot инсталиран и активиран, за да изпращате трафика си през него. Желаете ли да го инсталирате?</string>
+  <string name="always">Винаги</string>
+  <string name="start_orbot_">Стартиране на Orbot?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot не изглежда да е активен. Желаете ли да го стартирате и свържете към Tor?</string>
+  <string name="muc_dialog_nickname">прякор, който да бъде използван в тази стая</string>
+  <string name="muc_dialog_room">име на стаята за създаване или присъединяване\"</string>
+  <string name="muc_dialog_server">groupchat server (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Складът за ключове е развален. Моля, преинсталирайте ChatSecure или изберете \'изтриване на информацията\' за приложението</string>
+  <string name="you_received_an_unreadable_encrypted_message">Получихте нечетливо криптирано съобщение</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Не мога да разкриптирам съобщението, което изпратихте</string>
+  <string name="swipe_hint">&lt; плъзнете наляво и надясно за допълнителни опции &gt;</string>
 </resources>

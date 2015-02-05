@@ -19,35 +19,43 @@
   <string name="btn_next">التالي</string>
   <string name="btn_back">عودة</string>
   <string name="connect">اتصال</string>
+  <string name="play">لعب</string>
+  <string name="setup">إعداد</string>
   <!--Views-->
   <string name="lock_screen_open">افتح</string>
   <string name="title_activity_lock_screen">شات سيكيور مقفل</string>
-  <string name="lock_screen_create_passphrase">ضع كلمة السر</string>
+  <string name="lock_screen_create_passphrase">ضبط كلمة السر</string>
   <string name="lock_screen_confirm_passphrase">تأكيد كلمة السر</string>
   <string name="lock_screen_passphrase_hint">كلمة السر</string>
-  <string name="lock_screen_passphrase_not_set_enter">كلمة سر جديدة</string>
+  <string name="lock_screen_passphrase_not_set_enter">يمكنك ضبط كلمة سر أساسية لمنع الولوج إلى أصدقائك ورسائلك دون كلمة سر:</string>
   <string name="lock_screen_passphrase_not_set_confirm">تأكيد كلمة السر الجديدة</string>
   <string name="lock_screen_passphrases_not_matching">العبارات السرية المدخلة لم تتطابق. حاول مرة أخرى.</string>
-  <string name="lock_screen_skip">أشعر بالكسل (دون كلمة سر)</string>
+  <string name="lock_screen_skip">التخطي &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">موجه المعلومات</string>
+  <string name="app_passphrase_view_password_question">أدخل كلمة السر</string>
+  <string name="password_please">كلمة السر، من فضلك…</string>
+  <string name="passphrase">جملة السر</string>
+  <string name="passphrase_again">جملة السر (مجدّداً)</string>
   <!--Views: Setup-->
-  <string name="landing_page_title">دردشة -- حدد حساب</string>
-  <string name="choose_account_title">دردشة -- حدد حساب</string>
+  <string name="landing_page_title">حدد حساب</string>
+  <string name="choose_account_title">حدد حساب</string>
   <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
   <string name="add_account">أضف حساب (<xliff:g id="account">%1$s</xliff:g>)</string>
-  <string name="menu_about">عن جيبربوت</string>
+  <string name="menu_about">حول التطبيق</string>
   <string name="menu_sign_out_all">الخروج من الجميع</string>
   <string name="signout_all_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات؟</string>
   <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> تم تسجيل خروجك من</string>
+  <string name="signed_out_prompt_with_error">لقد تم إخراجك من<xliff:g id="account">%1$s</xliff:g> بسبب <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">هل هذه أول مرة تستخدم بها شات سيكيور (ChatSecure)؟</string>
   <string name="welcome_skip">غير قادر على الانتظار؟</string>
   <string name="welcome_about">إبدأ</string>
   <string name="welcome_account">إعداد الحساب</string>
   <string name="setup_passphrase_title">إعداد كلمة السر</string>
-  <string name="setup_passphrase">قبل أن نبدأ باستخدام جيبربوت، يرجى إدخال كلمة سر آمنة و محكمة حتى تمنع الدخول غير المصرح به على بيانات جيبربوت لديك.</string>
+  <string name="setup_passphrase">قبل أن نبدأ باستخدام جيبربوت، يرجى إدخال كلمة سر آمنة حتى تمنع الدخول غير المصرح به على بيانات جيبربوت لديك.</string>
   <string name="setup_passphrase_label1">كلمة السر:</string>
   <string name="setup_passphrase_label2">أدخل كلمة السر مرة أخرى:</string>
   <string name="rekey_message">أدخل عبارة سرية جديدة. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
-  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة…</string>
+  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة (الرجاء الانتظار)…</string>
   <string name="enter_pass">أدخل كلمة السر:</string>
   <string name="new_pass">مرحباً! أدخل عبارة سرية قوية لتشفير دفتر ملاحظاتك. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
   <string name="pass_err_length">عبارتك السرية ليست طويلة بما يكفي.</string>
@@ -57,21 +65,22 @@
   <!--Views: About: Welcome-->
   <string name="about_welcome_title">عن شات سيكيور (ChatSecure)</string>
   <string name="about_welcome">شات سيكيور (ChatSecure) هو تطبيق للرسائل الفورية يقوم بتوفير مميزات أمنية كثيرة تمنع الآخرين من التنصت على محادثاتك و اتصالاتك.
-
- يعمل هذا البرنامج مع العديد من خدمات الرسائل الفورية مثل جوجل توك.</string>
+\n
+ يعمل هذا البرنامج مع العديد من خدمات الرسائل الفورية مثل جوجل توك أو Jabber.org.</string>
   <!--Views: About: OTR-->
   <string name="about_otr_title">ما هي المميزات الأمنية؟</string>
-  <string name="about_otr">التشفير دون تسجيل (خارج السجل) هو نظام أمني يستخدم لتوفير الخصوصية الكاملة عن طريق التشفير، اثبات الهوية، القدرة على إنكار وقوع المحادثة وضمان السرية المستقبلية. بروتوكول التشفير دون تسجيل يحفظ لك خصوصيتك وأمنك حتى لو تم الاستيلاء على جهازك أو أجهزة أصدقائك حيث لا يتم تخزين المحادثة المشفرة في جهازك أو جهاز صديقك أو أي موقع آخر.</string>
+  <string name="about_otr">التشفير دون تسجيل (خارج السجل) هو نظام أمني يستخدم لتوفير الخصوصية الكاملة عن طريق التشفير، اثبات الهوية، القدرة على إنكار وقوع المحادثة وضمان السرية المستقبلية. بروتوكول التشفير دون تسجيل يحفظ لك خصوصيتك وأمنك حتى لو تم الاستيلاء على جهازك أو أجهزة أصدقائك حيث لا يتم تخزين المحادثة المشفرة في جهازك أو جهاز صديقك أو أي موقع آخر.\n\nإن التشفير خارج السجل يتوافق مع تطبيقات الدردشة كAdium وPidgin.</string>
   <!--Views: About: Security-->
   <string name="about_security_title">هل محادثاتي آمنة؟</string>
   <string name="about_security">وظائف التشفير ببرنامج جيبربوت تعمل فقط عندما يقوم الطرف الآخر باستخدام برامج تدعم أيضاً مميزات التشفير دون تسجيل (خارج السجل) ، لذلك يجب عليك التأكد من قدرة الطرف الآخر على البدء بمحادثة مشفرة قبل الافصاح عن أي معلومات مهة. 
-
-هل أنت جاهز للتحدث بكامل الخصوصية و الأمان؟ هيا بنا!</string>
+\n
+هل أنت جاهز للتحدث بكامل الخصوصية و الأمان؟\n هيا بنا!</string>
   <!--Views: Account list-->
   <string name="menu_new_account">حساب جديد</string>
   <string name="menu_add_account">إضافة حساب</string>
   <string name="menu_edit_account">تحرير حساب</string>
   <string name="menu_remove_account">إزالة حساب</string>
+  <string name="menu_use_existing_account">حساب حالي</string>
   <!--Views: Setup: Account-->
   <string name="label_username">المستخدم @ المضيف</string>
   <string name="label_password">كلمة السر:</string>
@@ -82,7 +91,7 @@
   <string name="check_save_password">لأمنك الخاص ، وإذا فقد أو سرق هاتفك ، انتقل إلى الموقع على جهاز الكمبيوتر الخاص بك و غير كلمة السر الخاصة بك.</string>
   <string name="check_auto_sign_in">هذا الخيار يقوم بتسجيل الدخول تلقائياً كل مرة تفتح فيها هذا التطبيق. لتعطيل الخيار ،قم بتسجيل الخروج ثم امسح اختيار تسجيل الدخول التلقائي.</string>
   <string name="use_tor">تواصل عبر تور (يتطلب برنامج Orbot)</string>
-  <string name="account_setup_example_email_address">الاسم@العنوان.كوم</string>
+  <string name="account_setup_example_email_address">الاسم@العنوان</string>
   <string name="account_setup_new_username">اسم مستخدم جديد</string>
   <string name="account_setup_service_provider">مقدم الخدمة (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">كلمة السر</string>
@@ -95,18 +104,18 @@
   <string name="account_setup_pers_pw_on">تم حفظ كلمة السر مؤقتاً</string>
   <string name="account_setup_pers_pw_off">لم يتم حفظ كلمة السر مؤقتاً</string>
   <string name="account_setup_pers_auto_title">تسجيل الدخول تلقائيا</string>
-  <string name="account_setup_pers_auto_on">قم بالاتصال تلقائياً عند تشغيل شات سيكيور (ChatSecure)</string>
-  <string name="account_setup_pers_auto_off">لا تقم بالاتصال تلقائياً عند تشغيل شات سيكيور (ChatSecure)</string>
+  <string name="account_setup_pers_auto_on">الاتصال تلقائياً عند تشغيل شات سيكيور (ChatSecure)</string>
+  <string name="account_setup_pers_auto_off">عدم الاتصال تلقائياً عند تشغيل شات سيكيور (ChatSecure)</string>
   <string name="account_setup_pers_now_title">تسجيل الدخول الآن</string>
-  <string name="account_setup_pers_now_on">قم بالاتصال بعد الانتهاء من إعداد الحساب</string>
-  <string name="account_setup_pers_now_off">لا تقم بالاتصال تلقائياً بعد إعداد الحساب</string>
-  <string name="account_setup_personal_sub">معلومات شخصية (اختياري):</string>
+  <string name="account_setup_pers_now_on">الاتصال بعد الانتهاء من إعداد الحساب</string>
+  <string name="account_setup_pers_now_off">عدم الاتصال تلقائياً بعد إعداد الحساب</string>
+  <string name="account_setup_personal_sub">معلومات شخصية (اختياري)</string>
   <string name="account_setup_personal_alias_title">الاسم المستعار</string>
   <string name="account_setup_personal_alias_sub">كيف تظهر حالة الحساب على الانترنت</string>
   <string name="account_setup_personal_profile_title">الملف الشخصي</string>
   <string name="account_setup_personal_profile_sub">نبذة موجزة عن نفسك</string>
   <string name="account_setup_advanced_enc_force">أوجب استخدام التشفير، لا ترضى بالتحدث دون تشفير</string>
-  <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، قم بتشفير محادثاتي</string>
+  <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، قم بتشفير محادثاتي تلقائياً</string>
   <string name="account_setup_advanced_enc_req">قم بتشفير المحادثات حسب الطلب</string>
   <string name="account_setup_advanced_enc_off">تعطيل تشفير المحادثات</string>
   <string name="account_setup_signin_a">التحقق من صحة البيانات…</string>
@@ -118,15 +127,15 @@
   <string name="account_wizard_ready_title">هل أنت مستعد؟</string>
   <string name="account_wizard_setup_body">أدخل رقم حسابك لتضبيط شات سيكيور(ChatSecure) للاتصال بخدمة المحادثة (XMPP). رقم الحساب يشبه صيغة الايميل الالكتروني:</string>
   <string name="account_wizard_account_body">الرجاء إدخال رقم حسابك (اسم المستخدم @ الموقع) :</string>
-  <string name="account_wizard_host_body">أدخل اسم موقع مقدم خدمة المحادثة و رقم المنفذ (رقم المنفذ الافتراضي هو 5222).</string>
+  <string name="account_wizard_host_body">أدخل اسم موقع خدمة المحادثة و رقم المنفذ (رقم المنفذ الافتراضي هو 5222).</string>
   <string name="account_wizard_ready_body">تم إعداد شات سيكيور (ChatSecure)، و حان الوقت للاتصال بالخدمة و التمتع بالمحادثة بكل أمان و سرية!</string>
   <string name="_via_orbot">اوربوت/Orbot (تور/Tor)</string>
-  <string name="select_domain_new_account">اختر اسم نطاق</string>
+  <string name="select_domain_new_account">اختر اسم نطاق الدردشة</string>
   <string name="registering_new_account_">جاري تسجيل حساب جديد…</string>
   <string name="signing_in_to">انطلق يا شات سيكيور!</string>
   <string name="menu_cancel_signin">إلغاء تسجيل الدخول</string>
-  <string name="signing_in_wait">يتم تسجيل الدخول الآن</string>
-  <string name="signing_out_wait">يتم تسجيل الخروج الآن</string>
+  <string name="signing_in_wait">يتم تسجيل الدخول الآن…</string>
+  <string name="signing_out_wait">يتم تسجيل الخروج الآن…</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">تفقد سجل SRV</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">استخدم نظام الأسماء للبحث عن خادم أكس أم بي بي من اسم النطاق</string>
@@ -134,7 +143,7 @@
   <string name="allow_plain_text_auth">اسمح بالتحقق من الهوية دون تشفير</string>
   <string name="verify_that_the_certificate_is_trusted">تأكد من صلاحية الشهادة الإلكترونية</string>
   <string name="tls_verification">تأكيد TLS</string>
-  <string name="require_tls_ssl_connection">فشل في إلزام استخدام TLS</string>
+  <string name="require_tls_ssl_connection">إلزام استخدام TLS</string>
   <string name="transport_encryption">تشفير الاتصال</string>
   <string name="how_encrypted_chats_are_started">كيف يتم ابتداء المحادثات المشفرة</string>
   <string name="the_server_to_connect_to_if_needed">الموقع الذي يتم الاتصال به، إذا دعت الحاجة</string>
@@ -147,11 +156,11 @@
   <string name="xmpp_resource_prio_summary">الرسائل المرسلة لأصدقاء لديهم أكثر من مصدر فعال في نفس الوقت سترسل للمصدر ذو الاولوية الأعلى.</string>
   <!--Views: Contact list-->
   <string name="title_chats">المحادثات</string>
-  <string name="no_messages">لا توجد محادثات.
-
+  <string name="no_messages">لا توجد محادثات.\n
+\n
 اضغط هنا لبدأ واحدة!</string>
-  <string name="empty_account_message">لا توجد لديك حسابات تم ضبطها.
-
+  <string name="empty_account_message">لا توجد لديك حسابات تم ضبطها.\n
+\n
 اضغط هنا لإضافة حساب!</string>
   <string name="buddy_list_title">جهات الاتصال- &lt;xliff id="username"&gt;%1$s&lt;/xliff&gt;</string>
   <string name="menu_add_contact">إضافة اسم</string>
@@ -159,6 +168,7 @@
   <string name="menu_block_contact">حجب الاتصال</string>
   <string name="menu_contact_nickname">اﻹسم المستعار لجهة الاتصال</string>
   <string name="menu_view_blocked">محجوب</string>
+  <string name="nickname">اسم المستعار</string>
   <string name="confirm_delete_contact">سيتم حذف "<xliff:g id="user">%1$s</xliff:g>"</string>
   <string name="confirm_block_contact">سيتم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
   <string name="confirm_unblock_contact">سيتم إزالة الحجب عن "<xliff:g id="user">%1$s</xliff:g>"</string>
@@ -171,13 +181,14 @@
   <string name="menu_show_grid">أظهر الشبكة</string>
   <string name="menu_start_chat">إبدأ الدردشة</string>
   <string name="menu_view_profile">مشاهدة الملف الشخصي</string>
-  <string name="menu_verify">تحقق من المفتاح</string>
+  <string name="menu_verify">تحقق من جهة الاتصال</string>
   <string name="ongoing_conversation">المحادثات الصادرة (<xliff:g id="number">%1$d</xliff:g>)</string>
   <string name="online_count"><xliff:g id="number">%1$d</xliff:g> متصل</string>
   <string name="subscriptions">دعوات الإضافة</string>
   <string name="unknown_contact">(<i>غير معروف</i>) </string>
   <string name="empty_contact_group">فارغة</string>
-  <string name="empty_conversation_group">لا توجد محادثات</string>
+  <string name="empty_conversation_group">لا توجد محادثات\n\n
+أنقر لبدأ الدردشة!</string>
   <string name="search_label">اتصال</string>
   <string name="search_hint">أدخل الاسم المراد التحدث معه</string>
   <string name="search_button_text">انطلق</string>
@@ -193,7 +204,7 @@
   <string name="client_type_computer">الكمبيوتر</string>
   <string name="client_type_mobile">جوال</string>
   <string name="blocked_list_title">الأسماء المحجوبة <xliff:g id="user">%1$s</xliff:g></string>
-  <string name="no_blocked_contact">لا توجد أسماء محظورة.</string>
+  <string name="no_blocked_contact">لا توجد أسماء محجوبة.</string>
   <!--Views: Chat: Single-->
   <string name="chat_with">تحدث مع <xliff:g id="user">%1$s</xliff:g></string>
   <string name="me">أنا</string>
@@ -222,23 +233,38 @@
   <string name="menu_switch_chats">انتقل بين المحادثات</string>
   <string name="menu_plus">القائمة + \"</string>
   <string name="select_link_title">حدد الرابط</string>
+  <string name="delete">حذف</string>
+  <string name="keep_files">احفظ الملفات</string>
+  <string name="delete_chat_session_secured_storage">حذف تخزين جلسة الدردشة؟</string>
+  <string name="all_files_will_be_deleted">سيتم حذف جميع الملفات الواردة والصادرة.
+تحذير: لا يمكن التراجع بعد تنفيذ هذه العملية!</string>
+  <string name="delete_original">مسح النسخة الأصلية؟</string>
+  <string name="this_file_will_be_copied">سيتم نسخ الملف إلى المخزن الآمن قبل إرساله.
+هل تريد خذف الملف الأساسي من مخزن الهاتف الغير آمن؟</string>
+  <string name="keep">إبق</string>
+  <string name="export">صدّر</string>
+  <string name="export_media">صدّر ملف الوسائط؟</string>
+  <string name="export_media_file_to">سيتم تصدير هذا الملف إلى %1$s</string>
+  <string name="end_chat_title">نهاية دردشة؟</string>
+  <string name="end_chat_summary">سبتم خذف كافة ملفات الوسائط في هذه الجلسة. لإصدار ملف وسائط، إضغط نقرة طويلة على الصورة المصغرة.</string>
+  <string name="end_chat_and_delete">إنهاء الدرشة وحذف الملفات</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لمحادثة جماعية.</string>
   <string name="invitation_sent_prompt">تم ارسال دعوة ل<xliff:g id="user">٪ 1 $ ق</xliff:g>.</string>
   <string name="accept_invitation">قبول</string>
-  <string name="decline_invitation">انخفاض</string>
-  <string name="menu_new_group_chat">دردشة المجموعات</string>
-  <string name="create_or_join_group_chat">أنشأ أو انضم لدردشة مجموعة.</string>
+  <string name="decline_invitation">رفض</string>
+  <string name="menu_new_group_chat">دردشة جماعية</string>
+  <string name="create_or_join_group_chat">أنشأ أو انضم لدردشة جماعية.</string>
   <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية…</string>
   <string name="menu_invite_contact">دعوة</string>
   <string name="contacts_picker_title">حدد جهات الاتصال ليتم دعوتها</string>
   <string name="contact_filter_hint">اكتب اسم جهة الاتصال</string>
   <string name="empty_contact_list">لم يتم العثور على جهة الاتصال.
-
+\n\n
 اضغط للاضافة.</string>
   <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لتكون بقائمة أسمائه.</string>
   <string name="approve_subscription">قبول</string>
-  <string name="decline_subscription">انخفاض</string>
+  <string name="decline_subscription">رفض</string>
   <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
   <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
   <!--Security: OTR-->
@@ -270,17 +296,21 @@
   <string name="the_remote_key_fingerprint_has_been_verified_">تم التحقق من بصمة المفتاح الآخر.</string>
   <string name="fingerprint_for_you">بصمة مفتاحك</string>
   <string name="fingerprint_for_">بصمة المفتاح ل</string>
+  <string name="install_barcode_scanner_title">تثبيت ماسح الباركود؟</string>
+  <string name="install_barcode_scanner_message">هذا التطبيق بحاجة لماسح الباركود. هل تريد تثبيته؟</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">التحقق من الهوية</string>
-  <string name="smp_question_summary">أدخل سؤال لصديقك، و الاجابة التي تتوقع منهم وضعها، حتى تتحقق من هويتهم.</string>
+  <string name="smp_question_summary">أدخل سؤال لصديقك، و الاجابة التي تتوقع منه وضعها، حتى تتحقق من هويته.</string>
   <string name="smp_question_hint">السؤال</string>
   <string name="qmp_answer_hint">الاجابة المتوقعة</string>
-  <string name="remote_verified_us">طرف المحادثة الآخر نجح بالتحقق من هويتك. الآن قم بالتحقق من هويته عن طريق سؤالك الخاص.</string>
+  <string name="remote_verified_us">طرف المحادثة الآخر نجح بالتحقق من هويتك. قم الآن بالتحقق من هويته عن طريق سؤالك الخاص.</string>
+  <string name="otr_qa_title">سؤال\جواب للتحقيق OTR</string>
+  <string name="chat_encryption_title">تشفير الدردشة</string>
   <string name="otr_qa_send">إرسال</string>
   <string name="otr_qa_cancel">ألْغ</string>
   <!--Views: VoIP-->
-  <string name="menu_voip_title">إتصال أمن</string>
-  <string name="pref_sip_account_title">إتصال أمن</string>
+  <string name="menu_voip_title">إتصال آمن</string>
+  <string name="pref_sip_account_title">إتصال آمن</string>
   <string name="pref_sip_account_summary">أدخل حسابك في OStel.co أو أي حساب SIP لربط الاتصال.</string>
   <!--Views: Settings: General-->
   <string name="account_setup_title">إعداد الحساب</string>
@@ -294,53 +324,72 @@
   <string name="pref_group_looknfeel_title">واجهة المستخدم</string>
   <string name="menu_locale">اللغة</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">اللغات</string>
-
-  <string name="pref_theme_dark">استخدم قالب ألوان غامقة</string>
+  <string name="use_system_default">استخدم إفتراضي النظام</string>
+  <string name="pref_theme_dark">استخدم قالب ألوان داكنة</string>
   <string name="pref_theme_dark_summary">غير ألوان الواجهة إلى الألوان الداكنة</string>
   <string name="pref_in_memory_db_title">مخزن الرسائل في الذاكرة فقط</string>
-  <string name="pref_in_memory_db_summary">فقط إحفض الرسائل في الذاكرة، وليس على ذاكرة الفلاش، للحماية ضد إستخراج الرسائل (قد يسبب خسارة بعض الرسائل)</string>
+  <string name="pref_in_memory_db_summary">إحفض الرسائل في الذاكرة فقط، وليس على ذاكرة الفلاش، للحماية ضد إستخراج الرسائل (قد يسبب خسارة بعض الرسائل)</string>
   <string name="pref_background_title">صورة خلفية</string>
   <string name="pref_background_summary">حدد المسار (\"/sdcard/foo.jpg\") كصورة خلفية للبرنامج</string>
   <string name="pref_show_grid">أظهر شبكة جهات الاتصال</string>
   <string name="pref_show_grid_summary">أظهر جهات الاتصال كشبكة من الصور الشخصية</string>
   <string name="button_yes_accept_all">نعم، اقبل الكل</string>
+  <string name="pref_delete_unsecured_media_title">حذف الملفات الغير آمنة</string>
+  <string name="pref_delete_unsecured_media_summary">حذف الملف الأساسي تلقائياً من المخزن غير الآمن بعد استراده وتصديره</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">تعديلات أخرى </string>
   <string name="start_on_boot">إبدأ شات سيكيور (ChatSecure) تلقائياً</string>
   <string name="start_on_boot_summary">دائماً إبدأ و ادخل بالحسابات تلقائياً</string>
   <string name="hide_offline_contacts">اخفاء الأسماء الغير متصلة بالشبكة</string>
   <string name="foreground_service_title">استخدم أولوية المقدمة</string>
-  <string name="foreground_service_summary">قلل من احتمالية ان يقوم الاندرويد بإعادة الاتصال</string>
+  <string name="foreground_service_summary">قلل من احتمالية ان يقوم الاندرويد بإعادة تشغيل الإتصال. سيظهر إخطار في منطقة الإعلام.</string>
   <string name="heartbeat_interval_title">فترة النبض</string>
   <string name="heartbeat_interval_summary">استخدم قيمة أعلى لحفظ بطاريتك. القيمة العالية قد تتسبب باغلاق اتصالك بسبب عدم نشاط الاتصال.</string>
   <!--Actions: Settings: General: Notifications-->
-  <string name="notification_group_title">إعدادات التنبيهات</string>
-  <string name="notification_enabled_title">تنبيهات المحادثة</string>
+  <string name="notification_group_title">إعدادات إخطارات</string>
+  <string name="notification_enabled_title">إخطارات المحادثة الفورية</string>
   <string name="notification_enabled_summary">قم بالتنبيه بشريط التنبيه العلوي عندما تصل رسالة</string>
   <string name="notification_vibrate_title">اهتز</string>
   <string name="notification_vibrate_summary">اهتز أيضا عند وصول الرسائل الفورية</string>
   <string name="notification_sound_title">الصوت</string>
-  <string name="notification_sound_summary">كما يلعب النغمة عندما يصل الدردشة</string>
+  <string name="notification_sound_summary">لعب النغمة أيضاً عندما تصل محادثة فورية</string>
   <string name="notification_ringtone_title">استخدم نغمة خاصة بChatSecure</string>
   <!--Actions: Settings: General: Developer-->
   <string name="pref_debug_title">تفعيل سجلات التنقيح</string>
   <string name="pref_debug_summary">إخراج بيانات سجل التطبيق نحو الخرْج القياسي أو نحو logcat للتنقيح</string>
   <!--Alerts: Dialogs-->
-  <string name="bg_data_prompt_title">تم تعطيل البيانات الخلفية</string>
-  <string name="bg_data_prompt_message">⏎ <xliff:g id="provider">%1$s</xliff:g> يحتاج لمعلومات خلفية ليتم التفعيل. ⏎ </string>
+  <string name="bg_data_prompt_title">تم تعطيل بيانات الشبكة</string>
+  <string name="bg_data_prompt_message">بحاجة لاتصال على الشبكة (ولمعلومات خلفية) ليتم التفعيل وتسجيل الدخول.</string>
   <string name="bg_data_prompt_ok">تمكين</string>
   <string name="bg_data_prompt_cancel">خروج</string>
   <string name="signout_kill_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات و إغلاق جميع العمليات (hard exit)؟</string>
   <string name="prompt_create_new_account_">إنشاء حساب جديد؟</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">إنشاء حساب محادثة جديد للمستخدم \'%1$s\' ؟</string>
+  <string name="dialog_cert_title">معلومات الشهادة</string>
+  <string name="dialog_cert_subject">شهادة:</string>
+  <string name="dialog_cert_issuer">صادر عن:</string>
+  <string name="dialog_cert_fingerprint">بصمة SHA1:</string>
+  <string name="dialog_cert_issue_date">صادر في:</string>
+  <string name="dialog_cert_expires">ينقضي في:</string>
+  <string name="dialog_connect_chatroom_title">الانضمام إلى غرفة الدردشة؟</string>
+  <string name="dialog_connect_chatroom_message">تطبيق خارجي يحاول وصلك بغرفة دردشة. السماح؟</string>
+  <string name="dialog_settings_choose_background_title">اختر الصورة الخلفية</string>
+  <string name="dialog_settings_choose_background_body">هل تريد انتقاء صورة خلفية من المعرض؟</string>
+  <string name="dialog_settings_choose_background_picker">اختر الصورة</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">رسائل جديدة من <xliff:g id="provider">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> الأحاديث الغير مقروءة</string>
+  <string name="subscription_notify_text">دعوة صديق جديد من <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">ملف جديد <xliff:g id="filename">%s</xliff:g> من <xliff:g id="user">%s</xliff:g></string>
   <string name="notify_groupchat_label">دعوة لمحادثة جماعية</string>
+  <string name="group_chat_invite_notify_text">دعوة محادثة مجموعة جديدة من <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">رسالة جديدة من</string>
   <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure…</string>
   <string name="app_unlocked">تم التفعيل و فتح القفل</string>
+  <string name="toast_chat_copied_to_clipboard">تم نسخ الرسالة إلى الحافظة</string>
   <!--Alerts: Exceptions-->
   <string name="error">انتباه</string>
+  <string name="error_prefix">خطأ:</string>
   <string name="general_error">رمز الخطأ: <xliff:g id="code">%1$d</xliff:g></string>
   <string name="login_service_failed">غير قادر على تسجيل الدخول إلى <xliff:g id="service">%1$s</xliff:g> . حاول مرة أخرى لاحقاً. التفاصيل:    <xliff:g id="description">%2$s</xliff:g>
 </string>
@@ -362,7 +411,7 @@
   <string name="internal_server_error">حصل خطأ بالموقع</string>
   <string name="not_implemented">الموقع لا يدعم هذه الوظيفة.</string>
   <string name="service_unavaiable">الموقع غير متوفر حاليا.</string>
-  <string name="timeout">لم يتم تنفيذ الطلب بالوقت المحدد</string>
+  <string name="timeout">لم يتم تنفيذ الطلب بالوقت المحدد.</string>
   <string name="version_not_supported">الموقع لا يدعم الإصدار الحالي.</string>
   <string name="message_queue_full">قائمة انتظار الرسائل ممتلئة</string>
   <string name="domain_not_supported">الموقع لا يدعم إعادة التوجيه لاسم النطاق</string>
@@ -372,43 +421,53 @@
   <string name="forced_logout">قمت بتسجيل الدخول ببرنامج آخر</string>
   <string name="already_logged_in">لقد قمت بتسجيل الدخول من برنامج آخر</string>
   <string name="msisdn_error">عذرا ، تعذرت قراءة رقم الهاتف من البطاقة. يرجى الاتصال بمشغل الشبكة للحصول على مساعدة.</string>
-  <string name="not_signed_in">لم تقم بتسجيل الدخول</string>
-  <string name="account_setup_error_validating">واجه جيبربوت خطاً أثناء محاولة التحقق من البيانات، تأكد من صحتها ثم حاول مرة أخرى</string>
-  <string name="account_setup_error_keypair">حصل خطأ أثناء توليد زوج المفاتيح السرية.</string>
-  <string name="account_setup_error_server">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من إعدادات الاتصال ثم حاول مرة أخرى</string>
-  <string name="account_setup_error_connectivity">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من اتصالك بالانترنت ثم حاول مرة أخرى</string>
-  <string name="error_suspended_connection">تم فقد الاتصال بالشبكة</string>
-  <string name="error_reestablish_connection">نقوم الآن بمحاولة إعادة الاتصال</string>
-  <string name="account_wizard_no_domain_warning">لم تقم بإدخال العنوان كاملاً يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
+  <string name="not_signed_in">لست مسجَّلا حاليا.</string>
+  <string name="account_setup_error_validating">واجه جيبربوت خطاً أثناء محاولة التحقق من إسم المستخدم أو كلمة السر - تأكد من صحتهما ثم حاول مجدَّدا.</string>
+  <string name="account_setup_error_keypair">حصل خطأ أثناء توليد زوج المفاتيح.</string>
+  <string name="account_setup_error_server">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من إعدادات الاتصال ثم حاول مرة أخرى.</string>
+  <string name="account_setup_error_connectivity">حصل خطأ أثناء محاولة الاتصال بالموقع. تأكد من اتصالك بالانترنت ثم حاول مرة أخرى.</string>
+  <string name="error_suspended_connection">فُقِد الاتصال بالشبكة</string>
+  <string name="error_reestablish_connection">تجري الآن محاولة إعادة الاتصال</string>
+  <string name="account_wizard_no_domain_warning">لم تُدخِل العنوان كاملا يجب أن ينتهي بصيغة @العنوان.كوم، جرب مرة أخرى! </string>
   <string name="account_wizard_no_root_domain_warning">العنوان الذي اخترته لا ينتهي ب دوت كوم أو دوت نيت أو ما يشابهه، تأكد منه مرة أخرى!</string>
   <string name="signin_password_prompt">أدخل كلمة السر:</string>
-  <string name="warning_tor_connect">لأنك تستخدم شبكة تور، يجب ان تدخل عنوان خادم الاتصال XMPP Connect Server مباشرة بإعدادات الحساب المتقدمة</string>
-  <string name="unable_to_create_or_join_group_chat">غير قادر على إنشاء أو الانضمام لدردشة مجموعات.</string>
-  <string name="sorry_we_cannot_share_that_file_type">عذراً، لا يمكن مشاركة هذا النوع من الملفات.</string>
+  <string name="warning_tor_connect">لأنك تستخدم شبكة تور، يجب أن تدخل عنوان خادم الاتصال XMPP Connect Server مباشرة بإعدادات الحساب المتقدمة</string>
+  <string name="warning_weak_crypto">تحذير: تستخدم هذه الخدمة شهادة ذات مستوى تعمية ضعيفة. يُرجى تنبيه المسؤول لترقيتها.</string>
+  <string name="warning_pinned_cert_mismatch">لا تتطابق الشهادة المقدمة مع الشهادة المحددة:</string>
+  <string name="unable_to_create_or_join_group_chat">تعذر إنشاء أو الانضمام لمحادثة مجموعة</string>
+  <string name="sorry_we_cannot_share_that_file_type">عذرا، لا يمكن مشاركة هذا النوع من الملفات</string>
   <string name="err_otr_share_no_encryption">يجب عليك تفعيل التشفير للتمكن من مشاركة الملفات</string>
-  <string name="please_enable_chat_encryption_to_share_files">قم بتفعيل تشفير المحادثات للتمكن من مشاركة الملفات</string>
-  <string name="swipe_alert">ChatSecure detected that a request was made to remove its task.  ChatSecure will likely crash.  Please use the Sign out all menu item from the account list screen instead.</string>
+  <string name="please_enable_chat_encryption_to_share_files">رجاءً، فعِّل تشفير المحادثات للتمكن من مشاركة الملفات</string>
+  <string name="swipe_alert">كشف ChatSecure أنه تم محاولة إزالة عمليته. من المحتمل جداً أن ChatSecure سيتوقف عن العمل. يُرجى استخدام تسجيل خروج الكل من قائمة الحسابات بدلاً عن ذلك.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">لا يوجد عارض لهذا الصنف من الملفات</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">يُرجى بدأ محادثة آمنة قبل مسح الرموز</string>
-  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">لم يتم استيراد مفتاح التسجيل خارج السجل. تأكد من أن الملف بالصيغة أو المكان الصحيحين.</string>
-  <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  OtrFileConverter إلى موضع الجذر بنظام الملفات لديك root directory</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">لم تُستورَد محفظة مفاتيح OTR. تأكد من أن الملف بالصيغة أو المكان الصحيحين</string>
+  <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  OtrFileConverter إلى مجلد جذر جهاز تخزينك</string>
   <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
-  <string name="disconnected_warning">سيتم ارسال الرسائل عند إعادة الاتصال</string>
+  <string name="disconnected_warning">لا يوجد اتصال حالياً. ستُرسَل الرسائل عند إعادة الاتصال.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> غير موجود بقائمة الأسماء لديك.</string>
+  <string name="error_account_password_mismatch">كلمات السر لا تتطابق</string>
+  <string name="error_account_settings_priority">يجب على الأفضلية أن تكون رقم ضمن نطاق [0 … 127]</string>
+  <string name="error_account_settings_port">يجب على رقم المنفذ أن يكون رقماً</string>
+  <string name="error_chat_file_transfer_title">خطأ في النقل</string>
+  <string name="error_chat_file_transfer_body">لا يمكن قراءة مخزن الملفات</string>
+  <string name="error_welcome_database">خطأ كبير: لا يمكن فتح أو تحميل قاعدة بيانات التطبيق. الرجاء إعادة تثبيت التطبيق أو محو البيانات.</string>
   <string name="account_settings_title">إعدادات الحساب</string>
   <string name="pref_default_locale">defLoc</string>
-  <string name="warning_alpha">تحذير: هذه نسخة تجريبية من شات سيكيور (ChatSecure) و قد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
+  <string name="warning_alpha">تحذير: هذه نسخة تجريبية من شات سيكيور (ChatSecure) وقد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">المجموعات</string>
-  <string name="_open_conversations">المحادثة/المحادثات المفتوحة</string>
-  <string name="menu_exit">اخرج</string>
-  <string name="menu_panic">وضع الرعب</string>
+  <string name="_open_conversations">المحادثة (أوالمحادثات) المفتوحة</string>
+  <string name="menu_exit">اخرج واقفل</string>
+  <string name="menu_panic">فزع</string>
   <string name="buddies">أصدقاء</string>
   <string name="contacts">جهات الاتصال</string>
-  <string name="mtm_accept_cert">قبول شهادة التشفير من السيرفر؟</string>
-  <string name="menu_sidebar_qr">بصمة المفتاح</string>
+  <string name="mtm_accept_cert">قبول شهادة التعمية من الخادم؟</string>
+  <string name="menu_sidebar_qr">اعرض بصمة مفتاحك</string>
+  <string name="loading">جاري التحميل…</string>
   <!--Other-->
+  <string name="about_link">حول شات سيكيور\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">قائمة الاتصال</string>
   <string name="menu_settings">إعدادات</string>
@@ -416,7 +475,7 @@
   <string name="menu_sign_out">تسجيل الخروج</string>
   <string name="menu_view_contact_list">قائمة الاتصال</string>
   <!--Other: Provider-->
-  <string name="provider_full_name_xmpp">جابر\ إكس أم بي بي</string>
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
   <string name="provider_full_name_llxmpp">Local Area (Bonjour/ZeroConf)</string>
   <string name="google_account">حساب جوجل </string>
   <string name="default_service_provider">dukgo.com</string>
@@ -432,41 +491,41 @@
   <string-array name="default_smiley_names">
     <item>سعيد</item>
     <item>حزين</item>
-    <item>الرمش</item>
-    <item>اللسان تخرج</item>
+    <item>يرمش</item>
+    <item>اللسان خارج</item>
     <item>مندهش</item>
-    <item>تقبيل</item>
-    <item>صراخ</item>
-    <item>بارد</item>
-    <item>المال الفم</item>
-    <item>قدم في الفم</item>
-    <item>بالحرج</item>
+    <item>يقبل</item>
+    <item>يصرخ</item>
+    <item>جيد</item>
+    <item>يفعل ما يقول</item>
+    <item>يتحدث بغباء</item>
+    <item>محرَج</item>
     <item>ملاك</item>
-    <item>بعد</item>
-    <item>بكاء</item>
+    <item>ملتبَس عليه</item>
+    <item>يبكي</item>
     <item>شفاه مغلقة</item>
     <item>يضحك</item>
-    <item>الخلط</item>
+    <item>مضطرب</item>
   </string-array>
   <!--[Do not localize!]-->
   <string-array name="smiley_names">
     <item>سعيد</item>
     <item>حزين</item>
-    <item>الرمش</item>
-    <item>اللسان تخرج</item>
+    <item>يرمش</item>
+    <item>اللسان خارج</item>
     <item>مندهش</item>
-    <item>تقبيل</item>
+    <item>يقبل</item>
     <item>صراخ</item>
-    <item>بارد</item>
-    <item>المال الفم</item>
-    <item>قدم في الفم</item>
+    <item>جيد</item>
+    <item>يفعل ما يقول</item>
+    <item>يتحدث بغباء</item>
     <item>بالحرج</item>
     <item>ملاك</item>
-    <item>بعد</item>
+    <item>ملتبَس عليه</item>
     <item>بكاء</item>
     <item>شفاه مغلقة</item>
     <item>يضحك</item>
-    <item>الخلط</item>
+    <item>مضطرب</item>
   </string-array>
   <string-array name="smiley_texts">
     <item>:-)</item>
@@ -487,5 +546,30 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">حساب حالي</string>
+  <string name="account_existing_full">الاتصال بحسابي الموجود على خادم Jabber\XMPP محدد.</string>
+  <string name="i_want_to_chat_using_my_google_account">حساب جوجل </string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">الدردشة عبر شبكة WiFi.</string>
+  <string name="account_wifi_full">دردش عبر شبكة WiFi دون الحاجة إلى خدمة الأنترنت أو خادم!</string>
+  <string name="account_wifi_button">تفعيل الدردشة عبر WiFi</string>
   <string name="i_need_a_new_account">حساب جديد</string>
+  <string name="account_new_full">قم بتسجيل حساب جديد ومجاني في خدمة ضمن لائحتنا الحالية، أو أي واحدة تختار.</string>
+  <string name="account_new_button">إنشاء حساب جديد</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">الهوية السريّة!</string>
+  <string name="account_burner_full">خلق حساب شعلة، مجهول، من خلال نقرة بسيطة (بحاجة إلى Orbot: Tor for Android)</string>
+  <string name="account_burner_button">إنشاء هوية</string>
+  <string name="this_is_a_group_chat">هذه دردشة جماعية</string>
+  <string name="_resent_">[أُعيد إرسالِه]</string>
+  <string name="resent">[أُعيد إرسالِه]</string>
+  <string name="unable_to_securely_share_this_file">لا يمكن مشاركة هذا الملف بطريقة آمنة</string>
+  <string name="install_orbot_">تثبيت Orbot؟</string>
+  <string name="always">دائماً</string>
+  <string name="start_orbot_">إبدأ Orbot؟</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">لا يبدو أن Orbot مشغَّل. هل تريد تشغيلِه والاتصال بشبكة Tor؟</string>
+  <string name="muc_dialog_nickname">اللقب المُراد استخدامِه في الغرفة</string>
+  <string name="muc_dialog_room">إسم الغرفة المُراد إنشاؤها أو الانضمام إليها\"</string>
+  <string name="muc_dialog_server">خادم الدردشة الجماعية (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">مخزن مفاتيح التعمية مشوَّه. الرجاء إعادة تثبيت شات سيكيور أو \'إفراغ البيانات\' لهذا التطبيق</string>
+  <string name="you_received_an_unreadable_encrypted_message">وصلتك رسالة مشفرة غير قابلة للقراءة</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">لم أتمكن من فك تشفير الرسالة التي أرسلتها</string>
 </resources>
