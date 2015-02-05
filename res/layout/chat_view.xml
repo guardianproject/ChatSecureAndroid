@@ -57,7 +57,6 @@
 	     android:layout_gravity="fill_vertical"
 	             android:gravity="bottom"
 	     android:padding="3sp"
-	     android:background="?inputBackground"
 	     >
 	<!-- 
         <ImageButton
@@ -130,18 +129,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:visibility="gone"
         
         android:background="@drawable/text_divider_horizontal">
 
         <TextView android:id="@+id/txtInvitation"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#ffad45d6"
             android:text="@string/invitation_prompt" />
 
-        <LinearLayout android:layout_width="fill_parent"
+        <LinearLayout android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
@@ -159,20 +157,21 @@
     </LinearLayout>
 
     <LinearLayout android:id="@+id/subscription"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:orientation="vertical"
-        android:background="@color/background_light"
+        android:orientation="horizontal"
         
         android:visibility="gone">
 
         <TextView android:id="@+id/txtSubscription"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:padding="10dip"
+            android:layout_gravity="center_vertical"
             android:text="@string/subscription_prompt" />
 
-        <LinearLayout android:layout_width="fill_parent"
+        <LinearLayout android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 

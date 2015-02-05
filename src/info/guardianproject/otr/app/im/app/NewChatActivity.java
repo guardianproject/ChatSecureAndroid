@@ -16,69 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import android.annotation.TargetApi;
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
-import android.database.Cursor;
-import android.graphics.drawable.Drawable;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
-import android.os.Message;
-import android.os.RemoteException;
-import android.provider.MediaStore;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.app.LoaderManager.LoaderCallbacks;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.AdapterView;
-import android.widget.AdapterView.AdapterContextMenuInfo;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrChatManager;
@@ -112,6 +49,72 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionStatus;
 
 import org.ironrabbit.type.CustomTypefaceManager;
+
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.database.Cursor;
+import android.graphics.drawable.Drawable;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
+import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
+import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.SimpleOnPageChangeListener;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar.OnMenuItemClickListener;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class NewChatActivity extends FragmentActivity implements View.OnCreateContextMenuListener {
 
@@ -364,8 +367,24 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     {
         if (CustomTypefaceManager.getCurrentTypeface(this)==null)
         {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            List<InputMethodInfo> mInputMethodProperties = imm.getEnabledInputMethodList();
 
-            CustomTypefaceManager.loadFromKeyboard(this);
+            final int N = mInputMethodProperties.size();
+
+            for (int i = 0; i < N; i++) {
+
+                InputMethodInfo imi = mInputMethodProperties.get(i);
+
+                //imi contains the information about the keyboard you are using
+                if (imi.getPackageName().equals("org.ironrabbit.bhoboard"))
+                {
+                    CustomTypefaceManager.loadFromKeyboard(this);   
+                    break;
+                }
+            
+            }
+            
 
         }
     }
@@ -388,7 +407,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     @Override
     protected void onDestroy() {
-      //  unregisterSubListeners ();
+        unregisterSubListeners ();
 
         if (mGlobalSettings != null)
         {
@@ -398,7 +417,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         mApp.unregisterForBroadcastEvent(ImApp.EVENT_SERVICE_CONNECTED, mHandler);
         mChatPagerAdapter.swapCursor(null);
-    //    mAdapter.swapCursor(null);
+        //mAdapter.swapCursor(null);
         super.onDestroy();
         mChatPagerAdapter = null;
        // mAdapter = null;
@@ -565,7 +584,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 finish();
             } else {
 
-                showSubscriptionDialog (providerId, from);
+               // showSubscriptionDialog (providerId, from);
 
             }
         } else if (intent != null) {
@@ -1025,8 +1044,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         Uri.Builder builder = Imps.Contacts.CONTENT_URI_CONTACTS_BY.buildUpon();
         Uri data = builder.build();
-
+        
         Intent i = new Intent(Intent.ACTION_PICK, data);
+        i.putExtra("invitations", false);
         startActivityForResult(i, REQUEST_PICK_CONTACTS);
     }
 
@@ -1713,8 +1733,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     }
 
 
-
-    /**
     public void unregisterSubListeners ()
     {
         if (mAccountIds != null)
@@ -1732,7 +1750,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 }
             }
-    }*/
+    }
 
     public IImConnection initConnection (long accountId, long providerId)
     {
@@ -2326,6 +2344,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
     }
 
+    /**
     void showSubscriptionDialog (final long subProviderId, final String subFrom)
     {
         if (! ((Activity) this).isFinishing()) {
@@ -2359,7 +2378,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
             },500);
         }
-    }
+    }*/
 
     void approveSubscription(long providerId, String userName) {
         IImConnection conn = mApp.getConnection(providerId);
@@ -2415,7 +2434,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             return null;
         }
 
-
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -2448,7 +2466,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         @Override
         public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
-            showSubscriptionDialog (providerId, from.getAddress().getAddress());
+           // showSubscriptionDialog (providerId, from.getAddress().getAddress());
 
         }
 

@@ -118,13 +118,11 @@ public class ContactListFilterView extends LinearLayout {
                            // of the selected item
 
                                if (which == 0)
-                               //    mListener.showProfile((Cursor)mFilterList.getItemAtPosition(position));
-                               //else if (which == 1)
                                    setContactNickname(position);
-                               else if (which == 2)
+                               else if (which == 1)
                                    removeContactAtPosition(position);
-                              // else if (which == 3)
-                                //   blockContactAtPosition(position);
+                               else if (which == 2)
+                                  blockContactAtPosition(position);
                        }
 
                 });
@@ -475,7 +473,7 @@ public class ContactListFilterView extends LinearLayout {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor newCursor) {
             
-        //    newCursor.setNotificationUri(getContext().getContentResolver(), mUri);
+            newCursor.setNotificationUri(getContext().getContentResolver(), mUri);
             
             mContactAdapter.changeCursor(newCursor);
 

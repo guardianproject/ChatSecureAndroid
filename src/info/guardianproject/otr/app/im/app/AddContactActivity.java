@@ -17,33 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import android.content.ContentResolver;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.support.v7.app.ActionBarActivity;
-import android.text.Editable;
-import android.text.TextUtils;
-import android.text.TextWatcher;
-import android.text.util.Rfc822Token;
-import android.text.util.Rfc822Tokenizer;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Button;
-import android.widget.MultiAutoCompleteTextView;
-import android.widget.SimpleCursorAdapter;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IContactList;
 import info.guardianproject.otr.app.im.IContactListManager;
@@ -56,6 +29,36 @@ import info.guardianproject.util.XmppUriHelper;
 
 import java.util.List;
 import java.util.Map;
+
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.util.Rfc822Token;
+import android.text.util.Rfc822Tokenizer;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
+import android.widget.MultiAutoCompleteTextView;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 public class AddContactActivity extends ActionBarActivity {
     private static final String TAG = "AddContactActivity";
@@ -113,6 +116,19 @@ public class AddContactActivity extends ActionBarActivity {
             addContactFromUri(intent.getData());
         }
     }
+    
+    
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        
+        if (mCursorProviders != null && (!mCursorProviders.isClosed()))
+                mCursorProviders.close();
+        
+    }
+
+
 
     private void setupAccountSpinner ()
     {
@@ -122,12 +138,15 @@ public class AddContactActivity extends ActionBarActivity {
         Imps.Provider.CATEGORY + "=?" + " AND " + Imps.Provider.ACTIVE_ACCOUNT_USERNAME + " NOT NULL" /* selection */,
         new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
         Imps.Provider.DEFAULT_SORT_ORDER);
-
+        
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_spinner_item, mCursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
+                android.R.layout.simple_spinner_item, mCursorProviders, 
+                new String[] { 
+                       Imps.Provider.ACTIVE_ACCOUNT_USERNAME
+                       },
                 new int[] { android.R.id.text1 });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
+        
         // TODO Something is causing the managedQuery() to return null, use null guard for now
         if (mCursorProviders != null && mCursorProviders.getCount() > 0)
         {
@@ -157,6 +176,17 @@ public class AddContactActivity extends ActionBarActivity {
         });
 
     }
+    
+    public class ProviderListItemFactory implements LayoutInflater.Factory {
+        @Override
+        public View onCreateView(String name, Context context, AttributeSet attrs) {
+            if (name != null && name.equals(ProviderListItem.class.getName())) {
+                return new ProviderListItem(context, AddContactActivity.this, null);
+            }
+            return null;
+        }
+
+    }
 
     private int searchInitListPos(Cursor c, String listName) {
         if (TextUtils.isEmpty(listName)) {
@@ -171,19 +201,20 @@ public class AddContactActivity extends ActionBarActivity {
         return 0;
     }
 
-    private String getDefaultDomain ()
+    private String getDomain (long providerId)
     {
         //mDefaultDomain = Imps.ProviderSettings.getStringValue(getContentResolver(), mProviderId,
           //      ImpsConfigNames.DEFAULT_DOMAIN);
         ContentResolver cr = getContentResolver();
-        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(providerId)},null);
 
         Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                pCursor, cr, mProviderId, false /* don't keep updated */, null /* no handler */);
+                pCursor, cr, providerId, false /* don't keep updated */, null /* no handler */);
 
         String domain = settings.getDomain();//get domain of current user
 
         settings.close();
+        pCursor.close();
 
         return domain;
     }
@@ -204,7 +235,7 @@ public class AddContactActivity extends ActionBarActivity {
                 for (Rfc822Token recipient : recipients) {
                     username = recipient.getAddress();
                     if (username.indexOf('@') == -1) {
-                        username = username + "@" + getDefaultDomain();
+                        username = username + "@" + getDomain(mProviderId);
                     }
                     if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
                         log("addContact:" + username);

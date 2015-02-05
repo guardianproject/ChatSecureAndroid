@@ -629,7 +629,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
             insertOrUpdateChat(body);
 
-            insertMessageInDb(username, body, time, msg.getType());
+            insertMessageInDb(bareUsername, body, time, msg.getType());
 
             boolean wasMessageSeen = false;
 

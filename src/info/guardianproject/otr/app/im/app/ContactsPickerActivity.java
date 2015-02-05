@@ -82,7 +82,8 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     private LoaderManager.LoaderCallbacks<Cursor> mCallbacks;
 
     private boolean mHideOffline = false;
-
+    private boolean mShowInvitations = false;
+    
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
@@ -118,6 +119,13 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         mHideOffline = globalSettings.getHideOfflineContacts();
 
         globalSettings.close();
+        
+        if (getIntent() != null && getIntent().hasExtra("invitations"))
+        {
+            mShowInvitations = getIntent().getBooleanExtra("invitations", false);            
+        }
+        
+        
 
         doFilterAsync("");
     }
@@ -383,12 +391,17 @@ public class ContactsPickerActivity extends ActionBarActivity  {
             //normal types not temporary
             buf.append(Imps.Contacts.TYPE).append('=').append(Imps.Contacts.TYPE_NORMAL);
 
+            if (mShowInvitations)
+            {
+                buf.append(" AND (");                
+                buf.append(Imps.Contacts.SUBSCRIPTION_TYPE).append('=').append(Imps.Contacts.SUBSCRIPTION_TYPE_FROM);
+                buf.append(" )");
+            }
 
             if(mHideOffline)
             {
                 buf.append(" AND ");
                 buf.append(Imps.Contacts.PRESENCE_STATUS).append("!=").append(Imps.Presence.OFFLINE);
-
             }
 
             CursorLoader loader = new CursorLoader(ContactsPickerActivity.this, mUri, ContactView.CONTACT_PROJECTION,

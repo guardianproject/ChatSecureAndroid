@@ -2153,23 +2153,35 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             // FIXME synchronize this to executor thread
             if (mConnection == null)
                 return;
-            Roster roster = mConnection.getRoster();
+            
             String address = contact.getAddress().getAddress();
+
+            //otherwise, send unsub message and delete from local contact database
+            org.jivesoftware.smack.packet.Presence presence = new org.jivesoftware.smack.packet.Presence(
+                    org.jivesoftware.smack.packet.Presence.Type.unsubscribe);            
+            presence.setTo(address);
+            sendPacket(presence);
+            
+            presence = new org.jivesoftware.smack.packet.Presence(
+                    org.jivesoftware.smack.packet.Presence.Type.unsubscribed);            
+            presence.setTo(address);
+            sendPacket(presence);
+            
             try {
-                RosterEntry entry = roster.getEntry(address);
-                RosterGroup group = roster.getGroup(list.getName());
+                RosterEntry entry = mRoster.getEntry(address);
+                RosterGroup group = mRoster.getGroup(list.getName());
 
                 if (group == null) {
                     debug(TAG, "could not find group " + list.getName() + " in roster");
-                    roster.removeEntry(entry);
+                    mRoster.removeEntry(entry);
                 }
                 else
                 {
                     group.removeEntry(entry);
-                    entry = roster.getEntry(address);
+                    entry = mRoster.getEntry(address);
                     // Remove from Roster if this is the last group
                     if (entry != null && entry.getGroups().size() <= 1)
-                        roster.removeEntry(entry);
+                        mRoster.removeEntry(entry);
 
                 }
 
@@ -2177,12 +2189,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 debug(TAG, "remove entry failed: " + e.getMessage());
                 throw new RuntimeException(e);
             }
-
-            //otherwise, send unsub message and delete from local contact database
-            org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
-                    org.jivesoftware.smack.packet.Presence.Type.unsubscribed);
-            response.setTo(address);
-            sendPacket(response);
 
 
             notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_REMOVED, contact);

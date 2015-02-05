@@ -309,15 +309,14 @@ public class ChatView extends LinearLayout {
 
                         }
 
-                        mHandler.postAtTime(new Runnable (){
-                           public void run (){ updateWarningView();}
-                        }, 1000);
-
 
                     }
                 }
 
             }
+
+
+            updateWarningView();
 
         }
         catch (RemoteException e) {
@@ -335,7 +334,8 @@ public class ChatView extends LinearLayout {
     String mRemoteNickname;
     String mRemoteAddress;
     RoundedAvatarDrawable mRemoteAvatar = null;
-
+    int mSubscriptionType;
+    int mSubscriptionStatus;
 
     long mProviderId;
     long mAccountId;
@@ -372,6 +372,9 @@ public class ChatView extends LinearLayout {
 
             if (c != null)
             {
+
+                closeCursor ();
+                
                 mLastCursor = new DeltaCursor(c);
 
                 if (Log.isLoggable(ImApp.LOG_TAG, Log.DEBUG)) {
@@ -385,7 +388,7 @@ public class ChatView extends LinearLayout {
 
         public void closeCursor ()
         {
-            if (mLastCursor != null)
+            if (mLastCursor != null && (!mLastCursor.isClosed()))
                 mLastCursor.close();
 
         }
@@ -804,8 +807,11 @@ public class ChatView extends LinearLayout {
             @Override
             public void onClick(View v) {
 
-                mNewChatActivity.approveSubscription(mProviderId, mRemoteAddress);
-            //    updateSessionInfo();
+                mHandler.postDelayed(new Runnable () { public void run () {
+                    mNewChatActivity.approveSubscription(mProviderId, mRemoteAddress);
+                    
+                } }, 500);
+                
 
             }
 
@@ -816,10 +822,15 @@ public class ChatView extends LinearLayout {
         {
 
             @Override
+
             public void onClick(View v) {
 
-                mNewChatActivity.declineSubscription(mProviderId, mRemoteAddress);
-              //  updateSessionInfo();
+                mHandler.postDelayed(new Runnable () { public void run () {
+                    mNewChatActivity.declineSubscription(mProviderId, mRemoteAddress);
+                    
+                } }, 500);
+
+                
 
 
             }
@@ -1069,13 +1080,11 @@ public class ChatView extends LinearLayout {
             mRemoteNickname = c.getString(NICKNAME_COLUMN);
             mRemoteAddress = c.getString(USERNAME_COLUMN);
 
-            int subscriptionType = c.getInt(SUBSCRIPTION_TYPE_COLUMN);
+            mSubscriptionType = c.getInt(SUBSCRIPTION_TYPE_COLUMN);
 
-            int subscriptionStatus = c.getInt(SUBSCRIPTION_STATUS_COLUMN);
-            if ((subscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
-                && (subscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
-
-
+            mSubscriptionStatus = c.getInt(SUBSCRIPTION_STATUS_COLUMN);
+            if ((mSubscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)
+                && (mSubscriptionStatus == Imps.Contacts.SUBSCRIPTION_STATUS_SUBSCRIBE_PENDING)) {
                 bindSubscription(mProviderId, mRemoteAddress);
             }
         }
@@ -1798,11 +1807,12 @@ public class ChatView extends LinearLayout {
             if (mContactType == Imps.Contacts.TYPE_GROUP) {
                 message = "";
             }
-            else if (mContactType == Imps.Contacts.TYPE_TEMPORARY) {
-                visibility = View.VISIBLE;
-                message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
-                mWarningText.setTextColor(Color.WHITE);
-                mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+            else if ((mSubscriptionType == Imps.Contacts.SUBSCRIPTION_TYPE_FROM)) {
+                bindSubscription(mProviderId, mRemoteAddress);            
+                visibility = View.VISIBLE;                
+                //message = mContext.getString(R.string.contact_not_in_list_warning, mRemoteNickname);
+                //mWarningText.setTextColor(Color.WHITE);
+                //mStatusWarningView.setBackgroundColor(Color.DKGRAY);
 
             } else {
 
@@ -1826,9 +1836,7 @@ public class ChatView extends LinearLayout {
                     mProgressBarOtr.setVisibility(View.GONE);
                 }
                 
-                mComposeMessage.setHint(R.string.compose_hint_secure);
-                visibility = View.GONE;
-
+                mComposeMessage.setHint(R.string.compose_hint_secure);                
                 mSendButton.setImageResource(R.drawable.ic_send_secure);
 
                 try
@@ -1849,8 +1857,8 @@ public class ChatView extends LinearLayout {
                         }
                     } else {
 
-                        mStatusWarningView.setBackgroundResource(R.color.otr_red);
-                        message = mContext.getString(R.string.otr_session_status_plaintext);
+                      //  mStatusWarningView.setBackgroundResource(R.color.otr_red);
+                      // message = mContext.getString(R.string.otr_session_status_plaintext);
 
                     }
                 }
@@ -1866,7 +1874,6 @@ public class ChatView extends LinearLayout {
                 mStatusWarningView.setBackgroundColor(Color.DKGRAY);
                 message = mContext.getString(R.string.otr_session_status_finished);
 
-
                 visibility = View.VISIBLE;
             }
 
@@ -1874,18 +1881,26 @@ public class ChatView extends LinearLayout {
 
         if (!isConnected)
         {
-            visibility = View.VISIBLE;
-            iconVisibility = View.VISIBLE;
-            mWarningText.setTextColor(Color.WHITE);
-            mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-            message = mContext.getString(R.string.disconnected_warning);
+          //  visibility = View.VISIBLE;
+         //   iconVisibility = View.VISIBLE;
+         //   mWarningText.setTextColor(Color.WHITE);
+        //    mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+      //      message = mContext.getString(R.string.disconnected_warning);
 
         }
 
         mStatusWarningView.setVisibility(visibility);
 
         if (visibility == View.VISIBLE) {
-            mWarningText.setText(message);
+            if (message != null && message.length() > 0)
+            {
+                mWarningText.setText(message);            
+                mWarningText.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                mWarningText.setVisibility(View.GONE);
+            }
         }
 
         mNewChatActivity.updateEncryptionMenuState();
@@ -2391,14 +2406,17 @@ public class ChatView extends LinearLayout {
                         pCursor, cr, Imps.ProviderSettings.PROVIDER_ID_FOR_GLOBAL_SETTINGS,
                         false /* keep updated */, null /* no handler */);
                 
-                if (settings == null)
-                    return;
+                if (settings != null)
+                {
+                    if (mConn !=null)
+                        messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+                    
+                    settings.close();
+                }
                 
-                if (mConn !=null)
-                    messageView.setLinkify(!mConn.isUsingTor() || settings.getLinkifyOnTor());
+                if (pCursor != null)
+                    pCursor.close();
                 
-                settings.close();
-                pCursor.close();
             } catch (RemoteException e) {
                 e.printStackTrace();
                 messageView.setLinkify(false);

@@ -1113,7 +1113,7 @@ public class ContactListManagerAdapter extends
         String username = mAdaptee.normalizeAddress(contact.getAddress().getAddress());
 
         //if list is provided, then delete from one list
-        if (list != null)
+        if (list != null && list.getAddress() != null)
         {
             String selection = Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.CONTACTLIST + "=?";
             long listId = getContactListAdapter(list.getAddress()).getDataBaseId();
