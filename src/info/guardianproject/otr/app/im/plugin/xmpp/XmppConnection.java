@@ -200,7 +200,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         Debug.onConnectionStart();
 
-        //setup SSL managers
         SmackConfiguration.setPacketReplyTimeout(SOTIMEOUT);
 
         // Create a single threaded executor.  This will serialize actions on the underlying connection.
@@ -1305,8 +1304,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             }
         }, new PacketTypeFilter(org.jivesoftware.smack.packet.Presence.class));
 
-        initPacketProcessor();
-        initPresenceProcessor ();
+        if (mTimerPackets == null)
+            initPacketProcessor();
+        
+        if (mTimerPresence == null)
+            initPresenceProcessor ();
         
         ConnectionListener connectionListener = new ConnectionListener() {
             /**
@@ -1433,7 +1435,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         org.jivesoftware.smack.packet.Message ack = new org.jivesoftware.smack.packet.Message(
                 msg.getFrom(), msg.getType());
         ack.addExtension(new DeliveryReceipts.DeliveryReceipt(msg.getPacketID()));
-        mConnection.sendPacket(ack);
+        sendPacket(ack);
     }
 
 
@@ -2271,7 +2273,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         @Override
-        public void approveSubscriptionRequest(Contact contact) {
+        public void approveSubscriptionRequest(final Contact contact) {
+            
             debug(TAG, "approve subscription: " + contact.getAddress().getAddress());
             org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
                     org.jivesoftware.smack.packet.Presence.Type.subscribed);
@@ -3104,7 +3107,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         while ((packet = qPacket.poll())!=null)
                         {
                             
-                                if (mConnection == null) {
+                                if (mConnection == null || (!mConnection.isConnected())) {
                                     debug(TAG, "postponed packet to " + packet.getTo()
                                             + " because we are not connected");
                                     postpone(packet);
@@ -3129,7 +3132,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
              }
 
-          }, 500, 1000);
+          }, 500, 500);
     }
 
 }
