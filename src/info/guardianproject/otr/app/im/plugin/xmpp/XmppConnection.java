@@ -2292,13 +2292,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     
                     try
                     {
-                        mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
+     
                         doAddContactToListAsync(contact, getContactListManager().getDefaultContactList());
+                        mContactListManager.getSubscriptionRequestListener().onSubscriptionApproved(contact, mProviderId, mAccountId);
        
-                        org.jivesoftware.smack.packet.Presence response = new org.jivesoftware.smack.packet.Presence(
-                                org.jivesoftware.smack.packet.Presence.Type.subscribed);
-                        response.setTo(contact.getAddress().getBareAddress());
-                        sendPacket(response);
                         
                     } catch (ImException e) {
                         debug (TAG, "error responding to subscription approval: " + e.getLocalizedMessage());
