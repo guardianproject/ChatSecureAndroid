@@ -1,6 +1,35 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.0-RC1 / 2015-01-06 / 863bfec7b0881395dbaec8937f999e0c9b0b9dd7
+
+863bfec update translations
+21d18af remove duplicate packet subscribe code
+bd0c743 update to latest cacheword
+f172551 reinstate contact object instance clearing on logout
+7880bc0 this just clears objects from memory; it should be done
+bc4bbaa query or insert new contact to ensure you don't create duplicates
+cc5f8d8 don't add a contact if it already exists
+5ecf862 don't load chats until connections are init'd also re-impl subscription dialog prompts properly
+815a6ed simplify subscription prompt text
+6bb7deb just show normal contact for now in contact picker - still looking into a way to show pending/subscribe notices here
+c0ab354 clean up menu options for account and chat views
+eddfd38 Merge branch 'master' of github.com:guardianproject/ChatSecureAndroid
+6625a91 additional fixes for contact add, subscribe, presence interaction
+d476883 multiple fixes for handling subscription request in UI
+71d1c1d don't re-init timers if they already have been created
+51eb8ea Merge pull request #621 from n8fr8/bug4461-normalizeusernames
+74ccfdd fixes #4473 makes sure the roster is not null
+bf6bae2 fixes #4472 makes sure connection, view are not null
+6ee25fe fixes #4461 (and others) related to invalid username/jids This should solve cases where OTR does not init when a user creates 
+d8ce28d include the 'v' before the version number in the release file name
+063fa4b make-release-build: configure ant build after all conf files are in place
+089aaa8 update cacheword to get build fixes
+5c33aed make-release-build: always build the git tag that matches versionName
+b9dcf37 automatically name ant release builds using versionName from AndroidManifest.xml
+55be894 make-release-build: temp workaround for old cacheword that signs the jar
+de8a9be update translations: ar bg bo ca cs de es_ES fa fi it nl pl sr tr
+
 14.1.0-beta-2 / 2015-01-24 / b2fb94fa8c98b29ea922d864dff88968e57af7c1
 
 6a69d43 fixes #4448 makes sure cursor is closed
