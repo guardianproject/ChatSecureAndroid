@@ -17,6 +17,7 @@
 package info.guardianproject.otr.app.im.provider;
 
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.app.im.app.ContactView;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.provider.Imps.Contacts;
 import info.guardianproject.otr.app.im.provider.Imps.Provider;
@@ -1931,6 +1932,9 @@ public class ImpsProvider extends ContentProvider {
             StringBuffer whereClause = new StringBuffer();
             whereClause.append(Contacts.USERNAME);
             whereClause.append("=?");
+            whereClause.append(" AND ");
+            whereClause.append(Contacts.ACCOUNT);
+            whereClause.append("=?");
             
             for (int i = 0; i < usernameCount; i++) {
                 String username = usernames.get(i);
@@ -2005,12 +2009,19 @@ public class ImpsProvider extends ContentProvider {
                     }
                 }
                 */
-
-                String[] whereArgs = {username};
                 
-                int rowsUpdated = db.update(TABLE_CONTACTS, contactValues, whereClause.toString(), whereArgs);
+                String[] columns = {"_id, username"};
+                String[] whereArgs = {username,account+""};
                 
-                if (rowsUpdated == 0)
+                Cursor c = db.query(TABLE_CONTACTS,  columns, whereClause.toString(), whereArgs, null,null,null,null);
+                boolean contactExists = (c != null && c.getCount() > 0);
+                if (c != null) c.close();
+                
+                if (contactExists) 
+                {
+                    int rowsUpdated = db.update(TABLE_CONTACTS, contactValues, whereClause.toString(), whereArgs);
+                }
+                else
                 {
                     rowId = db.insert(TABLE_CONTACTS, USERNAME, contactValues);
                     if (rowId > 0) {
