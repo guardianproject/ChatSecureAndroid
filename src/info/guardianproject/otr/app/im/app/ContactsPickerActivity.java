@@ -245,44 +245,6 @@ public class ContactsPickerActivity extends ActionBarActivity  {
             doFilter(query);
     }
 
-    /*
-    public void doFilter(String filterString) {
-        mSearchString = filterString;
-
-        StringBuilder buf = new StringBuilder();
-
-        if (mSearchString != null) {
-
-            buf.append('(');
-            buf.append(Imps.Contacts.NICKNAME);
-            buf.append(" LIKE ");
-            android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
-            buf.append(" OR ");
-            buf.append(Imps.Contacts.USERNAME);
-            buf.append(" LIKE ");
-            android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
-            buf.append(')');
-            buf.append(" AND ");
-        }
-
-        //normal types not temporary
-        buf.append(Imps.Contacts.TYPE).append('=').append(Imps.Contacts.TYPE_NORMAL);
-
-
-        if(mHideOffline)
-        {
-            buf.append(" AND ");
-            buf.append(Imps.Contacts.PRESENCE_STATUS).append("!=").append(Imps.Presence.OFFLINE);
-
-        }
-
-        mCursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
-                    buf == null ? null : buf.toString(), null, Imps.Contacts.ALPHA_SORT_ORDER);
-
-
-
-    }*/
-
     boolean mAwaitingUpdate = false;
 
     public synchronized void doFilter(String filterString) {
@@ -387,10 +349,11 @@ public class ContactsPickerActivity extends ActionBarActivity  {
                 buf.append(" LIKE ");
                 android.database.DatabaseUtils.appendValueToSql(buf, "%" + mSearchString + "%");
                 buf.append(')');
-                buf.append(" AND ");
+                
             }
 
-            //normal types not temporary
+//            normal types not temporary
+            buf.append(" AND ");  
             buf.append(Imps.Contacts.TYPE).append('=').append(Imps.Contacts.TYPE_NORMAL);
 
             if (mShowInvitations)
