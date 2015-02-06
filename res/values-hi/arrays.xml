@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>बल / आवश्यकता</item>
+    <item>स्वचालित रूप से प्रयास</item>
+    <item>के रूप में अनुरोध</item>
+    <item>निष्क्रिय/ कभी नहीँ</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>बल</item>
+    <item>स्वचालित</item>
+    <item>का अनुरोध किया</item>
+    <item>निष्क्रिय</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>bam.yt</item>
+  </string-array>
+</resources>

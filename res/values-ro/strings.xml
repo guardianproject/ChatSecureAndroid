@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <!--General: Permissions-->
+  <string name="ro_perm_label">citeste mesaje</string>
+  <string name="ro_perm_desc">Permite aplicatiilor sa citeasca date de la furnizorul de MI</string>
+  <string name="wo_perm_label">scrie mesaje</string>
+  <string name="perm_label">porneste serviciul de mesagerie</string>
+  <!--General: Actions-->
+  <string name="confirm">Confirma</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Anuleaza</string>
+  <string name="yes">OK</string>
+  <string name="no">Anuleaza</string>
+  <string name="btn_next">Urmatorul</string>
+  <string name="btn_back">Precedentul</string>
+  <string name="connect">Conecteaza-te</string>
+  <string name="play">Reda</string>
+  <string name="setup">Seteaza</string>
+  <!--Views-->
+  <string name="lock_screen_open">Deschide</string>
+  <string name="lock_screen_create_passphrase">Alege Parola</string>
+  <string name="lock_screen_confirm_passphrase">Confirma Parola</string>
+  <string name="lock_screen_passphrase_hint">Parola</string>
+  <string name="lock_screen_passphrase_not_set_enter">Optional, poti alege o parola principala pentru ChatSecure, ca sa previi accesul la contacte si mesaje fara o parola:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Confirma Parola Noua</string>
+  <string name="lock_screen_passphrases_not_matching">Parolele nu coincid, mai incearca o data</string>
+  <string name="lock_screen_skip">Sari peste &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Informatie</string>
+  <string name="app_passphrase_view_password_question">Te rugam introdu parola</string>
+  <string name="password_please">Parola, te rugam...</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Alege un cont</string>
+  <string name="choose_account_title">Alege un cont</string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Adauga cont &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_about">Despre</string>
+  <string name="menu_sign_out_all">Deconecteaza-te de la toate serviciile</string>
+  <string name="signout_all_confirm_message">Doresti sa te deconectezi de la toate serviciile?</string>
+  <string name="signed_out_prompt">Ai fost deconectat de la &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="welcome_first">Folosesti ChatSecure pentru prima data?</string>
+  <string name="welcome_skip">Abia astepti sa incepi?</string>
+  <string name="welcome_about">Incepe</string>
+  <string name="welcome_account">Configurarea Contului</string>
+  <string name="setup_passphrase_title">Configurarea Parolei</string>
+  <string name="setup_passphrase">Inainte de a incepe, te rog alege o parola ca sa protejezi ChatSecure impotriva accesului neautorizat.</string>
+  <!--Views: About: Welcome-->
+  <!--Views: About: OTR-->
+  <!--Views: About: Security-->
+  <!--Views: Account list-->
+  <!--Views: Setup: Account-->
+  <string name="account_select_type">Configurarea Contului</string>
+  <!--Views: Settings: Account-->
+  <!--Views: Contact list-->
+  <!--Views: Chat: Single-->
+  <!--Views: Chat: Group-->
+  <!--Security: OTR-->
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_cancel">Anuleaza</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Configurarea Contului</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <!--Actions: Settings: General: User Interface-->
+  <!--Actions: Settings: General: Other Tuning-->
+  <!--Actions: Settings: General: Notifications-->
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <!--Alerts: Notifications-->
+  <!--Alerts: Exceptions-->
+  <!--added 2011/09/01-->
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <!--Other: Provider-->
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <!--Other: Smileys-->
+  <!--[Do not localize!]-->
+</resources>

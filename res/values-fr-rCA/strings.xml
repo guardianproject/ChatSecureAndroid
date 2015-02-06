@@ -1,0 +1,569 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">lire les messages instantanés</string>
+  <string name="ro_perm_desc">Permet aux applications de lire les données du fournisseur de contenu de MI.</string>
+  <string name="wo_perm_label">écrire des messages instantanés</string>
+  <string name="wo_perm_desc">Permet aux applications d\u2019écrire des données vers le fournisseur de contenu de MI.</string>
+  <string name="perm_label">démarrer le service de MI</string>
+  <string name="perm_desc">Permet aux applications de démarrer le service de MI par intention.</string>
+  <!--General: Actions-->
+  <string name="confirm">Confirmer</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Annuler</string>
+  <string name="yes">OK</string>
+  <string name="no">Annuler</string>
+  <string name="btn_next">Suivant</string>
+  <string name="btn_back">Retour</string>
+  <string name="connect">Se connecter</string>
+  <string name="play">Lire</string>
+  <string name="setup">Configuration</string>
+  <!--Views-->
+  <string name="lock_screen_open">Ouvrir</string>
+  <string name="title_activity_lock_screen">ChatSecure est verrouillé</string>
+  <string name="lock_screen_create_passphrase">Définir un mot de passe</string>
+  <string name="lock_screen_confirm_passphrase">Confirmer le mot de passe</string>
+  <string name="lock_screen_passphrase_hint">Mot de passe</string>
+  <string name="lock_screen_passphrase_not_set_enter">En option, vous pouvez définir un mot de passe maître pour ChatSecure afin d\'empêcher l\u2019accès à vos contacts et à vos messages sans mot de passe :</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Confirmer le nouveau mot de passe</string>
+  <string name="lock_screen_passphrases_not_matching">Les mots de passe ne correspondent pas, veuillez ressayer</string>
+  <string name="lock_screen_skip">Ignorer &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Demande d\'informations</string>
+  <string name="app_passphrase_view_password_question">Veuillez saisir le mot de passe</string>
+  <string name="password_please">Mot de passe SVP...</string>
+  <string name="passphrase">Phrase de passe</string>
+  <string name="passphrase_again">Phrase de passe (de nouveau)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Choisir un compte</string>
+  <string name="choose_account_title">Choisir un compte</string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Ajouter un compte &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_about">À propos de l\u2019appli</string>
+  <string name="menu_sign_out_all">Se déconnecter de tout</string>
+  <string name="signout_all_confirm_message">Voulez-vous vous déconnecter de tous les services ?</string>
+  <string name="signed_out_prompt">Vous avez été déconnecté de &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="signed_out_prompt_with_error">Vous avez été déconnecté de &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; parce que &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="welcome_first">C\u2019est votre première utilisation de ChatSecure ?</string>
+  <string name="welcome_skip">Impatient de commencer ?</string>
+  <string name="welcome_about">Commencer</string>
+  <string name="welcome_account">Configuration des comptes</string>
+  <string name="setup_passphrase_title">Configuration d\u2019une phrase de passe</string>
+  <string name="setup_passphrase">Avant de commencer, veuillez choisir une phrase de passe sécurisé pour protéger vos données ChatSecure contre un accès non justifié.</string>
+  <string name="setup_passphrase_label1">Phrase de passe :</string>
+  <string name="setup_passphrase_label2">Phrase de passe (de nouveau) :</string>
+  <string name="rekey_message">Saisir une *nouvelle* phrase de passe. Elle doit contenir au moins une majuscule, une minuscule, un chiffre et doit avoir plus de six caractères.</string>
+  <string name="do_rekey">Chiffrement de vos notes existantes avec la nouvelle phrase de passe (patience...)</string>
+  <string name="enter_pass">Saisissez votre phrase de passe :</string>
+  <string name="new_pass">Bienvenue ! Saisissez une phrase de passe forte pour sécuriser vos notes. Elle doit contenir au moins une majuscule, une minuscule, un chiffre et doit avoir plus de six caractères.</string>
+  <string name="pass_err_length">Votre phrase de passe n\u2019 pas assez longue</string>
+  <string name="pass_err_upper">Votre phrase de passe ne contient aucune lettre majuscule</string>
+  <string name="pass_err_lower">Votre phrase de passe ne contient aucune lettre minuscule</string>
+  <string name="pass_err_num">Votre phrase de passe ne contient aucun chiffre</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">À propos de ChatSecure</string>
+  <string name="about_welcome">ChatSecure est une appli mobile de messagerie instantanée fournissant des fonctions supplémentaires de sécurité qui empêchent la surveillance de vos conversations et de vos communications par d\'autres.\n\nL\u2019appli prend en charge tous service utilisant les protocoles Jabber ou XMPP tel que Google GTalk ou Jabber.org.</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Sécurisé ! Comment ?</string>
+  <string name="about_otr">Une messagerie confidentielle « Off-The-Record » est un système de sécurité conçu pour permettre la confidentialité en imitant les fonctions d\u2019une conversation privée dans le monde réel, incluant le chiffrement, l\'authentification, le déni et la confidentialité persistante.\n\nLe protocole OTR est compatible avec les clients de clavardage de bureau comme Adium ou Pidgin.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Mes clavardages sont-ils sécurisés ?</string>
+  <string name="about_security">La fonction de chiffrement du clavardage ChatSecure ne fonctionne qu\u2019en clavardant avec des utilisateurs d\'applis et de programmes compatibles, et ainsi vous devriez vous assurer que vos contacts utilisent ChatSecure pour appareils mobiles, et Adium ou Pidgin sur pour ordinateurs de bureau. Vous pouvez peaufinez exactement comment et quand ChatSecure essaye de chiffrer vos clavardages dans les Paramètres des comptes.\n\nCommençons !</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Nouveau compte</string>
+  <string name="menu_add_account">Ajouter un compte</string>
+  <string name="menu_edit_account">Modifier un compte</string>
+  <string name="menu_remove_account">Enlever un compte</string>
+  <string name="menu_use_existing_account">Compte existant</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">utilisateur@hôte</string>
+  <string name="label_password">Mot de passe :</string>
+  <string name="remember_password">Mémoriser mon mot de passe.</string>
+  <string name="keep_me_signed_in">Connexion automatique</string>
+  <string name="sign_up">Vous n\u2019avez pas de compte ?</string>
+  <string name="sign_in">Connexion</string>
+  <string name="check_save_password">Pour votre sécurité, si votre téléphone est perdu ou volé, allez sur le site Web depuis votre ordinateur et changez votre mot de passe.</string>
+  <string name="check_auto_sign_in">Cette option vous connecte automatiquement chaque fois que vous ouvrez l\u2019application. Pour désactiver l\u2019option, déconnectez-vous, puis décochez « Connexion automatique ».</string>
+  <string name="use_tor">Se connecter avec Tor (nécessite l\'appli Orbot)</string>
+  <string name="account_setup_example_email_address">utilisateur@domaine</string>
+  <string name="account_setup_new_username">nouveau nom d\'utilisateur</string>
+  <string name="account_setup_service_provider">fournisseur de service (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">mot de passe</string>
+  <string name="account_setup_password_confirm">confirmer le mot de passe</string>
+  <string name="account_setup_advanced_button">Paramètres avancés des comptes</string>
+  <string name="account_select_type">Configuration des comptes</string>
+  <string name="btn_create_new_account">Inscrire un compte</string>
+  <string name="account_setup_pers_sub">Persistance</string>
+  <string name="account_setup_pers_pw_title">Mémoriser le mot de passe</string>
+  <string name="account_setup_pers_pw_on">Mot de passe mis en cache</string>
+  <string name="account_setup_pers_pw_off">Mot de passe non mis en cache</string>
+  <string name="account_setup_pers_auto_title">Connexion automatique</string>
+  <string name="account_setup_pers_auto_on">Connexion au démarrage de ChatSecure</string>
+  <string name="account_setup_pers_auto_off">Pas de connexion au démarrage de ChatSecure</string>
+  <string name="account_setup_pers_now_title">Se connecter maintenant</string>
+  <string name="account_setup_pers_now_on">Se connecter après le paramétrage des comptes</string>
+  <string name="account_setup_pers_now_off">Ne pas se connecter après le paramétrage des comptes</string>
+  <string name="account_setup_personal_sub">Personnel (facultatif)</string>
+  <string name="account_setup_personal_alias_title">Alias du compte (votre nom)</string>
+  <string name="account_setup_personal_alias_sub">Comment votre compte apparaît-il en ligne</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Une brève présentation de vous-même</string>
+  <string name="account_setup_advanced_enc_force">Forcer le chiffrement / refuser les textes en clair</string>
+  <string name="account_setup_advanced_enc_auto">Si possible, chiffrer automatiquement les clavardages</string>
+  <string name="account_setup_advanced_enc_req">Chiffrer les clavardages tel que demandé</string>
+  <string name="account_setup_advanced_enc_off">Désactiver le chiffrement du clavardage</string>
+  <string name="account_setup_signin_a">Validation des authentifiants...</string>
+  <string name="account_setup_signin_b">Génération de la paire de clefs...</string>
+  <string name="account_setup_signin_c">Connexion...</string>
+  <string name="account_wizard_setup_title">Assistant de comptes</string>
+  <string name="account_wizard_account_title">Votre ID de compte</string>
+  <string name="account_wizard_host_title">Configurer le serveur</string>
+  <string name="account_wizard_ready_title">Êtes-vous prêt ?</string>
+  <string name="account_wizard_setup_body">Saisissez votre ID de compte afin de configurer ChatSecure pour votre service de clavardage XMPP. Il ressemble à une adresse courriel :</string>
+  <string name="account_wizard_account_body">Veuillez saisir votre ID de compte (utilisateur@ nomd\u2019hôte) :</string>
+  <string name="account_wizard_host_body">Veuillez saisir ou modifier le nom d\'hôte de votre serveur jabber/xmpp et le numéro de port (5222 par défaut).</string>
+  <string name="account_wizard_ready_body">ChatSecure a été configuré, et il est maintenant temps de vous connecter à votre service et de commencer à clavarder de façon sécurisée et confidentielle !</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Domaine de service de clavardage</string>
+  <string name="registering_new_account_">Inscription du nouveau compte...</string>
+  <string name="signing_in_to">on se lance...</string>
+  <string name="menu_cancel_signin">Annuler la connexion</string>
+  <string name="signing_in_wait">Connexion...</string>
+  <string name="signing_out_wait">Déconnexion\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">Rechercher l\'enregistrement de service</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Utiliser l\'enregistrement de service du DNS pour trouver le serveur XMPP du nom de domaine</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Autoriser l\'envoi en clair du nom d\'utilisateur et du mot de passe lors de l\'utilisation d\'un transport non chiffré</string>
+  <string name="allow_plain_text_auth">Autoriser l\'authentification en clair</string>
+  <string name="verify_that_the_certificate_is_trusted">Vérifier que le certificat est de confiance</string>
+  <string name="tls_verification">Vérification TLS</string>
+  <string name="require_tls_ssl_connection">Exige une connexion TLS</string>
+  <string name="transport_encryption">Chiffrement du transport</string>
+  <string name="how_encrypted_chats_are_started">comment les clavardages chiffrés sont-ils démarrés</string>
+  <string name="the_server_to_connect_to_if_needed">Le serveur auquel se connecter, si nécessaire</string>
+  <string name="connect_server">Se connecter au serveur</string>
+  <string name="tcp_port_for_xmpp_server">Port TCP pour le serveur XMPP</string>
+  <string name="server_port">Port du serveur</string>
+  <string name="xmpp_resource">Ressource XMPP</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">pour distinguer cette connexion d\'autres clients aussi connectés</string>
+  <string name="xmpp_resource_prio_title">Priorité des ressources XMPP</string>
+  <string name="xmpp_resource_prio_summary">Les messages vers les clients ayant plusieurs ressources actives seront envoyés à la ressource avec la plus haute priorité</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Conversations</string>
+  <string name="no_messages">Aucune conversation.\n\nToquer ici pour en commencer une !</string>
+  <string name="empty_account_message">Vous n\'avez aucun\ncompte configuré.\n\nToquez ici pour en ajouter un !</string>
+  <string name="buddy_list_title">Liste des contacts - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="menu_add_contact">Ajouter un contact</string>
+  <string name="menu_remove_contact">Supprimer un contact</string>
+  <string name="menu_block_contact">Bloquer un contact</string>
+  <string name="menu_contact_nickname">Pseudonyme du contact</string>
+  <string name="menu_view_blocked">Bloqué</string>
+  <string name="nickname">Pseudonyme</string>
+  <string name="confirm_delete_contact">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » sera supprimé.</string>
+  <string name="confirm_block_contact">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » sera bloqué.</string>
+  <string name="confirm_unblock_contact">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » sera débloqué.</string>
+  <string name="add_contact_success">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été ajouté.</string>
+  <string name="delete_contact_success">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été supprimé.</string>
+  <string name="block_contact_success">Le contact « xliff:g id="user"&gt;%1$s&lt;/xliff:g » a été bloqué.</string>
+  <string name="unblock_contact_success">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été débloqué.</string>
+  <string name="menu_new_chat">Nouveau clavardage</string>
+  <string name="menu_search_contacts">Rechercher les contacts</string>
+  <string name="menu_show_grid">Montrer la grille</string>
+  <string name="menu_start_chat">Commencer le clavardage</string>
+  <string name="menu_view_profile">Afficher le profil</string>
+  <string name="menu_verify">Vérifier le contact</string>
+  <string name="ongoing_conversation">Clavardages en cours (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; en ligne</string>
+  <string name="subscriptions">Invitations des amis</string>
+  <string name="unknown_contact">(<i>Inconnu</i>) </string>
+  <string name="empty_contact_group">Vide</string>
+  <string name="empty_conversation_group">Aucune conversation ouverte\n\nToquer pour en commencer une !</string>
+  <string name="search_label">Contact</string>
+  <string name="search_hint">tapez le nom d\'un contact avec qui clavarder</string>
+  <string name="search_button_text">Allez</string>
+  <string name="empty_chat_list">Aucun clavardage actif.</string>
+  <string name="add_contact_title">Ajouter un contact</string>
+  <string name="input_contact_label">Nom d\'utilisateur ou JabberID de la personne à ajouter :</string>
+  <string name="choose_list_label">Compte auquel ajouter :</string>
+  <string name="invite_instruction">Saisir un nom à ajouter à partir des contacts.</string>
+  <string name="invite_label">Envoyer une invitation</string>
+  <string name="contact_profile_title">Profil du contact</string>
+  <string name="label_status">État :</string>
+  <string name="label_client_type">Type de client :</string>
+  <string name="client_type_computer">Ordinateur</string>
+  <string name="client_type_mobile">Appareil</string>
+  <string name="blocked_list_title">Contacts bloqués - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="no_blocked_contact">Aucun contact bloqué.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Clavarder avec &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="me">Moi</string>
+  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est en ligne</string>
+  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est absent</string>
+  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est occupé</string>
+  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est hors ligne</string>
+  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; s\'est joint</string>
+  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est parti</string>
+  <string name="menu_send_image">Envoyer une photo</string>
+  <string name="menu_send_file">Envoyer un fichier</string>
+  <string name="menu_send_audio">Envoyer de l\'audio</string>
+  <string name="menu_take_picture">Prendre une photo</string>
+  <string name="file_transfer">Transfert de fichiers</string>
+  <string name="transfer_complete">Transfert terminé</string>
+  <string name="transfer_in_progress">Transfert en cours</string>
+  <string name="accept_transfer_">Accepter le transfert ?</string>
+  <string name="wants_to_send_you_the_file">souhaite vous envoyer le fichier</string>
+  <string name="no_connection_for_sending">Aucune connexion disponible pour envoyer votre partage !</string>
+  <string name="send">Envoyer</string>
+  <string name="compose_hint">Envoyer un message</string>
+  <string name="compose_hint_secure">Envoyer un message sécurisé</string>
+  <string name="menu_resend">Renvoyer</string>
+  <string name="menu_end_conversation">Terminer le clavardage</string>
+  <string name="menu_clear_chat">Effacer le clavardage</string>
+  <string name="menu_insert_smiley">Insérer une frimousse</string>
+  <string name="menu_switch_chats">Changer de clavardage</string>
+  <string name="menu_plus">Menu+</string>
+  <string name="select_link_title">Choisir un lien</string>
+  <string name="delete">Supprimer</string>
+  <string name="keep_files">Conserver les fichiers</string>
+  <string name="delete_chat_session_secured_storage">Supprimer le stockage sécurisé de la session de clavardage ?</string>
+  <string name="all_files_will_be_deleted">Tous les fichiers téléversés et téléchargés de la session seront supprimés irrémédiablement. Avertissement : cette opération ne peut pas être annulée !</string>
+  <string name="delete_original">Supprimer l\'original ?</string>
+  <string name="this_file_will_be_copied">Ce fichier sera copié dans le stockage sécurisé avant d\'être envoyé. Voudriez-vous supprimer le fichier original du stockage non sécurisé de l\'appareil ?</string>
+  <string name="keep">Conserver</string>
+  <string name="export">Exporter</string>
+  <string name="export_media">Exporter le fichier multimédia ?</string>
+  <string name="export_media_file_to">Ce fichier multimédia sera exporté vers %1$s</string>
+  <string name="end_chat_title">Mettre fin au clavardage ?</string>
+  <string name="end_chat_summary">Tous les éléments multimédias sécurisés de cette session seront supprimés. Exportez un élément multimédia par un long clic sur l\'icône de l\'imagette.</string>
+  <string name="end_chat_and_delete">Mettre fin au clavardage et supprimer les fichiers</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; vous a invité à rejoindre un clavardage de groupe.</string>
+  <string name="invitation_sent_prompt">Une invitation a été envoyé à &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="accept_invitation">Accepter</string>
+  <string name="decline_invitation">Refuser</string>
+  <string name="menu_new_group_chat">Clavardage de groupe</string>
+  <string name="create_or_join_group_chat">Créer ou rejoindre un clavardage de groupe</string>
+  <string name="connecting_to_group_chat_">Connexion au clavardage de groupe...</string>
+  <string name="menu_invite_contact">Inviter\u2026</string>
+  <string name="contacts_picker_title">Choisir le/les contact(s) à inviter</string>
+  <string name="contact_filter_hint">Saisir le nom du contact à trouver</string>
+  <string name="empty_contact_list">Aucun contact trouvé.\n\Toquer pour inviter.</string>
+  <string name="subscription_prompt">Ajouter le contact?</string>
+  <string name="approve_subscription">Oui</string>
+  <string name="decline_subscription">Non</string>
+  <string name="approve_subscription_error">Impossible d\'approuver l\'abonnement de &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Veuillez ressayer ultérieurement.</string>
+  <string name="decline_subscription_error">Impossible de refuser l\'abonnement de &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Veuillez ressayer ultérieurement.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Démarrer le chiffrement</string>
+  <string name="menu_otr_stop">Arrêter le chiffrement</string>
+  <string name="starting_otr_chat">Démarrage d\'une session de clavardage chiffrée...</string>
+  <string name="stopping_otr_chat">Arrêt de la session de clavardage chiffrée...</string>
+  <string name="label_fingerprint_remote">Empreinte de sécurité</string>
+  <string name="label_fingerprint_local">Empreinte de sécurité</string>
+  <string name="menu_sign_in">Connexion</string>
+  <string name="menu_gen_key">Régénérer la clef</string>
+  <string name="otr_session_status_plaintext">Le chiffrement est désactivé</string>
+  <string name="otr_session_status_encrypted">Le chiffrement est activité (toquer pour vérifier)</string>
+  <string name="otr_session_status_finished">Votre contact a arrêté le clavardage chiffré.</string>
+  <string name="otr_session_status_verified">Chiffré et vérifié !</string>
+  <string name="otr_gen_key">Génération d\'une nouvelle paire de clefs OTR...</string>
+  <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">Nous avons détecté un magasin de clefs OTR à importer. Voulez-vous balayer le mot de passe QR maintenant ?</string>
+  <string name="menu_import_keys">Activer KeySync</string>
+  <string name="successfully_imported_otr_keyring">Le trousseau OTR a été importé avec succès</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">Balayer le QR</string>
+  <string name="menu_fingerprint">Votre empreinte</string>
+  <string name="menu_verify_fingerprint">Manuel</string>
+  <string name="menu_verify_secret">Question</string>
+  <string name="their_fingerprint_verified_">Empreinte de sécurité (vérifiée)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Êtes-vous sûr de vouloir confirmer cette empreinte ?</string>
+  <string name="verify_key_">Vérifier l\'empreinte ?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">L\'empreinte distante a été vérifiée !</string>
+  <string name="fingerprint_for_you">Votre empreinte</string>
+  <string name="fingerprint_for_">Empreinte pour</string>
+  <string name="install_barcode_scanner_title">Installer le lecteur de codes à barres</string>
+  <string name="install_barcode_scanner_message">Le lecteur de codes à barres est nécessaire à cette application. Voudriez-vous l\'installer ?</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Authentification</string>
+  <string name="smp_question_summary">Saisissez une question a envoyer à votre contact ainsi que la réponse que vous attendez de lui afin de vérifier qu\'il est bien celui qu\'il prétend être.</string>
+  <string name="smp_question_hint">la question à poser</string>
+  <string name="qmp_answer_hint">la réponse attendue</string>
+  <string name="remote_verified_us">Votre contact vous a authentifié avec succès. Authentifiez-le maintenant en posant votre propre question.</string>
+  <string name="otr_qa_title">Vérification OTR par Q&amp;R</string>
+  <string name="chat_encryption_title">Chiffrement du clavardage</string>
+  <string name="otr_qa_send">Envoyer</string>
+  <string name="otr_qa_cancel">Annuler</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Appel sécurisé</string>
+  <string name="pref_sip_account_title">Appel vocal sécurisé</string>
+  <string name="pref_sip_account_summary">Saisissez ici votre compte OStel.co ou autre service SIP sécurisé pour l\'intégration des appels</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Configuration du compte</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Sécurité et confidentialité</string>
+  <string name="encryption_and_anonymity_title">Chiffrement et anonymat</string>
+  <string name="menu_view_encrypt_chat">Chiffrement marche/arrêt</string>
+  <string name="pref_cacheword_timeout_title">Délai d\'expiration du mot de passe</string>
+  <string name="pref_cacheword_timeout_summary">Temps durant lequel le chiffrement devrait dire Déverrouillé</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Liens cliquables sur Tor</string>
+  <string name="pref_linkify_on_tor_summary">Pour les comptes utilisant Tor, rend les liens cliquables dans le clavardage (AVERTISSEMENT, confidentialité possiblement exposée!)</string>
+  <string name="pref_group_looknfeel_title">Interface utilisateur</string>
+  <string name="menu_locale">Langue</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Langues</string>
+  <string name="use_system_default">Utiliser les valeurs par défaut du système</string>
+  <string name="pref_theme_dark">Utiliser le thème Sombre</string>
+  <string name="pref_theme_dark_summary">Changer le thème de l\'appli en sombre</string>
+  <string name="pref_in_memory_db_title">Stockage des messages en mémoire seulement</string>
+  <string name="pref_in_memory_db_summary">Ne stocker les messages qu\'en mémoire, et non sur les stockages flash, afin de se défendre contre l\'extraction des messages (peut entraîner la perte de messages).</string>
+  <string name="pref_background_title">Image d\'arrière-plan</string>
+  <string name="pref_background_summary">Définir le chemin (« /sdcard/foo.jpg ») vers un arrière-plan pour l\'appli</string>
+  <string name="pref_show_grid">Montrer la grille des contacts</string>
+  <string name="pref_show_grid_summary">Afficher la liste des contacts en grille d\'avatars</string>
+  <string name="button_yes_accept_all">Oui, tout accepter</string>
+  <string name="pref_delete_unsecured_media_title">Supprimer le fichier multimédia non sécurisé</string>
+  <string name="pref_delete_unsecured_media_summary">Lors du partage d\'une photo ou d\'un fichier, le supprimer automatiquement du stockage non sécurisé original après l\'importation</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Autres réglages</string>
+  <string name="start_on_boot">Démarrer ChatSecure automatiquement</string>
+  <string name="start_on_boot_summary">Toujours démarrer et se reconnecter automatiquement aux comptes connectés auparavant</string>
+  <string name="hide_offline_contacts">Masquer les contacts hors ligne</string>
+  <string name="foreground_service_title">Utiliser la priorité d\'avant-plan</string>
+  <string name="foreground_service_summary">Réduire le risque qu\'Android réinitialise notre service de connexion. Ceci placera une notification dans la zone de notification.</string>
+  <string name="heartbeat_interval_title">Pulsation</string>
+  <string name="heartbeat_interval_summary">Utilisez une valeur plus haute (en minutes) pour préserver la batterie. Une valeur haute pourrait entraîner la fermeture de votre connexion par le fournisseur pour cause d\'inactivité. </string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Paramètres de notification</string>
+  <string name="notification_enabled_title">Notifications MI</string>
+  <string name="notification_enabled_summary">Notification d\'un message dans la barre d\'état</string>
+  <string name="notification_vibrate_title">Vibrer</string>
+  <string name="notification_vibrate_summary">Vibrer aussi à la réception d\'un message</string>
+  <string name="notification_sound_title">Son</string>
+  <string name="notification_sound_summary">Jouer aussi une sonnerie à la réception d\'un message</string>
+  <string name="notification_ringtone_title">Choisir une sonnerie personnalisée</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Activer les journaux de débogage</string>
+  <string name="pref_debug_summary">Extraire le journal de données de l\'appli vers la sortie standard / logcat pour le débogage</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Données réseau désactivées</string>
+  <string name="bg_data_prompt_message">La connectivité des données réseau (incluant les données d\'arrière-plan)  sont exigées pour que l\'appli se connecte.</string>
+  <string name="bg_data_prompt_ok">Activer</string>
+  <string name="bg_data_prompt_cancel">Quitter</string>
+  <string name="signout_kill_confirm_message">Voulez-vous vous déconnecter de tous les services ET tuer tous les processus (sortie dure) ?</string>
+  <string name="prompt_create_new_account_">Créer un nouveau compte ?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Créer un nouveau compte de clavardage pour « %1$s » ?</string>
+  <string name="dialog_cert_title">Infos du certificat</string>
+  <string name="dialog_cert_subject">Certificat :</string>
+  <string name="dialog_cert_issuer">Délivré par :</string>
+  <string name="dialog_cert_fingerprint">Empreinte SHA1 :</string>
+  <string name="dialog_cert_issue_date">Délivré le :</string>
+  <string name="dialog_cert_expires">Expire le :</string>
+  <string name="dialog_connect_chatroom_title">Rejoindre ce clavardoir ?</string>
+  <string name="dialog_connect_chatroom_message">Un appli externe tente de vous connecter à un clavardoir. Le permettre ?</string>
+  <string name="dialog_settings_choose_background_title">Choisir un arrière-plan</string>
+  <string name="dialog_settings_choose_background_body">Voulez-vous choisir une image d\'arrière-plan de la galerie ?</string>
+  <string name="dialog_settings_choose_background_picker">Choisir une image</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Nouveaux messages &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; clavardage non lus</string>
+  <string name="subscription_notify_text">Nouvelle invitation d\'amitié de &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="file_notify_text">Nouveau fichier &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; de &lt;xliff:g id="user"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="notify_groupchat_label">Invitation à un clavardage de groupe</string>
+  <string name="group_chat_invite_notify_text">Nouvelle invitation de clavardage de groupe de &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="new_messages_notify">Nouveau(x) message(s) de</string>
+  <string name="starting_the_chatsecure_service_">Démarrage du service ChatSecure...</string>
+  <string name="app_unlocked">Activé &amp; déverrouillé</string>
+  <string name="toast_chat_copied_to_clipboard">message copié vers le presse-papiers</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Attention</string>
+  <string name="error_prefix">Erreur :</string>
+  <string name="general_error">Code d\'erreur &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Impossible de se connecter au service &lt;xliff:g id="service"&gt;%1$s&lt;/xliff:g&gt;. Veuillez ressayer ultérieurement.\n"(Détails : &lt;xliff:g id="description"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="add_list_failed">La liste n\'a pas été ajoutée.</string>
+  <string name="block_contact_failed">Le contact n\'a pas été bloqué.</string>
+  <string name="unblock_contact_failed">Le contact n\'a pas été débloqué.</string>
+  <string name="select_contact">Veuillez d\'abord choisir un contact.</string>
+  <string name="disconnected">Déconnecté !\n</string>
+  <string name="service_error">Erreur du service !</string>
+  <string name="load_contact_list_failed">La liste de contacts n\'a pas pu être chargée.</string>
+  <string name="cant_connect_to_server">Impossible de se connecter au serveur. Veuillez vérifier votre connexion.</string>
+  <string name="contact_already_exist">« &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » existe déjà dans votre liste de contacts.</string>
+  <string name="contact_blocked">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été bloqué.</string>
+  <string name="contact_not_loaded">Veuillez patienter pendant le chargement de votre liste de contacts.</string>
+  <string name="network_error">Une erreur réseau s\'est produite.</string>
+  <string name="wifi_not_connected_error">Le Wi-Fi est exigé pour cette connexion.</string>
+  <string name="service_not_support">Le serveur ne prend pas en charge cette fonction.</string>
+  <string name="invalid_password">Le mot de passe saisi n\'est pas valide.</string>
+  <string name="internal_server_error">Une erreur du serveur est survenue.</string>
+  <string name="not_implemented">Le serveur ne prend pas en charge cette fonction.</string>
+  <string name="service_unavaiable">Le serveur n\'est pas disponible actuellement.</string>
+  <string name="timeout">Le délai du serveur est écoulé.</string>
+  <string name="version_not_supported">Le serveur ne prend pas en charge la version actuelle.</string>
+  <string name="message_queue_full">La file d\'attente des messages est pleine.</string>
+  <string name="domain_not_supported">Le serveur ne prend pas en charge la redirection vers le domaine.</string>
+  <string name="unknown_user">Le nom d\'utilisateur que vous avez saisi n\'est pas reconnu.</string>
+  <string name="recipient_blocked_the_user">Désolé, vous êtes bloqué par cet utilisateur .</string>
+  <string name="session_expired">La session est expiré, veuillez vous reconnecter.</string>
+  <string name="forced_logout">vous vous êtes connecté depuis un autre client.</string>
+  <string name="already_logged_in">vous vous êtes connecté depuis un autre client.</string>
+  <string name="msisdn_error">Désolé, le numéro de téléphone ne peut pas être lu de votre carte SIM. Veuillez contacter votre opérateur pour de l\'aide.</string>
+  <string name="not_signed_in">Vous n\'êtes actuellement pas connecté.</string>
+  <string name="account_setup_error_validating">ChatSecure a rencontré une erreur lors de la validation du nom d\'utilisateur ou du mot de passe - veuillez les vérifier et ressayer.</string>
+  <string name="account_setup_error_keypair">ChatSecure a rencontré une erreur lors de la génération d\'une paire de clefs.</string>
+  <string name="account_setup_error_server">ChatSecure a rencontré une erreur lors de la connexion au serveur de clavardage - veuillez vérifier votre configuration et ressayer.</string>
+  <string name="account_setup_error_connectivity">ChatSecure a rencontré une erreur lors de la connexion - veuillez revérifier votre connectivité réseau et ressayer.</string>
+  <string name="error_suspended_connection">Le réseau est hors ligne</string>
+  <string name="error_reestablish_connection">ChatSecure tente de rétablir une connexion</string>
+  <string name="account_wizard_no_domain_warning">Vous n\'avez pas saisi la partie @nomdedomaine.com pour votre ID de compte. Ressayer !</string>
+  <string name="account_wizard_no_root_domain_warning">Le nom d\'hôte de votre serveur n\'avait pas de suffixe .com ou similaire. Ressayer ! </string>
+  <string name="signin_password_prompt">Saisissez votre mot de passe :</string>
+  <string name="warning_tor_connect">Comme vous utilisez Tor, vous devez saisir le nom d\'hôte XMPP du serveur de connexion directement dans les paramètres avancés du compte</string>
+  <string name="warning_weak_crypto">AVERTISSEMENT : ce service utilise un certificat dont la cryptographie est FAIBLE. Veuillez dire à l\'administrateur de le mettre à niveau.</string>
+  <string name="warning_pinned_cert_mismatch">Le certificat fourni ne correspond pas au certificat attendu : </string>
+  <string name="unable_to_create_or_join_group_chat">Impossible de créer ou de rejoindre un clavardage de groupe</string>
+  <string name="sorry_we_cannot_share_that_file_type">Désolé, nous ne pouvons pas partager ce type de fichier</string>
+  <string name="err_otr_share_no_encryption">Vous devez activer le chiffrement pour partager des fichiers</string>
+  <string name="please_enable_chat_encryption_to_share_files">Veuillez activer le chiffrement du clavardage pour partager des fichiers</string>
+  <string name="unsupported_incoming_data">Données entrantes non prises en charge, partage impossible !</string>
+  <string name="swipe_alert">ChatSecure a détecté qu\'une requête à été faite pour retirer sa tâche. ChatSecure va sûrement planter. Veuillez plutôt utiliser l\'élément de menu Se déconnecter de tout de l\'écran de liste des comptes.</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Il n\'y a aucun visualiseur disponible pour ce format de fichier</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Veuillez démarrer une conversation sécurisée avant de balayer des codes</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Le trousseau OTR n\'a pas été importé ; veuillez vérifier que le fichier existe bien au format et à l\'endroit appropriés</string>
+  <string name="otr_keysync_warning_message">Veuillez copier le fichier « otr_keystore.ofcases » de l\'outil OtrFileConverter de votre ordinateur de bureau dans le répertoire racine du stockage de votre appareil. </string>
+  <string name="msg_sent_failed">Impossible d\'envoyer ce message.</string>
+  <string name="disconnected_warning">Vous êtes déconnecté. Les messages seront transmis après votre reconnexion.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est hors ligne. Les messages que vous envoyez seront livrés quand &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; sera en ligne.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; n\'est pas dans votre liste de contacts.</string>
+  <string name="error_account_password_mismatch">Vos mots de passe ne correspondent pas</string>
+  <string name="error_account_settings_priority">La priorité doit être un chiffre entre [0 ... 127]</string>
+  <string name="error_account_settings_port">Le numéro de port doit être un numéro</string>
+  <string name="error_chat_file_transfer_title">Erreur de transfert</string>
+  <string name="error_chat_file_transfer_body">Impossible de lire le fichier vers le stockage</string>
+  <string name="error_welcome_database">Erreur majeure : impossible de déverrouiller ou de charger la base de données de l\'appli. Veuillez réinstaller l\'appli ou effacer les données.</string>
+  <string name="error_no_app_to_handle_url">Aucune appli installée pour gérer ce lien!</string>
+  <string name="account_settings_title">Paramètres des comptes</string>
+  <string name="pref_default_locale">defLoc</string>
+  <string name="warning_alpha">AVERTISSEMENT : ceci est une pré-version de ChatSecure qui pourrait contenir des failles de sécurité ou des bogues.</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Groupes</string>
+  <string name="_open_conversations">conversation(s) en cours</string>
+  <string name="menu_exit">Éteindre &amp; verrouiller</string>
+  <string name="menu_panic">Panique</string>
+  <string name="buddies">Amis</string>
+  <string name="contacts">Contacts</string>
+  <string name="mtm_accept_cert">Accepter le certificat du serveur ?</string>
+  <string name="menu_sidebar_qr">Afficher votre empreinte</string>
+  <string name="loading">chargement...</string>
+  <!--Other-->
+  <string name="about_link">À propos de ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Liste de contacts</string>
+  <string name="menu_settings">Paramètres</string>
+  <string name="menu_view_accounts">Gérer les comptes</string>
+  <string name="menu_sign_out">Déconnexion</string>
+  <string name="menu_view_contact_list">Liste de contacts</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Zone local (Bonjour/ZéroConf)</string>
+  <string name="google_account">Compte Google</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">En ligne</string>
+  <string name="presence_busy">Occupé</string>
+  <string name="presence_away">Absent</string>
+  <string name="presence_idle">Inactif</string>
+  <string name="presence_offline">Hors ligne</string>
+  <string name="presence_invisible">Apparaître hors ligne</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Joyeux</item>
+    <item>Triste</item>
+    <item>Clin d\'œil</item>
+    <item>Langue tirée</item>
+    <item>Surpris</item>
+    <item>Bisous</item>
+    <item>Cri</item>
+    <item>Cool</item>
+    <item>Acte = parole</item>
+    <item>Pieds dans l\'plat</item>
+    <item>Embarrassé</item>
+    <item>Ange</item>
+    <item>Indécis</item>
+    <item>En pleurs</item>
+    <item>Bouche cousue</item>
+    <item>Rire</item>
+    <item>Confus</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Joyeux</item>
+    <item>Triste</item>
+    <item>Clin d\'œil</item>
+    <item>Langue tirée</item>
+    <item>Surpris</item>
+    <item>Bisous</item>
+    <item>Cri</item>
+    <item>Cool</item>
+    <item>Acte = parole</item>
+    <item>Pieds dans l\'plat</item>
+    <item>Embarrassé</item>
+    <item>Ange</item>
+    <item>Indécis</item>
+    <item>En pleurs</item>
+    <item>Bouche cousue</item>
+    <item>Rire</item>
+    <item>Confus</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_have_an_existing_xmpp_account">Compte existant</string>
+  <string name="account_existing_full">Se connecter à mon compte existant sur un serveur Jabber / XMPP spécifique.</string>
+  <string name="i_want_to_chat_using_my_google_account">Compte Google</string>
+  <string name="account_google_full">Clavardez avec d\'autres utilisateurs Google en utilisant votre compte Google.</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Clavardage Wi-Fi Mesh</string>
+  <string name="account_wifi_full">Clavardez avec d\'autres sur le même réseau local ou mesh - aucun Internet ni serveur exigé !</string>
+  <string name="account_wifi_button">Activer le clavardage Wi-Fi</string>
+  <string name="i_need_a_new_account">Nouveau compte</string>
+  <string name="account_new_full">Inscrivez-vous à un nouveau compte gratuit sur un service de notre liste intégrée, ou sur celui de votre choix.</string>
+  <string name="account_new_button">Créer un nouveau compte</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Identité secrète !</string>
+  <string name="account_burner_full">Créez un compte de clavardage « jetable » et anonyme en un simple clic (Orbot : Tor pour Android est exigé)</string>
+  <string name="account_burner_button">Générer une identité</string>
+  <string name="this_is_a_group_chat">Ceci est un clavardage de groupe</string>
+  <string name="_resent_">[renvoyé]</string>
+  <string name="resent">[renvoyé]</string>
+  <string name="unable_to_securely_share_this_file">Le partage sécurisé de ce fichier est impossible</string>
+  <string name="install_orbot_">Installer Orbot ?</string>
+  <string name="you_must_have_orbot">Orbot doit être installé et relayer activement le trafic. Voulez-vous l\'installer? </string>
+  <string name="always">Toujours</string>
+  <string name="start_orbot_">Démarrer Orbot ?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot ne semble pas tourner. Voulez-vous le démarrer et vous connecter à Tor ?</string>
+  <string name="muc_dialog_nickname">pseudonyme à utiliser dans le clavardoir</string>
+  <string name="muc_dialog_room">nom du clavardoir à créer ou à rejoindre</string>
+  <string name="muc_dialog_server">serveur de clavardage de groupe (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Votre magasin de clefs est corrompu. Veuillez réinstaller ChatSecure ou « effacer les données » de l\'appli.</string>
+  <string name="you_received_an_unreadable_encrypted_message">Vous avez reçu un message chiffré illisible</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Je n\'ai pas pu déchiffrer le message que vous avez envoyé</string>
+  <string name="swipe_hint">&lt; Glisser gauche et droite pour plus d\'options &gt;</string>
+</resources>

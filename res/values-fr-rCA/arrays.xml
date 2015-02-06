@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>Forcer / Exiger</item>
+    <item>Tenter automatiquement</item>
+    <item>Tel que demandé</item>
+    <item>Désactivé / Jamais</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>forcer</item>
+    <item>auto</item>
+    <item>demandé</item>
+    <item>désactiver</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>bam.yt</item>
+  </string-array>
+</resources>

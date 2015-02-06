@@ -1,0 +1,178 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">चैटसिक्योर </string>
+  <string name="im_label">चैटसिक्योर </string>
+  <!--General: Permissions-->
+  <!--General: Actions-->
+  <string name="ok">ठीक </string>
+  <string name="cancel">रद्द करें </string>
+  <string name="yes">ठीक</string>
+  <string name="no">रद्द करें </string>
+  <string name="btn_next">अगला </string>
+  <string name="btn_back">पीछे </string>
+  <string name="play">खेलें </string>
+  <!--Views-->
+  <string name="lock_screen_open">खोलें </string>
+  <string name="title_activity_lock_screen">चैटसिक्योर लॉक किया गया है </string>
+  <string name="lock_screen_passphrase_hint">कूटशब्द </string>
+  <string name="app_passphrase_view_password_question">कृपया कूटशब्द दाखिल करे</string>
+  <string name="password_please">कृपया कूटशब्द दाखिल करें… </string>
+  <string name="passphrase">कूटवाक्यांश </string>
+  <string name="passphrase_again">कूटवाक्यांश (फिर से)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">खाता चुनें </string>
+  <string name="choose_account_title">खाता चुनें </string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; खाता जोड़ें </string>
+  <string name="menu_about">परिचय </string>
+  <string name="welcome_account">खाता व्यवस्थित </string>
+  <string name="setup_passphrase_title">कूटवाक्यांश व्यवस्थित </string>
+  <string name="setup_passphrase_label1">कूटवाक्यांश:</string>
+  <string name="setup_passphrase_label2">कूटवाक्यांश (फिर से):</string>
+  <string name="enter_pass">कूटवाक्यांश राखिल करें:</string>
+  <string name="pass_err_num">आपका कूटवाक्यांश में कोई अंक नहीं थे  </string>
+  <!--Views: About: Welcome-->
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">यह सुरक्षित कैसा है?</string>
+  <!--Views: About: Security-->
+  <!--Views: Account list-->
+  <string name="menu_new_account">नया खाता </string>
+  <string name="menu_add_account">खाता जोड़ें </string>
+  <string name="menu_remove_account">खाता मिटाएँ </string>
+  <string name="menu_use_existing_account">मौजूदा खाता </string>
+  <!--Views: Setup: Account-->
+  <string name="label_password">कूटशब्द:</string>
+  <string name="remember_password">मेरा कूटशब्द याद रखें।</string>
+  <string name="account_setup_new_username">नया उपयोक्तानाम </string>
+  <string name="account_setup_password">कूटशब्द </string>
+  <string name="account_setup_password_confirm">कूटशब्द सम्प्रेष्ट करें </string>
+  <string name="account_setup_advanced_button">उन्नत खाता विन्यास </string>
+  <string name="account_select_type">खाता व्यवस्थित </string>
+  <string name="account_setup_pers_pw_title">कूटशब्द याद रखें </string>
+  <string name="account_wizard_ready_title">क्या आप तैयार हैं?</string>
+  <string name="_via_orbot">ऑरबोट (टोर)</string>
+  <!--Views: Settings: Account-->
+  <!--Views: Contact list-->
+  <string name="menu_add_contact">संपर्क जोड़ें </string>
+  <string name="menu_remove_contact">संपर्क मिठाएँ </string>
+  <string name="menu_search_contacts">संपर्क खोजें </string>
+  <string name="search_label">संपर्क </string>
+  <string name="search_button_text">चलें </string>
+  <string name="add_contact_title">संपर्क जोड़ें </string>
+  <!--Views: Chat: Single-->
+  <string name="send">भेजें </string>
+  <!--Views: Chat: Group-->
+  <!--Security: OTR-->
+  <string name="menu_otr_start">गोपन चालु करें </string>
+  <string name="menu_otr_stop">गोपन बंद करें </string>
+  <string name="label_fingerprint_remote">सुरक्षा फिंगरप्रिंट </string>
+  <string name="label_fingerprint_local">सुरक्षा उंगलीछाप </string>
+  <string name="otr_session_status_plaintext">गोपन बंद है </string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_fingerprint">आपका उंगलीछाप </string>
+  <string name="their_fingerprint_verified_">सुरक्षा उंगलीछाप (सत्यापित)</string>
+  <string name="verify_key_">उंगलीछाप सत्यापित करें?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">सुदूरवर्ती उंगलीछाप सत्यापित किया गया है </string>
+  <string name="fingerprint_for_you">आपके लिए उंगलीछाप </string>
+  <string name="fingerprint_for_">उंगलीछाप </string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_send">भेजें </string>
+  <string name="otr_qa_cancel">रद्द करें</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">खाता व्यवस्थित</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <!--Actions: Settings: General: User Interface-->
+  <string name="menu_locale">भाषा </string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">भाषा </string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_sound_title">आवाज़ </string>
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <string name="prompt_create_new_account_">नया खाता बनाएँ ?</string>
+  <string name="dialog_cert_title">प्रमाणपत्र जानकारी </string>
+  <string name="dialog_cert_subject">प्रमाणपत्र:</string>
+  <!--Alerts: Notifications-->
+  <!--Alerts: Exceptions-->
+  <string name="error">ध्यान </string>
+  <string name="error_prefix">त्रुटि:</string>
+  <string name="general_error">त्रुटि कोड  &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="select_contact">कृपया पहले संपर्क चुनें </string>
+  <string name="signin_password_prompt">कूटशब्द दाखिल करें </string>
+  <string name="msg_sent_failed">संदेश नहीं भेजा गया </string>
+  <string name="account_settings_title">खाता विन्यास </string>
+  <string name="pref_default_locale">defLoc</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">समूह </string>
+  <string name="menu_exit">बंद और लॉक करो </string>
+  <string name="menu_panic">खलबली </string>
+  <string name="buddies">दोस्तों </string>
+  <string name="contacts">संपर्क </string>
+  <string name="menu_sidebar_qr">आपका उंगलीछाप प्रदर्शित करें </string>
+  <string name="loading">लोड कर रहा है… </string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">संपर्क सूची </string>
+  <string name="menu_settings">विकल्प </string>
+  <string name="menu_view_contact_list">संपर्क सूची </string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">इलाका (Bonjour/ZeroConf)</string>
+  <string name="google_account">गूगल खाता </string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_busy">व्यस्त </string>
+  <string name="presence_offline">ऑफलाइन</string>
+  <string name="presence_invisible">ऑफलाइन प्रकट करें </string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>ख़ुशी </item>
+    <item>Sad</item>
+    <item>Winking</item>
+    <item>Tongue sticking out</item>
+    <item>Surprised</item>
+    <item>Kissing</item>
+    <item>Yelling</item>
+    <item>Cool</item>
+    <item>Money mouth</item>
+    <item>Foot in mouth</item>
+    <item>Embarrassed</item>
+    <item>Angel</item>
+    <item>Undecided</item>
+    <item>Crying</item>
+    <item>Lips are sealed</item>
+    <item>हँसी</item>
+    <item>Confused</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>ख़ुशी </item>
+    <item>Sad</item>
+    <item>Winking</item>
+    <item>Tongue sticking out</item>
+    <item>Surprised</item>
+    <item>Kissing</item>
+    <item>Yelling</item>
+    <item>Cool</item>
+    <item>Money mouth</item>
+    <item>Foot in mouth</item>
+    <item>Embarrassed</item>
+    <item>Angel</item>
+    <item>Undecided</item>
+    <item>Crying</item>
+    <item>Lips are sealed</item>
+    <item>हँसी</item>
+    <item>Confused</item>
+  </string-array>
+  <string name="i_have_an_existing_xmpp_account">मौजूदा खाता </string>
+  <string name="i_want_to_chat_using_my_google_account">गूगल खाता </string>
+  <string name="i_need_a_new_account">नया खाता</string>
+  <string name="account_new_button">नया खाता बनाएँ </string>
+  <string name="install_orbot_">ऑरबोट इंस्टॉल करें?</string>
+  <string name="always">हर समय </string>
+  <string name="start_orbot_">ऑरबोट चालू करें?</string>
+</resources>
