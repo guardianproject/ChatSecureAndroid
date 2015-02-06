@@ -31,6 +31,7 @@ import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ChatSession;
 import info.guardianproject.otr.app.im.engine.Contact;
+import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.GroupListener;
 import info.guardianproject.otr.app.im.engine.GroupMemberListener;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -191,6 +192,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mIsGroupChat = false;
         ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
                 .getContactListManager();
+        
         mContactId = listManager.queryOrInsertContact(contact);
 
         mMessageURI = Imps.Messages.getContentUriByThreadId(mContactId);

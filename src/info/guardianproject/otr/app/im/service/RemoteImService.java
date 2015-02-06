@@ -87,7 +87,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     private static final int ACCOUNT_ID_COLUMN = 0;
     private static final int ACCOUNT_PROVIDER_COLUMN = 1;
     private static final int ACCOUNT_USERNAME_COLUMN = 2;
-    private static final int ACCOUNT_PASSOWRD_COLUMN = 3;
+    private static final int ACCOUNT_PASSOWRD_COLUMN = 3; 
 
     private static final int EVENT_SHOW_TOAST = 100;
 
