@@ -12,13 +12,4 @@
     <item>på forespørsel</item>
     <item>deaktivert</item>
   </string-array>
-  <string-array name="account_domains">
-    <item>dukgo.com</item>
-    <item>jabber.calyxinstitute.org</item>
-    <item>xmpp.jp</item>
-    <item>jabberpl.org</item>
-    <item>neko.im</item>
-
-    <item>bam.yt</item>
-  </string-array>
 </resources>

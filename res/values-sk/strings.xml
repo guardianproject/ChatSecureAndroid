@@ -67,8 +67,8 @@
   <string name="account_setup_advanced_enc_auto">Pokiaľ je to možné, šifrovať chaty automaticky</string>
   <string name="account_setup_advanced_enc_req">Šifrovať chaty ako to žiadala</string>
   <string name="account_setup_advanced_enc_off">Zakázať chat šifrovanie</string>
-  <string name="account_setup_signin_a">Overovanie poverovacích listín …</string>
-  <string name="account_setup_signin_b">Generovanie páru kľúčov …</string>
+  <string name="account_setup_signin_a">Overovanie poverovacích listín ...</string>
+  <string name="account_setup_signin_b">Generovanie páru kľúčov ...</string>
   <string name="account_setup_signin_c">Podpisovanie v. ..</string>
   <string name="account_wizard_setup_title">Sprievodca účet</string>
   <string name="account_wizard_account_title">Vaše ID účtu</string>
@@ -117,20 +117,18 @@
   <string name="menu_plus">Menu + \"</string>
   <string name="select_link_title">Vyberte odkaz</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_sent_prompt">Pozvánka bola zaslaná<xliff:g id="user">% 1 $ s</xliff:g>.</string>
+  <string name="invitation_sent_prompt">Pozvánka bola zaslaná&lt;xliff:g id="user"&gt;% 1 $ s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Prijať</string>
   <string name="decline_invitation">Pokles</string>
   <string name="menu_invite_contact">Prizvať\u2026</string>
   <string name="contacts_picker_title">Vyberte kontakt (y) vyzvať</string>
   <string name="contact_filter_hint">Typ nájsť kontakt</string>
-  <string name="approve_subscription">Prijať</string>
-  <string name="decline_subscription">Pokles</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Štart Šifrovania</string>
   <string name="menu_otr_stop">Stop Šifrovania</string>
   <string name="menu_sign_in">Prihlásiť sa</string>
   <string name="menu_gen_key">Regen Key</string>
-  <string name="otr_gen_key">Generuje sa nový pár OTR kľúčov…</string>
+  <string name="otr_gen_key">Generuje sa nový pár OTR kľúčov...</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
   <string name="menu_fingerprint">Váš odtlačok prsta</string>

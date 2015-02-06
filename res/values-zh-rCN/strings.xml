@@ -34,12 +34,12 @@
   <!--Views: Setup-->
   <string name="landing_page_title">聊天 - 选择一个帐户</string>
   <string name="choose_account_title">聊天 - 选择一个帐户</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">添加 <xliff:g id="ACCOUNT">%1$s</xliff:g> 帐户</string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">添加 &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt; 帐户</string>
   <string name="menu_about">关于</string>
   <string name="menu_sign_out_all">登出所有</string>
   <string name="signout_all_confirm_message">你要退出所有的服务？</string>
-  <string name="signed_out_prompt">您已经退出了 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
+  <string name="signed_out_prompt">您已经退出了 &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;。</string>
   <string name="welcome_first">是否第一次使用ChatSecure？</string>
   <string name="welcome_skip">Can\'t迫不及待地开始了吗？</string>
   <string name="welcome_about">关于Gibberbot</string>
@@ -110,8 +110,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="account_setup_advanced_enc_auto">如果可能的话，会自动加密聊天</string>
   <string name="account_setup_advanced_enc_req">按要求加密聊天</string>
   <string name="account_setup_advanced_enc_off">禁用聊天加密</string>
-  <string name="account_setup_signin_a">验证凭据…</string>
-  <string name="account_setup_signin_b">生成密钥对…</string>
+  <string name="account_setup_signin_a">验证凭据...</string>
+  <string name="account_setup_signin_b">生成密钥对...</string>
   <string name="account_setup_signin_c">登入中..</string>
   <string name="account_wizard_setup_title">帐户向导</string>
   <string name="account_wizard_account_title">您的帐户ID</string>
@@ -154,27 +154,27 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
 被设置的账户。⏎
 ⏎
 点击这里来添加！</string>
-  <string name="buddy_list_title">联系人列表 - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">联系人列表 - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">添加联系人</string>
   <string name="menu_remove_contact">删除联系人</string>
   <string name="menu_block_contact">阻止联系人</string>
   <string name="menu_contact_nickname">联系人昵称</string>
   <string name="menu_view_blocked">已阻止</string>
-  <string name="confirm_delete_contact">将会删除联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
-  <string name="confirm_block_contact">将会阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
-  <string name="confirm_unblock_contact">将会解除阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
-  <string name="add_contact_success">已添加联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
-  <string name="delete_contact_success">联系人“<xliff:g id="USER">%1$s</xliff:g>”已删除。</string>
-  <string name="block_contact_success">已阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
-  <string name="unblock_contact_success">联系人“<xliff:g id="USER">%1$s</xliff:g>”已解除阻止。</string>
+  <string name="confirm_delete_contact">将会删除联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="confirm_block_contact">将会阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="confirm_unblock_contact">将会解除阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="add_contact_success">已添加联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="delete_contact_success">联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”已删除。</string>
+  <string name="block_contact_success">已阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
+  <string name="unblock_contact_success">联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”已解除阻止。</string>
   <string name="menu_new_chat">新聊天</string>
   <string name="menu_search_contacts">搜索联系人</string>
   <string name="menu_show_grid">显示格子</string>
   <string name="menu_start_chat">开始聊天</string>
   <string name="menu_view_profile">查看资料</string>
   <string name="menu_verify">验证钥匙</string>
-  <string name="ongoing_conversation">当前聊天 (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> 人在线</string>
+  <string name="ongoing_conversation">当前聊天 (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; 人在线</string>
   <string name="subscriptions">好友邀请</string>
   <string name="unknown_contact">（\"<i>\"未知\"</i>\"）</string>
   <string name="empty_contact_group">空</string>
@@ -193,17 +193,17 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="label_client_type">客户端类型：</string>
   <string name="client_type_computer">计算机</string>
   <string name="client_type_mobile">移动设备</string>
-  <string name="blocked_list_title">已阻止的联系人 - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="blocked_list_title">已阻止的联系人 - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">无已阻止的联系人。</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">与<xliff:g id="USER">%1$s</xliff:g>聊天</string>
+  <string name="chat_with">与&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;聊天</string>
   <string name="me">我</string>
-  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g>在线</string>
-  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g>离开</string>
-  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g>正忙</string>
-  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>处于离线状态</string>
-  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>已加入</string>
-  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>已离开</string>
+  <string name="contact_online">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;在线</string>
+  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;离开</string>
+  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;正忙</string>
+  <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;处于离线状态</string>
+  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已加入</string>
+  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已离开</string>
   <string name="menu_send_image">发送照片</string>
   <string name="menu_send_file">发送文件</string>
   <string name="menu_send_audio">发送音频</string>
@@ -224,8 +224,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="menu_plus">MENU+</string>
   <string name="select_link_title">选择链接</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>邀请您加入群聊。</string>
-  <string name="invitation_sent_prompt">已向<xliff:g id="USER">%1$s</xliff:g>发送邀请。</string>
+  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;邀请您加入群聊。</string>
+  <string name="invitation_sent_prompt">已向&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;发送邀请。</string>
   <string name="accept_invitation">接受</string>
   <string name="decline_invitation">拒绝</string>
   <string name="menu_new_group_chat">群聊</string>
@@ -236,11 +236,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="contact_filter_hint">输入查找联系人</string>
   <string name="empty_contact_list">没有找到任何联系人。
 点击邀请。</string>
-  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g>已邀请您加入其联系人列表。</string>
-  <string name="approve_subscription">接受</string>
-  <string name="decline_subscription">拒绝</string>
-  <string name="approve_subscription_error">无法批准来自<xliff:g id="USER">%1$s</xliff:g>的好友申请。请稍后再试。</string>
-  <string name="decline_subscription_error">无法拒绝来自<xliff:g id="USER">%1$s</xliff:g>的好友申请。请稍后再试。</string>
+  <string name="approve_subscription_error">无法批准来自&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;的好友申请。请稍后再试。</string>
+  <string name="decline_subscription_error">无法拒绝来自&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;的好友申请。请稍后再试。</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">启动加密</string>
   <string name="menu_otr_stop">停止加密</string>
@@ -294,7 +291,6 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="pref_group_looknfeel_title">用户界面</string>
   <string name="menu_locale">语言</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">多国语言</string>
-
   <string name="pref_theme_dark">使用暗色主题</string>
   <string name="pref_theme_dark_summary">改为使用深色应用主题</string>
   <string name="pref_in_memory_db_title">只在内存中存储消息</string>
@@ -327,22 +323,22 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="pref_debug_summary">为纠错将应用的登陆数据导出为标准格式</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">已停用背景数据</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> 需要启用背景数据。</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; 需要启用背景数据。</string>
   <string name="bg_data_prompt_ok">启用</string>
   <string name="bg_data_prompt_cancel">退出</string>
   <string name="signout_kill_confirm_message">你要退出所有的服务并关闭所有进程吗?(硬退出)</string>
   <string name="prompt_create_new_account_">建立新账户?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">建立一个用户名为\'%1$s\'的新的聊天账户?</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">来自<xliff:g id="PROVIDER">%1$s</xliff:g>的新消息</string>
+  <string name="newMessages_label">来自&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;的新消息</string>
   <string name="notify_groupchat_label">群聊邀请</string>
   <string name="new_messages_notify">有新消息</string>
-  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务…</string>
+  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务...</string>
   <string name="app_unlocked">激活的 &amp; 已解锁的</string>
   <!--Alerts: Exceptions-->
   <string name="error">注意</string>
-  <string name="general_error">错误代码 <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string name="login_service_failed">无法登录<xliff:g id="SERVICE">%1$s</xliff:g>服务。请稍后再试。"\n"（详细信息：<xliff:g id="DESCRIPTION">%2$s</xliff:g>）</string>
+  <string name="general_error">错误代码 &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">无法登录&lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;服务。请稍后再试。"\n"（详细信息：&lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;）</string>
   <string name="add_list_failed">未添加该列表。</string>
   <string name="block_contact_failed">未阻止联系人。</string>
   <string name="unblock_contact_failed">联系人未解除阻止。</string>
@@ -351,8 +347,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="service_error">服务错误！</string>
   <string name="load_contact_list_failed">未载入联系人列表。</string>
   <string name="cant_connect_to_server">无法连接到服务器。请检查您的连接。</string>
-  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>已在您的联系人列表中。</string>
-  <string name="contact_blocked">已阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;已在您的联系人列表中。</string>
+  <string name="contact_blocked">已阻止联系人“&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”。</string>
   <string name="contact_not_loaded">正在载入联系人列表，请稍候。</string>
   <string name="network_error">出现网络错误。</string>
   <string name="wifi_not_connected_error">此次连接需要WiFi</string>
@@ -393,8 +389,8 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="otr_keysync_warning_message">请从桌面OtrFileConverter工具将\'otr_keystore.ofcaes\'文件复制到你设备存储空间的根目录。</string>
   <string name="msg_sent_failed">无法发送此消息。</string>
   <string name="disconnected_warning">消息将在重新连接后再发送</string>
-  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>处于离线状态。您发送的消息将在<xliff:g id="USER_1">%1$s</xliff:g>下次上线时传送出去。</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>不在您的联系人列表中。</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt;处于离线状态。您发送的消息将在&lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt;下次上线时传送出去。</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;不在您的联系人列表中。</string>
   <string name="account_settings_title">帐号设置</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">警告！这是一个早期的ChatSecure发行版，可能包含安全问题导致聊天被窥探！！！</string>

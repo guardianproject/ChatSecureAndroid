@@ -49,7 +49,7 @@ Cho phép ứng dụng viết/thêm dữ liệu vào dịch vụ chat.</string>
   <string name="setup_passphrase_label1">Cụm từ mật khẩu:</string>
   <string name="setup_passphrase_label2">Cụm từ mật khẩu (gõ lại):</string>
   <string name="rekey_message">Điền vào các ký tự cho phần mật khẩu, nên nhớ, ký tự mật khẩu được hiển thị sẽ ở dạng *. Phần mật khẩu của bạn ít nhất phải có độ dài tối thiểu là 6 ký tự, trong đó có ít nhất một chữ cái được in hoa, một chữ cái in thường và một con số kèm theo. Việc làm này nhằm tăng tính bảo mật của mật khẩu.</string>
-  <string name="do_rekey">Đang mã hóa các ghi chú hiện có của bạn với các cụm từ mới (hãy kiên nhẫn đợi trong giây lát…)</string>
+  <string name="do_rekey">Đang mã hóa các ghi chú hiện có của bạn với các cụm từ mới (hãy kiên nhẫn đợi trong giây lát...)</string>
   <string name="enter_pass">Đánh vào cụm từ mật khẩu:</string>
   <string name="new_pass">Chào bạn! Hãy điền vào các cụm từ bảo mật để giúp cho ghi chú của bạn được an toàn hơn. Các cụm từ này ít nhất phải có độ dài tối thiểu là 6 ký tự, trong đó có ít nhất một chữ cái được in hoa, một chữ cái in thường và một con số kèm theo.</string>
   <string name="pass_err_length">Cụm từ bảo mật không đạt yêu cầu về độ dài ký tự</string>
@@ -113,9 +113,9 @@ Hãy bắt đầu trải nghiệm đi nào!</string>
   <string name="account_setup_advanced_enc_auto">Tự động mã hóa khi có thể</string>
   <string name="account_setup_advanced_enc_req">Buộc phải mã hóa nội dung chat</string>
   <string name="account_setup_advanced_enc_off">Vô hiệu hóa tính năng mã hóa khi chat</string>
-  <string name="account_setup_signin_a">Đang xác nhận thông tin cá nhân…</string>
+  <string name="account_setup_signin_a">Đang xác nhận thông tin cá nhân...</string>
   <string name="account_setup_signin_b">Đang tạo ra bộ khoá mã hoá</string>
-  <string name="account_setup_signin_c">Đang đăng nhập vào…</string>
+  <string name="account_setup_signin_c">Đang đăng nhập vào...</string>
   <string name="account_wizard_setup_title">Hướng dẫn điều chỉnh tài khoản</string>
   <string name="account_wizard_account_title">Tên tài khoản bạn</string>
   <string name="account_wizard_host_title">Cấu hình máy chủ</string>
@@ -127,7 +127,7 @@ Hãy bắt đầu trải nghiệm đi nào!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Chọn một tên miền</string>
   <string name="registering_new_account_">Đăng ký tài khoản mới</string>
-  <string name="signing_in_to">đang khởi động ChatSecure…</string>
+  <string name="signing_in_to">đang khởi động ChatSecure...</string>
   <string name="menu_cancel_signin">Hủy bỏ đăng nhập </string>
   <string name="signing_in_wait">Đang đăng nhập\u2026</string>
   <string name="signing_out_wait">Đang đăng xuất\u2026</string>
@@ -235,23 +235,20 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="decline_invitation">Từ chối</string>
   <string name="menu_new_group_chat">Trò chuyện theo nhóm</string>
   <string name="create_or_join_group_chat">Tạo hoặc tham gia vào trò chuyện nhóm</string>
-  <string name="connecting_to_group_chat_">Đang kết nối tới nhóm chat …</string>
+  <string name="connecting_to_group_chat_">Đang kết nối tới nhóm chat ...</string>
   <string name="menu_invite_contact">Mời\u2026</string>
   <string name="contacts_picker_title">Chọn (các)bạn chat để gửi lời mời</string>
   <string name="contact_filter_hint">Gõ vào thông tin để tìm bạn chat</string>
   <string name="empty_contact_list">Không tìm thấy liên lạc nào.
 
 Chạm vào để mời kết nối.</string>
-  <string name="subscription_prompt">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã gửi đến bạn lời mời liên kết trong danh sách chat của người đó.</string>
-  <string name="approve_subscription">Chấp thuận</string>
-  <string name="decline_subscription">Từ Chối</string>
   <string name="approve_subscription_error">Hiện không thể đăng ký  ở &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;. Xin vui lòng thử lại sau.</string>
   <string name="decline_subscription_error">Không thể từ chối phần đăng ký từ &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;. Xin vui lòng thử lại sau.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Bắt đầu mã hoá</string>
   <string name="menu_otr_stop">Ngừng mã hoá</string>
-  <string name="starting_otr_chat">Đang bắt đầu mã hoá nội dung chat này…</string>
-  <string name="stopping_otr_chat">Ngưng lại thao tác mã hóa nội dung chat…</string>
+  <string name="starting_otr_chat">Đang bắt đầu mã hoá nội dung chat này...</string>
+  <string name="stopping_otr_chat">Ngưng lại thao tác mã hóa nội dung chat...</string>
   <string name="label_fingerprint_remote">Bảo mật vân tay</string>
   <string name="label_fingerprint_local">Bảo mật vân tay</string>
   <string name="menu_sign_in">Đăng nhập</string>
@@ -300,7 +297,6 @@ Chạm vào để mời kết nối.</string>
   <string name="pref_group_looknfeel_title">Giao Diện Sử Dụng</string>
   <string name="menu_locale">Ngôn Ngữ</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Các ngôn ngữ</string>
-
   <string name="pref_theme_dark">Dùng định dạng nền tối</string>
   <string name="pref_theme_dark_summary">Thay đổi giao diện sang màu tối</string>
   <string name="pref_in_memory_db_title">Lưu Trữ Tin Nhắn Trong Bộ Nhớ Mà Thôi</string>
@@ -345,7 +341,7 @@ Chạm vào để mời kết nối.</string>
   <string name="newMessages_label">&lt;xliff id="provider"&gt;%1$s&lt;/xliff&gt; nội dung chat mới</string>
   <string name="notify_groupchat_label">Gửi lời mời chat theo nhóm</string>
   <string name="new_messages_notify">(Các) phần chat mới từ</string>
-  <string name="starting_the_chatsecure_service_">Đang bắt đầu dịch vụ ChatSecure…</string>
+  <string name="starting_the_chatsecure_service_">Đang bắt đầu dịch vụ ChatSecure...</string>
   <string name="app_unlocked">Đã kích hoạt&amp; mở khóa</string>
   <!--Alerts: Exceptions-->
   <string name="error">Lưu Ý</string>

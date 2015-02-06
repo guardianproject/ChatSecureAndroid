@@ -84,9 +84,9 @@
   <string name="account_setup_advanced_enc_auto">Ko je možno, šifriraj klepete samodejno</string>
   <string name="account_setup_advanced_enc_req">Šifriraj pogovore, če je tako določeno</string>
   <string name="account_setup_advanced_enc_off">Onemogoči šifriranje pogovorov</string>
-  <string name="account_setup_signin_a">Preverjanje poverilnice …</string>
-  <string name="account_setup_signin_b">Generiram par ključev …</string>
-  <string name="account_setup_signin_c">Prijavljanje …</string>
+  <string name="account_setup_signin_a">Preverjanje poverilnice ...</string>
+  <string name="account_setup_signin_b">Generiram par ključev ...</string>
+  <string name="account_setup_signin_c">Prijavljanje ...</string>
   <string name="account_wizard_setup_title">Čarovnik za račun</string>
   <string name="account_wizard_account_title">ID vašega računa</string>
   <string name="account_wizard_host_title">Nastavi strežnik</string>
@@ -118,7 +118,7 @@
 nobenega računa.
 
 Dotaknite se tu in ga dodajte!</string>
-  <string name="buddy_list_title">Seznam stikov - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">Seznam stikov - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Dodaj stik</string>
   <string name="menu_remove_contact">Odstrani stik</string>
   <string name="menu_block_contact">Blokiraj stik</string>
@@ -126,15 +126,15 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="confirm_delete_contact"> </string>
   <string name="confirm_block_contact"> </string>
   <string name="confirm_unblock_contact">  </string>
-  <string name="add_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" dodan.</string>
-  <string name="delete_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" izbrisan.</string>
-  <string name="block_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" blokiran.</string>
-  <string name="unblock_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" odblokiran.</string>
+  <string name="add_contact_success">Stik "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" dodan.</string>
+  <string name="delete_contact_success">Stik "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" izbrisan.</string>
+  <string name="block_contact_success">Stik "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" blokiran.</string>
+  <string name="unblock_contact_success">Stik "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" odblokiran.</string>
   <string name="menu_new_chat">Nov pogovor</string>
   <string name="menu_search_contacts">Išči stike</string>
   <string name="menu_start_chat">Začni pogovor</string>
-  <string name="ongoing_conversation">Trajajoči pogovori (<xliff:g id="number">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> povezan</string>
+  <string name="ongoing_conversation">Trajajoči pogovori (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; povezan</string>
   <string name="subscriptions">Povabila prijateljev</string>
   <string name="unknown_contact">(<i>Neznano</i>) </string>
   <string name="empty_contact_group">Prazno</string>
@@ -153,17 +153,17 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="label_client_type">Tip odjemalca:</string>
   <string name="client_type_computer">Računalnik</string>
   <string name="client_type_mobile">Mobilni telefon</string>
-  <string name="blocked_list_title">Blokirani stiki - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Blokirani stiki - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">Brez blokiranih kontaktov.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Klepetaj z <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="chat_with">Klepetaj z &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Jaz</string>
-  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> je povezan</string>
-  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> je odsoten</string>
-  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> je zaseden</string>
-  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> ni povezan</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> se je pridružil</string>
-  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> je zapustil</string>
+  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; je povezan</string>
+  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; je odsoten</string>
+  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; je zaseden</string>
+  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ni povezan</string>
+  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; se je pridružil</string>
+  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; je zapustil</string>
   <string name="send">Pošlji</string>
   <string name="menu_resend">Pošlji ponovno</string>
   <string name="menu_end_conversation">Končaj pogovor</string>
@@ -174,8 +174,8 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="select_link_title">Izberi povezavo</string>
   <string name="delete">Zbriši</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> vas je povabil, da se pridružiti skupinskemu klepetu.</string>
-  <string name="invitation_sent_prompt"> Vabilo je bilo poslano <xliff:g id="user">%1$s</xliff:g>.</string>
+  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; vas je povabil, da se pridružiti skupinskemu klepetu.</string>
+  <string name="invitation_sent_prompt"> Vabilo je bilo poslano &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Sprejmi</string>
   <string name="decline_invitation">Zavrni</string>
   <string name="menu_new_group_chat">Skupinski pogovor</string>
@@ -183,16 +183,15 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="menu_invite_contact">Povabi\u2026</string>
   <string name="contacts_picker_title">Izberite kontakt(e), ki jih želite povabiti.</string>
   <string name="contact_filter_hint">Pišite za iskanje kontakta</string>
-  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> si vas želi dodati na seznam stikov.</string>
-  <string name="approve_subscription">Sprejmi</string>
-  <string name="decline_subscription">Zavrni</string>
-  <string name="approve_subscription_error">Ni bilo možno potrditi vpisa od <xliff:g id="user">%1$s</xliff:g>. Poizkusite ponovno kasneje.</string>
-  <string name="decline_subscription_error">Ni bilo možno  zavrniti vpisa od <xliff:g id="user">%1$s</xliff:g>. Poizkusite ponovno kasneje.</string>
+  <string name="approve_subscription">Da</string>
+  <string name="decline_subscription">Ne</string>
+  <string name="approve_subscription_error">Ni bilo možno potrditi vpisa od &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Poizkusite ponovno kasneje.</string>
+  <string name="decline_subscription_error">Ni bilo možno  zavrniti vpisa od &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Poizkusite ponovno kasneje.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Začni šifriranje</string>
   <string name="menu_otr_stop">Končaj šifriranje</string>
-  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje …</string>
-  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje …</string>
+  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje ...</string>
+  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje ...</string>
   <string name="label_fingerprint_remote">Varnostni prstni odtis</string>
   <string name="label_fingerprint_local">Varnostni prstni odtis</string>
   <string name="menu_sign_in">Prijavi se</string>
@@ -200,7 +199,7 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="otr_session_status_plaintext">Šifriranje je izklopljeno</string>
   <string name="otr_session_status_encrypted">Šifriranje je vklopljeno (preveri z dotikom)</string>
   <string name="otr_session_status_verified">Šifrirano in preverjeno!</string>
-  <string name="otr_gen_key">Generiram nov par OTR ključev …</string>
+  <string name="otr_gen_key">Generiram nov par OTR ključev ...</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
   <string name="menu_scan">Odčitaj QR</string>
@@ -255,13 +254,13 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="bg_data_prompt_cancel">Izhod</string>
   <string name="signout_kill_confirm_message">Se želite odjaviti iz vseh storitev IN končati vse procese (grob izhod)?</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Nova <xliff:g id="provider">%1$s</xliff:g> sporočila</string>
+  <string name="newMessages_label">Nova &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; sporočila</string>
   <string name="notify_groupchat_label">Povabilo v skupinski klepet</string>
   <string name="new_messages_notify">Novo sporočilo od</string>
-  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja …</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja ...</string>
   <!--Alerts: Exceptions-->
   <string name="error">Pozor</string>
-  <string name="general_error">Koda napake <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="general_error">Koda napake &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
   <string name="add_list_failed">Seznam ni bil dodan.</string>
   <string name="block_contact_failed">Kontakt ni bil blokiran.</string>
   <string name="unblock_contact_failed">Kontakt ni bil odblokiran.</string>
@@ -270,8 +269,8 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="service_error">Napaka storitve!</string>
   <string name="load_contact_list_failed">Seznam stikov se ni naložil.</string>
   <string name="cant_connect_to_server">Povezovanje na strežnik ni uspelo. Preverite vašo povezavo.</string>
-  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" že obstaja v vašem seznamu stikov.</string>
-  <string name="contact_blocked">Stik "<xliff:g id="user">%1$s</xliff:g>" je bil blokiran.</string>
+  <string name="contact_already_exist">"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" že obstaja v vašem seznamu stikov.</string>
+  <string name="contact_blocked">Stik "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" je bil blokiran.</string>
   <string name="contact_not_loaded">Prosimo, počakajte da se naloži seznam vaših stikov.</string>
   <string name="network_error">Prišlo je do mrežne napake.</string>
   <string name="service_not_support">Ta strežnik ne podpira te funkcionalnosti. </string>
@@ -297,8 +296,8 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="sorry_we_cannot_share_that_file_type">Ne morete delite te vrste datotek</string>
   <string name="err_otr_share_no_encryption">Morate omogočiti šifriranje, da boste lahko delili datoteke</string>
   <string name="msg_sent_failed">To sporočilo ne more biti poslano.</string>
-  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> ni povezan. Sporočilo, ki ste ga poslali, bo dostavljeno, ko se <xliff:g id="user">%1$s</xliff:g> poveže.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ni na seznamu vaših stikov.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ni povezan. Sporočilo, ki ste ga poslali, bo dostavljeno, ko se &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; poveže.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ni na seznamu vaših stikov.</string>
   <string name="account_settings_title">Nastavitve računa</string>
   <string name="pref_default_locale">defLoc</string>
   <!--added 2011/09/01-->

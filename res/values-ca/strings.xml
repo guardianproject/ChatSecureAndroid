@@ -39,12 +39,12 @@
   <!--Views: Setup-->
   <string name="landing_page_title">Trieu un compte</string>
   <string name="choose_account_title">Trieu un compte</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">Afegeix el compte <xliff:g id="account">%1$s</xliff:g></string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Afegeix el compte &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_about">Quan a</string>
   <string name="menu_sign_out_all">Surt del tot</string>
   <string name="signout_all_confirm_message">Voleu sortir de tots els serveis?</string>
-  <string name="signed_out_prompt">Heu tancat la sessió <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt">Heu tancat la sessió &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="signed_out_prompt_with_error">S\'ha tancat la vostra sessió <xliff:g id="account">%1$s</xliff:g> per <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">El primer cop que empreu ChatSecure?</string>
   <string name="welcome_skip">No podeu esperar per començar?</string>
@@ -55,7 +55,7 @@
   <string name="setup_passphrase_label1">Contrasenya:</string>
   <string name="setup_passphrase_label2">Contrasenya (un altre cop):</string>
   <string name="rekey_message">Introduïu una contrasenya *nova*. Ha de tenir com a mínim una majúscula, una minúscula i un nombre i ser més llarga de sis caràcters.</string>
-  <string name="do_rekey">S\'estan xifrant les vostres notes amb la nova contrasenya (sigueu pacients…)</string>
+  <string name="do_rekey">S\'estan xifrant les vostres notes amb la nova contrasenya (sigueu pacients...)</string>
   <string name="enter_pass">Introduïu la vostra contrasenya:</string>
   <string name="new_pass">Benvinguts! Introduïu una contrasenya forta per assegurar les vostres anotacions. Ha de tenir com a mínim una majúscula, una minúsculam un nombre i ser més llarga de sis caràcters.</string>
   <string name="pass_err_length">La vostra contrasenya no és prou llarga</string>
@@ -117,9 +117,9 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="account_setup_advanced_enc_auto">Quan sigui possible, xifra els xats automàticametn</string>
   <string name="account_setup_advanced_enc_req">Xifra els xats quan es demani</string>
   <string name="account_setup_advanced_enc_off">Inhabilita el xifrat del xat</string>
-  <string name="account_setup_signin_a">S\'estan validant les credencials…</string>
-  <string name="account_setup_signin_b">S\'està generant el parell de claus…</string>
-  <string name="account_setup_signin_c">S\'està accedint…</string>
+  <string name="account_setup_signin_a">S\'estan validant les credencials...</string>
+  <string name="account_setup_signin_b">S\'està generant el parell de claus...</string>
+  <string name="account_setup_signin_c">S\'està accedint...</string>
   <string name="account_wizard_setup_title">Assistent de comptes</string>
   <string name="account_wizard_account_title">La ID del vostre compte</string>
   <string name="account_wizard_host_title">Configureu el servidor</string>
@@ -130,8 +130,8 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="account_wizard_ready_body">S\'ha configurat correctament el ChatSecure i ara podeu connectar-vos al vostre servei i començar a xatejar de forma segura i privada!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Domini del servei de xat</string>
-  <string name="registering_new_account_">S\'està registrant un compte nou…</string>
-  <string name="signing_in_to">anem fent…</string>
+  <string name="registering_new_account_">S\'està registrant un compte nou...</string>
+  <string name="signing_in_to">anem fent...</string>
   <string name="menu_cancel_signin">Cancel·la l\'autenticació</string>
   <string name="signing_in_wait">Entrant\u2026</string>
   <string name="signing_out_wait">S\'està sortint\u2026</string>
@@ -157,28 +157,28 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="title_chats">Converses</string>
   <string name="no_messages">No hi ha converses.\n\nToqueu per a començar-ne una!</string>
   <string name="empty_account_message">No teniu cap configurat cap compte.\n\nToqueu per afegir-ne un!</string>
-  <string name="buddy_list_title">Llista de contactes - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">Llista de contactes - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Afegeix un contacte</string>
   <string name="menu_remove_contact">Esborra el contacte</string>
   <string name="menu_block_contact">Bloca el contacte</string>
   <string name="menu_contact_nickname">Àlies del contacte</string>
   <string name="menu_view_blocked">Bloquejat</string>
   <string name="nickname">Àlies</string>
-  <string name="confirm_delete_contact">S\'eliminarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
-  <string name="confirm_block_contact">Es blocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
-  <string name="confirm_unblock_contact">Es desblocarà el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
-  <string name="add_contact_success">S\'ha afegit el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
-  <string name="delete_contact_success">S\'ha esborrat el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
-  <string name="block_contact_success">S\'ha blocat el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
-  <string name="unblock_contact_success">S\'ha desblocat el contacte "<xliff:g id="user">%1$s</xliff:g>".</string>
+  <string name="confirm_delete_contact">S\'eliminarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="confirm_block_contact">Es blocarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="confirm_unblock_contact">Es desblocarà el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="add_contact_success">S\'ha afegit el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="delete_contact_success">S\'ha esborrat el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="block_contact_success">S\'ha blocat el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
+  <string name="unblock_contact_success">S\'ha desblocat el contacte "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;".</string>
   <string name="menu_new_chat">Nou xat</string>
   <string name="menu_search_contacts">Cerca contactes</string>
   <string name="menu_show_grid">Mostra la graella</string>
   <string name="menu_start_chat">Inicia un xat</string>
   <string name="menu_view_profile">Mostra el perfil</string>
   <string name="menu_verify">Verifica el contacte</string>
-  <string name="ongoing_conversation">Xats actius (<xliff:g id="number">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> en línia</string>
+  <string name="ongoing_conversation">Xats actius (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; en línia</string>
   <string name="subscriptions">Invitacions d\'amics</string>
   <string name="unknown_contact">(<i>Desconegut</i>) </string>
   <string name="empty_contact_group">Buit</string>
@@ -197,17 +197,17 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="label_client_type">Tipus de client:</string>
   <string name="client_type_computer">Ordinador</string>
   <string name="client_type_mobile">Mòbil</string>
-  <string name="blocked_list_title">Contactes blocats - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Contactes blocats - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">No teniu bloquejat cap contacte.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Xategeu amb <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="chat_with">Xategeu amb &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Jo</string>
-  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> és en línia</string>
-  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> no hi és</string>
-  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> està ocupat/da</string>
-  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> no està connectat/da</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> s\'ha unit</string>
-  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> ha marxat</string>
+  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; és en línia</string>
+  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; no hi és</string>
+  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; està ocupat/da</string>
+  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; no està connectat/da</string>
+  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; S\'ha unit</string>
+  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; ha marxat</string>
   <string name="menu_send_image">Envia la fotografia</string>
   <string name="menu_send_file">Envia el fitxer</string>
   <string name="menu_send_audio">Envia l\'àudio</string>
@@ -247,8 +247,6 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="menu_invite_contact">Convida\u2026</string>
   <string name="contacts_picker_title">Seleccioneu els contactes que voleu convidar</string>
   <string name="contact_filter_hint">Escriviu per cercar un contacte</string>
-  <string name="approve_subscription">Accepta</string>
-  <string name="decline_subscription">Rebutja</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Inicia el xifrat</string>
   <string name="menu_otr_stop">Atura el xifrat</string>

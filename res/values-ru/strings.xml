@@ -34,12 +34,12 @@
   <!--Views: Setup-->
   <string name="landing_page_title">Чат - выберите учетную запись</string>
   <string name="choose_account_title">Чат - выберите учетную запись</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">Добавить аккаунт <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Добавить аккаунт &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_about">О программе</string>
   <string name="menu_sign_out_all">Выйти из всех учетных записей</string>
   <string name="signout_all_confirm_message">Вы хотите выйти из всех учетных записей?</string>
-  <string name="signed_out_prompt">Вы вышли из службы: <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt">Вы вышли из службы: &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="welcome_first">Первый раз используете ChatSecure?</string>
   <string name="welcome_skip">Can\'t ждать, чтобы начать?</string>
   <string name="welcome_about">О ChatSecure</string>
@@ -111,8 +111,8 @@
   <string name="account_setup_advanced_enc_auto">Когда это возможно, шифровать чаты автоматически</string>
   <string name="account_setup_advanced_enc_req">Шифрование чатов с просьбой</string>
   <string name="account_setup_advanced_enc_off">Не шифровать чаты</string>
-  <string name="account_setup_signin_a">Проверка полномочий …</string>
-  <string name="account_setup_signin_b">Создание пары ключей …</string>
+  <string name="account_setup_signin_a">Проверка полномочий ...</string>
+  <string name="account_setup_signin_b">Создание пары ключей ...</string>
   <string name="account_setup_signin_c">Подписание дюйма ..</string>
   <string name="account_wizard_setup_title">Мастер учетных записей</string>
   <string name="account_wizard_account_title">Ваш аккаунт ID</string>
@@ -124,11 +124,11 @@
   <string name="account_wizard_ready_body">ChatSecure была настроена, и теперь пришло время для подключения к вашим услугам, и начинайте общаться безопасно, надежно и конфиденциально!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Выбрать домен</string>
-  <string name="registering_new_account_">Создание новой учетной записи…</string>
-  <string name="signing_in_to">запуск ChatSecure…</string>
+  <string name="registering_new_account_">Создание новой учетной записи...</string>
+  <string name="signing_in_to">запуск ChatSecure...</string>
   <string name="menu_cancel_signin">Отмена входа</string>
-  <string name="signing_in_wait">Выполняется вход…</string>
-  <string name="signing_out_wait">Выполняется выход…\u2026</string>
+  <string name="signing_in_wait">Выполняется вход...</string>
+  <string name="signing_out_wait">Выполняется выход...\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Поиск SRV записи</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Использовать DNS SRV для определения XMPP из доменного имени</string>
@@ -156,27 +156,27 @@
 аккаунтов.⏎
 ⏎
 Нажмите здесь для добавления!</string>
-  <string name="buddy_list_title">Список Контактов - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">Список Контактов - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Добавить контакт</string>
   <string name="menu_remove_contact">Удалить контакт</string>
   <string name="menu_block_contact">Заблокировать контакт</string>
   <string name="menu_contact_nickname">прозвище контакта</string>
   <string name="menu_view_blocked">Заблокированные</string>
-  <string name="confirm_delete_contact">Контакт \<xliff:g id="USER">%1$s</xliff:g>" будет удален.</string>
-  <string name="confirm_block_contact">Контакт \<xliff:g id="USER">%1$s</xliff:g>" будет заблокирован.</string>
-  <string name="confirm_unblock_contact">Контакт \<xliff:g id="USER">%1$s</xliff:g>" будет разблокирован.</string>
-  <string name="add_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>" добавлен.</string>
-  <string name="delete_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>" удален.</string>
-  <string name="block_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>" заблокирован.</string>
-  <string name="unblock_contact_success">Контакт \<xliff:g id="USER">%1$s</xliff:g>" разблокирован.</string>
+  <string name="confirm_delete_contact">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" будет удален.</string>
+  <string name="confirm_block_contact">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" будет заблокирован.</string>
+  <string name="confirm_unblock_contact">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" будет разблокирован.</string>
+  <string name="add_contact_success">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" добавлен.</string>
+  <string name="delete_contact_success">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" удален.</string>
+  <string name="block_contact_success">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" заблокирован.</string>
+  <string name="unblock_contact_success">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" разблокирован.</string>
   <string name="menu_new_chat">Новый чат</string>
   <string name="menu_search_contacts">Поиск в списке контактов</string>
   <string name="menu_show_grid">Показать Сетку</string>
   <string name="menu_start_chat">Начать чат</string>
   <string name="menu_view_profile">Просмотр профиля</string>
   <string name="menu_verify">Проверить ключ</string>
-  <string name="ongoing_conversation">Текущих чатов: (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
-  <string name="online_count">Пользователей в сети: <xliff:g id="NUMBER">%1$d</xliff:g></string>
+  <string name="ongoing_conversation">Текущих чатов: (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">Пользователей в сети: &lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;</string>
   <string name="subscriptions">Приглашения от друзей</string>
   <string name="unknown_contact">(<i>Неизвестный</i>)</string>
   <string name="empty_contact_group">Пусто</string>
@@ -195,17 +195,17 @@
   <string name="label_client_type">Тип клиента:</string>
   <string name="client_type_computer">Компьютер</string>
   <string name="client_type_mobile">Мобильное устройство</string>
-  <string name="blocked_list_title">Заблокированные контакты – <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Заблокированные контакты – &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">Нет заблокированных контактов.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Чат с пользователем <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="chat_with">Чат с пользователем &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Я</string>
-  <string name="contact_online">Пользователь <xliff:g id="USER">%1$s</xliff:g> в сети</string>
-  <string name="contact_away">Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует</string>
-  <string name="contact_busy">Пользователь <xliff:g id="USER">%1$s</xliff:g> занят</string>
-  <string name="contact_offline">Пользователь <xliff:g id="USER">%1$s</xliff:g> не в сети</string>
-  <string name="contact_joined">Пользователь <xliff:g id="USER">%1$s</xliff:g> присоединился к чату</string>
-  <string name="contact_left">Пользователь <xliff:g id="USER">%1$s</xliff:g> покинул чат</string>
+  <string name="contact_online">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; в сети</string>
+  <string name="contact_away">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; отсутствует</string>
+  <string name="contact_busy">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; занят</string>
+  <string name="contact_offline">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; не в сети</string>
+  <string name="contact_joined">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; присоединился к чату</string>
+  <string name="contact_left">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; покинул чат</string>
   <string name="menu_send_image">Отправить Фото</string>
   <string name="menu_send_file">Отправить файл</string>
   <string name="menu_send_audio">Отправить Аудио</string>
@@ -226,24 +226,23 @@
   <string name="menu_plus">Мenu+</string>
   <string name="select_link_title">Выберите ссылку</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">Пользователь <xliff:g id="USER">%1$s</xliff:g> приглашает вас в групповой чат.</string>
-  <string name="invitation_sent_prompt">Приглашение отправлено пользователю <xliff:g id="USER">%1$s</xliff:g>.</string>
+  <string name="invitation_prompt">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; приглашает вас в групповой чат.</string>
+  <string name="invitation_sent_prompt">Приглашение отправлено пользователю &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Принять</string>
   <string name="decline_invitation">Отклонить</string>
   <string name="menu_new_group_chat">Групповой чат</string>
   <string name="create_or_join_group_chat">Создать или присоединиться к групповому чату</string>
-  <string name="connecting_to_group_chat_">Подключение к групповому чату…</string>
-  <string name="menu_invite_contact">Пригласить пользователя…</string>
+  <string name="connecting_to_group_chat_">Подключение к групповому чату...</string>
+  <string name="menu_invite_contact">Пригласить пользователя...</string>
   <string name="contacts_picker_title">Выберите пользователя(ей), которого вы хотите пригласить</string>
   <string name="contact_filter_hint">Введите текст для поиска контакта</string>
   <string name="empty_contact_list">Контактов не найдено.⏎
 ⏎
 Нажмите для добавления.</string>
-  <string name="subscription_prompt">Пользователь <xliff:g id="USER">%1$s</xliff:g> хочет добавить вас в свой список контактов.</string>
-  <string name="approve_subscription">Принять</string>
-  <string name="decline_subscription">Отклонить</string>
-  <string name="approve_subscription_error">Не удалось одобрить запрос подписки от пользователя <xliff:g id="USER">%1$s</xliff:g>. Повторите попытку позже.</string>
-  <string name="decline_subscription_error">Не удалось отклонить запрос подписки от пользователя <xliff:g id="USER">%1$s</xliff:g>. Повторите попытку позже.</string>
+  <string name="approve_subscription">Да</string>
+  <string name="decline_subscription">Нет</string>
+  <string name="approve_subscription_error">Не удалось одобрить запрос подписки от пользователя &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.</string>
+  <string name="decline_subscription_error">Не удалось отклонить запрос подписки от пользователя &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Начать шифрование</string>
   <string name="menu_otr_stop">Прекратить шифрование</string>
@@ -297,7 +296,6 @@
   <string name="pref_group_looknfeel_title">Интерфейс Пользователя</string>
   <string name="menu_locale">Язык</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Языки</string>
-
   <string name="pref_theme_dark">Используйте темные темы</string>
   <string name="pref_theme_dark_summary">Изменить тему приложения на темную</string>
   <string name="pref_in_memory_db_title">Хранение Сообщений Только В Памяти</string>
@@ -330,22 +328,22 @@
   <string name="pref_debug_summary">Показывать протокол работы  в стандартный вывод / использовать logcat  для ведения протокола.</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Исходные данные отключены</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> требует, чтобы использование фоновых данных было разрешено</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; требует, чтобы использование фоновых данных было разрешено</string>
   <string name="bg_data_prompt_ok">Включить</string>
   <string name="bg_data_prompt_cancel">Выйти</string>
   <string name="signout_kill_confirm_message">Вы хотите выйти из всех служб и убить все процессы (жесткий выход)?</string>
   <string name="prompt_create_new_account_">Создать новую учетную запись?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Создать новую учетную запись чата для пользователя \'%1$s\'?</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Новые сообщения пользователя: <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="newMessages_label">Новые сообщения пользователя: &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Приглашение в групповой чат</string>
   <string name="new_messages_notify">Новое сообщение(я) от</string>
-  <string name="starting_the_chatsecure_service_">Запуск ChatSecure…</string>
+  <string name="starting_the_chatsecure_service_">Запуск ChatSecure...</string>
   <string name="app_unlocked">Активировано &amp; Разблокировано</string>
   <!--Alerts: Exceptions-->
   <string name="error">Внимание</string>
-  <string name="general_error">Код ошибки: <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string name="login_service_failed">Не удается выполнить вход в службу: <xliff:g id="SERVICE">%1$s</xliff:g>. Повторите попытку позже."\n"(Подробности: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="general_error">Код ошибки: &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Не удается выполнить вход в службу: &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Повторите попытку позже."\n"(Подробности: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Список не был добавлен.</string>
   <string name="block_contact_failed">Не удалось заблокировать контакт.</string>
   <string name="unblock_contact_failed">Не удалось разблокировать контакт.</string>
@@ -354,8 +352,8 @@
   <string name="service_error">Ошибка чата.</string>
   <string name="load_contact_list_failed">Список контактов не был загружен.</string>
   <string name="cant_connect_to_server">Не удается подключиться к серверу. Проверьте соединение.</string>
-  <string name="contact_already_exist">Пользователь <xliff:g id="USER">%1$s</xliff:g> уже внесен в список контактов.</string>
-  <string name="contact_blocked">Контакт \<xliff:g id="USER">%1$s</xliff:g>" заблокирован.</string>
+  <string name="contact_already_exist">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; уже внесен в список контактов.</string>
+  <string name="contact_blocked">Контакт \&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;" заблокирован.</string>
   <string name="contact_not_loaded">Дождитесь окончания загрузки списка контактов.</string>
   <string name="network_error">Произошла ошибка сети.</string>
   <string name="wifi_not_connected_error">Для этого соединения требуется WiFi</string>
@@ -396,8 +394,8 @@
   <string name="otr_keysync_warning_message">Скопируйте файл \'otr_keystore.ofcaes\' от настольного инструмента OtrFileConverter в корневую директорию вашего устройства хранения</string>
   <string name="msg_sent_failed">Не удалось отправить сообщение.</string>
   <string name="disconnected_warning">Сообщение будет отправлено после подключения</string>
-  <string name="contact_offline_warning">Пользователь <xliff:g id="USER_0">%1$s</xliff:g> не в сети. Отправленные сообщения будут доставлены, когда пользователь <xliff:g id="USER_1">%1$s</xliff:g> выйдет в сеть.</string>
-  <string name="contact_not_in_list_warning">Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует в списке контактов.</string>
+  <string name="contact_offline_warning">Пользователь &lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; не в сети. Отправленные сообщения будут доставлены, когда пользователь &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; выйдет в сеть.</string>
+  <string name="contact_not_in_list_warning">Пользователь &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; отсутствует в списке контактов.</string>
   <string name="account_settings_title">Настройки учетной записи</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">ВНИМАНИЕ: Это - ранний релиз программы ChatSecure и все еще может содержать ошибки или иметь проблемы безопасности.</string>

@@ -1,15 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Vyžadovat síly /</item>
-    <item>Automaticky pokusí</item>
+    <item>Vyžadovat / Stále</item>
+    <item>Automaticky</item>
     <item>Jak bylo požadováno</item>
     <item>Zakázáno / Nikdy</item>
   </string-array>
   <string-array name="otr_options_values">
     <item>vynutit</item>
-    <item>auto</item>
+    <item>automaticky</item>
     <item>požadovat</item>
     <item>zakázat</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>bam.yt</item>
   </string-array>
 </resources>

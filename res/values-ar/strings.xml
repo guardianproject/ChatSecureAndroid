@@ -33,19 +33,19 @@
   <string name="lock_screen_skip">التخطي &gt;&gt;</string>
   <string name="app_passphrase_view_title_dialog">موجه المعلومات</string>
   <string name="app_passphrase_view_password_question">أدخل كلمة السر</string>
-  <string name="password_please">كلمة السر، من فضلك…</string>
+  <string name="password_please">كلمة السر، من فضلك...</string>
   <string name="passphrase">جملة السر</string>
   <string name="passphrase_again">جملة السر (مجدّداً)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">حدد حساب</string>
   <string name="choose_account_title">حدد حساب</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">أضف حساب (<xliff:g id="account">%1$s</xliff:g>)</string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">أضف حساب (&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;)</string>
   <string name="menu_about">حول التطبيق</string>
   <string name="menu_sign_out_all">الخروج من الجميع</string>
   <string name="signout_all_confirm_message">هل تريد تسجيل الخروج من جميع الخدمات؟</string>
-  <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> تم تسجيل خروجك من</string>
-  <string name="signed_out_prompt_with_error">لقد تم إخراجك من<xliff:g id="account">%1$s</xliff:g> بسبب <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="signed_out_prompt">&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; تم تسجيل خروجك من</string>
+  <string name="signed_out_prompt_with_error">لقد تم إخراجك من&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; بسبب &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="welcome_first">هل هذه أول مرة تستخدم بها شات سيكيور (ChatSecure)؟</string>
   <string name="welcome_skip">غير قادر على الانتظار؟</string>
   <string name="welcome_about">إبدأ</string>
@@ -55,7 +55,7 @@
   <string name="setup_passphrase_label1">كلمة السر:</string>
   <string name="setup_passphrase_label2">أدخل كلمة السر مرة أخرى:</string>
   <string name="rekey_message">أدخل عبارة سرية جديدة. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
-  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة (الرجاء الانتظار)…</string>
+  <string name="do_rekey">يتم تشفير دفتر الملاحظات بالعبارة السرية الجديدة (الرجاء الانتظار)...</string>
   <string name="enter_pass">أدخل كلمة السر:</string>
   <string name="new_pass">مرحباً! أدخل عبارة سرية قوية لتشفير دفتر ملاحظاتك. يجب أن تحتوي على الاقل على حرف كبير capital و حرف صغير و رقم واحد، و أن تكون أطول من ست حروف.</string>
   <string name="pass_err_length">عبارتك السرية ليست طويلة بما يكفي.</string>
@@ -118,9 +118,9 @@
   <string name="account_setup_advanced_enc_auto">عندما يكون ذلك ممكنا ، قم بتشفير محادثاتي تلقائياً</string>
   <string name="account_setup_advanced_enc_req">قم بتشفير المحادثات حسب الطلب</string>
   <string name="account_setup_advanced_enc_off">تعطيل تشفير المحادثات</string>
-  <string name="account_setup_signin_a">التحقق من صحة البيانات…</string>
-  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية…</string>
-  <string name="account_setup_signin_c">تسجيل الدخول…</string>
+  <string name="account_setup_signin_a">التحقق من صحة البيانات...</string>
+  <string name="account_setup_signin_b">توليد زوج المفاتيح السرية...</string>
+  <string name="account_setup_signin_c">تسجيل الدخول...</string>
   <string name="account_wizard_setup_title">المساعدة بإعداد الحساب</string>
   <string name="account_wizard_account_title">رقم حسابك</string>
   <string name="account_wizard_host_title">إعداد الموقع</string>
@@ -131,11 +131,11 @@
   <string name="account_wizard_ready_body">تم إعداد شات سيكيور (ChatSecure)، و حان الوقت للاتصال بالخدمة و التمتع بالمحادثة بكل أمان و سرية!</string>
   <string name="_via_orbot">اوربوت/Orbot (تور/Tor)</string>
   <string name="select_domain_new_account">اختر اسم نطاق الدردشة</string>
-  <string name="registering_new_account_">جاري تسجيل حساب جديد…</string>
+  <string name="registering_new_account_">جاري تسجيل حساب جديد...</string>
   <string name="signing_in_to">انطلق يا شات سيكيور!</string>
   <string name="menu_cancel_signin">إلغاء تسجيل الدخول</string>
-  <string name="signing_in_wait">يتم تسجيل الدخول الآن…</string>
-  <string name="signing_out_wait">يتم تسجيل الخروج الآن…</string>
+  <string name="signing_in_wait">يتم تسجيل الدخول الآن...</string>
+  <string name="signing_out_wait">يتم تسجيل الخروج الآن...</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">تفقد سجل SRV</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">استخدم نظام الأسماء للبحث عن خادم أكس أم بي بي من اسم النطاق</string>
@@ -169,21 +169,21 @@
   <string name="menu_contact_nickname">اﻹسم المستعار لجهة الاتصال</string>
   <string name="menu_view_blocked">محجوب</string>
   <string name="nickname">اسم المستعار</string>
-  <string name="confirm_delete_contact">سيتم حذف "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="confirm_block_contact">سيتم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="confirm_unblock_contact">سيتم إزالة الحجب عن "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="add_contact_success">تمت إضافة "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="delete_contact_success">تم حذف "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="block_contact_success">تم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
-  <string name="unblock_contact_success">أزيل الحجب عن "<xliff:g id="user">%1$s</xliff:g>"</string>
+  <string name="confirm_delete_contact">سيتم حذف "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
+  <string name="confirm_block_contact">سيتم حجب "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
+  <string name="confirm_unblock_contact">سيتم إزالة الحجب عن "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
+  <string name="add_contact_success">تمت إضافة "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
+  <string name="delete_contact_success">تم حذف "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
+  <string name="block_contact_success">تم حجب "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
+  <string name="unblock_contact_success">أزيل الحجب عن "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
   <string name="menu_new_chat">محادثة جديدة</string>
   <string name="menu_search_contacts">ابحث بالأسماء</string>
   <string name="menu_show_grid">أظهر الشبكة</string>
   <string name="menu_start_chat">إبدأ الدردشة</string>
   <string name="menu_view_profile">مشاهدة الملف الشخصي</string>
   <string name="menu_verify">تحقق من جهة الاتصال</string>
-  <string name="ongoing_conversation">المحادثات الصادرة (<xliff:g id="number">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> متصل</string>
+  <string name="ongoing_conversation">المحادثات الصادرة (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; متصل</string>
   <string name="subscriptions">دعوات الإضافة</string>
   <string name="unknown_contact">(<i>غير معروف</i>) </string>
   <string name="empty_contact_group">فارغة</string>
@@ -203,17 +203,17 @@
   <string name="label_client_type">نوعية العميل:</string>
   <string name="client_type_computer">الكمبيوتر</string>
   <string name="client_type_mobile">جوال</string>
-  <string name="blocked_list_title">الأسماء المحجوبة <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="blocked_list_title">الأسماء المحجوبة &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">لا توجد أسماء محجوبة.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">تحدث مع <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="chat_with">تحدث مع &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">أنا</string>
-  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> متصل</string>
-  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> بالخارج</string>
-  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> مشغول</string>
-  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> غير متصل.</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> قام بالدخول</string>
-  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> قام بالخروج</string>
+  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; متصل</string>
+  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; بالخارج</string>
+  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; مشغول</string>
+  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; غير متصل.</string>
+  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; قام بالدخول</string>
+  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; قام بالخروج</string>
   <string name="menu_send_image">أرسل صورة</string>
   <string name="menu_send_file">إرسال ملف</string>
   <string name="menu_send_audio">أرسل ملف صوتي</string>
@@ -249,29 +249,28 @@
   <string name="end_chat_summary">سبتم خذف كافة ملفات الوسائط في هذه الجلسة. لإصدار ملف وسائط، إضغط نقرة طويلة على الصورة المصغرة.</string>
   <string name="end_chat_and_delete">إنهاء الدرشة وحذف الملفات</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لمحادثة جماعية.</string>
-  <string name="invitation_sent_prompt">تم ارسال دعوة ل<xliff:g id="user">٪ 1 $ ق</xliff:g>.</string>
+  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; يدعوك لمحادثة جماعية.</string>
+  <string name="invitation_sent_prompt">تم ارسال دعوة ل&lt;xliff:g id="user"&gt;٪ 1 $ ق&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">قبول</string>
   <string name="decline_invitation">رفض</string>
   <string name="menu_new_group_chat">دردشة جماعية</string>
   <string name="create_or_join_group_chat">أنشأ أو انضم لدردشة جماعية.</string>
-  <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية…</string>
+  <string name="connecting_to_group_chat_">الاتصال بمحادثة جماعية...</string>
   <string name="menu_invite_contact">دعوة</string>
   <string name="contacts_picker_title">حدد جهات الاتصال ليتم دعوتها</string>
   <string name="contact_filter_hint">اكتب اسم جهة الاتصال</string>
   <string name="empty_contact_list">لم يتم العثور على جهة الاتصال.
 \n\n
 اضغط للاضافة.</string>
-  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> يدعوك لتكون بقائمة أسمائه.</string>
-  <string name="approve_subscription">قبول</string>
-  <string name="decline_subscription">رفض</string>
-  <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
-  <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
+  <string name="approve_subscription">نعم</string>
+  <string name="decline_subscription">لا</string>
+  <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; . حاول مرة أخرى.</string>
+  <string name="decline_subscription_error">فشلت محاولة رفض الاشتراك من &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; . حاول مرة أخرى.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">بدء التشفير</string>
   <string name="menu_otr_stop">وقف التشفير</string>
-  <string name="starting_otr_chat">البدء بالتشفير…</string>
-  <string name="stopping_otr_chat">ايقاف التشفير…</string>
+  <string name="starting_otr_chat">البدء بالتشفير...</string>
+  <string name="stopping_otr_chat">ايقاف التشفير...</string>
   <string name="label_fingerprint_remote">بصمة المفتاح</string>
   <string name="label_fingerprint_local">بصمة المفتاح</string>
   <string name="menu_sign_in">تسجيل الدخول</string>
@@ -377,21 +376,21 @@
   <string name="dialog_settings_choose_background_body">هل تريد انتقاء صورة خلفية من المعرض؟</string>
   <string name="dialog_settings_choose_background_picker">اختر الصورة</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">رسائل جديدة من <xliff:g id="provider">%1$s</xliff:g></string>
-  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> الأحاديث الغير مقروءة</string>
-  <string name="subscription_notify_text">دعوة صديق جديد من <xliff:g id="user">%s</xliff:g></string>
-  <string name="file_notify_text">ملف جديد <xliff:g id="filename">%s</xliff:g> من <xliff:g id="user">%s</xliff:g></string>
+  <string name="newMessages_label">رسائل جديدة من &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; الأحاديث الغير مقروءة</string>
+  <string name="subscription_notify_text">دعوة صديق جديد من &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="file_notify_text">ملف جديد &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; من &lt;xliff:g id="user"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">دعوة لمحادثة جماعية</string>
-  <string name="group_chat_invite_notify_text">دعوة محادثة مجموعة جديدة من <xliff:g id="user">%s</xliff:g></string>
+  <string name="group_chat_invite_notify_text">دعوة محادثة مجموعة جديدة من &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
   <string name="new_messages_notify">رسالة جديدة من</string>
-  <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure…</string>
+  <string name="starting_the_chatsecure_service_">تشغيل خدمة ChatSecure...</string>
   <string name="app_unlocked">تم التفعيل و فتح القفل</string>
   <string name="toast_chat_copied_to_clipboard">تم نسخ الرسالة إلى الحافظة</string>
   <!--Alerts: Exceptions-->
   <string name="error">انتباه</string>
   <string name="error_prefix">خطأ:</string>
-  <string name="general_error">رمز الخطأ: <xliff:g id="code">%1$d</xliff:g></string>
-  <string name="login_service_failed">غير قادر على تسجيل الدخول إلى <xliff:g id="service">%1$s</xliff:g> . حاول مرة أخرى لاحقاً. التفاصيل:    <xliff:g id="description">%2$s</xliff:g>
+  <string name="general_error">رمز الخطأ: &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">غير قادر على تسجيل الدخول إلى &lt;xliff:g id="service"&gt;%1$s&lt;/xliff:g&gt; . حاول مرة أخرى لاحقاً. التفاصيل:    &lt;xliff:g id="description"&gt;%2$s&lt;/xliff:g&gt;
 </string>
   <string name="add_list_failed">لم يتم إضافة القائمة.</string>
   <string name="block_contact_failed">لم يتم حظر جهة الاتصال</string>
@@ -401,8 +400,8 @@
   <string name="service_error">خطأ بالخدمة!</string>
   <string name="load_contact_list_failed">لم يتم تحميل قائمة الاتصال.</string>
   <string name="cant_connect_to_server">لا يمكن الاتصال بالموقع. يرجى التحقق من اتصالك.</string>
-  <string name="contact_already_exist"><xliff:g id="user">%1$s</xliff:g> موجود بقائمة الأسماء لديك.</string>
-  <string name="contact_blocked">تم حجب "<xliff:g id="user">%1$s</xliff:g>"</string>
+  <string name="contact_already_exist">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; موجود بقائمة الأسماء لديك.</string>
+  <string name="contact_blocked">تم حجب "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;"</string>
   <string name="contact_not_loaded">الرجاء الانتظار بينما نقوم بتحميل قائمة الاتصال الخاصة بك.</string>
   <string name="network_error">حدث خطأ في الشبكة.</string>
   <string name="wifi_not_connected_error">مطلوب اتصال واي فاي</string>
@@ -445,10 +444,10 @@
   <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  OtrFileConverter إلى مجلد جذر جهاز تخزينك</string>
   <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
   <string name="disconnected_warning">لا يوجد اتصال حالياً. ستُرسَل الرسائل عند إعادة الاتصال.</string>
-  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> غير موجود بقائمة الأسماء لديك.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; غير متصل. أي رسائل ترسلها ستصل إلى &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; عندما يقوم بالاتصال.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; غير موجود بقائمة الأسماء لديك.</string>
   <string name="error_account_password_mismatch">كلمات السر لا تتطابق</string>
-  <string name="error_account_settings_priority">يجب على الأفضلية أن تكون رقم ضمن نطاق [0 … 127]</string>
+  <string name="error_account_settings_priority">يجب على الأفضلية أن تكون رقم ضمن نطاق [0 ... 127]</string>
   <string name="error_account_settings_port">يجب على رقم المنفذ أن يكون رقماً</string>
   <string name="error_chat_file_transfer_title">خطأ في النقل</string>
   <string name="error_chat_file_transfer_body">لا يمكن قراءة مخزن الملفات</string>
@@ -465,7 +464,7 @@
   <string name="contacts">جهات الاتصال</string>
   <string name="mtm_accept_cert">قبول شهادة التعمية من الخادم؟</string>
   <string name="menu_sidebar_qr">اعرض بصمة مفتاحك</string>
-  <string name="loading">جاري التحميل…</string>
+  <string name="loading">جاري التحميل...</string>
   <!--Other-->
   <string name="about_link">حول شات سيكيور\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

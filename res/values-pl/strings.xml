@@ -37,19 +37,19 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <string name="lock_screen_skip">Jestem leniwy (Bez hasła!)</string>
   <string name="app_passphrase_view_title_dialog">Prośba o informacje</string>
   <string name="app_passphrase_view_password_question">Prosimy o wpisanie hasła</string>
-  <string name="password_please">Hasło…</string>
+  <string name="password_please">Hasło...</string>
   <string name="passphrase">Hasło</string>
   <string name="passphrase_again">Hasło (ponownie)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Wybierz konto</string>
   <string name="choose_account_title">Wybierz konto</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">Dodaj konto <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Dodaj konto &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_about">O ChatSecure</string>
   <string name="menu_sign_out_all">Wyloguj całość</string>
   <string name="signout_all_confirm_message">Czy chcesz wylogować się ze wszystkich usług ?</string>
-  <string name="signed_out_prompt">Nastąpiło wylogowanie z konta <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
-  <string name="signed_out_prompt_with_error">Zostałeś wylogowany z <xliff:g id="account">%1$s</xliff:g> ponieważ <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="signed_out_prompt">Nastąpiło wylogowanie z konta &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="signed_out_prompt_with_error">Zostałeś wylogowany z &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; ponieważ &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="welcome_first">Pierwszy raz używasz ChatSecure ?</string>
   <string name="welcome_skip">Nie możesz doczekać się żeby zacząć ? :)</string>
   <string name="welcome_about">Zaczynij tutaj</string>
@@ -59,7 +59,7 @@ Zezwala aplikacji na przesyłanie danych do dostawcy zawartości czatu.
   <string name="setup_passphrase_label1">Wyrażenie hasłowe:</string>
   <string name="setup_passphrase_label2">Wyrażenie hasłowe (powtórz):</string>
   <string name="rekey_message">Proszę wpisać *nowe* wyrażenie hasłowe. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
-  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości…)</string>
+  <string name="do_rekey">Szyfrowanie aktualnych notatek z użyciem nowego wyrażenia hasłowego (cierpliwości...)</string>
   <string name="enter_pass">Wprowadź twoje wyrażenie hasłowe:</string>
   <string name="new_pass">Witamy! Wprowadź mocne wyrażenie hasłowe aby zabezpiecznyć twoje rozmowy. Wyrażenie musi zawierać przynajmniej dużą i małą literę oraz numer. Wyrażenie musi składać się również przynajmniej z 6 znaków.</string>
   <string name="pass_err_length">Twoje wyrażenie hasłowe nie jest wystarczająco długie (minimum 6 znaków)</string>
@@ -124,9 +124,9 @@ No to zaczynamy!</string>
   <string name="account_setup_advanced_enc_auto">Kiedy możliwe, szyfruj rozmowy automatycznie</string>
   <string name="account_setup_advanced_enc_req">Szyfruj rozmowy jak zażądane</string>
   <string name="account_setup_advanced_enc_off">Wyłącz szyfrowanie rozmów</string>
-  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń…</string>
-  <string name="account_setup_signin_b">Generowanie klucza…</string>
-  <string name="account_setup_signin_c">Trwa logowanie…</string>
+  <string name="account_setup_signin_a">Trwa weryfikacja poświadczeń...</string>
+  <string name="account_setup_signin_b">Generowanie klucza...</string>
+  <string name="account_setup_signin_c">Trwa logowanie...</string>
   <string name="account_wizard_setup_title">Czarodziej Konta</string>
   <string name="account_wizard_account_title">ID twojego konta</string>
   <string name="account_wizard_host_title">Skonfiguruj serwer</string>
@@ -137,8 +137,8 @@ No to zaczynamy!</string>
   <string name="account_wizard_ready_body">ChatSecure został skonfigurowany i tym samym przyszedł czas na połączenie się z Twoim serwisem i rozpoczęciem bezpiecznych, prywatnych rozmów!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Wybierz domenę</string>
-  <string name="registering_new_account_">Rejestrowanie nowego konta…</string>
-  <string name="signing_in_to">Włączam ChatSecure…</string>
+  <string name="registering_new_account_">Rejestrowanie nowego konta...</string>
+  <string name="signing_in_to">Włączam ChatSecure...</string>
   <string name="menu_cancel_signin">Anuluj logowanie</string>
   <string name="signing_in_wait">Trwa logowanie…</string>
   <string name="signing_out_wait">Wylogowywanie\u2026</string>
@@ -169,28 +169,28 @@ Kliknij tu aby rozpocząć rozmowę!</string>
 skonfigurowanego konta
 
 Kliknij aby dodać konto.</string>
-  <string name="buddy_list_title">Lista Kontaktów - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">Lista Kontaktów - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Dodaj kontakt</string>
   <string name="menu_remove_contact">Usuń kontakt</string>
   <string name="menu_block_contact">Zablokuj kontakt</string>
   <string name="menu_contact_nickname">Pseudonim kontaktowy</string>
   <string name="menu_view_blocked">Zablokowano</string>
   <string name="nickname">Pseudonim:</string>
-  <string name="confirm_delete_contact">Kontakt „<xliff:g id="USER">%1$s</xliff:g>” zostanie usunięty.</string>
-  <string name="confirm_block_contact">Kontakt „<xliff:g id="USER">%1$s</xliff:g>” zostanie zablokowany.</string>
-  <string name="confirm_unblock_contact">Kontakt „<xliff:g id="USER">%1$s</xliff:g>” zostanie odblokowany.</string>
-  <string name="add_contact_success">Dodano kontakt „<xliff:g id="USER">%1$s</xliff:g>”.</string>
-  <string name="delete_contact_success">Usunięto kontakt „<xliff:g id="USER">%1$s</xliff:g>”.</string>
-  <string name="block_contact_success">Zablokowano kontakt „<xliff:g id="USER">%1$s</xliff:g>”.</string>
-  <string name="unblock_contact_success">Odblokowano kontakt „<xliff:g id="USER">%1$s</xliff:g>”.</string>
+  <string name="confirm_delete_contact">Kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;” zostanie usunięty.</string>
+  <string name="confirm_block_contact">Kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;” zostanie zablokowany.</string>
+  <string name="confirm_unblock_contact">Kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;” zostanie odblokowany.</string>
+  <string name="add_contact_success">Dodano kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”.</string>
+  <string name="delete_contact_success">Usunięto kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”.</string>
+  <string name="block_contact_success">Zablokowano kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”.</string>
+  <string name="unblock_contact_success">Odblokowano kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”.</string>
   <string name="menu_new_chat">Nowy czat</string>
   <string name="menu_search_contacts">Przeglądaj kontakty</string>
   <string name="menu_show_grid">Pokaż Kartę</string>
   <string name="menu_start_chat">Rozpocznij czat</string>
   <string name="menu_view_profile">Wyświetl Profil</string>
   <string name="menu_verify">Zweryfikuj klucz</string>
-  <string name="ongoing_conversation">Aktywne czaty (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> online</string>
+  <string name="ongoing_conversation">Aktywne czaty (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; online</string>
   <string name="subscriptions">Zaproszenia</string>
   <string name="unknown_contact">(\"<i>\"Nieznany\"</i>\")</string>
   <string name="empty_contact_group">Pusty</string>
@@ -209,17 +209,17 @@ Kliknij aby dodać konto.</string>
   <string name="label_client_type">Typ klienta:</string>
   <string name="client_type_computer">Komputer</string>
   <string name="client_type_mobile">Przenośny</string>
-  <string name="blocked_list_title">Zablokowane kontakty - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Zablokowane kontakty - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">Brak zablokowanych kontaktów.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Czat z użytkownikiem <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="chat_with">Czat z użytkownikiem &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Ja</string>
-  <string name="contact_online">Użytkownik <xliff:g id="USER">%1$s</xliff:g> jest dostępny</string>
-  <string name="contact_away">Użytkownik <xliff:g id="USER">%1$s</xliff:g> jest niedostępny</string>
-  <string name="contact_busy">Użytkownik <xliff:g id="USER">%1$s</xliff:g> jest zajęty</string>
-  <string name="contact_offline">Użytkownik <xliff:g id="USER">%1$s</xliff:g> jest niedostępny</string>
-  <string name="contact_joined">Użytkownik <xliff:g id="USER">%1$s</xliff:g> dołączył do czatu</string>
-  <string name="contact_left">Użytkownik <xliff:g id="USER">%1$s</xliff:g> opuścił czat</string>
+  <string name="contact_online">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; jest dostępny</string>
+  <string name="contact_away">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; jest niedostępny</string>
+  <string name="contact_busy">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; jest zajęty</string>
+  <string name="contact_offline">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; jest niedostępny</string>
+  <string name="contact_joined">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; dołączył do czatu</string>
+  <string name="contact_left">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; opuścił czat</string>
   <string name="menu_send_image">Wyślij Zdjęcie</string>
   <string name="menu_send_file">Wyślij plik</string>
   <string name="menu_send_audio">Wyślij Audio</string>
@@ -254,29 +254,26 @@ Kliknij aby dodać konto.</string>
   <string name="end_chat_summary">Wszystkie zabezpieczone elementy multimedialne tej sesji zostaną usunięte. Eksportuj elementy multimedialne za pomocą długiego kliknięcia na ikonę miniatur.</string>
   <string name="end_chat_and_delete">Zakończ czat i usuń pliki</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> przesyła zaproszenie do czatu grupowego.</string>
-  <string name="invitation_sent_prompt">Wysłano zaproszenie do użytkownika <xliff:g id="USER">%1$s</xliff:g>.</string>
+  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; przesyła zaproszenie do czatu grupowego.</string>
+  <string name="invitation_sent_prompt">Wysłano zaproszenie do użytkownika &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Zaakceptuj</string>
   <string name="decline_invitation">Odmów</string>
   <string name="menu_new_group_chat">Rozmowa grupowa</string>
   <string name="create_or_join_group_chat">Stwórz albo dołącz do Rozmow grupowej</string>
-  <string name="connecting_to_group_chat_">Podłączanie do grupy czat…</string>
+  <string name="connecting_to_group_chat_">Podłączanie do grupy czat...</string>
   <string name="menu_invite_contact">Zaproś…</string>
   <string name="contacts_picker_title">Wybierz kontakty do zaproszenia</string>
   <string name="contact_filter_hint">Wpisz, aby znaleźć kontakt</string>
   <string name="empty_contact_list">Nie znaleziono kotaktów
 
 Kliknij aby zaprosić.</string>
-  <string name="subscription_prompt">Użytkownik <xliff:g id="USER">%1$s</xliff:g> zaprosił Cię do swojej listy kontaktów.</string>
-  <string name="approve_subscription">Zaakceptuj</string>
-  <string name="decline_subscription">Odmów</string>
-  <string name="approve_subscription_error">Nie można zatwierdzić subskrypcji od użytkownika <xliff:g id="USER">%1$s</xliff:g>. Spróbuj ponownie później.</string>
-  <string name="decline_subscription_error">Nie można odmówić subskrypcji od <xliff:g id="USER">%1$s</xliff:g>. Spróbuj ponownie później.</string>
+  <string name="approve_subscription_error">Nie można zatwierdzić subskrypcji od użytkownika &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Spróbuj ponownie później.</string>
+  <string name="decline_subscription_error">Nie można odmówić subskrypcji od &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Spróbuj ponownie później.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Rozpocznij szyfrowanie</string>
   <string name="menu_otr_stop">Zakończ szyfrowanie</string>
-  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy…</string>
-  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy…</string>
+  <string name="starting_otr_chat">Trwa rozpoczynanie szyfrowanej rozmowy...</string>
+  <string name="stopping_otr_chat">Trwa przerywanie szyfrowaniej rozmowy...</string>
   <string name="label_fingerprint_remote">Klucz bezpieczeństwa</string>
   <string name="label_fingerprint_local">Klucz bezpieczeństwa</string>
   <string name="menu_sign_in">Zaloguj</string>
@@ -285,7 +282,7 @@ Kliknij aby zaprosić.</string>
   <string name="otr_session_status_encrypted">Szyfrowanie jest włączone (Kliknij aby zweryfikować)</string>
   <string name="otr_session_status_finished">Twój kontakt zakończył szyfrowaną rozmowę.</string>
   <string name="otr_session_status_verified">Zaszyfrownano i zweryfikowano!</string>
-  <string name="otr_gen_key">Generowanie nowego klucza OTR…</string>
+  <string name="otr_gen_key">Generowanie nowego klucza OTR...</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Dostrzegliśmy zbiór kluczy OTR do importowania. Chcesz teraz zeskanować hasło QR?</string>
   <string name="menu_import_keys">Aktywuj KeySync</string>
@@ -366,7 +363,7 @@ Kliknij aby zaprosić.</string>
   <string name="pref_debug_summary">Dane wyjściowe logu aplikacji na standardowe wyjście / LogCat do debugowania</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Dane w tle są wyłączone</string>
-  <string name="bg_data_prompt_message">Usługa <xliff:g id="PROVIDER">%1$s</xliff:g> wymaga, aby włączone były dane w tle.</string>
+  <string name="bg_data_prompt_message">Usługa &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; wymaga, aby włączone były dane w tle.</string>
   <string name="bg_data_prompt_ok">Włącz</string>
   <string name="bg_data_prompt_cancel">Zamknij</string>
   <string name="signout_kill_confirm_message">Czy chcesz wylogować się z serwisu i zakończyć wszystkie procesy (tzw. twarde wyłącznie) ?</string>
@@ -384,21 +381,21 @@ Kliknij aby zaprosić.</string>
   <string name="dialog_settings_choose_background_body">Czy chcesz wybrać obraz tła z galerii?</string>
   <string name="dialog_settings_choose_background_picker">Wybierz zdjęcie</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Nowe wiadomości <xliff:g id="PROVIDER">%1$s</xliff:g></string>
-  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> nieprzeczytanych czatów</string>
-  <string name="subscription_notify_text">Nowe zaproszenie do znajomych od <xliff:g id="user">%s</xliff:g></string>
-  <string name="file_notify_text">Nowy plik <xliff:g id="filename">%s</xliff:g> od <xliff:g id="user">%s</xliff:g></string>
+  <string name="newMessages_label">Nowe wiadomości &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; nieprzeczytanych czatów</string>
+  <string name="subscription_notify_text">Nowe zaproszenie do znajomych od &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="file_notify_text">Nowy plik &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; od &lt;xliff:g id="user"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Zaproszenie do czatu grupowego</string>
-  <string name="group_chat_invite_notify_text">Nowe zaproszenie do grupowego czata od <xliff:g id="user">%s</xliff:g></string>
+  <string name="group_chat_invite_notify_text">Nowe zaproszenie do grupowego czata od &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
   <string name="new_messages_notify">Nowa/e wiadomość/i od</string>
-  <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure…</string>
+  <string name="starting_the_chatsecure_service_">Uruchamianie serwisu ChatSecure...</string>
   <string name="app_unlocked">Aktywowany &amp; odblokowany</string>
   <string name="toast_chat_copied_to_clipboard">wiadomość skopiowana do schowka</string>
   <!--Alerts: Exceptions-->
   <string name="error">Uwaga</string>
   <string name="error_prefix">Błąd:</string>
-  <string name="general_error">Kod błędu <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string name="login_service_failed">Nie można zalogować do usługi <xliff:g id="SERVICE">%1$s</xliff:g>. Spróbuj ponownie później."\n"(Szczegóły: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="general_error">Kod błędu &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Nie można zalogować do usługi &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Spróbuj ponownie później."\n"(Szczegóły: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Nie dodano listy.</string>
   <string name="block_contact_failed">Nie zablokowano kontaktu.</string>
   <string name="unblock_contact_failed">Nie odblokowano kontaktu.</string>
@@ -407,8 +404,8 @@ Kliknij aby zaprosić.</string>
   <string name="service_error">Błąd usługi!</string>
   <string name="load_contact_list_failed">Nie załadowano listy kontaktów.</string>
   <string name="cant_connect_to_server">Nie można się połączyć z serwerem. Sprawdź połączenie.</string>
-  <string name="contact_already_exist">Użytkownik <xliff:g id="USER">%1$s</xliff:g> już znajduje się na Twojej liście kontaktów.</string>
-  <string name="contact_blocked">Zablokowano kontakt „<xliff:g id="USER">%1$s</xliff:g>”.</string>
+  <string name="contact_already_exist">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; już znajduje się na Twojej liście kontaktów.</string>
+  <string name="contact_blocked">Zablokowano kontakt „&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;”.</string>
   <string name="contact_not_loaded">Czekaj, trwa ładowanie listy kontaktów.</string>
   <string name="network_error">Wystąpił błąd sieciowy.</string>
   <string name="wifi_not_connected_error">WiFi jest wymagane dla tego połącznia</string>
@@ -452,8 +449,8 @@ Kliknij aby zaprosić.</string>
   <string name="otr_keysync_warning_message">Prosimy o skopiowanie pliku \'otr_keystore.ofcaes\' z pulpitu narzędzia OtrFileConverter do głównego katalogu na Twoim dysku.</string>
   <string name="msg_sent_failed">Nie można wysłać wiadomości.</string>
   <string name="disconnected_warning">Wiadomości będą wysłane przy ponowym połączeniu.</string>
-  <string name="contact_offline_warning">Użytkownik <xliff:g id="USER_0">%1$s</xliff:g> jest offline. Wysyłane wiadomości zostaną dostarczone, gdy <xliff:g id="USER_1">%1$s</xliff:g> będzie znowu online.</string>
-  <string name="contact_not_in_list_warning">Użytkownik <xliff:g id="USER">%1$s</xliff:g> nie jest na Twojej liście kontaktów.</string>
+  <string name="contact_offline_warning">Użytkownik &lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; jest offline. Wysyłane wiadomości zostaną dostarczone, gdy &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; będzie znowu online.</string>
+  <string name="contact_not_in_list_warning">Użytkownik &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; nie jest na Twojej liście kontaktów.</string>
   <string name="error_account_password_mismatch">Twoje hasła nie zgadzają się</string>
   <string name="error_account_settings_priority">Priorytet musi być liczbą pomiędzy [0 .. 127]</string>
   <string name="error_account_settings_port">Numer portu musi być liczbą</string>
@@ -473,7 +470,7 @@ Kliknij aby zaprosić.</string>
   <string name="contacts">Kontakty</string>
   <string name="mtm_accept_cert">Zaakceptować Certyfikat Serwera?</string>
   <string name="menu_sidebar_qr">Klucz</string>
-  <string name="loading">trwa ładowanie…</string>
+  <string name="loading">trwa ładowanie...</string>
   <!--Other-->
   <string name="about_link">O ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

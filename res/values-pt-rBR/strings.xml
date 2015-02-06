@@ -24,7 +24,8 @@
   <!--Views: Chat: Single-->
   <!--Views: Chat: Group-->
   <string name="accept_invitation">Aceitar</string>
-  <string name="approve_subscription">Aceitar</string>
+  <string name="approve_subscription">Sim</string>
+  <string name="decline_subscription">Não</string>
   <!--Security: OTR-->
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->

@@ -35,19 +35,19 @@
   <string name="lock_screen_skip">Мързи ме (Без Парола!)</string>
   <string name="app_passphrase_view_title_dialog">Информационно поле</string>
   <string name="app_passphrase_view_password_question">Моля, въведи парола</string>
-  <string name="password_please">Паролата моля…</string>
+  <string name="password_please">Паролата моля...</string>
   <string name="passphrase">Фразова парола</string>
   <string name="passphrase_again">Фразова парола(повторно)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Избери профил</string>
   <string name="choose_account_title">Избери профил</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">Добави <xliff:g id="account">%1$s</xliff:g> профил</string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Добави &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; профил</string>
   <string name="menu_about">За програмата</string>
   <string name="menu_sign_out_all">Отпиши се от всички</string>
   <string name="signout_all_confirm_message">Искаш ли да се отпишеш от всички профили?</string>
-  <string name="signed_out_prompt">Отписан си от <xliff:g id="account">%1$s</xliff:g>.</string>
-  <string name="signed_out_prompt_with_error">Отписан си от <xliff:g id="account">%1$s</xliff:g>, защото <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="signed_out_prompt">Отписан си от &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="signed_out_prompt_with_error">Отписан си от &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;, защото &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="welcome_first">За първи път с ChatSecure?</string>
   <string name="welcome_skip">Нямаш търпение да започнеш?</string>
   <string name="welcome_about">Начало</string>
@@ -57,7 +57,7 @@
   <string name="setup_passphrase_label1">Парола:</string>
   <string name="setup_passphrase_label2">Парола (повтори):</string>
   <string name="rekey_message">Въведи *нова* парола. Тя трябва да се състои от поне една главна буква, една малка буква и една цифра, и да е по-дълга от 6 символа.</string>
-  <string name="do_rekey">Зашифроване на съществуващите белeжки с новата парола (търпение…)</string>
+  <string name="do_rekey">Зашифроване на съществуващите белeжки с новата парола (търпение...)</string>
   <string name="enter_pass">Въведи паролата:</string>
   <string name="new_pass">Добре дошъл! Въведи сложна парола, за да подсигуриш бележките си. Тя трябва да се състои от поне една главна буква, една малка буква и една цифра, и да бъде по-дълга от 6 символа.</string>
   <string name="pass_err_length">Паролата не е достатъчно дълга</string>
@@ -122,9 +122,9 @@ OTR протоколът е съвместим с други приложени�
   <string name="account_setup_advanced_enc_auto">Когато е възможно, шифровай съобщенията автоматично</string>
   <string name="account_setup_advanced_enc_req">Шифровай съобщенията, когато това бъде поискано</string>
   <string name="account_setup_advanced_enc_off">Изключи шифроването на съобщенията</string>
-  <string name="account_setup_signin_a">Удостоверяване на самоличността…</string>
-  <string name="account_setup_signin_b">Генериране на ключ…</string>
-  <string name="account_setup_signin_c">Вписване…</string>
+  <string name="account_setup_signin_a">Удостоверяване на самоличността...</string>
+  <string name="account_setup_signin_b">Генериране на ключ...</string>
+  <string name="account_setup_signin_c">Вписване...</string>
   <string name="account_wizard_setup_title">Стъпка по Стъпка Настройки на Профила</string>
   <string name="account_wizard_account_title">Идентификатор на Твоят Профил </string>
   <string name="account_wizard_host_title">Настрой Сървъра</string>
@@ -135,8 +135,8 @@ OTR протоколът е съвместим с други приложени�
   <string name="account_wizard_ready_body">ChatSecure е нагласен и е време да те свържем, и започнеш да общуваш сигурно и поверително!</string>
   <string name="_via_orbot">Орбот (Тор)</string>
   <string name="select_domain_new_account">Избери доставчик</string>
-  <string name="registering_new_account_">Регистрирване на нов профил…</string>
-  <string name="signing_in_to">подготвяне на ChatSecure…</string>
+  <string name="registering_new_account_">Регистрирване на нов профил...</string>
+  <string name="signing_in_to">подготвяне на ChatSecure...</string>
   <string name="menu_cancel_signin">Откажи вписването</string>
   <string name="signing_in_wait">Вписване\u2026</string>
   <string name="signing_out_wait">Отписване\u2026</string>
@@ -167,28 +167,28 @@ OTR протоколът е съвместим с други приложени�
 настроени профили.⏎
 ⏎
 Чукни тук, за да добавиш!</string>
-  <string name="buddy_list_title">Списък с Контакти - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">Списък с Контакти - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Добави контакт</string>
   <string name="menu_remove_contact">Изтрий контакта</string>
   <string name="menu_block_contact">Блокирай контакта</string>
   <string name="menu_contact_nickname">Прякор на контакта</string>
   <string name="menu_view_blocked">Блокиран</string>
   <string name="nickname">Прякор</string>
-  <string name="confirm_delete_contact">Контактът "<xliff:g id="user">%1$s</xliff:g>" ще бъде премахнат.</string>
-  <string name="confirm_block_contact">Контактът "<xliff:g id="user">%1$s</xliff:g>" ще бъде блокиран.</string>
-  <string name="confirm_unblock_contact">Контактът "<xliff:g id="user">%1$s</xliff:g>" ще бъде разблокиран.</string>
-  <string name="add_contact_success">Контактът "<xliff:g id="user">%1$s</xliff:g>" добавен.</string>
-  <string name="delete_contact_success">Контактът "<xliff:g id="user">%1$s</xliff:g>" изтрит.</string>
-  <string name="block_contact_success">Контактът "<xliff:g id="user">%1$s</xliff:g>" блокиран.</string>
-  <string name="unblock_contact_success">Контактът "<xliff:g id="user">%1$s</xliff:g>" разблокиран.</string>
+  <string name="confirm_delete_contact">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" ще бъде премахнат.</string>
+  <string name="confirm_block_contact">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" ще бъде блокиран.</string>
+  <string name="confirm_unblock_contact">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" ще бъде разблокиран.</string>
+  <string name="add_contact_success">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" добавен.</string>
+  <string name="delete_contact_success">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" изтрит.</string>
+  <string name="block_contact_success">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" блокиран.</string>
+  <string name="unblock_contact_success">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" разблокиран.</string>
   <string name="menu_new_chat">Нов Чат</string>
   <string name="menu_search_contacts">Търси Контакти</string>
   <string name="menu_show_grid">Покажи в Таблица</string>
   <string name="menu_start_chat">Започни чат</string>
   <string name="menu_view_profile">Виж Профила</string>
   <string name="menu_verify">Потвърди Ключа</string>
-  <string name="ongoing_conversation">Текущи чатове (<xliff:g id="number">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> е на линия</string>
+  <string name="ongoing_conversation">Текущи чатове (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; е на линия</string>
   <string name="subscriptions">Покана за приятелство</string>
   <string name="unknown_contact">(<i>Непознат</i>) </string>
   <string name="empty_contact_group">Списъкът е празен</string>
@@ -207,17 +207,17 @@ OTR протоколът е съвместим с други приложени�
   <string name="label_client_type">Тип програма:</string>
   <string name="client_type_computer">Компютър</string>
   <string name="client_type_mobile">Мобилно устройство</string>
-  <string name="blocked_list_title">Блокирани контакти - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Блокирани контакти - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">Няма блокирани контакти.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Чат с <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="chat_with">Чат с &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Аз</string>
-  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> е на линия</string>
-  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> отсъства</string>
-  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> е зает</string>
-  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> не е вписан</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> се присъедини</string>
-  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> напусна</string>
+  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; е на линия</string>
+  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; отсъства</string>
+  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; е зает</string>
+  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; не е вписан</string>
+  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; се присъедини</string>
+  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; напусна</string>
   <string name="menu_send_image">Изпрати Снимка</string>
   <string name="menu_send_file">Изпрати Файл</string>
   <string name="menu_send_audio">Изпрати Аудио</string>
@@ -253,29 +253,26 @@ OTR протоколът е съвместим с други приложени�
   <string name="end_chat_summary">Всички подсигурени елементи от тази сесия ще бъдат изтрити. Експортирайте медиен елемент като продължително натиснете иконата му.</string>
   <string name="end_chat_and_delete">Прекрати чата и изтрий файловете</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> те кани да се присъединиш към групов чат.</string>
-  <string name="invitation_sent_prompt">Покана бе изпратена на <xliff:g id="user">%1$s</xliff:g>.</string>
+  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; те кани да се присъединиш към групов чат.</string>
+  <string name="invitation_sent_prompt">Покана бе изпратена на &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Приеми</string>
   <string name="decline_invitation">Откажи</string>
   <string name="menu_new_group_chat">Групов Чат</string>
   <string name="create_or_join_group_chat">Създай или се Включи в Групова Чат</string>
-  <string name="connecting_to_group_chat_">Свързване към групов чат…</string>
+  <string name="connecting_to_group_chat_">Свързване към групов чат...</string>
   <string name="menu_invite_contact">Покани\u2026</string>
   <string name="contacts_picker_title">Избери контакт(и) за поканване</string>
   <string name="contact_filter_hint">Пиши, за да намериш контакт</string>
   <string name="empty_contact_list">Не са намерени контакти.
 
 Чукни, за да поканиш.</string>
-  <string name="subscription_prompt"><xliff:g id="user">%1$s</xliff:g> те кани да се присъединиш към неговия/нейния списък с Контакти.</string>
-  <string name="approve_subscription">Приеми</string>
-  <string name="decline_subscription">Откажи</string>
-  <string name="approve_subscription_error">Неуспешен опит да потвърдиш познанство с <xliff:g id="user">%1$s</xliff:g>. Моля, опитай отново по-късно.</string>
-  <string name="decline_subscription_error">Неуспешен опит да откажеш познанство с <xliff:g id="user">%1$s</xliff:g>. Моля, опитай отново по-късно.</string>
+  <string name="approve_subscription_error">Неуспешен опит да потвърдиш познанство с &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Моля, опитай отново по-късно.</string>
+  <string name="decline_subscription_error">Неуспешен опит да откажеш познанство с &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Моля, опитай отново по-късно.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Започни шифроването</string>
   <string name="menu_otr_stop">Прекрати шифроването</string>
-  <string name="starting_otr_chat">Стартиране на шифрован чат…</string>
-  <string name="stopping_otr_chat">Спиране на шифрован чат…</string>
+  <string name="starting_otr_chat">Стартиране на шифрован чат...</string>
+  <string name="stopping_otr_chat">Спиране на шифрован чат...</string>
   <string name="label_fingerprint_remote">Сигурен Елeктронен Отпечатък</string>
   <string name="label_fingerprint_local">Сигурен Елeктронен Отпечатък</string>
   <string name="menu_sign_in">Впиши се</string>
@@ -284,7 +281,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="otr_session_status_encrypted">Шифроването е включено (Чукни, за да провериш)</string>
   <string name="otr_session_status_finished">Твоят контакт прекрати шифрованият чат.</string>
   <string name="otr_session_status_verified">Зашифровано и проверено!</string>
-  <string name="otr_gen_key">Генериране на нов OTR ключ…</string>
+  <string name="otr_gen_key">Генериране на нов OTR ключ...</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Открихме OTR ключов архив, който може да бъде добавен. Искаш ли да сканираш QR паролата сега?</string>
   <string name="menu_import_keys">Активирай KeySync</string>
@@ -384,21 +381,21 @@ OTR протоколът е съвместим с други приложени�
   <string name="dialog_settings_choose_background_body">Желаете ли да изберете тапет от Галерия?</string>
   <string name="dialog_settings_choose_background_picker">Изберете картинка</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Нови <xliff:g id="provider">%1$s</xliff:g> съобщения</string>
-  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> непрочетени съобщения</string>
-  <string name="subscription_notify_text">Нова покана за приятелство от <xliff:g id="user">%s</xliff:g></string>
-  <string name="file_notify_text">Нов файл <xliff:g id="filename">%s</xliff:g> от <xliff:g id="user">%s</xliff:g></string>
+  <string name="newMessages_label">Нови &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt; съобщения</string>
+  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; непрочетени съобщения</string>
+  <string name="subscription_notify_text">Нова покана за приятелство от &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="file_notify_text">Нов файл &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; от &lt;xliff:g id="user"&gt;%2$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Покана за групов чат</string>
-  <string name="group_chat_invite_notify_text">Нова покана за групов чат от <xliff:g id="user">%s</xliff:g></string>
+  <string name="group_chat_invite_notify_text">Нова покана за групов чат от &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
   <string name="new_messages_notify">Ново съобщение от</string>
-  <string name="starting_the_chatsecure_service_">Стартиране на ChatSecure…</string>
+  <string name="starting_the_chatsecure_service_">Стартиране на ChatSecure...</string>
   <string name="app_unlocked">Активиран &amp; отключен</string>
   <string name="toast_chat_copied_to_clipboard">съобщение копирано</string>
   <!--Alerts: Exceptions-->
   <string name="error">Внимание</string>
   <string name="error_prefix">Грешка:</string>
-  <string name="general_error">Грешка с код <xliff:g id="code">%1$d</xliff:g></string>
-  <string name="login_service_failed">Неуспешен опит за вписване в <xliff:g id="service">%1$s</xliff:g>. Моля, опитайте отново по-късно\n(Информация: <xliff:g id="description">%2$s</xliff:g>)</string>
+  <string name="general_error">Грешка с код &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Неуспешен опит за вписване в &lt;xliff:g id="service"&gt;%1$s&lt;/xliff:g&gt;. Моля, опитайте отново по-късно\n(Информация: &lt;xliff:g id="description"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Списъкът не е добавен.</string>
   <string name="block_contact_failed">Контактът не е блокиран.</string>
   <string name="unblock_contact_failed">Контактът не е разблокиран.</string>
@@ -407,8 +404,8 @@ OTR протоколът е съвместим с други приложени�
   <string name="service_error">Възникна проблем с услугата! </string>
   <string name="load_contact_list_failed">Списъкът с контакти не е зареден.</string>
   <string name="cant_connect_to_server">Неуспешен опит за връзка със сървъра. Моля, провери интернет връзката си.</string>
-  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" е в списъка ти с Контакти.</string>
-  <string name="contact_blocked">Контактът "<xliff:g id="user">%1$s</xliff:g>" е блокиран.</string>
+  <string name="contact_already_exist">"&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" е в списъка ти с Контакти.</string>
+  <string name="contact_blocked">Контактът "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" е блокиран.</string>
   <string name="contact_not_loaded">Моля, изчакай докато списъка ти с Контакти се зарежда.</string>
   <string name="network_error">Настъпи проблем с интернет връзката.</string>
   <string name="wifi_not_connected_error">WiFi е нужно за тази връзка.</string>
@@ -452,8 +449,8 @@ OTR протоколът е съвместим с други приложени�
   <string name="otr_keysync_warning_message">Моля копирай \'otr_keystore.ofcaes\' от компютърната програма OtrFileConverter до root директрията на твоето мобилно устройство</string>
   <string name="msg_sent_failed">Това съобщение не може да бъде пратено.</string>
   <string name="disconnected_warning">Съобщенията ще бъдат пратени, когато се свържеш</string>
-  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> не е вписан. Изпратени съобщения ще бъдат доставени, когато <xliff:g id="user">%1$s</xliff:g> се появи на линия.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> не е в списъка с Контакти.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; не е вписан. Изпратени съобщения ще бъдат доставени, когато &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; се появи на линия.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; не е в списъка с Контакти.</string>
   <string name="error_account_password_mismatch">Паролите не съвпадат</string>
   <string name="error_account_settings_priority">Приоритетът трябва да е число в диапозона [0..127]</string>
   <string name="error_account_settings_port">Портът трябва да е число</string>
@@ -473,7 +470,7 @@ OTR протоколът е съвместим с други приложени�
   <string name="contacts">Контакти</string>
   <string name="mtm_accept_cert">Приеми Сертификата на Сървъра?</string>
   <string name="menu_sidebar_qr">Електронен Отпечатък</string>
-  <string name="loading">зареждане…</string>
+  <string name="loading">зареждане...</string>
   <!--Other-->
   <string name="about_link">За ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

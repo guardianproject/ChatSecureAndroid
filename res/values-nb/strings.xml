@@ -38,12 +38,12 @@
   <!--Views: Setup-->
   <string name="landing_page_title">Velg en konto</string>
   <string name="choose_account_title">Velg en konto</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">Legg til <xliff:g id="ACCOUNT">%1$s</xliff:g>-konto</string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Legg til &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;-konto</string>
   <string name="menu_about">Om</string>
   <string name="menu_sign_out_all">Logg av alle</string>
   <string name="signout_all_confirm_message">Vil du logge av alle tjenestene?</string>
-  <string name="signed_out_prompt">De er blitt logget av <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt">De er blitt logget av &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="welcome_first">Førstegangsbruker av ChatSecure?</string>
   <string name="welcome_skip">Kan du ikke vente med å starte?</string>
   <string name="welcome_about">Start</string>
@@ -53,7 +53,7 @@
   <string name="setup_passphrase_label1">Passord.</string>
   <string name="setup_passphrase_label2">Passord (igjen):</string>
   <string name="rekey_message">Opprett et *nytt* passord. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
-  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig…)</string>
+  <string name="do_rekey">Krypterer dine eksisterende notater med det nye passordet (vær tålmodig...)</string>
   <string name="enter_pass">Oppgi passord ditt:</string>
   <string name="new_pass">Velkommen! Opprett et sterkt passord for å sikre notatene dine. Det må inneholde tall, minst en stor og liten bokstav og være lengre enn seks tegn.</string>
   <string name="pass_err_length">Passordet ditt var ikke langt nok</string>
@@ -118,9 +118,9 @@ La oss begynne!</string>
   <string name="account_setup_advanced_enc_auto">Om mulig, kryptér chat automatisk</string>
   <string name="account_setup_advanced_enc_req">Krypter chatten som forespurt</string>
   <string name="account_setup_advanced_enc_off">Deaktiver chatkryptering</string>
-  <string name="account_setup_signin_a">Validerer legitimasjon…</string>
-  <string name="account_setup_signin_b">Genererer nøkkelpar…</string>
-  <string name="account_setup_signin_c">Logger inn…</string>
+  <string name="account_setup_signin_a">Validerer legitimasjon...</string>
+  <string name="account_setup_signin_b">Genererer nøkkelpar...</string>
+  <string name="account_setup_signin_c">Logger inn...</string>
   <string name="account_wizard_setup_title">Kontoveiviser</string>
   <string name="account_wizard_account_title">Din Konto-ID</string>
   <string name="account_wizard_host_title">Konfigurér Server</string>
@@ -131,8 +131,8 @@ La oss begynne!</string>
   <string name="account_wizard_ready_body">ChatSecure ble konfigurert og det er nå tid for å koble til tjenesten og begynne å chatte trygt, sikkert og privat!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Velg domene</string>
-  <string name="registering_new_account_">Registrer ny konto…</string>
-  <string name="signing_in_to">starter opp ChatSecure…</string>
+  <string name="registering_new_account_">Registrer ny konto...</string>
+  <string name="signing_in_to">starter opp ChatSecure...</string>
   <string name="menu_cancel_signin">Avbryt pålogging</string>
   <string name="signing_in_wait">Logger på…</string>
   <string name="signing_out_wait">Logger ut\u2026</string>
@@ -163,27 +163,27 @@ Klikk her for å starte en!</string>
 kontoer tilknyttet.
 
 Trykk her for å legge til én!</string>
-  <string name="buddy_list_title"> Kontaktliste - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title"> Kontaktliste - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Legg til kontakt</string>
   <string name="menu_remove_contact">Fjern kontakt</string>
   <string name="menu_block_contact">Blokker kontakt</string>
   <string name="menu_contact_nickname">Kontakt-kallenavn</string>
   <string name="menu_view_blocked">Blokkert</string>
-  <string name="confirm_delete_contact">Kontakten "<xliff:g id="user">%1$s</xliff:g>" vil bli slettet.</string>
-  <string name="confirm_block_contact">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli blokkert.</string>
-  <string name="confirm_unblock_contact">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli avblokkert.</string>
-  <string name="add_contact_success">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble lagt til.</string>
-  <string name="delete_contact_success">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble slettet.</string>
-  <string name="block_contact_success">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble blokkert.</string>
-  <string name="unblock_contact_success">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» ble avblokkert.</string>
+  <string name="confirm_delete_contact">Kontakten "&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;" vil bli slettet.</string>
+  <string name="confirm_block_contact">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» vil bli blokkert.</string>
+  <string name="confirm_unblock_contact">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» vil bli avblokkert.</string>
+  <string name="add_contact_success">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» ble lagt til.</string>
+  <string name="delete_contact_success">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» ble slettet.</string>
+  <string name="block_contact_success">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» ble blokkert.</string>
+  <string name="unblock_contact_success">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» ble avblokkert.</string>
   <string name="menu_new_chat">Ny Chat</string>
   <string name="menu_search_contacts">Søk Kontakter</string>
   <string name="menu_show_grid">Vis rutenett</string>
   <string name="menu_start_chat">Start samtale</string>
   <string name="menu_view_profile">Vis profil</string>
   <string name="menu_verify">Kontroller nøkkel</string>
-  <string name="ongoing_conversation">Pågående samtaler (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> tilgjengelig</string>
+  <string name="ongoing_conversation">Pågående samtaler (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; tilgjengelig</string>
   <string name="subscriptions">Venneinvitasjoner</string>
   <string name="unknown_contact">(\"<i>\"Ukjent\"</i>\")</string>
   <string name="empty_contact_group">Tom</string>
@@ -202,19 +202,19 @@ Trykk her for å legge til én!</string>
   <string name="label_client_type">Klienttype:</string>
   <string name="client_type_computer">Datamaskin</string>
   <string name="client_type_mobile">Mobil</string>
-  <string name="blocked_list_title">Blokkerte kontakter - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Blokkerte kontakter - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">Ingen blokkerte kontakter.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Sludre med <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="chat_with">Sludre med &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Meg</string>
   <string name="contact_online">
 
 </string>
-  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> er borte</string>
-  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> er opptatt</string>
-  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> er frakoblet</string>
-  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> har blitt med i samtalen</string>
-  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> har forlatt samtalen</string>
+  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; er borte</string>
+  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; er opptatt</string>
+  <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; er frakoblet</string>
+  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har blitt med i samtalen</string>
+  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har forlatt samtalen</string>
   <string name="menu_send_image">Send bilde</string>
   <string name="menu_send_file">Send fil</string>
   <string name="menu_send_audio">Send lyd</string>
@@ -245,29 +245,28 @@ Trykk her for å legge til én!</string>
   <string name="end_chat_title">Avslutt samtale?</string>
   <string name="end_chat_and_delete">Avslutt samtale og slett filer</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> har invitert deg til en gruppesamtale.</string>
-  <string name="invitation_sent_prompt">Invitasjonen er blitt sendt til <xliff:g id="USER">%1$s</xliff:g>.</string>
+  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; har invitert deg til en gruppesamtale.</string>
+  <string name="invitation_sent_prompt">Invitasjonen er blitt sendt til &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Godta</string>
   <string name="decline_invitation">Avslå</string>
   <string name="menu_new_group_chat">Gruppesludder</string>
   <string name="create_or_join_group_chat">Start eller ta del i gruppesludder</string>
-  <string name="connecting_to_group_chat_">Kolber til gruppesludder…</string>
+  <string name="connecting_to_group_chat_">Kolber til gruppesludder...</string>
   <string name="menu_invite_contact">Inviter…</string>
   <string name="contacts_picker_title">Velg kontakt(er) som skal inviteres</string>
   <string name="contact_filter_hint">Skriv for å finne kontakter</string>
   <string name="empty_contact_list">Finner ingen kontakter.
 
 Trykk for å invitere.</string>
-  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> har invitert deg til å være på kontaktlisten sin.</string>
-  <string name="approve_subscription">Godta</string>
-  <string name="decline_subscription">Avslå</string>
-  <string name="approve_subscription_error">Kunne ikke godta abonnement fra <xliff:g id="USER">%1$s</xliff:g>. Prøv igjen senere.</string>
-  <string name="decline_subscription_error">Kunne ikke avslå abonnement fra <xliff:g id="USER">%1$s</xliff:g>. Prøv igjen senere.</string>
+  <string name="approve_subscription">Ja</string>
+  <string name="decline_subscription">Nei</string>
+  <string name="approve_subscription_error">Kunne ikke godta abonnement fra &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Prøv igjen senere.</string>
+  <string name="decline_subscription_error">Kunne ikke avslå abonnement fra &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Prøv igjen senere.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Start Kryptering</string>
   <string name="menu_otr_stop">Stopp Kryptering</string>
-  <string name="starting_otr_chat">Starter kryptert chat…</string>
-  <string name="stopping_otr_chat">Stopper kryptert chat…</string>
+  <string name="starting_otr_chat">Starter kryptert chat...</string>
+  <string name="stopping_otr_chat">Stopper kryptert chat...</string>
   <string name="label_fingerprint_remote">Fingeravtrykk for sikkerhet</string>
   <string name="label_fingerprint_local">Fingeravtrykk for sikkerhet</string>
   <string name="menu_sign_in">Logg inn</string>
@@ -276,7 +275,7 @@ Trykk for å invitere.</string>
   <string name="otr_session_status_encrypted">Kryptering på (trykk for å kontrollere)</string>
   <string name="otr_session_status_finished">Din samtalepartner har stoppet krypteringen på sludringen.</string>
   <string name="otr_session_status_verified">Kryptert og bekreftet!</string>
-  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar…</string>
+  <string name="otr_gen_key">Genererer nytt OTR nøkkelpar...</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Vi har funnet et OTR-nøkkelknippe som kan importeres. Vil du skanne inn QR-passordet nå?</string>
   <string name="menu_import_keys">Aktiver KeySync</string>
@@ -318,7 +317,6 @@ Trykk for å invitere.</string>
   <string name="pref_group_looknfeel_title">Brukergrensesnitt</string>
   <string name="menu_locale">Språk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Språk</string>
-
   <string name="pref_theme_dark">Bruk mørkt tema</string>
   <string name="pref_theme_dark_summary">Bytt til mørkt fargetema</string>
   <string name="pref_in_memory_db_title">Kun lagre meldinger i minnet</string>
@@ -352,7 +350,7 @@ Trykk for å invitere.</string>
   <string name="pref_debug_summary">Skriv programloggdata til standard utdata / logcat for feilsøking</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Bakgrunnsdata deaktivert</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> trenger at bakgrunnsdata er aktivert.</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; trenger at bakgrunnsdata er aktivert.</string>
   <string name="bg_data_prompt_ok">Aktiver</string>
   <string name="bg_data_prompt_cancel">Avslutt</string>
   <string name="signout_kill_confirm_message">Vil du logge ut av alle tjenester OG avslutte alle prosessene (hard exit)?</string>
@@ -369,17 +367,17 @@ Trykk for å invitere.</string>
   <string name="dialog_settings_choose_background_body">Vil du velge et bakgrunnsbilde fra galleriet?</string>
   <string name="dialog_settings_choose_background_picker">Velg bilde</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Nye <xliff:g id="PROVIDER">%1$s</xliff:g>-meldinger</string>
+  <string name="newMessages_label">Nye &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;-meldinger</string>
   <string name="notify_groupchat_label">Invitasjon til gruppesamtale</string>
   <string name="new_messages_notify">Ny melding(er) fra</string>
-  <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten…</string>
+  <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten...</string>
   <string name="app_unlocked">Aktivert &amp; låst opp</string>
   <string name="toast_chat_copied_to_clipboard">melding kopiert til utklippstavle</string>
   <!--Alerts: Exceptions-->
   <string name="error">NB</string>
   <string name="error_prefix">Feil:</string>
-  <string name="general_error">Feilkode <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string name="login_service_failed">Kunne ikke logge på <xliff:g id="SERVICE">%1$s</xliff:g>. Prøv igjen senere."\n"(Detaljer: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="general_error">Feilkode &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Kunne ikke logge på &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Prøv igjen senere."\n"(Detaljer: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Listen ble ikke lagt til.</string>
   <string name="block_contact_failed">Kontakten ble ikke blokkert.</string>
   <string name="unblock_contact_failed">Kontakten ble ikke avblokkert.</string>
@@ -388,8 +386,8 @@ Trykk for å invitere.</string>
   <string name="service_error">Tjenestefeil!</string>
   <string name="load_contact_list_failed">Kontaktlisten ble ikke lastet.</string>
   <string name="cant_connect_to_server">Kan ikke koble til tjeneren. Sjekk tilkoblingen.</string>
-  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> finnes allerede i kontaktlisten.</string>
-  <string name="contact_blocked">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» er nå blokkert.</string>
+  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; finnes allerede i kontaktlisten.</string>
+  <string name="contact_blocked">Kontakten «&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;» er nå blokkert.</string>
   <string name="contact_not_loaded">Vent mens kontaktlisten lastes.</string>
   <string name="network_error">Det oppsto en nettfeil.</string>
   <string name="wifi_not_connected_error">WiFi kreves for denne tilkoblingen.</string>
@@ -431,8 +429,8 @@ Trykk for å invitere.</string>
   <string name="otr_keysync_warning_message">Vennligst kopier \'otr_keystore.ofcaes\' -filen med skrivebordsverktøyet OtrFileConverter til rotmappen av din enhets lagringsmedie</string>
   <string name="msg_sent_failed">Kunne ikke sende meldingen.</string>
   <string name="disconnected_warning">Meldinger vil bli sendt når forbindelsen gjenopprettes</string>
-  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> er frakoblet. Meldinger du sender vil bli levert når <xliff:g id="USER_1">%1$s</xliff:g> kobler til.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> er ikke i kontaktlisten.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; er frakoblet. Meldinger du sender vil bli levert når &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; kobler til.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; er ikke i kontaktlisten.</string>
   <string name="error_account_password_mismatch">Passord samsvarer ikke</string>
   <string name="error_account_settings_priority">Prioritet må settes som et nummer fra [0 .. 127]</string>
   <string name="error_account_settings_port">Port må oppgis som nummer</string>
@@ -450,7 +448,7 @@ Trykk for å invitere.</string>
   <string name="contacts">Kontakter</string>
   <string name="mtm_accept_cert">Godta tjener-sertifikat?</string>
   <string name="menu_sidebar_qr">Fingeravtrykk</string>
-  <string name="loading">laster…</string>
+  <string name="loading">laster...</string>
   <!--Other-->
   <string name="about_link">Om Chatsecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

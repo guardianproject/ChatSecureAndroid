@@ -21,11 +21,11 @@
   <!--Views: Setup-->
   <string name="landing_page_title">채팅 - 선택 계정</string>
   <string name="choose_account_title">채팅 - 선택 계정</string>
-  <string name="add_account"><xliff:g id="ACCOUNT">%1$s</xliff:g> 계정 추가</string>
+  <string name="add_account">&lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt; 계정 추가</string>
   <string name="menu_about">이 앱에 대하여</string>
   <string name="menu_sign_out_all">모두 로그아웃</string>
   <string name="signout_all_confirm_message">모든 서비스에서 로그아웃하시겠습니까?</string>
-  <string name="signed_out_prompt"><xliff:g id="ACCOUNT">%1$s</xliff:g>에서 로그아웃되었습니다.</string>
+  <string name="signed_out_prompt">&lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;에서 로그아웃되었습니다.</string>
   <string name="welcome_skip">건너뛰기</string>
   <string name="welcome_about">소개</string>
   <string name="welcome_account">계정 설정</string>
@@ -91,18 +91,18 @@
   <string name="menu_remove_contact">연락처 삭제</string>
   <string name="menu_block_contact">연락처 차단</string>
   <string name="menu_view_blocked">차단 목록</string>
-  <string name="confirm_delete_contact">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 삭제됩니다.</string>
-  <string name="confirm_block_contact">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단됩니다.</string>
-  <string name="confirm_unblock_contact">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단 해제됩니다.</string>
-  <string name="add_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 추가되었습니다.</string>
-  <string name="delete_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 삭제되었습니다.</string>
-  <string name="block_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단되었습니다.</string>
-  <string name="unblock_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단 해제되었습니다.</string>
+  <string name="confirm_delete_contact">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 삭제됩니다.</string>
+  <string name="confirm_block_contact">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 차단됩니다.</string>
+  <string name="confirm_unblock_contact">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 차단 해제됩니다.</string>
+  <string name="add_contact_success">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 추가되었습니다.</string>
+  <string name="delete_contact_success">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 삭제되었습니다.</string>
+  <string name="block_contact_success">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 차단되었습니다.</string>
+  <string name="unblock_contact_success">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'이(가) 차단 해제되었습니다.</string>
   <string name="menu_new_chat">새 채팅 창</string>
   <string name="menu_search_contacts">주소록 검색</string>
   <string name="menu_start_chat">채팅 시작</string>
-  <string name="ongoing_conversation">진행 중인 채팅(<xliff:g id="NUMBER">%1$d</xliff:g>개)</string>
-  <string name="online_count">온라인 접속자 <xliff:g id="NUMBER">%1$d</xliff:g>명</string>
+  <string name="ongoing_conversation">진행 중인 채팅(&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;개)</string>
+  <string name="online_count">온라인 접속자 &lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;명</string>
   <string name="subscriptions">친구 초대</string>
   <string name="unknown_contact">(\"<i>\"알 수 없음\"</i>\")</string>
   <string name="empty_contact_group">비어 있음</string>
@@ -121,17 +121,17 @@
   <string name="label_client_type">클라이언트 유형:</string>
   <string name="client_type_computer">컴퓨터</string>
   <string name="client_type_mobile">모바일</string>
-  <string name="blocked_list_title">차단된 주소록 - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="blocked_list_title">차단된 주소록 - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">차단된 주소가 없습니다.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with"><xliff:g id="USER">%1$s</xliff:g>님과 채팅</string>
+  <string name="chat_with">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님과 채팅</string>
   <string name="me">나</string>
-  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g>님이 온라인 상태입니다.</string>
-  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g>님이 자리비움 상태입니다.</string>
-  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g>님이 다른 용무 중입니다.</string>
-  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>님은 오프라인 상태입니다.</string>
-  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>님이 채팅에 참여했습니다.</string>
-  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>님이 채팅에서 나갔습니다.</string>
+  <string name="contact_online">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 온라인 상태입니다.</string>
+  <string name="contact_away">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 자리비움 상태입니다.</string>
+  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 다른 용무 중입니다.</string>
+  <string name="contact_offline">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님은 오프라인 상태입니다.</string>
+  <string name="contact_joined">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 채팅에 참여했습니다.</string>
+  <string name="contact_left">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 채팅에서 나갔습니다.</string>
   <string name="send">전송</string>
   <string name="menu_end_conversation">채팅 종료</string>
   <string name="menu_clear_chat">채팅 로그 지우기</string>
@@ -140,18 +140,15 @@
   <string name="menu_plus">Menu+</string>
   <string name="select_link_title">링크 선택</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>님이 그룹 채팅에 초대하셨습니다.</string>
-  <string name="invitation_sent_prompt"><xliff:g id="USER">%1$s</xliff:g>님에게 초대장을 보냈습니다.</string>
+  <string name="invitation_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 그룹 채팅에 초대하셨습니다.</string>
+  <string name="invitation_sent_prompt">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님에게 초대장을 보냈습니다.</string>
   <string name="accept_invitation">수락</string>
   <string name="decline_invitation">거부</string>
   <string name="menu_invite_contact">초대\u2026</string>
   <string name="contacts_picker_title">초대할 연락처 선택</string>
   <string name="contact_filter_hint">입력하여 연락처 찾기</string>
-  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g>님이 연락처 목록에 올리기 위해 초대하셨습니다.</string>
-  <string name="approve_subscription">수락</string>
-  <string name="decline_subscription">거부</string>
-  <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g>님의 구독을 승인할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
-  <string name="decline_subscription_error"><xliff:g id="USER">%1$s</xliff:g>님의 구독을 거부할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
+  <string name="approve_subscription_error">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님의 구독을 승인할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
+  <string name="decline_subscription_error">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님의 구독을 거부할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">암호화 시작</string>
   <string name="menu_otr_stop">암호화 중단</string>
@@ -173,7 +170,6 @@
   <!--Actions: Settings: General: User Interface-->
   <string name="menu_locale">언어</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">언어</string>
-
   <!--Actions: Settings: General: Other Tuning-->
   <string name="hide_offline_contacts">오프라인 주소록 숨기기</string>
   <!--Actions: Settings: General: Notifications-->
@@ -187,16 +183,16 @@
   <!--Actions: Settings: General: Developer-->
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">백그라운드 데이터 사용 안함</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g>을(를) 사용하려면 백그라운드 데이터를 사용하도록 설정해야 합니다.</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id=\"PROVIDER\"&gt;%1$s&lt;/xliff:g&gt;을(를) 사용하려면 백그라운드 데이터를 사용하도록 설정해야 합니다.</string>
   <string name="bg_data_prompt_ok">사용</string>
   <string name="bg_data_prompt_cancel">종료</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">새 메시지 <xliff:g id="PROVIDER">%1$s</xliff:g>개</string>
+  <string name="newMessages_label">새 메시지 &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;개</string>
   <string name="notify_groupchat_label">그룹 채팅 초대</string>
   <!--Alerts: Exceptions-->
   <string name="error">주의</string>
-  <string name="general_error">오류 코드 <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string name="login_service_failed"><xliff:g id="SERVICE">%1$s</xliff:g> 서비스에 로그인할 수 없습니다. 잠시 후에 다시 시도해 주세요."\n"(세부정보: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="general_error">오류 코드 &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">&lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt; 서비스에 로그인할 수 없습니다. 잠시 후에 다시 시도해 주세요."\n"(세부정보: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">목록이 추가되지 않았습니다.</string>
   <string name="block_contact_failed">연락처를 차단하지 못 했습니다.</string>
   <string name="unblock_contact_failed">연락처를 차단 해제하지 못 했습니다.</string>
@@ -206,8 +202,8 @@
   <string name="service_error">서비스 오류</string>
   <string name="load_contact_list_failed">연락처 목록을 로드하지 못했습니다.</string>
   <string name="cant_connect_to_server">서버에 연결할 수 없습니다. 연결을 확인하세요.</string>
-  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>님이 이미 연락처 목록에 있습니다.</string>
-  <string name="contact_blocked">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'은(는) 차단되었습니다.</string>
+  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;님이 이미 연락처 목록에 있습니다.</string>
+  <string name="contact_blocked">연락처 \'&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\'은(는) 차단되었습니다.</string>
   <string name="contact_not_loaded">연락처 목록이 로드되는 동안 잠시 기다려 주세요.</string>
   <string name="network_error">네트워크 오류가 발생했습니다.</string>
   <string name="service_not_support">서버에서 이 기능을 지원하지 않습니다.</string>
@@ -230,8 +226,8 @@
   <string name="account_wizard_no_root_domain_warning">서버 호스트 이름에 .com, .net같은 최상위 도메인을 넣지 않으셨습니다. 다시 시도해 주십시오.</string>
   <string name="signin_password_prompt">비밀번호:</string>
   <string name="msg_sent_failed">메시지를 보내지 못했습니다.</string>
-  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>님이 오프라인 상태입니다. <xliff:g id="USER_1">%1$s</xliff:g>님이 온라인 상태가 되면 보낸 메시지가 전달됩니다.</string>
-  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>이(가) 연락처 목록에 없습니다.</string>
+  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt;님이 오프라인 상태입니다. &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt;님이 온라인 상태가 되면 보낸 메시지가 전달됩니다.</string>
+  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;이(가) 연락처 목록에 없습니다.</string>
   <string name="account_settings_title">계정 설정</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">그룹</string>

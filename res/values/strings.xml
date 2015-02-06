@@ -448,7 +448,7 @@
 		<string name="newMessages_label">New <xliff:g id="provider">%1$s</xliff:g> messages</string>
 		<string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> unread chats</string>
 		<string name="subscription_notify_text">New friend invitation from <xliff:g id="user">%s</xliff:g></string>
-		<string name="file_notify_text">New file <xliff:g id="filename">%s</xliff:g> from <xliff:g id="user">%s</xliff:g></string>
+		<string name="file_notify_text">New file <xliff:g id="filename">%1$s</xliff:g> from <xliff:g id="user">%2$s</xliff:g></string>
 		<string name="notify_groupchat_label">Group chat invitation</string>
 		<string name="group_chat_invite_notify_text">New group chat invitation from <xliff:g id="user">%s</xliff:g></string>
 		<string name="new_messages_notify">New message(s) from</string>

@@ -34,12 +34,12 @@
   <!--Views: Setup-->
   <string name="landing_page_title">Επιλογή λογαριασμού</string>
   <string name="choose_account_title">Επιλογή λογαριασμού</string>
-  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
-  <string name="add_account">Προσθήκη λογαριασμού <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
+  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="add_account">Προσθήκη λογαριασμού &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_about">Σχετικά με</string>
   <string name="menu_sign_out_all">Αποσύνδεση όλων</string>
   <string name="signout_all_confirm_message">Αποσύνδεση απο όλες τις υπηρεσίες;</string>
-  <string name="signed_out_prompt">Πραγματοποιήσατε έξοδο από το <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt">Πραγματοποιήσατε έξοδο από το &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="welcome_first">Πρώτη φορά χρήσης του ChatSecure?</string>
   <string name="welcome_skip">Ανυπομονείτε να ξεκινήσετε;</string>
   <string name="welcome_about">Ξεκινήστε</string>
@@ -48,7 +48,7 @@
   <string name="setup_passphrase_label1">Κωδικός:</string>
   <string name="setup_passphrase_label2">Κωδικός (ξανά):</string>
   <string name="rekey_message">Εισάγετε εναν *νέο* κωδικό ασφαλείας. Πρέπει να περιέχει τουλάχιστον ένα κεφαλαίο, ένα πεζό και ένα νούμερο και να έχει πάνω από 6 χαρακτήρες.</string>
-  <string name="do_rekey">Κρυπτογράφηση των υπάρχοντων σημειώσεων με τον νέο κωδικό ασφαλείας (υπομονή…)</string>
+  <string name="do_rekey">Κρυπτογράφηση των υπάρχοντων σημειώσεων με τον νέο κωδικό ασφαλείας (υπομονή...)</string>
   <string name="enter_pass">Εισάγετε τον κωδικό ασφαλείας:</string>
   <string name="new_pass">Καλώς ήρθατε! Εισάγετε έναν ισχυρό κωδικό ασφαλείας για να ασφαλίσετε τις σημειώσεις σας. Πρέπει να περιέχει τουλάχιστον ένα κεφαλαίο, ένα πεζό και ένα νούμερο και να έχει πάνω από 6 χαρακτήρες.</string>
   <string name="pass_err_length">Ο κωδικός ασφαλείας δεν είναι αρκετά μεγάλος</string>
@@ -106,9 +106,9 @@
   <string name="account_setup_advanced_enc_auto">Όταν είναι δυνατό, κρυπτογράφησε τα chat αυτόματα</string>
   <string name="account_setup_advanced_enc_req">Κρυπτογραφία chat έπειτα από ζήτηση</string>
   <string name="account_setup_advanced_enc_off">Απενεργοποίηση κρυπτογραφίας του chat</string>
-  <string name="account_setup_signin_a">Επικύρωση στοιχείων…</string>
-  <string name="account_setup_signin_b">Παραγωγή ζεύγους κλειδιών…</string>
-  <string name="account_setup_signin_c">Γίνεται σύνδεση…</string>
+  <string name="account_setup_signin_a">Επικύρωση στοιχείων...</string>
+  <string name="account_setup_signin_b">Παραγωγή ζεύγους κλειδιών...</string>
+  <string name="account_setup_signin_c">Γίνεται σύνδεση...</string>
   <string name="account_wizard_setup_title">Οδηγός Λογαριασμού</string>
   <string name="account_wizard_account_title">ID λογαριασμού</string>
   <string name="account_wizard_host_title">Ρύθμιση Server</string>
@@ -116,10 +116,10 @@
   <string name="account_wizard_account_body">Εισάγετε το ID του λογαριασμού σας(user@hostname):</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Επιλογή domain</string>
-  <string name="registering_new_account_">Καταχώριση νέου λογαριασμού…</string>
-  <string name="signing_in_to">εκκίνηση του ChatSecure…</string>
+  <string name="registering_new_account_">Καταχώριση νέου λογαριασμού...</string>
+  <string name="signing_in_to">εκκίνηση του ChatSecure...</string>
   <string name="menu_cancel_signin">Ακύρωση σύνδεσης</string>
-  <string name="signing_in_wait">Σύνδεση…</string>
+  <string name="signing_in_wait">Σύνδεση...</string>
   <string name="signing_out_wait">Γίνεται απεγγραφή\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Αναζήτηση SRV</string>
@@ -146,27 +146,27 @@
 λογαριασμούς
 
 Πατήστε εδώ για να προσθέσετε έναν!</string>
-  <string name="buddy_list_title">Λίστα επαφών - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="buddy_list_title">Λίστα επαφών - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="menu_add_contact">Προσθήκη επαφής</string>
   <string name="menu_remove_contact">Διαγραφή επαφής</string>
   <string name="menu_block_contact">Αποκλεισμός επαφής</string>
   <string name="menu_contact_nickname">Ψευδώνυμο επαφής</string>
   <string name="menu_view_blocked">Αποκλεισμένος/η</string>
-  <string name="confirm_delete_contact">Η επαφή \"<xliff:g id="USER">%1$s</xliff:g>\" θα διαγραφεί.</string>
-  <string name="confirm_block_contact">Θα γίνει αποκλεισμός της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
-  <string name="confirm_unblock_contact">Θα γίνει κατάργηση αποκλεισμού της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
-  <string name="add_contact_success">Έγινε προσθήκη της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
-  <string name="delete_contact_success">Η επαφή \"<xliff:g id="USER">%1$s</xliff:g>\" διαγράφηκε.</string>
-  <string name="block_contact_success">Έγινε αποκλεισμός της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
-  <string name="unblock_contact_success">Κατάργηση αποκλεισμού της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="confirm_delete_contact">Η επαφή \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\" θα διαγραφεί.</string>
+  <string name="confirm_block_contact">Θα γίνει αποκλεισμός της επαφής \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\".</string>
+  <string name="confirm_unblock_contact">Θα γίνει κατάργηση αποκλεισμού της επαφής \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\".</string>
+  <string name="add_contact_success">Έγινε προσθήκη της επαφής \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\".</string>
+  <string name="delete_contact_success">Η επαφή \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\" διαγράφηκε.</string>
+  <string name="block_contact_success">Έγινε αποκλεισμός της επαφής \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\".</string>
+  <string name="unblock_contact_success">Κατάργηση αποκλεισμού της επαφής \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\".</string>
   <string name="menu_new_chat">Νέο Chat</string>
   <string name="menu_search_contacts">Αναζήτηση Επαφών</string>
   <string name="menu_show_grid">Εμφάνιση πλέγματος</string>
   <string name="menu_start_chat">Έναρξη συζήτησης</string>
   <string name="menu_view_profile">Εμφάνιση Προφίλ</string>
   <string name="menu_verify">Επαλήθευση κλειδιού</string>
-  <string name="ongoing_conversation">Ενεργές συζητήσεις (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
-  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> συνδεδεμένες επαφές</string>
+  <string name="ongoing_conversation">Ενεργές συζητήσεις (&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;)</string>
+  <string name="online_count">&lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt; συνδεδεμένες επαφές</string>
   <string name="subscriptions">Προσκλήσεις φίλων</string>
   <string name="unknown_contact">(\"<i>\"Άγνωστος\"</i>\")</string>
   <string name="empty_contact_group">Κενή</string>
@@ -185,17 +185,17 @@
   <string name="label_client_type">Τύπος προγράμματος-πελάτη:</string>
   <string name="client_type_computer">Υπολογιστής</string>
   <string name="client_type_mobile">Κινητό</string>
-  <string name="blocked_list_title">Αποκλεισμένες επαφές - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="blocked_list_title">Αποκλεισμένες επαφές - &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="no_blocked_contact">Δεν υπάρχουν αποκλεισμένες επαφές.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Συζήτηση με τον χρήστη <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="chat_with">Συζήτηση με τον χρήστη &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="me">Εγώ</string>
-  <string name="contact_online">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> συνδέθηκε</string>
-  <string name="contact_away">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> βρίσκεται μακριά από τον υπολογιστή του</string>
-  <string name="contact_busy">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> είναι απασχολημένος/η</string>
-  <string name="contact_offline">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> βρίσκεται εκτός σύνδεσης</string>
-  <string name="contact_joined">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> συνδέθηκε</string>
-  <string name="contact_left">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> αποχώρησε</string>
+  <string name="contact_online">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; συνδέθηκε</string>
+  <string name="contact_away">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; βρίσκεται μακριά από τον υπολογιστή του</string>
+  <string name="contact_busy">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; είναι απασχολημένος/η</string>
+  <string name="contact_offline">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; βρίσκεται εκτός σύνδεσης</string>
+  <string name="contact_joined">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; συνδέθηκε</string>
+  <string name="contact_left">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; αποχώρησε</string>
   <string name="menu_send_image">Αποστολή Φωτογραφίας</string>
   <string name="menu_send_file">Αποστολή αρχείου</string>
   <string name="menu_send_audio">Αποστολή Ήχου</string>
@@ -216,29 +216,26 @@
   <string name="menu_plus">Μενού+</string>
   <string name="select_link_title">Επιλογή συνδέσμου</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> σας προσκάλεσε να συμμετέχετε σε ομαδική συζήτηση.</string>
-  <string name="invitation_sent_prompt">Έγινε αποστολή πρόσκλησης στον χρήστη: <xliff:g id="USER">%1$s</xliff:g>.</string>
+  <string name="invitation_prompt">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; σας προσκάλεσε να συμμετέχετε σε ομαδική συζήτηση.</string>
+  <string name="invitation_sent_prompt">Έγινε αποστολή πρόσκλησης στον χρήστη: &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;.</string>
   <string name="accept_invitation">Αποδοχή</string>
   <string name="decline_invitation">Απόρριψη</string>
   <string name="menu_new_group_chat">Ομαδικό Chat</string>
   <string name="create_or_join_group_chat">Φτιάξτε η μπείτε σε Ομάδα Συζήτησης</string>
-  <string name="connecting_to_group_chat_">Σύνδεση στο ομαδικό chat…</string>
-  <string name="menu_invite_contact">Πρόσκληση…</string>
+  <string name="connecting_to_group_chat_">Σύνδεση στο ομαδικό chat...</string>
+  <string name="menu_invite_contact">Πρόσκληση...</string>
   <string name="contacts_picker_title">Επιλογή επαφής (επαφών) για αποστολή πρόσκλησης</string>
   <string name="contact_filter_hint">Πληκτρολογήστε για να βρείτε την επαφή</string>
   <string name="empty_contact_list">Δεν βρέθηκαν επαφές.
 
 Πατήστε για να προσθέσετε κάποιες.</string>
-  <string name="subscription_prompt">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> σας έστειλε πρόσκληση για να σας προσθέσει στη λίστα επαφών του.</string>
-  <string name="approve_subscription">Αποδοχή</string>
-  <string name="decline_subscription">Απόρριψη</string>
-  <string name="approve_subscription_error">Δεν ήταν δυνατή η έγκριση συνδρομής από τον χρήστη <xliff:g id="USER">%1$s</xliff:g>. Δοκιμάστε ξανά αργότερα.</string>
-  <string name="decline_subscription_error">Δεν ήταν δυνατή η απόρριψη συνδρομής από τον χρήστη <xliff:g id="USER">%1$s</xliff:g>. Δοκιμάστε ξανά αργότερα.</string>
+  <string name="approve_subscription_error">Δεν ήταν δυνατή η έγκριση συνδρομής από τον χρήστη &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Δοκιμάστε ξανά αργότερα.</string>
+  <string name="decline_subscription_error">Δεν ήταν δυνατή η απόρριψη συνδρομής από τον χρήστη &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;. Δοκιμάστε ξανά αργότερα.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Έναρξη κρυπτογραφίας</string>
   <string name="menu_otr_stop">Παύση Κρυπτογραφίας</string>
-  <string name="starting_otr_chat">Εκκίνηση κρυπτογραφημένης συζήτησης…</string>
-  <string name="stopping_otr_chat">Τερματισμός κρυπτογραφημένης συζήτησης…</string>
+  <string name="starting_otr_chat">Εκκίνηση κρυπτογραφημένης συζήτησης...</string>
+  <string name="stopping_otr_chat">Τερματισμός κρυπτογραφημένης συζήτησης...</string>
   <string name="label_fingerprint_remote">Αποτύπωμα Ασφαλείας</string>
   <string name="label_fingerprint_local">Αποτύπωμα Ασφαλείας</string>
   <string name="menu_sign_in">Σύνδεση</string>
@@ -247,7 +244,7 @@
   <string name="otr_session_status_encrypted">Ενεργή κρυπτογραφία (πατήστε για επιβεβαίωση)</string>
   <string name="otr_session_status_finished">Η επαφή σας έχει σταματήσει την κρυπτογραφημένη συνομιλία.</string>
   <string name="otr_session_status_verified">Κρυπτογραφημένο και επικυρωμένο!</string>
-  <string name="otr_gen_key">Παραγωγή νέου ζεύγους κλειδιών OTR…</string>
+  <string name="otr_gen_key">Παραγωγή νέου ζεύγους κλειδιών OTR...</string>
   <!--Security: OTR: Keyring-->
   <string name="menu_import_keys">Ενεργοποίηση KeySync</string>
   <string name="successfully_imported_otr_keyring">Επιτυχής εισαγωγή ζεύγους κλειδιών OTR</string>
@@ -284,7 +281,6 @@
   <string name="pref_group_looknfeel_title">Διεπαφή Χρήστη</string>
   <string name="menu_locale">Γλώσσα</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Γλώσσες</string>
-
   <string name="pref_theme_dark">Χρήση Σκοτεινού Θέματος</string>
   <string name="pref_theme_dark_summary">Αλλαγή θέματος εφαρμογής σε σκοτεινό</string>
   <string name="pref_in_memory_db_title">Αποθήκευση μηνυμάτων μόνο στην μνήμη</string>
@@ -315,22 +311,22 @@
   <string name="pref_debug_title">Ενεργοποίηση Debug Logs</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Τα δεδομένα παρασκηνίου είναι απενεργοποιημένα</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> χρειάζεται ενεργοποιημένα τα δεδομένα παρασκηνίου.</string>
+  <string name="bg_data_prompt_message">&lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; χρειάζεται ενεργοποιημένα τα δεδομένα παρασκηνίου.</string>
   <string name="bg_data_prompt_ok">Ενεργοποίηση</string>
   <string name="bg_data_prompt_cancel">Τερματισμός</string>
   <string name="signout_kill_confirm_message">Αποσύνδεση απο όλες τις υπηρεσίες ΚΑΙ τερματισμός όλων των διεργασιών (hard exit) ;</string>
   <string name="prompt_create_new_account_">Δημιουργία νέο λογαριασμού;</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Δημιουργία ένος νέου chat λογαριασμού για τον χρήστη \'%1$s\';</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Νέα μηνύματα <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="newMessages_label">Νέα μηνύματα &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
   <string name="notify_groupchat_label">Πρόσκληση σε ομαδική συζήτηση</string>
   <string name="new_messages_notify">Νέα μηνύματα από</string>
-  <string name="starting_the_chatsecure_service_">Ξεκινάει η υπηρεσία ChatSecure…</string>
+  <string name="starting_the_chatsecure_service_">Ξεκινάει η υπηρεσία ChatSecure...</string>
   <string name="app_unlocked">Ενεργοποιημένο και ξεκλείδωτο</string>
   <!--Alerts: Exceptions-->
   <string name="error">Προσοχή</string>
-  <string name="general_error">Κωδικός σφάλματος <xliff:g id="CODE">%1$d</xliff:g></string>
-  <string name="login_service_failed">Δεν είναι δυνατή η σύνδεση στην υπηρεσία <xliff:g id="SERVICE">%1$s</xliff:g>. Δοκιμάστε ξανά αργότερα."\n"(Λεπτομέρειες: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="general_error">Κωδικός σφάλματος &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="login_service_failed">Δεν είναι δυνατή η σύνδεση στην υπηρεσία &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Δοκιμάστε ξανά αργότερα."\n"(Λεπτομέρειες: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
   <string name="add_list_failed">Δεν έγινε προσθήκη της λίστας.</string>
   <string name="block_contact_failed">Δεν έγινε αποκλεισμός της επαφής.</string>
   <string name="unblock_contact_failed">Δεν έγινε κατάργηση αποκλεισμού της επαφής.</string>
@@ -339,8 +335,8 @@
   <string name="service_error">Σφάλμα υπηρεσίας!</string>
   <string name="load_contact_list_failed">Δεν έγινε φόρτωση της λίστας επαφών.</string>
   <string name="cant_connect_to_server">Δεν είναι δυνατή η σύνδεση με τον διακομιστή. Ελέγξτε τη σύνδεσή σας.</string>
-  <string name="contact_already_exist">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> υπάρχει ήδη στη λίστα επαφών σας.</string>
-  <string name="contact_blocked">Έγινε αποκλεισμός της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="contact_already_exist">Ο χρήστης &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; υπάρχει ήδη στη λίστα επαφών σας.</string>
+  <string name="contact_blocked">Έγινε αποκλεισμός της επαφής \"&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;\".</string>
   <string name="contact_not_loaded">Περιμένετε μέχρι να φορτώσει η λίστα επαφών σας.</string>
   <string name="network_error">Προέκυψε σφάλμα δικτύου.</string>
   <string name="wifi_not_connected_error">Απαιτείται WiFi για αυτήν την συνεδρία</string>
@@ -375,8 +371,8 @@
   <string name="swipe_alert">Το ChatSecure ανίχνευσε ένα αίτημα αφαίρεσης του απο τις εκτελούμενες εφαρμογές. Το ChatSecure πιθανότατα θα σταματήσει να λειτουργεί. Παρακαλούμε χρησιμοποιήστε την επιλογή \"Απεγγραφή απο όλα\" απο την οθόνη των λογαριασμών αντ\'αυτού.</string>
   <string name="msg_sent_failed">Δεν ήταν δυνατή η αποστολή αυτού του μηνύματος.</string>
   <string name="disconnected_warning">Το μήνυμα θα σταλεί ξανά όταν επανασυνδεθείτε</string>
-  <string name="contact_offline_warning">Ο χρήστης <xliff:g id="USER_0">%1$s</xliff:g> βρίσκεται εκτός σύνδεσης. Τα μηνύματα που στέλνετε θα παραδοθούν όταν ο χρήστης <xliff:g id="USER_1">%1$s</xliff:g> συνδεθεί στο διαδίκτυο.</string>
-  <string name="contact_not_in_list_warning">Η επαφή <xliff:g id="USER">%1$s</xliff:g> δεν υπάρχει στη λίστα επαφών σας.</string>
+  <string name="contact_offline_warning">Ο χρήστης &lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; βρίσκεται εκτός σύνδεσης. Τα μηνύματα που στέλνετε θα παραδοθούν όταν ο χρήστης &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; συνδεθεί στο διαδίκτυο.</string>
+  <string name="contact_not_in_list_warning">Η επαφή &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; δεν υπάρχει στη λίστα επαφών σας.</string>
   <string name="account_settings_title">Ρυθμίσεις λογαριασμού</string>
   <string name="pref_default_locale">defLoc</string>
   <string name="warning_alpha">ΠΡΟΣΟΧΗ: Αυτή είναι μια πρώιμη έκδοση του ChatSecure που μπορεί να περιέχει κενά ασφαλείας η bugs.</string>
