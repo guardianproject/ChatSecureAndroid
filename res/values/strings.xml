@@ -314,7 +314,7 @@
 		<string name="contact_filter_hint">Type to find contact</string>
 		<string name="empty_contact_list">No contacts found.\n\nTap to invite.</string>
 		
-		<string name="subscription_prompt">Add contact?</string>
+		<string name="subscription_prompt">Add <xliff:g id="USER">%1$s</xliff:g>?</string>
 		<string name="approve_subscription">Yes</string>
 		<string name="decline_subscription">No</string>
 		<string name="approve_subscription_error">Unable to approve subscription from <xliff:g id="user">%1$s</xliff:g>. Please try again later.</string>
