@@ -86,8 +86,13 @@ public class ChatSessionManagerAdapter extends
         Contact contact = listManager.getContactByAddress(Address.stripResource(contactAddress));
         if (contact == null) {
             try {
-                String[] address = {Address.stripResource(contactAddress)};
-                contact = listManager.createTemporaryContacts(address)[0];
+                
+                contact = new Contact (new XmppAddress(contactAddress),contactAddress);
+                long contactId = listManager.queryOrInsertContact(contact);
+                
+               // String[] address = {Address.stripResource(contactAddress)};
+                //contact = listManager.createTemporaryContacts(address)[0];
+               
             } catch (IllegalArgumentException e) {
                 mSessionListenerAdapter.notifyChatSessionCreateFailed(contactAddress,
                         new ImErrorInfo(ImErrorInfo.ILLEGAL_CONTACT_ADDRESS,
