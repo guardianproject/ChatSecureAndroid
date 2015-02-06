@@ -24,7 +24,8 @@
 
     <item android:id="@+id/menu_account_delete" 
     android:title="@string/menu_remove_account"
-    app:showAsAction="never"
+    app:showAsAction="always"
+    android:drawable="@drawable/ic_menu_trash"
      />
     <!--
     <item android:id="@+id/menu_account_settings" 
