@@ -2085,6 +2085,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         Contact contact = mContactListManager.getContact(XmppAddress.stripResource(address));
                         mContactListManager.notifyContactListUpdated(cl, ContactListListener.LIST_CONTACT_REMOVED, contact);
                     }
+                    
 
                 } catch (ImException e) {
                     // TODO Auto-generated catch block
