@@ -21,6 +21,8 @@ import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
+import info.guardianproject.otr.app.im.IContactList;
+import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.IContactListManager;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.ISubscriptionListener;
@@ -28,6 +30,7 @@ import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ContactListFilterView.ContactListListener;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ImConnection;
+import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -70,10 +73,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -311,6 +314,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         initConnections();
 
+    }
+    
+    private void initChats ()
+    {
         LoaderManager lMgr =getSupportLoaderManager();
         lMgr.initLoader(CHAT_LIST_LOADER_ID, null, new LoaderManager.LoaderCallbacks<Cursor> () {
 
@@ -584,7 +591,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 finish();
             } else {
 
-               // showSubscriptionDialog (providerId, from);
+                showSubscriptionDialog (providerId, from);
 
             }
         } else if (intent != null) {
@@ -1711,6 +1718,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     mLastProviderId = mAccountIds[0][1];
 
                     newCursor.moveToFirst();
+                    
+                    initChats();
 
 
                 }
@@ -1766,16 +1775,17 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                Log.e(ImApp.LOG_TAG,"error creating connection",e);
             }
 
-        }
-
-        if (conn != null)
-        {
-
-            try {
-                conn.getContactListManager().registerSubscriptionListener(mSubscriptionListener);
-            } catch (RemoteException e1) {
-                Log.e(ImApp.LOG_TAG,"error registering listener",e1);
-
+      
+            if (conn != null)
+            {
+    
+                try {
+                    conn.getContactListManager().registerSubscriptionListener(mSubscriptionListener);
+                   // conn.getContactListManager().registerContactListListener(mContactListListener);
+                } catch (RemoteException e1) {
+                    Log.e(ImApp.LOG_TAG,"error registering listener",e1);
+    
+                }
             }
 
 
@@ -2348,7 +2358,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
     }
 
-    /**
     void showSubscriptionDialog (final long subProviderId, final String subFrom)
     {
         if (! ((Activity) this).isFinishing()) {
@@ -2382,7 +2391,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
             },500);
         }
-    }*/
+    }
 
     void approveSubscription(long providerId, String userName) {
         IImConnection conn = mApp.getConnection(providerId);
@@ -2471,7 +2480,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         @Override
         public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
            
-            //showSubscriptionDialog (providerId, from.getAddress().getAddress());
+            showSubscriptionDialog (providerId, from.getAddress().getAddress());
             
         }
 
@@ -2485,6 +2494,43 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         }
 
+    };
+    
+    private final IContactListListener.Stub mContactListListener = new IContactListListener.Stub ()
+    {
+        
+        @Override
+        public IBinder asBinder() {
+            
+            return null;
+        }
+
+        @Override
+        public void onContactChange(int type, IContactList list, Contact contact)
+                throws RemoteException {
+           
+            
+        }
+
+        @Override
+        public void onAllContactListsLoaded() throws RemoteException {
+          
+            Log.d(ImApp.LOG_TAG, "onAllContactListsLoaded");
+        }
+
+        @Override
+        public void onContactsPresenceUpdate(Contact[] contacts) throws RemoteException {
+          
+            
+        }
+
+        @Override
+        public void onContactError(int errorType, ImErrorInfo error, String listName,
+                Contact contact) throws RemoteException {
+          
+            
+        }
+        
     };
 
     private Imps.ProviderSettings.QueryMap mGlobalSettings = null;
