@@ -140,6 +140,7 @@ public class SerializationUtils {
                         writer.write(" \\t \\t  \\t ");
                 }
             }
+
             break;
         case AbstractMessage.MESSAGE_QUERY:
             QueryMessage query = (QueryMessage) m;

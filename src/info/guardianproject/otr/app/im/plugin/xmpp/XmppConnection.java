@@ -1251,18 +1251,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     boolean groupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
                     ChatSession session = findOrCreateSession(address, groupMessage);
                     session.onMessageReceipt(dr.getId());
+                    
+                //    session.getOtrChatManager().getSessionId(smackMessage.getTo(), smackMessage.getFrom());
                 }
 
                 if (body != null)
                 {
                     XmppAddress aFrom = new XmppAddress(smackMessage.getFrom());
-
+                    XmppAddress aTo = new XmppAddress(smackMessage.getTo());
+                    
                     boolean isGroupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
 
                     ChatSession session = findOrCreateSession(address, isGroupMessage);
 
                     Message rec = new Message(body);
-                    rec.setTo(mUser.getAddress());
+                    rec.setTo(aTo);
                     rec.setFrom(aFrom);
                     rec.setDateTime(new Date());
 

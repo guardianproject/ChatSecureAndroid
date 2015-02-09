@@ -19,7 +19,7 @@ public interface OtrConstants {
     public static final String QueryMessage_V12 = "?OTR?v2?";
     public static final String QueryMessage_V14x = "?OTRv24x?";
     public static final String QueryMessage_V124x = "?OTR?v24x?";
-    public static final String CommonRequest = " Your contact is requesting to start an encrypted chat. Please install ChatSecure (Android, iPhone and iPad) from https://get.chatsecure.org/ or other encryption-capable messaging app.";
+    public static final String CommonRequest = " Your contact is requesting to start an encrypted chat. Please install ChatSecure or other encryption-capable messaging app.";
     public static final String QueryMessage_CommonRequest = "?OTR?v2? " + CommonRequest;
     //You are being requested to have an Off-the-Record private conversation &lt;http://otr.cypherpunks.ca/&gt;. Please install ChatSecure (aka Gibberbot Android/iOS), Pidgin (Win/Linux), Adium (Mac) or any other OTR-enabled app.";
     public static final String PlainText_V12 = "This is a plain text that has hidden support for V1 and V2! 	  				 	 	 	    		  	  	 	  	 ";

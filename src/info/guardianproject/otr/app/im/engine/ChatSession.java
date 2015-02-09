@@ -38,7 +38,7 @@ public class ChatSession {
     private ImEntity mParticipant;
     private ChatSessionManager mManager;
 
-    private OtrChatManager mOtrChatManager;
+   // private OtrChatManager mOtrChatManager;
 
     private MessageListener mListener = null;
     private Vector<Message> mHistoryMessages;
@@ -64,13 +64,14 @@ public class ChatSession {
         mParticipant = participant;
     }
 
+    /*
     public void setOtrChatManager(OtrChatManager otrChatManager) {
         mOtrChatManager = otrChatManager;
     }
 
     public OtrChatManager getOtrChatManager() {
         return mOtrChatManager;
-    }
+    }*/
 
     /**
      * Adds a MessageListener so that it can be notified of any new message in
@@ -104,15 +105,15 @@ public class ChatSession {
      */
     public int sendMessageAsync(Message message) {
 
-
-        SessionID sId = mOtrChatManager.getSessionId(message.getFrom().getAddress(),mParticipant.getAddress().getAddress());
-        SessionStatus otrStatus = mOtrChatManager.getSessionStatus(sId);
+        OtrChatManager cm = OtrChatManager.getInstance();
+        SessionID sId = cm.getSessionId(message.getFrom().getAddress(),mParticipant.getAddress().getAddress());
+        SessionStatus otrStatus = cm.getSessionStatus(sId);
 
         message.setTo(mParticipant.getAddress());
 
         if (otrStatus == SessionStatus.ENCRYPTED)
         {
-            boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
+            boolean verified = cm.getKeyManager().isVerified(sId);
 
             if (verified)
             {
@@ -132,7 +133,7 @@ public class ChatSession {
         }
 
         mHistoryMessages.add(message);
-        mOtrChatManager.transformSending(message);
+        cm.transformSending(message);
         mManager.sendMessageAsync(this, message);
 
         return message.getType();
@@ -148,7 +149,9 @@ public class ChatSession {
         if (message.getTo() == null)
             message.setTo(mParticipant.getAddress());
 
-        mOtrChatManager.transformSending(message, isResponse, data);
+        OtrChatManager cm = OtrChatManager.getInstance();
+
+        cm.transformSending(message, isResponse, data);
 
         mManager.sendMessageAsync(this, message);
     }
@@ -165,15 +168,17 @@ public class ChatSession {
     public boolean onReceiveMessage(Message message) {
         mHistoryMessages.add(message);
 
-        if (mOtrChatManager != null)
-        {
-            SessionStatus otrStatus = mOtrChatManager.getSessionStatus(message.getTo().getAddress(), message.getFrom().getAddress());
+        OtrChatManager cm = OtrChatManager.getInstance();
 
-            SessionID sId = mOtrChatManager.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());
+        if (cm != null)
+        {
+            SessionStatus otrStatus = cm.getSessionStatus(message.getTo().getAddress(), message.getFrom().getAddress());
+
+            SessionID sId = cm.getSessionId(message.getTo().getAddress(),message.getFrom().getAddress());
 
             if (otrStatus == SessionStatus.ENCRYPTED)
             {
-                boolean verified = mOtrChatManager.getKeyManager().isVerified(sId);
+                boolean verified = cm.getKeyManager().isVerified(sId);
 
                 if (verified)
                 {
