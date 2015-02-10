@@ -72,23 +72,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import info.guardianproject.emoji.EmojiManager;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.ui.ImageViewActivity;
-import info.guardianproject.otr.app.im.ui.LetterAvatar;
-import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
-import info.guardianproject.util.AudioPlayer;
 import info.guardianproject.util.LinkifyHelper;
-import info.guardianproject.util.LogCleaner;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 public class MessageView extends FrameLayout {
 
@@ -611,32 +595,6 @@ public class MessageView extends FrameLayout {
              }
         }
 
-
-        /**
-        mHolder.mStatusBlock.setVisibility(VISIBLE);
-
-//        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
-
-        if (encryption == EncryptionState.NONE)
-        {
-
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_red_dark);
-
-
-        }
-        else if (encryption == EncryptionState.ENCRYPTED)
-        {
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);
-
-        }
-
-        else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
-        {
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
-
-        }*/
-
-
         if (date != null)
         {
 
@@ -692,24 +650,7 @@ public class MessageView extends FrameLayout {
 
                 mHolder.mAvatar.setVisibility(View.VISIBLE);
                 mHolder.mAvatar.setImageDrawable(lavatar);
-
-                /*
-                if (AVATAR_DEFAULT == null)
-                {
-                    AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
-                            R.drawable.avatar_unknown));
-
-
-
-                }
-
-                avatar = AVATAR_DEFAULT;
-                mHolder.mAvatar.setVisibility(View.VISIBLE);
-                mHolder.mAvatar.setImageDrawable(avatar);
-                */
-
             }
-
         }
     }
 
