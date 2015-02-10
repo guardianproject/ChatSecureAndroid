@@ -23,8 +23,8 @@
   <!--Views: Setup-->
   <string name="landing_page_title">खाता चुनें </string>
   <string name="choose_account_title">खाता चुनें </string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="add_account">&lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; खाता जोड़ें </string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account"><xliff:g id="account">%1$s</xliff:g> खाता जोड़ें </string>
   <string name="menu_about">परिचय </string>
   <string name="welcome_account">खाता व्यवस्थित </string>
   <string name="setup_passphrase_title">कूटवाक्यांश व्यवस्थित </string>
@@ -99,7 +99,7 @@
   <!--Alerts: Exceptions-->
   <string name="error">ध्यान </string>
   <string name="error_prefix">त्रुटि:</string>
-  <string name="general_error">त्रुटि कोड  &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="general_error">त्रुटि कोड  <xliff:g id="code">%1$d</xliff:g></string>
   <string name="select_contact">कृपया पहले संपर्क चुनें </string>
   <string name="signin_password_prompt">कूटशब्द दाखिल करें </string>
   <string name="msg_sent_failed">संदेश नहीं भेजा गया </string>

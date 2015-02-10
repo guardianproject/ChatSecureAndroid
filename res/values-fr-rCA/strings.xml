@@ -33,19 +33,19 @@
   <string name="lock_screen_skip">Ignorer &gt;&gt;</string>
   <string name="app_passphrase_view_title_dialog">Demande d\'informations</string>
   <string name="app_passphrase_view_password_question">Veuillez saisir le mot de passe</string>
-  <string name="password_please">Mot de passe SVP...</string>
+  <string name="password_please">Mot de passe SVP…</string>
   <string name="passphrase">Phrase de passe</string>
   <string name="passphrase_again">Phrase de passe (de nouveau)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Choisir un compte</string>
   <string name="choose_account_title">Choisir un compte</string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="add_account">Ajouter un compte &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Ajouter un compte <xliff:g id="account">%1$s</xliff:g></string>
   <string name="menu_about">À propos de l\u2019appli</string>
   <string name="menu_sign_out_all">Se déconnecter de tout</string>
   <string name="signout_all_confirm_message">Voulez-vous vous déconnecter de tous les services ?</string>
-  <string name="signed_out_prompt">Vous avez été déconnecté de &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
-  <string name="signed_out_prompt_with_error">Vous avez été déconnecté de &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; parce que &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt">Vous avez été déconnecté de <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Vous avez été déconnecté de <xliff:g id="account">%1$s</xliff:g> parce que <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">C\u2019est votre première utilisation de ChatSecure ?</string>
   <string name="welcome_skip">Impatient de commencer ?</string>
   <string name="welcome_about">Commencer</string>
@@ -55,7 +55,7 @@
   <string name="setup_passphrase_label1">Phrase de passe :</string>
   <string name="setup_passphrase_label2">Phrase de passe (de nouveau) :</string>
   <string name="rekey_message">Saisir une *nouvelle* phrase de passe. Elle doit contenir au moins une majuscule, une minuscule, un chiffre et doit avoir plus de six caractères.</string>
-  <string name="do_rekey">Chiffrement de vos notes existantes avec la nouvelle phrase de passe (patience...)</string>
+  <string name="do_rekey">Chiffrement de vos notes existantes avec la nouvelle phrase de passe (patience…)</string>
   <string name="enter_pass">Saisissez votre phrase de passe :</string>
   <string name="new_pass">Bienvenue ! Saisissez une phrase de passe forte pour sécuriser vos notes. Elle doit contenir au moins une majuscule, une minuscule, un chiffre et doit avoir plus de six caractères.</string>
   <string name="pass_err_length">Votre phrase de passe n\u2019 pas assez longue</string>
@@ -114,9 +114,9 @@
   <string name="account_setup_advanced_enc_auto">Si possible, chiffrer automatiquement les clavardages</string>
   <string name="account_setup_advanced_enc_req">Chiffrer les clavardages tel que demandé</string>
   <string name="account_setup_advanced_enc_off">Désactiver le chiffrement du clavardage</string>
-  <string name="account_setup_signin_a">Validation des authentifiants...</string>
-  <string name="account_setup_signin_b">Génération de la paire de clefs...</string>
-  <string name="account_setup_signin_c">Connexion...</string>
+  <string name="account_setup_signin_a">Validation des authentifiants…</string>
+  <string name="account_setup_signin_b">Génération de la paire de clefs…</string>
+  <string name="account_setup_signin_c">Connexion…</string>
   <string name="account_wizard_setup_title">Assistant de comptes</string>
   <string name="account_wizard_account_title">Votre ID de compte</string>
   <string name="account_wizard_host_title">Configurer le serveur</string>
@@ -127,10 +127,10 @@
   <string name="account_wizard_ready_body">ChatSecure a été configuré, et il est maintenant temps de vous connecter à votre service et de commencer à clavarder de façon sécurisée et confidentielle !</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Domaine de service de clavardage</string>
-  <string name="registering_new_account_">Inscription du nouveau compte...</string>
-  <string name="signing_in_to">on se lance...</string>
+  <string name="registering_new_account_">Inscription du nouveau compte…</string>
+  <string name="signing_in_to">on se lance…</string>
   <string name="menu_cancel_signin">Annuler la connexion</string>
-  <string name="signing_in_wait">Connexion...</string>
+  <string name="signing_in_wait">Connexion…</string>
   <string name="signing_out_wait">Déconnexion\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Rechercher l\'enregistrement de service</string>
@@ -154,28 +154,28 @@
   <string name="title_chats">Conversations</string>
   <string name="no_messages">Aucune conversation.\n\nToquer ici pour en commencer une !</string>
   <string name="empty_account_message">Vous n\'avez aucun\ncompte configuré.\n\nToquez ici pour en ajouter un !</string>
-  <string name="buddy_list_title">Liste des contacts - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="buddy_list_title">Liste des contacts - <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_add_contact">Ajouter un contact</string>
   <string name="menu_remove_contact">Supprimer un contact</string>
   <string name="menu_block_contact">Bloquer un contact</string>
   <string name="menu_contact_nickname">Pseudonyme du contact</string>
   <string name="menu_view_blocked">Bloqué</string>
   <string name="nickname">Pseudonyme</string>
-  <string name="confirm_delete_contact">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » sera supprimé.</string>
-  <string name="confirm_block_contact">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » sera bloqué.</string>
-  <string name="confirm_unblock_contact">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » sera débloqué.</string>
-  <string name="add_contact_success">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été ajouté.</string>
-  <string name="delete_contact_success">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été supprimé.</string>
+  <string name="confirm_delete_contact">Le contact « <xliff:g id="user">%1$s</xliff:g> » sera supprimé.</string>
+  <string name="confirm_block_contact">Le contact « <xliff:g id="user">%1$s</xliff:g> » sera bloqué.</string>
+  <string name="confirm_unblock_contact">Le contact « <xliff:g id="user">%1$s</xliff:g> » sera débloqué.</string>
+  <string name="add_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été ajouté.</string>
+  <string name="delete_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été supprimé.</string>
   <string name="block_contact_success">Le contact « xliff:g id="user"&gt;%1$s&lt;/xliff:g » a été bloqué.</string>
-  <string name="unblock_contact_success">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été débloqué.</string>
+  <string name="unblock_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été débloqué.</string>
   <string name="menu_new_chat">Nouveau clavardage</string>
   <string name="menu_search_contacts">Rechercher les contacts</string>
   <string name="menu_show_grid">Montrer la grille</string>
   <string name="menu_start_chat">Commencer le clavardage</string>
   <string name="menu_view_profile">Afficher le profil</string>
   <string name="menu_verify">Vérifier le contact</string>
-  <string name="ongoing_conversation">Clavardages en cours (&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="online_count">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; en ligne</string>
+  <string name="ongoing_conversation">Clavardages en cours (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> en ligne</string>
   <string name="subscriptions">Invitations des amis</string>
   <string name="unknown_contact">(<i>Inconnu</i>) </string>
   <string name="empty_contact_group">Vide</string>
@@ -194,17 +194,17 @@
   <string name="label_client_type">Type de client :</string>
   <string name="client_type_computer">Ordinateur</string>
   <string name="client_type_mobile">Appareil</string>
-  <string name="blocked_list_title">Contacts bloqués - &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="blocked_list_title">Contacts bloqués - <xliff:g id="user">%1$s</xliff:g></string>
   <string name="no_blocked_contact">Aucun contact bloqué.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Clavarder avec &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="chat_with">Clavarder avec <xliff:g id="user">%1$s</xliff:g></string>
   <string name="me">Moi</string>
-  <string name="contact_online">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est en ligne</string>
-  <string name="contact_away">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est absent</string>
-  <string name="contact_busy">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est occupé</string>
-  <string name="contact_offline">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est hors ligne</string>
-  <string name="contact_joined">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; s\'est joint</string>
-  <string name="contact_left">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est parti</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> est en ligne</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> est absent</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> est occupé</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> est hors ligne</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> s\'est joint</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> est parti</string>
   <string name="menu_send_image">Envoyer une photo</string>
   <string name="menu_send_file">Envoyer un fichier</string>
   <string name="menu_send_audio">Envoyer de l\'audio</string>
@@ -239,13 +239,13 @@
   <string name="end_chat_summary">Tous les éléments multimédias sécurisés de cette session seront supprimés. Exportez un élément multimédia par un long clic sur l\'icône de l\'imagette.</string>
   <string name="end_chat_and_delete">Mettre fin au clavardage et supprimer les fichiers</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; vous a invité à rejoindre un clavardage de groupe.</string>
-  <string name="invitation_sent_prompt">Une invitation a été envoyé à &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;.</string>
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> vous a invité à rejoindre un clavardage de groupe.</string>
+  <string name="invitation_sent_prompt">Une invitation a été envoyé à <xliff:g id="user">%1$s</xliff:g>.</string>
   <string name="accept_invitation">Accepter</string>
   <string name="decline_invitation">Refuser</string>
   <string name="menu_new_group_chat">Clavardage de groupe</string>
   <string name="create_or_join_group_chat">Créer ou rejoindre un clavardage de groupe</string>
-  <string name="connecting_to_group_chat_">Connexion au clavardage de groupe...</string>
+  <string name="connecting_to_group_chat_">Connexion au clavardage de groupe…</string>
   <string name="menu_invite_contact">Inviter\u2026</string>
   <string name="contacts_picker_title">Choisir le/les contact(s) à inviter</string>
   <string name="contact_filter_hint">Saisir le nom du contact à trouver</string>
@@ -253,13 +253,13 @@
   <string name="subscription_prompt">Ajouter le contact?</string>
   <string name="approve_subscription">Oui</string>
   <string name="decline_subscription">Non</string>
-  <string name="approve_subscription_error">Impossible d\'approuver l\'abonnement de &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Veuillez ressayer ultérieurement.</string>
-  <string name="decline_subscription_error">Impossible de refuser l\'abonnement de &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt;. Veuillez ressayer ultérieurement.</string>
+  <string name="approve_subscription_error">Impossible d\'approuver l\'abonnement de <xliff:g id="user">%1$s</xliff:g>. Veuillez ressayer ultérieurement.</string>
+  <string name="decline_subscription_error">Impossible de refuser l\'abonnement de <xliff:g id="user">%1$s</xliff:g>. Veuillez ressayer ultérieurement.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Démarrer le chiffrement</string>
   <string name="menu_otr_stop">Arrêter le chiffrement</string>
-  <string name="starting_otr_chat">Démarrage d\'une session de clavardage chiffrée...</string>
-  <string name="stopping_otr_chat">Arrêt de la session de clavardage chiffrée...</string>
+  <string name="starting_otr_chat">Démarrage d\'une session de clavardage chiffrée…</string>
+  <string name="stopping_otr_chat">Arrêt de la session de clavardage chiffrée…</string>
   <string name="label_fingerprint_remote">Empreinte de sécurité</string>
   <string name="label_fingerprint_local">Empreinte de sécurité</string>
   <string name="menu_sign_in">Connexion</string>
@@ -268,7 +268,7 @@
   <string name="otr_session_status_encrypted">Le chiffrement est activité (toquer pour vérifier)</string>
   <string name="otr_session_status_finished">Votre contact a arrêté le clavardage chiffré.</string>
   <string name="otr_session_status_verified">Chiffré et vérifié !</string>
-  <string name="otr_gen_key">Génération d\'une nouvelle paire de clefs OTR...</string>
+  <string name="otr_gen_key">Génération d\'une nouvelle paire de clefs OTR…</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">Nous avons détecté un magasin de clefs OTR à importer. Voulez-vous balayer le mot de passe QR maintenant ?</string>
   <string name="menu_import_keys">Activer KeySync</string>
@@ -367,21 +367,21 @@
   <string name="dialog_settings_choose_background_body">Voulez-vous choisir une image d\'arrière-plan de la galerie ?</string>
   <string name="dialog_settings_choose_background_picker">Choisir une image</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Nouveaux messages &lt;xliff:g id="provider"&gt;%1$s&lt;/xliff:g&gt;</string>
-  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; clavardage non lus</string>
-  <string name="subscription_notify_text">Nouvelle invitation d\'amitié de &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
-  <string name="file_notify_text">Nouveau fichier &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; de &lt;xliff:g id="user"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="newMessages_label">Nouveaux messages <xliff:g id="provider">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> clavardage non lus</string>
+  <string name="subscription_notify_text">Nouvelle invitation d\'amitié de <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Nouveau fichier <xliff:g id="filename">%1$s</xliff:g> de <xliff:g id="user">%2$s</xliff:g></string>
   <string name="notify_groupchat_label">Invitation à un clavardage de groupe</string>
-  <string name="group_chat_invite_notify_text">Nouvelle invitation de clavardage de groupe de &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="group_chat_invite_notify_text">Nouvelle invitation de clavardage de groupe de <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Nouveau(x) message(s) de</string>
-  <string name="starting_the_chatsecure_service_">Démarrage du service ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Démarrage du service ChatSecure…</string>
   <string name="app_unlocked">Activé &amp; déverrouillé</string>
   <string name="toast_chat_copied_to_clipboard">message copié vers le presse-papiers</string>
   <!--Alerts: Exceptions-->
   <string name="error">Attention</string>
   <string name="error_prefix">Erreur :</string>
-  <string name="general_error">Code d\'erreur &lt;xliff:g id="code"&gt;%1$d&lt;/xliff:g&gt;</string>
-  <string name="login_service_failed">Impossible de se connecter au service &lt;xliff:g id="service"&gt;%1$s&lt;/xliff:g&gt;. Veuillez ressayer ultérieurement.\n"(Détails : &lt;xliff:g id="description"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="general_error">Code d\'erreur <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="login_service_failed">Impossible de se connecter au service <xliff:g id="service">%1$s</xliff:g>. Veuillez ressayer ultérieurement.\n"(Détails : <xliff:g id="description">%2$s</xliff:g>)</string>
   <string name="add_list_failed">La liste n\'a pas été ajoutée.</string>
   <string name="block_contact_failed">Le contact n\'a pas été bloqué.</string>
   <string name="unblock_contact_failed">Le contact n\'a pas été débloqué.</string>
@@ -390,8 +390,8 @@
   <string name="service_error">Erreur du service !</string>
   <string name="load_contact_list_failed">La liste de contacts n\'a pas pu être chargée.</string>
   <string name="cant_connect_to_server">Impossible de se connecter au serveur. Veuillez vérifier votre connexion.</string>
-  <string name="contact_already_exist">« &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » existe déjà dans votre liste de contacts.</string>
-  <string name="contact_blocked">Le contact « &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; » a été bloqué.</string>
+  <string name="contact_already_exist">« <xliff:g id="user">%1$s</xliff:g> » existe déjà dans votre liste de contacts.</string>
+  <string name="contact_blocked">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été bloqué.</string>
   <string name="contact_not_loaded">Veuillez patienter pendant le chargement de votre liste de contacts.</string>
   <string name="network_error">Une erreur réseau s\'est produite.</string>
   <string name="wifi_not_connected_error">Le Wi-Fi est exigé pour cette connexion.</string>
@@ -435,10 +435,10 @@
   <string name="otr_keysync_warning_message">Veuillez copier le fichier « otr_keystore.ofcases » de l\'outil OtrFileConverter de votre ordinateur de bureau dans le répertoire racine du stockage de votre appareil. </string>
   <string name="msg_sent_failed">Impossible d\'envoyer ce message.</string>
   <string name="disconnected_warning">Vous êtes déconnecté. Les messages seront transmis après votre reconnexion.</string>
-  <string name="contact_offline_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; est hors ligne. Les messages que vous envoyez seront livrés quand &lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; sera en ligne.</string>
-  <string name="contact_not_in_list_warning">&lt;xliff:g id="user"&gt;%1$s&lt;/xliff:g&gt; n\'est pas dans votre liste de contacts.</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> est hors ligne. Les messages que vous envoyez seront livrés quand <xliff:g id="user">%1$s</xliff:g> sera en ligne.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> n\'est pas dans votre liste de contacts.</string>
   <string name="error_account_password_mismatch">Vos mots de passe ne correspondent pas</string>
-  <string name="error_account_settings_priority">La priorité doit être un chiffre entre [0 ... 127]</string>
+  <string name="error_account_settings_priority">La priorité doit être un chiffre entre [0 … 127]</string>
   <string name="error_account_settings_port">Le numéro de port doit être un numéro</string>
   <string name="error_chat_file_transfer_title">Erreur de transfert</string>
   <string name="error_chat_file_transfer_body">Impossible de lire le fichier vers le stockage</string>
@@ -456,7 +456,7 @@
   <string name="contacts">Contacts</string>
   <string name="mtm_accept_cert">Accepter le certificat du serveur ?</string>
   <string name="menu_sidebar_qr">Afficher votre empreinte</string>
-  <string name="loading">chargement...</string>
+  <string name="loading">chargement…</string>
   <!--Other-->
   <string name="about_link">À propos de ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

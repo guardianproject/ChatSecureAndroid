@@ -77,9 +77,9 @@ The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin
   <string name="account_setup_advanced_enc_auto">ဖြစ်နိုင်လျှင် စကားဝိုင်းများကို အလိုအလျှောက်ဝှက်ပါ</string>
   <string name="account_setup_advanced_enc_req">တောင်းဆိုသည့်အတိုင်း စာကားဝိုင်းများကို ဝှက်</string>
   <string name="account_setup_advanced_enc_off">စကားဝိုင်းဝှက်ခြင်းကို ပိတ်ပါ</string>
-  <string name="account_setup_signin_a">အချက်အလက်များကို စစ်ဆေးအတည်ပြုနေပါတယ်...</string>
-  <string name="account_setup_signin_b">ကီးတွဲများ ဖန်တီနေပါတယ်...</string>
-  <string name="account_setup_signin_c">ဝင်နေသည်...</string>
+  <string name="account_setup_signin_a">အချက်အလက်များကို စစ်ဆေးအတည်ပြုနေပါတယ်…</string>
+  <string name="account_setup_signin_b">ကီးတွဲများ ဖန်တီနေပါတယ်…</string>
+  <string name="account_setup_signin_c">ဝင်နေသည်…</string>
   <string name="account_wizard_setup_title">အကောင့်ဆိုင်ရာ </string>
   <string name="account_wizard_account_title">အသင့် အကောင့် အိုင်ဒီ</string>
   <string name="account_wizard_host_title">ဆာဗာ သတ်မှတ်ရန်</string>
@@ -156,11 +156,11 @@ The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin
   <!--Security: OTR-->
   <string name="menu_otr_start">စာဝှက်စနစ်စတင်</string>
   <string name="menu_otr_stop">စာဝှက်စနစ်ရပ်ဆိုင်း</string>
-  <string name="starting_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် စနေပါသည်...</string>
-  <string name="stopping_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် ရပ်နေပါသည်...</string>
+  <string name="starting_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် စနေပါသည်…</string>
+  <string name="stopping_otr_chat">ဝှက်ထားသည့် စကားဝိုင်းဆက်ရှင် ရပ်နေပါသည်…</string>
   <string name="menu_sign_in">ဝင်</string>
   <string name="menu_gen_key">ကီး ပြန်ဖန်တီးရန်</string>
-  <string name="otr_gen_key">OTR ကီးတွဲသစ် ဖန်တီးနေပါတယ်...</string>
+  <string name="otr_gen_key">OTR ကီးတွဲသစ် ဖန်တီးနေပါတယ်…</string>
   <!--Security: OTR: Keyring-->
   <!--Security: OTR: Verification-->
   <string name="menu_fingerprint">သင့်လက်ဗွေ</string>
