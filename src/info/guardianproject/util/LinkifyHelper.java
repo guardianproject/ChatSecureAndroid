@@ -1,5 +1,10 @@
 package info.guardianproject.util;
 
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.CharacterStyle;
+import android.text.style.URLSpan;
 import android.text.util.Linkify;
 import android.text.util.Linkify.TransformFilter;
 import android.widget.TextView;
@@ -24,7 +29,7 @@ public class LinkifyHelper {
     };
 
     /* Right now, if there is no app to handle */
-    public static void addLinks(TextView text) {
+    public static void addLinks(TextView text, SpanConverter converter) {
         Linkify.addLinks(text, Linkify.ALL);
         Linkify.addLinks(text, geo, null);
         Linkify.addLinks(text, market, null);
@@ -32,10 +37,34 @@ public class LinkifyHelper {
         Linkify.addLinks(text, xmpp, null);
         Linkify.addLinks(text, twitterHandle, "https://twitter.com/", null, returnMatchFilter);
         Linkify.addLinks(text, hashtag, "https://twitter.com/hashtag/", null, returnMatchFilter);
+        text.setText(replaceAll((Spanned) text.getText(), URLSpan.class, converter));
     }
 
     /**
      * Do not create this static utility class.
      */
-    private LinkifyHelper() {}
+    private LinkifyHelper() {
+    }
+
+    // thanks to @commonsware https://stackoverflow.com/a/11417498
+    public static <A extends CharacterStyle, B extends CharacterStyle> Spannable replaceAll(
+            Spanned original, Class<A> sourceType, SpanConverter<A, B> converter) {
+        SpannableString result = new SpannableString(original);
+        A[] spans = result.getSpans(0, result.length(), sourceType);
+
+        for (A span : spans) {
+            int start = result.getSpanStart(span);
+            int end = result.getSpanEnd(span);
+            int flags = result.getSpanFlags(span);
+
+            result.removeSpan(span);
+            result.setSpan(converter.convert(span), start, end, flags);
+        }
+
+        return (result);
+    }
+
+    public interface SpanConverter<A extends CharacterStyle, B extends CharacterStyle> {
+        B convert(A span);
+    }
 }
