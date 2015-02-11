@@ -9,10 +9,18 @@ set -x
 versionName=`sed -n 's,.*versionName="\([^"]*\)".*,\1,p' AndroidManifest.xml`
 describe=`git describe`
 if [ $versionName != $describe ]; then
-    echo "WARNING: checking out release tag $versionName"
-   git checkout $versionName
+    echo "WARNING: building $describe, which is not the latest release ($versionName)"
+else
+    # make a clearer warning above by putting this here
+    set +x
+    echo ""
+    echo ""
+    echo "Checking git tag signature for release build:"
+    git tag -v $versionName
+    echo ""
+    echo ""
+    set -x
 fi
-git tag -v $versionName
 
 
 if [ -z $ANDROID_HOME ]; then
@@ -53,7 +61,15 @@ fi
 ./update-ant-build.sh
 faketime -f "$TIMESTAMP" ant release
 
-apk=$projectroot/bin/$projectname-*-release.apk
+apk=$projectroot/bin/$projectname-$versionName.apk
+
+# mark APK with actual build info, instead of version in manifest
+if [ $versionName != $describe ]; then
+    debugapk=$projectroot/bin/$projectname-$describe.apk
+    mv $apk $debugapk
+    apk=$debugapk
+fi
+
 if which gpg > /dev/null; then
     if [ -z "`gpg --list-secret-keys`" ]; then
         echo "No GPG secret keys found, not signing APK"
