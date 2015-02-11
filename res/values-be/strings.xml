@@ -34,12 +34,12 @@
   <!--Views: Setup-->
   <string name="landing_page_title">Абярыце акаўнт</string>
   <string name="choose_account_title">Абярыце акаўнт</string>
-  <string name="add_account">Дадаць &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; акаўнт</string>
+  <string name="add_account">Дадаць <xliff:g id="account">%1$s</xliff:g> акаўнт</string>
   <string name="menu_about">Пра прыладу</string>
   <string name="menu_sign_out_all">Выйсці адусюль</string>
   <string name="signout_all_confirm_message">Вы жадаеце выйсці з усіх сервісаў</string>
-  <string name="signed_out_prompt">Вы выйшлі з &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;.</string>
-  <string name="signed_out_prompt_with_error">Вы выйшлі з &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt; бо &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt">Вы выйшлі з <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Вы выйшлі з <xliff:g id="account">%1$s</xliff:g> бо <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">Першы раз карыстаецеся ChatSecure?</string>
   <string name="welcome_skip">Ня можаце дачакацца каб пачаць?</string>
   <string name="welcome_about">Пачаць</string>
@@ -49,7 +49,7 @@
   <string name="setup_passphrase_label1">Пароль:</string>
   <string name="setup_passphrase_label2">Пароль (яшчэ раз):</string>
   <string name="rekey_message">Увядзіце новы пароль. Ён мусіць утрымліваць як мінімум адну вялікую, адну маленькую літару, адну лічбу, і быць ня меньш за 6 сімвалаў</string>
-  <string name="do_rekey">Шыфраванне вашых існуючых нататак з новай парольнай фразай (трошкі цярпення ...)</string>
+  <string name="do_rekey">Шыфраванне вашых існуючых нататак з новай парольнай фразай (трошкі цярпення …)</string>
   <string name="enter_pass">Увядзіце ваш пароль:</string>
   <string name="new_pass">Запрашаем! Калі ласка, увядзіце пароль, каб абараніць свае нататкі. Ён мусіць ўтрымліваць як мінімум адну вялікую літару, адну маленькую і адну лічбу, і быць больш за 6 сімвалаў.</string>
   <string name="pass_err_length">Ваш пароль не дастаткова доўгі</string>

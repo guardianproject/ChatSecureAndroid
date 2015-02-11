@@ -33,19 +33,19 @@
   <string name="lock_screen_skip">Přeskočit &gt;&gt;</string>
   <string name="app_passphrase_view_title_dialog">Informační výzva</string>
   <string name="app_passphrase_view_password_question">Prosím, zadejte heslo</string>
-  <string name="password_please">Heslo prosím...</string>
+  <string name="password_please">Heslo prosím…</string>
   <string name="passphrase">Ověřovací heslo</string>
   <string name="passphrase_again">Ověřovací heslo (znova)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Chat - Vyberte účet</string>
   <string name="choose_account_title">Chat - Vyberte účet</string>
-  <string name="conversations">(&lt;xliff:g id="number" example="27"&gt;%1$d&lt;/xliff:g&gt;)</string>
-  <string name="add_account">Přidat účet &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Přidat účet <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
   <string name="menu_about">O</string>
   <string name="menu_sign_out_all">Odhlásit všechny</string>
   <string name="signout_all_confirm_message">Chcete odhlásit všechny služby?</string>
-  <string name="signed_out_prompt">Byli jste odhlášeni ze služby &lt;xliff:g id="ACCOUNT"&gt;%1$s&lt;/xliff:g&gt;.</string>
-  <string name="signed_out_prompt_with_error">Byli jste odhlášeni z &lt;xliff:g id="account"&gt;%1$s&lt;/xliff:g&gt;, protože &lt;xliff:g id="reason"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="signed_out_prompt">Byli jste odhlášeni ze služby <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Byli jste odhlášeni z <xliff:g id="account">%1$s</xliff:g>, protože <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">Používáte ChatSecure poprvé?</string>
   <string name="welcome_skip">Už se nemůžu dočkat, jak začít?</string>
   <string name="welcome_about">Jak začít</string>
@@ -55,7 +55,7 @@
   <string name="setup_passphrase_label1">Ověřovací heslo:</string>
   <string name="setup_passphrase_label2">Ověřovací heslo (znovu):</string>
   <string name="rekey_message">Zadejte nový ověřovací heslo. Musí obsahovat čísla, malé a velké znaky a musí být delší než šest znaků.</string>
-  <string name="do_rekey">Šifrujeme vaše existující poznámky s novým ověřovacím heslem (trpělivost...)</string>
+  <string name="do_rekey">Šifrujeme vaše existující poznámky s novým ověřovacím heslem (trpělivost…)</string>
   <string name="enter_pass">Zadejte vaše ověřovací heslo:</string>
   <string name="new_pass">Vítejte! Zadejte silné ověřovací heslo pro zabezpečení vašich poznámek. Musí obsahovat čísla, velké a malé písmena a musí být délší než šest znaků. </string>
   <string name="pass_err_length">Váše ověřovací heslo není dostatečně dlouhé</string>
@@ -114,9 +114,9 @@
   <string name="account_setup_advanced_enc_auto">Když to bude možné, šifrovat chaty automaticky</string>
   <string name="account_setup_advanced_enc_req">Šifrovat chaty jak bylo požadováno</string>
   <string name="account_setup_advanced_enc_off">Vypnout šifrování chatu</string>
-  <string name="account_setup_signin_a">Ověření pověření...</string>
-  <string name="account_setup_signin_b">Generování dvojice klíčů ...</string>
-  <string name="account_setup_signin_c">Podepisování ...</string>
+  <string name="account_setup_signin_a">Ověření pověření…</string>
+  <string name="account_setup_signin_b">Generování dvojice klíčů …</string>
+  <string name="account_setup_signin_c">Podepisování …</string>
   <string name="account_wizard_setup_title">Průvodce účtem</string>
   <string name="account_wizard_account_title">ID vašeho účtu</string>
   <string name="account_wizard_host_title">Nastavit server</string>
@@ -127,11 +127,11 @@
   <string name="account_wizard_ready_body">ChatSecure byl nastaven, nyní je čas se připojit k vašim službám a začít chatovat bezpečně, spolehlivě a soukromě!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">Doména chat služby</string>
-  <string name="registering_new_account_">Registruji nový učet...</string>
-  <string name="signing_in_to">jak se bude...</string>
+  <string name="registering_new_account_">Registruji nový učet…</string>
+  <string name="signing_in_to">jak se bude…</string>
   <string name="menu_cancel_signin">Zrušit přihlašování</string>
-  <string name="signing_in_wait">Přihlašování...</string>
-  <string name="signing_out_wait">Odhlašování...</string>
+  <string name="signing_in_wait">Přihlašování…</string>
+  <string name="signing_out_wait">Odhlašování…</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Provést SRV vyhledání</string>
   <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Pomocí DNS SRV najít aktuální XMPP server z názvu domény</string>
@@ -154,28 +154,28 @@
   <string name="title_chats">Konverzece</string>
   <string name="no_messages">Žádné konverzace.\n\nKlepnutím sem začněte!</string>
   <string name="empty_account_message">Nemáte žádné \nnastavené účty.\n\nKleknutím sem jeden přidejte!</string>
-  <string name="buddy_list_title">Seznam kontaktů - &lt;xliff:g id="username"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="buddy_list_title">Seznam kontaktů - <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_add_contact">Přidat kontakt</string>
   <string name="menu_remove_contact">Smazat kontakt</string>
   <string name="menu_block_contact">Blokovat kontakt</string>
   <string name="menu_contact_nickname">Kontaktní přezdívka</string>
   <string name="menu_view_blocked">Blokovaní uživatelé</string>
   <string name="nickname">Přezdívka</string>
-  <string name="confirm_delete_contact">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; bude smazán.</string>
-  <string name="confirm_block_contact">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; bude blokován.</string>
-  <string name="confirm_unblock_contact">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; bude odblokován.</string>
-  <string name="add_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byl přidán.</string>
-  <string name="delete_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byl smazán.</string>
-  <string name="block_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je blokován.</string>
-  <string name="unblock_contact_success">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je odblokován.</string>
+  <string name="confirm_delete_contact">Kontakt <xliff:g id="USER">%1$s</xliff:g> bude smazán.</string>
+  <string name="confirm_block_contact">Kontakt <xliff:g id="USER">%1$s</xliff:g> bude blokován.</string>
+  <string name="confirm_unblock_contact">Kontakt <xliff:g id="USER">%1$s</xliff:g> bude odblokován.</string>
+  <string name="add_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> byl přidán.</string>
+  <string name="delete_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> byl smazán.</string>
+  <string name="block_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> je blokován.</string>
+  <string name="unblock_contact_success">Kontakt <xliff:g id="USER">%1$s</xliff:g> je odblokován.</string>
   <string name="menu_new_chat">Nový Chat</string>
   <string name="menu_search_contacts">Najít kontakty</string>
   <string name="menu_show_grid">Zobrazit mřížku</string>
   <string name="menu_start_chat">Začít chat</string>
   <string name="menu_view_profile">Zobrazit Profil</string>
   <string name="menu_verify">Ověřit klíč</string>
-  <string name="ongoing_conversation">Probíhající chaty: &lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;</string>
-  <string name="online_count">Kontakty online: &lt;xliff:g id="NUMBER"&gt;%1$d&lt;/xliff:g&gt;</string>
+  <string name="ongoing_conversation">Probíhající chaty: <xliff:g id="NUMBER">%1$d</xliff:g></string>
+  <string name="online_count">Kontakty online: <xliff:g id="NUMBER">%1$d</xliff:g></string>
   <string name="subscriptions">Nabídky přátelství</string>
   <string name="unknown_contact">(\"<i>\"Neznámý uživatel\"</i>\")</string>
   <string name="empty_contact_group">Žádné kontakty</string>
@@ -194,17 +194,17 @@
   <string name="label_client_type">Typ klienta:</string>
   <string name="client_type_computer">počítač</string>
   <string name="client_type_mobile">Mobil</string>
-  <string name="blocked_list_title">Blokované kontakty – &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="blocked_list_title">Blokované kontakty – <xliff:g id="USER">%1$s</xliff:g></string>
   <string name="no_blocked_contact">Žádné kontakty nejsou blokovány.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Chat s uživatelem &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt;</string>
+  <string name="chat_with">Chat s uživatelem <xliff:g id="USER">%1$s</xliff:g></string>
   <string name="me">Já</string>
-  <string name="contact_online">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je online</string>
-  <string name="contact_away">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je pryč</string>
-  <string name="contact_busy">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je zaneprázdněn</string>
-  <string name="contact_offline">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; je offline</string>
-  <string name="contact_joined">Uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se připojil</string>
-  <string name="contact_left">uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; odešel</string>
+  <string name="contact_online">uživatel <xliff:g id="USER">%1$s</xliff:g> je online</string>
+  <string name="contact_away">uživatel <xliff:g id="USER">%1$s</xliff:g> je pryč</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> je zaneprázdněn</string>
+  <string name="contact_offline">uživatel <xliff:g id="USER">%1$s</xliff:g> je offline</string>
+  <string name="contact_joined">Uživatel <xliff:g id="USER">%1$s</xliff:g> se připojil</string>
+  <string name="contact_left">uživatel <xliff:g id="USER">%1$s</xliff:g> odešel</string>
   <string name="menu_send_image">Poslat fotku</string>
   <string name="menu_send_file">Poslat soubor</string>
   <string name="menu_send_audio">Poslat audio</string>
@@ -239,26 +239,26 @@
   <string name="end_chat_summary">Všechny zabezpečené media položky z tohoto sezení byly smazány. Exportujte media položku použitím dlouhého stisku na ikonce náhledu.</string>
   <string name="end_chat_and_delete">Ukončit chat a odstranit soubory</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">Uživatel &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; vás pozval k hromadnému chatu.</string>
-  <string name="invitation_sent_prompt">Uživateli &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byla zaslána pozvánka.</string>
+  <string name="invitation_prompt">Uživatel <xliff:g id="USER">%1$s</xliff:g> vás pozval k hromadnému chatu.</string>
+  <string name="invitation_sent_prompt">Uživateli <xliff:g id="USER">%1$s</xliff:g> byla zaslána pozvánka.</string>
   <string name="accept_invitation">Přijmout</string>
   <string name="decline_invitation">Odmítnout</string>
   <string name="menu_new_group_chat">Skupinový chat</string>
   <string name="create_or_join_group_chat">Vytvořit nebo se připojit ke skupinovému chatu</string>
-  <string name="connecting_to_group_chat_">Připojování ke skupinovému chatu...</string>
-  <string name="menu_invite_contact">Pozvat...</string>
+  <string name="connecting_to_group_chat_">Připojování ke skupinovému chatu…</string>
+  <string name="menu_invite_contact">Pozvat…</string>
   <string name="contacts_picker_title">Vyberte kontakty, které chcete pozvat</string>
   <string name="contact_filter_hint">Zadejte hledaný kontakt</string>
   <string name="empty_contact_list">Žádné kontakty nenalezeny
 
 Klikněte pro pozvání.</string>
-  <string name="approve_subscription_error">Přihlášení k odběru uživatele &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se nepodařilo schválit. Zkuste to prosím znovu později.</string>
-  <string name="decline_subscription_error">Odmítnutí odběru uživatele &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; se nezdařilo. Zkuste to prosím znovu později.</string>
+  <string name="approve_subscription_error">Přihlášení k odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nepodařilo schválit. Zkuste to prosím znovu později.</string>
+  <string name="decline_subscription_error">Odmítnutí odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nezdařilo. Zkuste to prosím znovu později.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Začátek šifrování</string>
   <string name="menu_otr_stop">Konec šifrování</string>
-  <string name="starting_otr_chat">Zahájení šifrované relace chatu ...</string>
-  <string name="stopping_otr_chat">Ukončení šifrované relace chatu ...</string>
+  <string name="starting_otr_chat">Zahájení šifrované relace chatu …</string>
+  <string name="stopping_otr_chat">Ukončení šifrované relace chatu …</string>
   <string name="label_fingerprint_remote">Bezpečnostní otisk</string>
   <string name="label_fingerprint_local">Bezpečnostní otisk</string>
   <string name="menu_sign_in">Přihlásit</string>
@@ -346,7 +346,7 @@ Klikněte pro pozvání.</string>
   <string name="pref_debug_summary">Výstupní log dat aplikace na standardní odchozí / logcat pro ladění</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Přenos dat na pozadí je zakázán</string>
-  <string name="bg_data_prompt_message">Poskytovatel &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt; vyžaduje povolení přenosu dat na pozadí.</string>
+  <string name="bg_data_prompt_message">Poskytovatel <xliff:g id="PROVIDER">%1$s</xliff:g> vyžaduje povolení přenosu dat na pozadí.</string>
   <string name="bg_data_prompt_ok">Povolit</string>
   <string name="bg_data_prompt_cancel">Ukončit</string>
   <string name="signout_kill_confirm_message">Chcete se odhlásit ze všech služeb a zabít všechny procesy (tvrdě ukončit)?</string>
@@ -364,21 +364,21 @@ Klikněte pro pozvání.</string>
   <string name="dialog_settings_choose_background_body">Chcete vybrat obrázek na pozadí z Galerie?</string>
   <string name="dialog_settings_choose_background_picker">Vyberte obrázek</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">Nové zprávy od poskytovatele &lt;xliff:g id="PROVIDER"&gt;%1$s&lt;/xliff:g&gt;</string>
-  <string name="num_unread_chats">&lt;xliff:g id="number"&gt;%1$d&lt;/xliff:g&gt; nepřečtené chaty</string>
-  <string name="subscription_notify_text">Nové přátelské pozvání od &lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
-  <string name="file_notify_text">Nový soubor &lt;xliff:g id="filename"&gt;%1$s&lt;/xliff:g&gt; od &lt;xliff:g id="user"&gt;%2$s&lt;/xliff:g&gt;</string>
+  <string name="newMessages_label">Nové zprávy od poskytovatele <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> nepřečtené chaty</string>
+  <string name="subscription_notify_text">Nové přátelské pozvání od <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Nový soubor <xliff:g id="filename">%1$s</xliff:g> od <xliff:g id="user">%2$s</xliff:g></string>
   <string name="notify_groupchat_label">Pozvánka k hromadnému chatu</string>
-  <string name="group_chat_invite_notify_text">Nová pozvánka do skupinového chatu od&lt;xliff:g id="user"&gt;%s&lt;/xliff:g&gt;</string>
+  <string name="group_chat_invite_notify_text">Nová pozvánka do skupinového chatu od<xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Nová zpráva(y) od</string>
-  <string name="starting_the_chatsecure_service_">Spouštění služby ChatSecure...</string>
+  <string name="starting_the_chatsecure_service_">Spouštění služby ChatSecure…</string>
   <string name="app_unlocked">Aktivováno &amp; odemknuto</string>
   <string name="toast_chat_copied_to_clipboard">Zpráva zkopírována do schránky</string>
   <!--Alerts: Exceptions-->
   <string name="error">Upozornění</string>
   <string name="error_prefix">Chyba:</string>
-  <string name="general_error">Kód chyby: &lt;xliff:g id="CODE"&gt;%1$d&lt;/xliff:g&gt;</string>
-  <string name="login_service_failed">Nepodařilo se přihlásit ke službě &lt;xliff:g id="SERVICE"&gt;%1$s&lt;/xliff:g&gt;. Zkuste to prosím znovu později."\n"(Podrobnosti: &lt;xliff:g id="DESCRIPTION"&gt;%2$s&lt;/xliff:g&gt;)</string>
+  <string name="general_error">Kód chyby: <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed">Nepodařilo se přihlásit ke službě <xliff:g id="SERVICE">%1$s</xliff:g>. Zkuste to prosím znovu později."\n"(Podrobnosti: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">Seznam se nepodařilo přidat.</string>
   <string name="block_contact_failed">Blokování kontaktu se nezdařilo.</string>
   <string name="unblock_contact_failed">Odblokování kontaktu se nezdařilo.</string>
@@ -388,8 +388,8 @@ Klikněte pro pozvání.</string>
   <string name="service_error">Chyba služby.</string>
   <string name="load_contact_list_failed">Seznam kontaktů se nepodařilo načíst.</string>
   <string name="cant_connect_to_server">K serveru se nelze připojit. Zkontrolujte své připojení.</string>
-  <string name="contact_already_exist">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; již je ve vašem seznamu kontaktů.</string>
-  <string name="contact_blocked">Kontakt &lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; byl zablokován.</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> již je ve vašem seznamu kontaktů.</string>
+  <string name="contact_blocked">Kontakt <xliff:g id="USER">%1$s</xliff:g> byl zablokován.</string>
   <string name="contact_not_loaded">Počkejte, než se seznam kontaktů načte.</string>
   <string name="network_error">Došlo k chybě sítě.</string>
   <string name="wifi_not_connected_error">Pro toto připojení je nutné WiFi.</string>
@@ -433,8 +433,8 @@ Klikněte pro pozvání.</string>
   <string name="otr_keysync_warning_message">Prosím, zkopírujte soubor \'otr_keystore.ofcaes\' z počítače OtrFileConverter nástroje do kořenového adresáře vašeho paměťovém zařízení</string>
   <string name="msg_sent_failed">Zprávu nelze odeslat.</string>
   <string name="disconnected_warning">Zprávy budou odeslány při opětovném připojení</string>
-  <string name="contact_offline_warning">&lt;xliff:g id="USER_0"&gt;%1$s&lt;/xliff:g&gt; je offline. Odeslané zprávy budou doručeny, jakmile se &lt;xliff:g id="USER_1"&gt;%1$s&lt;/xliff:g&gt; přihlásí online.</string>
-  <string name="contact_not_in_list_warning">&lt;xliff:g id="USER"&gt;%1$s&lt;/xliff:g&gt; není ve vašem seznamu kontaktů.</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> je offline. Odeslané zprávy budou doručeny, jakmile se <xliff:g id="USER_1">%1$s</xliff:g> přihlásí online.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> není ve vašem seznamu kontaktů.</string>
   <string name="error_account_password_mismatch">Vaše hesla se neshodují</string>
   <string name="error_account_settings_priority">Priorita musí být číslo v rozmezí [0 .. 127]</string>
   <string name="error_account_settings_port">Číslo portu musí být číslo</string>
@@ -453,7 +453,7 @@ Klikněte pro pozvání.</string>
   <string name="contacts">Kontakty</string>
   <string name="mtm_accept_cert">Přijmout certifikát serveru?</string>
   <string name="menu_sidebar_qr">Zobrazit Váš otisk</string>
-  <string name="loading">načítání...</string>
+  <string name="loading">načítání…</string>
   <!--Other-->
   <string name="about_link">O ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->

@@ -55,11 +55,13 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.provider.Browser;
 import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
+import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
@@ -72,23 +74,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import info.guardianproject.emoji.EmojiManager;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.provider.Imps;
-import info.guardianproject.otr.app.im.ui.ImageViewActivity;
-import info.guardianproject.otr.app.im.ui.LetterAvatar;
-import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
-import info.guardianproject.util.AudioPlayer;
 import info.guardianproject.util.LinkifyHelper;
-import info.guardianproject.util.LogCleaner;
-
-import java.io.File;
-import java.io.IOException;
-import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 public class MessageView extends FrameLayout {
 
@@ -166,6 +152,38 @@ public class MessageView extends FrameLayout {
         }
 
        long mTimeDiff = -1;
+    }
+
+    /**
+     * This trickery is needed in order to have clickable links that open things
+     * in a new {@code Task} rather than in ChatSecure's {@code Task.} Thanks to @commonsware
+     * https://stackoverflow.com/a/11417498
+     *
+     */
+    class NewTaskUrlSpan extends ClickableSpan {
+
+        private String urlString;
+
+        NewTaskUrlSpan(String urlString) {
+            this.urlString = urlString;
+        }
+
+        @Override
+        public void onClick(View widget) {
+            Uri uri = Uri.parse(urlString);
+            Context context = widget.getContext();
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            intent.putExtra(Browser.EXTRA_APPLICATION_ID, context.getPackageName());
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+    }
+
+    class URLSpanConverter implements LinkifyHelper.SpanConverter<URLSpan, NewTaskUrlSpan> {
+        @Override
+        public NewTaskUrlSpan convert(URLSpan span) {
+            return (new NewTaskUrlSpan(span.getURL()));
+        }
     }
 
     @Override
@@ -287,7 +305,7 @@ public class MessageView extends FrameLayout {
 
         }
         if (linkify)
-            LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
     }
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
@@ -611,32 +629,6 @@ public class MessageView extends FrameLayout {
              }
         }
 
-
-        /**
-        mHolder.mStatusBlock.setVisibility(VISIBLE);
-
-//        mHolder.mMessageContainer.setBackgroundResource(R.drawable.background_plaintext);
-
-        if (encryption == EncryptionState.NONE)
-        {
-
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_red_dark);
-
-
-        }
-        else if (encryption == EncryptionState.ENCRYPTED)
-        {
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_orange_light);
-
-        }
-
-        else if (encryption == EncryptionState.ENCRYPTED_AND_VERIFIED)
-        {
-            mHolder.mStatusBlock.setBackgroundResource(R.color.holo_green_dark);
-
-        }*/
-
-
         if (date != null)
         {
 
@@ -658,7 +650,7 @@ public class MessageView extends FrameLayout {
 
         }
         if (linkify)
-            LinkifyHelper.addLinks(mHolder.mTextViewForMessages);
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
     }
 
     private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)
@@ -692,24 +684,7 @@ public class MessageView extends FrameLayout {
 
                 mHolder.mAvatar.setVisibility(View.VISIBLE);
                 mHolder.mAvatar.setImageDrawable(lavatar);
-
-                /*
-                if (AVATAR_DEFAULT == null)
-                {
-                    AVATAR_DEFAULT = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
-                            R.drawable.avatar_unknown));
-
-
-
-                }
-
-                avatar = AVATAR_DEFAULT;
-                mHolder.mAvatar.setVisibility(View.VISIBLE);
-                mHolder.mAvatar.setImageDrawable(avatar);
-                */
-
             }
-
         }
     }
 
