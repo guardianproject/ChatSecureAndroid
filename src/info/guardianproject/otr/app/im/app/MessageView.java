@@ -179,7 +179,7 @@ public class MessageView extends FrameLayout {
         }
     }
 
-    class URLSpanConverter implements LinkifyHelper.SpanConverter<URLSpan, NewTaskUrlSpan> {
+    class URLSpanConverter implements LinkifyHelper.SpanConverter<URLSpan, ClickableSpan> {
         @Override
         public NewTaskUrlSpan convert(URLSpan span) {
             return (new NewTaskUrlSpan(span.getURL()));
