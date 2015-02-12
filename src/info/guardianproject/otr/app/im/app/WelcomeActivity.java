@@ -103,7 +103,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         else
         {
            if (openEncryptedStores(null, false)) {
-               IocVfs.init(this, "");
+               IocVfs.initWithoutPassword(this);
            } else {
                connectToCacheWord(); //first time setup
            }

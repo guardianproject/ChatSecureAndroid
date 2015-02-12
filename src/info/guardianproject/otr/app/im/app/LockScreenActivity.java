@@ -183,7 +183,7 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
-                    IocVfs.init(this, "");
+                    IocVfs.initWithoutPassword(this);
                     // Simulate cacheword opening
                     afterCacheWordOpened();
                 }  else {

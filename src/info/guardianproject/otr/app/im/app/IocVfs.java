@@ -143,6 +143,13 @@ public class IocVfs {
     }
 
     /**
+     * Setup IOCipher VirtualFileSystem without a user-provided password.
+     * @param context
+     */
+    public static void initWithoutPassword(Activity activity) {
+        init(activity, null);
+    }
+    /**
      * @param mCacheWord
      */
     public static void init(Context context, String password) throws IllegalArgumentException {
