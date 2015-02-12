@@ -41,8 +41,6 @@ import info.guardianproject.otr.app.im.provider.SQLCipherOpenHelper;
 
 import net.hockeyapp.android.UpdateManager;
 
-import org.apache.commons.codec.binary.Hex;
-
 public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
 
     private static final String TAG = "WelcomeActivity";
@@ -481,7 +479,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        // this is no longer configurable
      //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
      //  mCacheWord.setTimeoutSeconds(defaultTimeout);
-       IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
+       IocVfs.init(this, mCacheWord.getEncryptionKey());
     }
 
     private void completeShutdown ()

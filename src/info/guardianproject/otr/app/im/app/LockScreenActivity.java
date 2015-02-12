@@ -34,7 +34,6 @@ import info.guardianproject.util.BackgroundBitmapLoaderTask;
 import info.guardianproject.util.Languages;
 
 import java.security.GeneralSecurityException;
-import org.apache.commons.codec.binary.Hex;
 
 public class LockScreenActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
@@ -429,7 +428,7 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
     @Override
     public void onCacheWordOpened() {
         afterCacheWordOpened();
-        IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
+        IocVfs.init(this, mCacheWord.getEncryptionKey());
     }
 
     /**

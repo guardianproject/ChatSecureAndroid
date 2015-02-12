@@ -12,6 +12,7 @@ import info.guardianproject.util.LogCleaner;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
 
 import android.content.ContentResolver;
@@ -149,17 +150,21 @@ public class IocVfs {
     public static void initWithoutPassword(Activity activity) {
         init(activity, null);
     }
-    /**
-     * @param mCacheWord
-     */
-    public static void init(Context context, String password) throws IllegalArgumentException {
-        if (password == null)
-            return;
 
-        // TODO this is unnecessary since IOCipher/SQLCipher will handle it, but changing it might break existing DBs
-        if (password.length() > 32)
-            password = password.substring(0, 32);
+    public static void init(Context context, byte[] key) throws IllegalArgumentException {
+        /* TODO None of these key/keyText transformations are necessary since IOCipher/SQLCipher
+         * will handle long strings and blank strings, but changing it might break existing
+         * DBs.  These transformations where gathered from a couple places to be centralized here.
+         */
+        String keyText;
+        if (key == null)
+            keyText = "";
+        else
+            keyText = new String(Hex.encodeHex(key));
+        if (keyText.length() > 32)
+            keyText = keyText.substring(0, 32);
 
+        // TODO this path should be stored in the preferences, in case the returned value changes
         if (context.getExternalFilesDir(null) != null)
             dbFile = new File(context.getExternalFilesDir(null), BLOB_NAME).getAbsolutePath();
         else
@@ -167,10 +172,10 @@ public class IocVfs {
 
         VirtualFileSystem vfs = VirtualFileSystem.get();
         if (!new java.io.File(dbFile).exists())
-            vfs.createNewContainer(dbFile, password);
+            vfs.createNewContainer(dbFile, keyText);
 
         if (!vfs.isMounted())
-            vfs.mount(dbFile, password);
+            vfs.mount(dbFile, keyText);
     }
 
     /**
