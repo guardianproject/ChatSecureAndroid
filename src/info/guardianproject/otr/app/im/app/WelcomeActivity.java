@@ -486,6 +486,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     private void completeShutdown ()
     {
+        /* ignore unmount errors and quit ASAP. Threads actively using the VFS will
+         * cause IOCipher's VirtualFileSystem.unmount() to throw an IllegalStateException */
+        try {
+            IocVfs.unmount();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
            new AsyncTask<String, Void, String>() {
 
             private ProgressDialog dialog;
