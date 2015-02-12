@@ -33,25 +33,6 @@ public class IocVfs {
     public static final String TAG = IocVfs.class.getName();
     private static String dbFile;
     private static final String BLOB_NAME = "media.db";
-    private static String password;
-
-    //maybe called multiple times to remount
-    public static void init(Context context)  throws IllegalArgumentException {
-
-        if (context.getExternalFilesDir(null) != null)
-            dbFile = new File(context.getExternalFilesDir(null),BLOB_NAME).getAbsolutePath();
-        else
-            dbFile = new File(context.getFilesDir(),BLOB_NAME).getAbsolutePath();
-
-        if (password != null)
-            mount();
-
-    }
-
-    public static void mount() throws IllegalArgumentException {
-        if (!VirtualFileSystem.get().isMounted())
-            VirtualFileSystem.get().mount(dbFile, password);
-    }
 
     public static void unmount() {
         VirtualFileSystem.get().unmount();
@@ -164,14 +145,25 @@ public class IocVfs {
     /**
      * @param mCacheWord
      */
-    public static void init(Context context, String password)  throws IllegalArgumentException {
+    public static void init(Context context, String password) throws IllegalArgumentException {
+        if (password == null)
+            return;
 
-      //  Log.w(TAG, "init with password of length " + password.length());
+        // TODO this is unnecessary since IOCipher/SQLCipher will handle it, but changing it might break existing DBs
         if (password.length() > 32)
             password = password.substring(0, 32);
-        IocVfs.password = password;
 
-        init(context);
+        if (context.getExternalFilesDir(null) != null)
+            dbFile = new File(context.getExternalFilesDir(null), BLOB_NAME).getAbsolutePath();
+        else
+            dbFile = new File(context.getFilesDir(), BLOB_NAME).getAbsolutePath();
+
+        VirtualFileSystem vfs = VirtualFileSystem.get();
+        if (!new java.io.File(dbFile).exists())
+            vfs.createNewContainer(dbFile, password);
+
+        if (!vfs.isMounted())
+            vfs.mount(dbFile, password);
     }
 
     /**
