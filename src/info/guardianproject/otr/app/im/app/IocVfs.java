@@ -164,6 +164,13 @@ public class IocVfs {
      * @throws IllegalArgumentException
      */
     public static void init(Context context, byte[] key) throws IllegalArgumentException {
+        // there is only one VFS, so if its already mounted, nothing to do
+        VirtualFileSystem vfs = VirtualFileSystem.get();
+        if (vfs.isMounted()) {
+            Log.w(TAG, "VFS " + vfs.getContainerPath() + " is already mounted, skipping init()");
+            return;
+        }
+
         /* TODO None of these key/keyText transformations are necessary since IOCipher/SQLCipher
          * will handle long strings and blank strings, but changing it might break existing
          * DBs.  These transformations where gathered from a couple places to be centralized here.
@@ -224,12 +231,10 @@ public class IocVfs {
             }
         }
 
-        VirtualFileSystem vfs = VirtualFileSystem.get();
         if (!new java.io.File(dbFilePath).exists())
             vfs.createNewContainer(dbFilePath, keyText);
 
-        if (!vfs.isMounted())
-            vfs.mount(dbFilePath, keyText);
+        vfs.mount(dbFilePath, keyText);
     }
 
     /**
