@@ -3,10 +3,23 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
+
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.FileNotFoundException;
@@ -14,15 +27,6 @@ import java.io.IOException;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
-
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * Copyright (C) 2014 Guardian Project.  All rights reserved.
@@ -151,6 +155,14 @@ public class IocVfs {
         init(activity, null);
     }
 
+    /**
+     * Careful! All of the {@code File}s in this method are {@link java.io.File}
+     * not {@link info.guardianproject.iocipher.File}s
+     *
+     * @param context
+     * @param key
+     * @throws IllegalArgumentException
+     */
     public static void init(Context context, byte[] key) throws IllegalArgumentException {
         /* TODO None of these key/keyText transformations are necessary since IOCipher/SQLCipher
          * will handle long strings and blank strings, but changing it might break existing
@@ -164,11 +176,53 @@ public class IocVfs {
         if (keyText.length() > 32)
             keyText = keyText.substring(0, 32);
 
-        // TODO this path should be stored in the preferences, in case the returned value changes
-        if (context.getExternalFilesDir(null) != null)
-            dbFile = new File(context.getExternalFilesDir(null), BLOB_NAME).getAbsolutePath();
-        else
-            dbFile = new File(context.getFilesDir(), BLOB_NAME).getAbsolutePath();
+        /* First set location based on pref, then override based on where the file is.
+         * This crazy logic is necessary to support old installs that used logic that
+         * is not really predictable, since it was based on whether the SD card was
+         * present or not. */
+        java.io.File internalDbFile = new java.io.File(context.getFilesDir(), BLOB_NAME);
+        boolean internalUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
+        java.io.File externalDbFile = null;
+        boolean externalUsable = false;
+        java.io.File externalFilesDir = context.getExternalFilesDir(null);
+        if (externalFilesDir != null) {
+            externalDbFile = new java.io.File(externalFilesDir, BLOB_NAME);
+            externalUsable = externalDbFile.isFile() && externalDbFile.canWrite();
+        }
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean storeMediaOnExternalStorage = settings.getBoolean(
+                context.getString(R.string.key_store_media_on_external_storage_pref), false);
+
+        if (storeMediaOnExternalStorage) {
+            dbFile = externalDbFile.getAbsolutePath();
+        } else {
+            dbFile = internalDbFile.getAbsolutePath();
+        }
+
+        if (internalUsabe && !externalUsable) {
+            dbFile = internalDbFile.getAbsolutePath();
+            storeMediaOnExternalStorage = false;
+            Editor editor = settings.edit();
+            editor.putBoolean(context.getString(R.string.key_store_media_on_external_storage_pref),
+                    false);
+            editor.apply();
+        } else if (!internalUsabe && externalUsable) {
+            dbFile = externalDbFile.getAbsolutePath();
+            storeMediaOnExternalStorage = true;
+            Editor editor = settings.edit();
+            editor.putBoolean(context.getString(R.string.key_store_media_on_external_storage_pref),
+                    true);
+            editor.apply();
+        }
+
+        /* delete an unused duplicate, if one exists */
+        if (internalUsabe && externalUsable) {
+            if (storeMediaOnExternalStorage) {
+                internalDbFile.delete();
+            } else {
+                externalDbFile.delete();
+            }
+        }
 
         VirtualFileSystem vfs = VirtualFileSystem.get();
         if (!new java.io.File(dbFile).exists())
@@ -319,7 +373,4 @@ public class IocVfs {
 
         return file;
     }
-
-
-
 }

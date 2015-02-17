@@ -399,6 +399,8 @@
 		<string name="button_yes_accept_all">Yes, Accept All</string>
         <string name="pref_delete_unsecured_media_title">Delete Insecure Media</string>
         <string name="pref_delete_unsecured_media_summary">After sharing a photo or file, automatically delete it from the original, insecure storage after import</string>
+        <string name="pref_store_media_on_external_storage_title">Store Media On External Storage</string>
+        <string name="pref_store_media_on_external_storage_summary">Media files from chat sessions are stored in an encrypted container that can be stored on internal or external storage.</string>
 				
 		<!-- Actions: Settings: General: Other Tuning -->
 		<string name="pref_group_tuning_title">Other Tuning</string>
