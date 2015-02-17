@@ -437,7 +437,7 @@ Trykk for å invitere.</string>
   <string name="error_chat_file_transfer_title">Overføringsfeil</string>
   <string name="error_welcome_database">Kjempefeil: Kunne ikke låse opp eller laste inn programdatabase. Installer programmet på ny eller tøm data.</string>
   <string name="account_settings_title">Kontoinnstillinger</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">ADVARSEL: Dette er en tidlig utgave av ChatSecure som fortsatt kan inneholde sikkerhetshull og feil.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>

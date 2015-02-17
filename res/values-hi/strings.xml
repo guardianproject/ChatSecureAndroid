@@ -104,7 +104,7 @@
   <string name="signin_password_prompt">कूटशब्द दाखिल करें </string>
   <string name="msg_sent_failed">संदेश नहीं भेजा गया </string>
   <string name="account_settings_title">खाता विन्यास </string>
-  <string name="pref_default_locale">defLoc</string>
+
   <!--added 2011/09/01-->
   <string name="menu_view_groups">समूह </string>
   <string name="menu_exit">बंद और लॉक करो </string>

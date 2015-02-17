@@ -251,7 +251,7 @@ The OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin
   <string name="warning_tor_connect">Tor ကို အသုံးပြုမည် ဖြစ်၍ XMPP \'ဆာဗာ ချိတ်ဆက်မှု\' အိမ်ရှင်စက်အမည်ကို အကောင့်ဆက်တင်ထဲတွင် တိုက်ရိုက် ရိုက်ထည့်ရမည်</string>
   <string name="msg_sent_failed">ဤအကြောင်းကြားချက်အားမပို့နိုင်</string>
   <string name="account_settings_title">အကောင့်ဆက်တင်</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <!--added 2011/09/01-->
   <string name="menu_view_groups">အဖွဲ့များ</string>
   <string name="_open_conversations">ဖွင့်ထားသော စကားဝိုင်းများ</string>

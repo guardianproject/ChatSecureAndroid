@@ -400,7 +400,7 @@ Chạm vào để mời kết nối.</string>
   <string name="contact_offline_warning">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; hiện đang offline. Phần nội dung chat mà bạn gửi đi sẽ được &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đọc khi online trở lại.</string>
   <string name="contact_not_in_list_warning">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; không nằm trong  Danh Sách Bạn Chat của bạn.</string>
   <string name="account_settings_title">Thiết lập tài khoản</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">Cảnh Báo: Đây là phiên bản cũ của ChatSecure và có thể có những lổ hỗng an ninh hoặc lỗi.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Nhóm</string>

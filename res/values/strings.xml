@@ -525,7 +525,6 @@
 		<string name="error_no_app_to_handle_url">No app installed that can handle that link!</string>
 
 	<string name="account_settings_title">Account Settings</string>
-	<string name="pref_default_locale">defLoc</string>
 	
 	<string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
 

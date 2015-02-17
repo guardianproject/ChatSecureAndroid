@@ -299,7 +299,7 @@ Dotaknite se tu in ga dodajte!</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> ni povezan. Sporočilo, ki ste ga poslali, bo dostavljeno, ko se <xliff:g id="user">%1$s</xliff:g> poveže.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ni na seznamu vaših stikov.</string>
   <string name="account_settings_title">Nastavitve računa</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupine</string>
   <string name="menu_exit">Izhod</string>

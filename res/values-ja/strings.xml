@@ -448,7 +448,7 @@
   <string name="error_welcome_database">メジャーエラー: ロック解除やアプリのデータベースをロードすることができません。アプリを再インストールするかデータをクリアデータしてください。</string>
   <string name="error_no_app_to_handle_url">リンクを処理するアプリがインストールされていません!</string>
   <string name="account_settings_title">アカウント設定</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">警告: これはChatSecureの早期リリースです。まだセキュリティホールやバグを含んでいる可能性があります。</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">グループ</string>

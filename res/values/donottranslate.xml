@@ -2,5 +2,7 @@
 <resources>
 
     <string name="market_orbot">market://details?id=org.torproject.android</string>
+    <!-- String key IDs for looking up SharedPreferences -->
+    <string name="key_default_locale_pref">defLoc</string>
 
 </resources>

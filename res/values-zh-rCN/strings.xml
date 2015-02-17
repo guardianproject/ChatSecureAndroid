@@ -392,7 +392,7 @@ OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>处于离线状态。您发送的消息将在<xliff:g id="USER_1">%1$s</xliff:g>下次上线时传送出去。</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>不在您的联系人列表中。</string>
   <string name="account_settings_title">帐号设置</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">警告！这是一个早期的ChatSecure发行版，可能包含安全问题导致聊天被窥探！！！</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">群组</string>

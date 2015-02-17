@@ -460,7 +460,7 @@ Für die Anmeldung wird eine Datenverbindung (inklusive Hintergrunddaten) benöt
   <string name="error_welcome_database">Schwerwiegender Fehler: Das Entsperren oder Laden der Datenbank ist fehlgeschlagen. Bitte installieren Sie die App erneut oder wählen Sie »Daten löschen« in Androids App-Einstellungen.</string>
   <string name="error_no_app_to_handle_url">Keine App installiert, die diese Verknüpfung öffnen kann!</string>
   <string name="account_settings_title">Kontoeinstellungen</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">ACHTUNG: Dieses ist eine vorläufige ChatSecure-Version, die möglicherweise noch Sicherheitslücken und Fehler enthält.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruppen</string>
