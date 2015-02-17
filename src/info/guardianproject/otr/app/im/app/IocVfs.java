@@ -36,7 +36,7 @@ import org.apache.commons.io.IOUtils;
  */
 public class IocVfs {
     public static final String TAG = IocVfs.class.getName();
-    private static String dbFile;
+    private static String dbFilePath;
     private static final String BLOB_NAME = "media.db";
 
     public static void unmount() {
@@ -194,20 +194,20 @@ public class IocVfs {
                 context.getString(R.string.key_store_media_on_external_storage_pref), false);
 
         if (storeMediaOnExternalStorage) {
-            dbFile = externalDbFile.getAbsolutePath();
+            dbFilePath = externalDbFile.getAbsolutePath();
         } else {
-            dbFile = internalDbFile.getAbsolutePath();
+            dbFilePath = internalDbFile.getAbsolutePath();
         }
 
         if (internalUsabe && !externalUsable) {
-            dbFile = internalDbFile.getAbsolutePath();
+            dbFilePath = internalDbFile.getAbsolutePath();
             storeMediaOnExternalStorage = false;
             Editor editor = settings.edit();
             editor.putBoolean(context.getString(R.string.key_store_media_on_external_storage_pref),
                     false);
             editor.apply();
         } else if (!internalUsabe && externalUsable) {
-            dbFile = externalDbFile.getAbsolutePath();
+            dbFilePath = externalDbFile.getAbsolutePath();
             storeMediaOnExternalStorage = true;
             Editor editor = settings.edit();
             editor.putBoolean(context.getString(R.string.key_store_media_on_external_storage_pref),
@@ -225,11 +225,11 @@ public class IocVfs {
         }
 
         VirtualFileSystem vfs = VirtualFileSystem.get();
-        if (!new java.io.File(dbFile).exists())
-            vfs.createNewContainer(dbFile, keyText);
+        if (!new java.io.File(dbFilePath).exists())
+            vfs.createNewContainer(dbFilePath, keyText);
 
         if (!vfs.isMounted())
-            vfs.mount(dbFile, keyText);
+            vfs.mount(dbFilePath, keyText);
     }
 
     /**
