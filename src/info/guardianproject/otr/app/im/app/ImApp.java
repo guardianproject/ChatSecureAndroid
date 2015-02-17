@@ -255,8 +255,9 @@ public class ImApp extends Application {
 
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
 
+        // load these libs up front to shorten the delay after typing the passphrase
         SQLiteDatabase.loadLibs(getApplicationContext());
-        VirtualFileSystem.get().isMounted(); //use this to trigger loadLibs
+        VirtualFileSystem.get().isMounted();
 
         mConnections = new HashMap<Long, IImConnection>();
         mApplicationContext = this;
