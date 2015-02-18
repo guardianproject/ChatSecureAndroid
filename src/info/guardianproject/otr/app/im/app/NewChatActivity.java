@@ -157,6 +157,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private ContactListFragment mContactList = null;
 
+    private Imps.ProviderSettings.QueryMap mGlobalSettings = null;
+
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
             super(activity);
@@ -2223,7 +2225,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         Imps.Provider.DEFAULT_SORT_ORDER);
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_spinner_item, cursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
+                android.R.layout.simple_spinner_dropdown_item, cursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
                 new int[] { android.R.id.text1 });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -2251,6 +2253,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 }
             });
+        }
+        else
+        {
+            spinner.setVisibility(View.GONE);
         }
 
     }
@@ -2538,8 +2544,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
         
     };
-
-    private Imps.ProviderSettings.QueryMap mGlobalSettings = null;
 
     private synchronized Imps.ProviderSettings.QueryMap getGlobalSettings() {
         if (mGlobalSettings == null) {
