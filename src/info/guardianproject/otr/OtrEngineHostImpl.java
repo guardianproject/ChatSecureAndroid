@@ -19,7 +19,9 @@ import net.java.otr4j.OtrEngineHost;
 import net.java.otr4j.OtrKeyManager;
 import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionID;
+import net.java.otr4j.session.SessionStatus;
 import android.content.Context;
+import android.os.RemoteException;
 import android.widget.Toast;
 
 /*
@@ -136,8 +138,26 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
                 msg.setFrom(new XmppAddress(sessionID.getLocalUserId()));
              //   final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
+                
                 Address to = new XmppAddress(sessionID.getRemoteUserId());
-                msg.setTo(appendSessionResource(sessionID, to));
+                
+                try
+                {
+                    SessionStatus chatStatus = SessionStatus.values()[chatSessionAdapter.getOtrChatSession().getChatStatus()];
+    
+                    if (chatStatus == SessionStatus.ENCRYPTED)
+                    {
+                        msg.setTo(appendSessionResource(sessionID, to));
+                    }
+                    else
+                    {
+                        msg.setTo(new XmppAddress(chatSessionAdapter.getAdaptee().getParticipant().getAddress().getBareAddress()));
+                    }
+                }
+                catch (RemoteException e)
+                {
+                    msg.setTo(chatSessionAdapter.getAdaptee().getParticipant().getAddress());
+                }
                 //msg.setTo(to);
                // msg.setDateTime(new Date());
 
