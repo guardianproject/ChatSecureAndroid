@@ -837,8 +837,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
+                
                 switch (item.getItemId()) {
-
+/*
                 case R.id.menu_send_image:
                     if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
                     {
@@ -885,7 +886,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     }
 
                     return true;
-
+*/
                 case R.id.menu_verify_or_view:
                     if (getCurrentChatView() != null)
                         getCurrentChatView().showVerifyDialog();
@@ -916,7 +917,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 case R.id.menu_otr:
                 case R.id.menu_otr_stop:
-
+                case R.id.menu_otr_stop_verified:
+                case R.id.menu_view_profile_verified:
+                    
                     if (getCurrentChatView() != null)
                     {
 
@@ -1545,6 +1548,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 long contactChatId = mCursor.getLong(ChatView.CONTACT_ID_COLUMN);
                 String contactName = mCursor.getString(ChatView.USERNAME_COLUMN);
                 long providerId = mCursor.getLong(ChatView.PROVIDER_COLUMN);
+                
+                int chatType = mCursor.getInt(ChatView.TYPE_COLUMN);
+                
 
                 return ChatViewFragment.newInstance(contactChatId, contactName, providerId);
             }
