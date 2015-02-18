@@ -172,20 +172,31 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     }
 
     private void init(ChatGroup group, boolean isNewSession) {
+        
         mIsGroupChat = true;
         mContactId = insertGroupContactInDb(group);
         group.addMemberListener(mListenerAdapter);
 
-        mMessageURI = Imps.Messages.getContentUriByThreadId(mContactId);
-
-        mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mContactId);
-
-        if (isNewSession)
-            insertOrUpdateChat(null);
-
-        for (Contact c : group.getMembers()) {
-            mContactStatusMap.put(c.getName(), c.getPresence().getStatus());
+        try {            
+            mChatSessionManager.getChatGroupManager().joinChatGroupAsync(group.getAddress());
+        
+            mMessageURI = Imps.Messages.getContentUriByThreadId(mContactId);
+    
+            mChatURI = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, mContactId);
+    
+            if (isNewSession)
+                insertOrUpdateChat(null);
+    
+            for (Contact c : group.getMembers()) {
+                mContactStatusMap.put(c.getName(), c.getPresence().getStatus());
+            }
+            
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        
+        
     }
 
     private void init(Contact contact, boolean isNewSession) {
@@ -327,8 +338,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         mChatSession.sendMessageAsync(msg);
 
         long now = System.currentTimeMillis();
-        if (!isGroupChatSession())
-            insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
+        //if (!isGroupChatSession())
+        insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
     }
 
     public boolean offerData(String offerId, String url, String type) {
@@ -497,7 +508,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         ContentValues values = new ContentValues(4);
         values.put(Imps.Contacts.USERNAME, group.getAddress().getAddress());
         values.put(Imps.Contacts.NICKNAME, group.getName());
-        values.put(Imps.Contacts.CONTACTLIST, ContactListManagerAdapter.FAKE_TEMPORARY_LIST_ID);
+        values.put(Imps.Contacts.CONTACTLIST, ContactListManagerAdapter.LOCAL_GROUP_LIST_ID);
         values.put(Imps.Contacts.TYPE, Imps.Contacts.TYPE_GROUP);
 
         Uri contactUri = ContentUris.withAppendedId(
