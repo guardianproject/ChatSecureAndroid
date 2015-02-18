@@ -2156,11 +2156,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         final View dialogGroup = factory.inflate(R.layout.alert_dialog_group_chat, null);
         TextView tvServer = (TextView) dialogGroup.findViewById(R.id.chat_server);
-        tvServer.setText(ImApp.DEFAULT_GROUPCHAT_SERVER);// need to make this a list
+       // tvServer.setText(ImApp.DEFAULT_GROUPCHAT_SERVER);// need to make this a list
 
         final Spinner listAccounts = (Spinner) dialogGroup.findViewById(R.id.choose_list);
         setupAccountSpinner(listAccounts);
-
+        
         new AlertDialog.Builder(this)
             .setTitle(R.string.create_or_join_group_chat)
             .setView(dialogGroup)
