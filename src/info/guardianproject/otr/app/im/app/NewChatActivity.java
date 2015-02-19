@@ -53,7 +53,6 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.ironrabbit.type.CustomTypefaceManager;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -69,7 +68,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -956,7 +954,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return true;
 
                 case R.id.menu_exit:
-                    doHardShutdown();
+                    WelcomeActivity.shutdownAndLock(NewChatActivity.this);
                     return true;
 
                 case R.id.menu_add_contact:
@@ -2461,39 +2459,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void doHardShutdown() {
-
-        for (IImConnection conn : mApp.getActiveConnections())
-        {
-               try {
-                conn.logout();
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        finish();
-        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-        // Request lock
-        intent.putExtra("doLock", true);
-        // Clear the backstack
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= 11)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-
-   }
-
-
     private final ISubscriptionListener.Stub mSubscriptionListener = new ISubscriptionListener.Stub() {
 
         @Override
         public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
-           
+
             showSubscriptionDialog (providerId, from.getAddress().getAddress());
-            
+
         }
 
         @Override

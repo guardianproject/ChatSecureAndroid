@@ -16,6 +16,7 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
@@ -24,8 +25,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
+import android.os.RemoteException;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -480,6 +483,30 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
      //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
      //  mCacheWord.setTimeoutSeconds(defaultTimeout);
        IocVfs.init(this, mCacheWord.getEncryptionKey());
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static void shutdownAndLock(Activity activity) {
+        ImApp app = (ImApp) activity.getApplication();
+        if (app != null) {
+            for (IImConnection conn : app.getActiveConnections()) {
+                try {
+                    conn.logout();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        Intent intent = new Intent(activity, WelcomeActivity.class);
+        // Request lock
+        intent.putExtra("doLock", true);
+        // Clear the backstack
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (Build.VERSION.SDK_INT >= 11)
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        activity.startActivity(intent);
+        activity.finish();
     }
 
     private void completeShutdown ()
