@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.os.StatFs;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -39,7 +40,6 @@ import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -604,13 +604,13 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
          * is not really predictable, since it was based on whether the SD card was
          * present or not. */
         File internalDbFile = new File(ChatFileStore.getInternalDbFilePath(this));
-        boolean internalUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
+        boolean internalDbFileUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
 
-        boolean externalUsable = false;
+        boolean externalDbFileUsable = false;
         File externalDbFile = new File(ChatFileStore.getExternalDbFilePath(this));
         java.io.File externalFilesDir = getExternalFilesDir(null);
         if (externalFilesDir != null) {
-            externalUsable = externalDbFile.isFile() && externalDbFile.canWrite();
+            externalDbFileUsable = externalDbFile.isFile() && externalDbFile.canWrite();
         }
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         boolean isPrefSet = settings.contains(
@@ -619,26 +619,32 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         if (isPrefSet) {
             storeMediaOnExternalStorage = settings.getBoolean(
                     getString(R.string.key_store_media_on_external_storage_pref), false);
-            if (storeMediaOnExternalStorage && !externalUsable) {
+            if (storeMediaOnExternalStorage && !externalDbFileUsable) {
                 Intent i = new Intent(this, MissingChatFileStoreActivity.class);
                 startActivity(i);
                 finish();
                 return true;
             }
         } else {
-            /* only use external storage if a file already exists only there */
-            if (!internalUsabe && externalUsable) {
+            /* only use external if file already exists only there or internal is almost full */
+            boolean forceExternalStorage = !enoughSpaceInInternalStorage(internalDbFile);
+            if (!internalDbFileUsabe && (externalDbFileUsable || forceExternalStorage)) {
                 storeMediaOnExternalStorage = true;
             } else {
                 storeMediaOnExternalStorage = false;
             }
             Editor editor = settings.edit();
-            editor.putBoolean(
-                    getString(R.string.key_store_media_on_external_storage_pref),
+            editor.putBoolean(getString(R.string.key_store_media_on_external_storage_pref),
                     storeMediaOnExternalStorage);
             editor.apply();
         }
         return false;
+    }
+
+    private static boolean enoughSpaceInInternalStorage(File f) {
+        StatFs stat = new StatFs(f.getParent());
+        long freeSizeInBytes = stat.getAvailableBlocks() * (long) stat.getBlockSize();
+        return freeSizeInBytes > 536870912; // 512 MB
     }
 
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
