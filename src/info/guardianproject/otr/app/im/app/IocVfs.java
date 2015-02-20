@@ -3,10 +3,10 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -183,58 +183,35 @@ public class IocVfs {
         if (keyText.length() > 32)
             keyText = keyText.substring(0, 32);
 
-        /* First set location based on pref, then override based on where the file is.
-         * This crazy logic is necessary to support old installs that used logic that
-         * is not really predictable, since it was based on whether the SD card was
-         * present or not. */
-        java.io.File internalDbFile = new java.io.File(context.getFilesDir(), BLOB_NAME);
-        boolean internalUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
-        java.io.File externalDbFile = null;
-        boolean externalUsable = false;
-        java.io.File externalFilesDir = context.getExternalFilesDir(null);
-        if (externalFilesDir != null) {
-            externalDbFile = new java.io.File(externalFilesDir, BLOB_NAME);
-            externalUsable = externalDbFile.isFile() && externalDbFile.canWrite();
-        }
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean storeMediaOnExternalStorage = settings.getBoolean(
-                context.getString(R.string.key_store_media_on_external_storage_pref), false);
+        if (settings.getBoolean(
+                context.getString(R.string.key_store_media_on_external_storage_pref), false))
+            dbFilePath = getExternalDbFilePath(context);
+        else
+            dbFilePath = getInternalDbFilePath(context);
 
-        if (storeMediaOnExternalStorage) {
-            dbFilePath = externalDbFile.getAbsolutePath();
-        } else {
-            dbFilePath = internalDbFile.getAbsolutePath();
-        }
-
-        if (internalUsabe && !externalUsable) {
-            dbFilePath = internalDbFile.getAbsolutePath();
-            storeMediaOnExternalStorage = false;
-            Editor editor = settings.edit();
-            editor.putBoolean(context.getString(R.string.key_store_media_on_external_storage_pref),
-                    false);
-            editor.apply();
-        } else if (!internalUsabe && externalUsable) {
-            dbFilePath = externalDbFile.getAbsolutePath();
-            storeMediaOnExternalStorage = true;
-            Editor editor = settings.edit();
-            editor.putBoolean(context.getString(R.string.key_store_media_on_external_storage_pref),
-                    true);
-            editor.apply();
-        }
-
-        /* delete an unused duplicate, if one exists */
-        if (internalUsabe && externalUsable) {
-            if (storeMediaOnExternalStorage) {
-                internalDbFile.delete();
-            } else {
-                externalDbFile.delete();
-            }
-        }
-
-        if (!new java.io.File(dbFilePath).exists())
+        if (!new java.io.File(dbFilePath).exists()) {
             vfs.createNewContainer(dbFilePath, keyText);
-
+        }
         vfs.mount(dbFilePath, keyText);
+    }
+
+    /**
+     * get the external storage path for the chat media file storage file.
+     */
+    public static String getExternalDbFilePath(Context c) {
+        java.io.File externalFilesDir = c.getExternalFilesDir(null);
+        if (externalFilesDir == null)
+            return null;
+        else
+            return externalFilesDir.getAbsolutePath() + "/" + BLOB_NAME;
+    }
+
+    /**
+     * get the internal storage path for the chat media file storage file.
+     */
+    public static String getInternalDbFilePath(Context c) {
+        return c.getFilesDir() + "/" + BLOB_NAME;
     }
 
     /**

@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentUris;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
@@ -29,6 +31,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.RemoteException;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -36,11 +39,14 @@ import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.SQLCipherOpenHelper;
+
+import java.io.File;
 
 import net.hockeyapp.android.UpdateManager;
 
@@ -95,8 +101,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
         if (!mDoLock)
         {
-            mApp.maybeInit(this);
+            if (checkMediaStoreFile()) {
+                return;
+            }
 
+            mApp.maybeInit(this);
         }
 
         if (ImApp.mUsingCacheword)
@@ -587,9 +596,49 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 finish();
             }
         }.execute();
+    }
 
+    private boolean checkMediaStoreFile() {
+        /* First set location based on pref, then override based on where the file is.
+         * This crazy logic is necessary to support old installs that used logic that
+         * is not really predictable, since it was based on whether the SD card was
+         * present or not. */
+        File internalDbFile = new File(IocVfs.getInternalDbFilePath(this));
+        boolean internalUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
 
-
+        boolean externalUsable = false;
+        File externalDbFile = new File(IocVfs.getExternalDbFilePath(this));
+        java.io.File externalFilesDir = getExternalFilesDir(null);
+        if (externalFilesDir != null) {
+            externalUsable = externalDbFile.isFile() && externalDbFile.canWrite();
+        }
+        final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isPrefSet = settings.contains(
+                getString(R.string.key_store_media_on_external_storage_pref));
+        boolean storeMediaOnExternalStorage;
+        if (isPrefSet) {
+            storeMediaOnExternalStorage = settings.getBoolean(
+                    getString(R.string.key_store_media_on_external_storage_pref), false);
+            if (storeMediaOnExternalStorage && !externalUsable) {
+                Intent i = new Intent(this, MissingChatFileStoreActivity.class);
+                startActivity(i);
+                finish();
+                return true;
+            }
+        } else {
+            /* only use external storage if a file already exists only there */
+            if (!internalUsabe && externalUsable) {
+                storeMediaOnExternalStorage = true;
+            } else {
+                storeMediaOnExternalStorage = false;
+            }
+            Editor editor = settings.edit();
+            editor.putBoolean(
+                    getString(R.string.key_store_media_on_external_storage_pref),
+                    storeMediaOnExternalStorage);
+            editor.apply();
+        }
+        return false;
     }
 
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {

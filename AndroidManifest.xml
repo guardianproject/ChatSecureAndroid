@@ -460,6 +460,10 @@
             android:label="@string/title_activity_lock_screen" >
         </activity>
 
+        <activity
+            android:name=".app.MissingChatFileStoreActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
+
         <service
             android:name="info.guardianproject.cacheword.CacheWordService"
             android:enabled="true"
