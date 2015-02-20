@@ -1156,39 +1156,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         return list.size() > 0;
     }
 
-    private void handleSendDelete( final Uri contentUri, final String mimeType, boolean promptDelete ) {
-        // if no prompt needed - do not delete original
-        if (!promptDelete) {
-            handleSend( contentUri, mimeType, false );
-            return;
-        }
-        // if 'delete_unsecured_media' preference is true
-        if (SettingActivity.getDeleteUnsecuredMedia(this)) {
-            handleSend( contentUri, mimeType, false );
-            return;
-        }
-        // prompt to delete original
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(getString(R.string.delete_original))
-        .setMessage(getString(R.string.this_file_will_be_copied))
-        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // send - delete original
-                handleSend( contentUri, mimeType, true );
-            }
-        })
-        .setNegativeButton(getString(R.string.keep), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // send - do not delete original
-                handleSend( contentUri, mimeType, false );
-            }
-        })
-        .show();
-    }
-
-    private void handleSend( Uri contentUri, String mimeType, boolean delete ) {
+    private void handleSendDelete( Uri contentUri, String mimeType, boolean delete ) {
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
@@ -1233,17 +1201,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 if( uri == null ) {
                     return ;
                 }
-                boolean promptDelete = (requestCode == REQUEST_SEND_AUDIO); // prompt to delete original
-                handleSendDelete(uri, null, promptDelete);
+                boolean deleteAudioFile = (requestCode == REQUEST_SEND_AUDIO);
+                handleSendDelete(uri, null, deleteAudioFile);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
-                /**
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScanIntent.setData(mLastPhoto);
-                this.sendBroadcast(mediaScanIntent);
-                */
-
                 File file = new File(getRealPathFromURI(mLastPhoto));
                 final Handler handler = new Handler();
                 MediaScannerConnection.scanFile(
