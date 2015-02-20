@@ -384,7 +384,7 @@ public class MessageView extends FrameLayout {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
 
-        if (IocVfs.isVfsUri(mediaUri)) {
+        if (ChatFileStore.isVfsUri(mediaUri)) {
             if (mimeType.startsWith("image")) {
                 Intent intent = new Intent(context, ImageViewActivity.class);
                 intent.putExtra( ImageViewActivity.FILENAME, mediaUri.getPath());
@@ -451,7 +451,7 @@ public class MessageView extends FrameLayout {
 
     protected void onLongClickMediaIcon(final String mimeType, final Uri mediaUri) {
 
-        final java.io.File exportPath = IocVfs.exportPath(mimeType, mediaUri);
+        final java.io.File exportPath = ChatFileStore.exportPath(mimeType, mediaUri);
 
         new AlertDialog.Builder(context)
         .setTitle(context.getString(R.string.export_media))
@@ -460,7 +460,7 @@ public class MessageView extends FrameLayout {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
-                    IocVfs.exportContent(mimeType, mediaUri, exportPath);
+                    ChatFileStore.exportContent(mimeType, mediaUri, exportPath);
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(exportPath));
@@ -548,8 +548,8 @@ public class MessageView extends FrameLayout {
 
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
      //   Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
-        if (IocVfs.isVfsUri(uri)) {
-            return IocVfs.getThumbnailVfs(cr, uri);
+        if (ChatFileStore.isVfsUri(uri)) {
+            return ChatFileStore.getThumbnailVfs(cr, uri);
         }
         return getThumbnailFile(cr, uri);
     }

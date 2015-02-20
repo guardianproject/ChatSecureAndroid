@@ -182,7 +182,7 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
-                    IocVfs.initWithoutPassword(this);
+                    ChatFileStore.initWithoutPassword(this);
                     // Simulate cacheword opening
                     afterCacheWordOpened();
                 }  else {
@@ -428,7 +428,7 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
     @Override
     public void onCacheWordOpened() {
         afterCacheWordOpened();
-        IocVfs.init(this, mCacheWord.getEncryptionKey());
+        ChatFileStore.init(this, mCacheWord.getEncryptionKey());
     }
 
     /**

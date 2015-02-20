@@ -1,13 +1,5 @@
 package info.guardianproject.otr.app.im.ui;
 
-import info.guardianproject.iocipher.File;
-import info.guardianproject.iocipher.FileInputStream;
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.IocVfs;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Bitmap;
@@ -17,7 +9,12 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.View;
-import android.widget.ImageView;
+
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.otr.app.im.R;
+
+import java.io.IOException;
 
 public class ImageViewActivity extends Activity {
 

@@ -34,8 +34,8 @@ import org.apache.commons.io.IOUtils;
  * @author liorsaar
  *
  */
-public class IocVfs {
-    public static final String TAG = IocVfs.class.getName();
+public class ChatFileStore {
+    public static final String TAG = ChatFileStore.class.getName();
     private static String dbFilePath;
     private static final String BLOB_NAME = "media.db";
 

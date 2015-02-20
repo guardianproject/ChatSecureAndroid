@@ -1001,7 +1001,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         }
         // if no files to delete - just end the session
-        if (!IocVfs.sessionExists(sessionId)) {
+        if (!ChatFileStore.sessionExists(sessionId)) {
             endCurrentChat();
             return;
         }
@@ -1043,11 +1043,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private void deleteSessionVfs( final String sessionId ) throws Exception {
         // if no files to delete - bail
-        if (!IocVfs.sessionExists(sessionId)) {
+        if (!ChatFileStore.sessionExists(sessionId)) {
             return;
         }
         // delete
-        IocVfs.deleteSession(sessionId);
+        ChatFileStore.deleteSession(sessionId);
     }
 
     private void startContactPicker() {
@@ -1193,7 +1193,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
             String sessionId = getCurrentSessionId();
-            Uri vfsUri = IocVfs.importContent(sessionId, info.path);
+            Uri vfsUri = ChatFileStore.importContent(sessionId, info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {
@@ -1399,7 +1399,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
 
-            if (info != null && info.path != null && IocVfs.exists(info.path))
+            if (info != null && info.path != null && ChatFileStore.exists(info.path))
             {
                 IChatSession session = getCurrentChatSession();
 

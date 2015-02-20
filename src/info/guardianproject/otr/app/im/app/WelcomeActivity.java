@@ -113,7 +113,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         else
         {
            if (openEncryptedStores(null, false)) {
-               IocVfs.initWithoutPassword(this);
+               ChatFileStore.initWithoutPassword(this);
            } else {
                connectToCacheWord(); //first time setup
            }
@@ -491,7 +491,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        // this is no longer configurable
      //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
      //  mCacheWord.setTimeoutSeconds(defaultTimeout);
-       IocVfs.init(this, mCacheWord.getEncryptionKey());
+       ChatFileStore.init(this, mCacheWord.getEncryptionKey());
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
@@ -523,7 +523,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         /* ignore unmount errors and quit ASAP. Threads actively using the VFS will
          * cause IOCipher's VirtualFileSystem.unmount() to throw an IllegalStateException */
         try {
-            IocVfs.unmount();
+            ChatFileStore.unmount();
         } catch (IllegalStateException e) {
             e.printStackTrace();
         }
@@ -603,11 +603,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
          * This crazy logic is necessary to support old installs that used logic that
          * is not really predictable, since it was based on whether the SD card was
          * present or not. */
-        File internalDbFile = new File(IocVfs.getInternalDbFilePath(this));
+        File internalDbFile = new File(ChatFileStore.getInternalDbFilePath(this));
         boolean internalUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
 
         boolean externalUsable = false;
-        File externalDbFile = new File(IocVfs.getExternalDbFilePath(this));
+        File externalDbFile = new File(ChatFileStore.getExternalDbFilePath(this));
         java.io.File externalFilesDir = getExternalFilesDir(null);
         if (externalFilesDir != null) {
             externalUsable = externalDbFile.isFile() && externalDbFile.canWrite();

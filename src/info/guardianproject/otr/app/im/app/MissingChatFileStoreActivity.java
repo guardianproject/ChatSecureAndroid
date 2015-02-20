@@ -42,7 +42,7 @@ public class MissingChatFileStoreActivity extends ThemeableActivity {
             public void onClick(View v) {
                 Log.i(TAG, "init try again onClick");
                 Context c = getApplicationContext();
-                new File(IocVfs.getInternalDbFilePath(c)).delete();
+                new File(ChatFileStore.getInternalDbFilePath(c)).delete();
                 SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(c);
                 Editor editor = settings.edit();
                 editor.putBoolean(getString(R.string.key_store_media_on_external_storage_pref),
