@@ -190,7 +190,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mApp.setAppTheme(this,mToolbar);
         ThemeableActivity.setBackgroundImage(this);
 
-        mToolbar.inflateMenu(R.menu.chat_screen_menu);
+        mToolbar.inflateMenu(R.menu.new_chat_menu);
         setupMenu ();
 
         setTitle(R.string.app_name);
