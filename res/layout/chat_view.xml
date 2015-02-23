@@ -57,6 +57,7 @@
 	     android:layout_gravity="fill_vertical"
 	             android:gravity="bottom"
 	     android:padding="3sp"
+	     android:background="?inputBackground"
 	     >
 	<!-- 
         <ImageButton
@@ -73,11 +74,23 @@
         android:id="@+id/btnEmoji"
         android:layout_width="32dip"
         android:layout_height="32dip"
-        android:background="@drawable/ad_selectable_background"
+        android:background="?inputBackground"
         android:scaleType="centerInside"
         
         android:paddingBottom="5sp"
-        android:src="@drawable/smiley_smile" />
+        android:src="@drawable/smiley_smile"
+        android:visibility="gone"
+         />
+    
+    <ImageButton
+        android:id="@+id/btnAttach"
+        android:layout_width="48dip"
+        android:layout_height="48dip"
+        android:background="?inputBackground"
+        android:scaleType="centerInside"
+        
+        android:src="?attachIcon"
+         />
     
       <org.ironrabbit.type.CustomTypefaceEditText
            android:id="@+id/composeMessage"
@@ -105,6 +118,57 @@
 
       </LinearLayout>
   
+  <LinearLayout android:id="@+id/attachPanel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:background="?toolbarBackground"
+        android:visibility="gone">
+    
+          <ImageButton
+        android:id="@+id/btnAttachAudio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:src="@drawable/content_new_audio"
+        android:layout_margin="3dp"
+         />
+    
+          
+       <ImageButton
+        android:id="@+id/btnAttachPicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:src="@drawable/content_picture"
+                android:layout_margin="3dp"
+        
+         />
+       
+    <ImageButton
+        android:id="@+id/btnTakePicture"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:src="@drawable/content_take_picture"
+                android:layout_margin="3dp"
+        
+         />
+       
+       
+    <ImageButton
+        android:id="@+id/btnAttachFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-light"
+        android:src="@drawable/content_attachment"
+                android:layout_margin="3dp"
+        
+         />
+          
+    </LinearLayout>
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"

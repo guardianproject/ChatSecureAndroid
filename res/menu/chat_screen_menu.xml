@@ -92,20 +92,20 @@
           app:showAsAction="always"
         >
               <menu>
-         <item android:id="@+id/menu_verify_or_view"
+         <item android:id="@+id/menu_view_profile_verified"
         android:title="@string/menu_view_profile"
         android:icon="@drawable/ic_white_encrypted_and_verified"
          app:showAsAction="always"
          />
     
-         
+         <!-- 
          <item android:id="@+id/menu_show_qr"
         android:title="@string/menu_sidebar_qr"
         android:icon="@drawable/ic_white_encrypted_and_verified"
          app:showAsAction="always"
-         />
+         /> -->
          
-        <item android:id="@+id/menu_otr"
+        <item android:id="@+id/menu_otr_stop_verified"
         android:title="@string/menu_otr_stop"
          android:icon="@drawable/ic_white_unencrypted"
           app:showAsAction="always"
@@ -121,7 +121,7 @@
         
         
         
-  
+  <!--  
     <item 
         android:title="@string/menu_send_file"
          app:showAsAction="always"
@@ -156,7 +156,7 @@
         />
         </menu>
        </item>
-  
+   -->
     <item android:id="@+id/menu_end_conversation"
         android:title="@string/menu_end_conversation" 
         android:icon="@drawable/ic_menu_close"
@@ -166,30 +166,44 @@
     
     
     </group>
+     
     
  <group android:enabled="true" android:id="@+id/menu_group_contacts" android:visible="true">
    
-     <item android:id="@+id/menu_new_chat"
+     <item android:id="@+id/menu_new_chat_top"
+        android:title="@string/menu_new_chat" 
+              android:icon="@drawable/ic_action_new"
+                app:showAsAction="always"
+        
+        >
+         <menu>
+              <item android:id="@+id/menu_new_chat"
         android:title="@string/menu_new_chat" 
               android:icon="@drawable/ic_action_new"
                 app:showAsAction="always"
         
         />
-     
-     
-     <item android:id="@+id/menu_add_contact"
+              
+              <item android:id="@+id/menu_add_contact"
         android:title="@string/menu_add_contact" 
               android:icon="@drawable/social_add_person"
                 app:showAsAction="never"
         
         />
      
+              
       <item android:id="@+id/menu_group_chat"
         android:title="@string/menu_new_group_chat" 
               android:icon="@drawable/social_add_person"
                 app:showAsAction="never"
         
         />
+              
+         </menu>
+         
+     </item>
+     
+     
       <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_add_account"
                 app:showAsAction="never"
@@ -204,12 +218,6 @@
          />
     
      
-      <item android:id="@+id/menu_exit"
-        android:title="@string/menu_exit"
-                app:showAsAction="never"
-        />
-     
-     
         </group>
         
    
@@ -220,6 +228,12 @@
         android:icon="@android:drawable/ic_menu_preferences"
          app:showAsAction="never"
          />
+     
+      <item android:id="@+id/menu_exit"
+        android:title="@string/menu_exit"
+                app:showAsAction="never"
+        />
+     
      
       
   

@@ -194,6 +194,10 @@ public class ChatView extends LinearLayout {
     /*package*/ListView mHistory;
     EditText mComposeMessage;
     private ImageButton mSendButton;
+    
+    private ImageButton mButtonAttach;
+    private View mViewAttach;
+    
     private View mStatusWarningView;
     private TextView mWarningText;
     private ProgressBar mProgressTransfer;
@@ -690,13 +694,70 @@ public class ChatView extends LinearLayout {
         mComposeMessage = (EditText) findViewById(R.id.composeMessage);
         mSendButton = (ImageButton) findViewById(R.id.btnSend);
         mHistory.setOnItemClickListener(mOnItemClickListener);
-
+        mButtonAttach = (ImageButton) findViewById(R.id.btnAttach);
+        mViewAttach = findViewById(R.id.attachPanel);
+        
         mStatusWarningView = findViewById(R.id.warning);
         mWarningText = (TextView) findViewById(R.id.warningText);
 
         mProgressTransfer = (ProgressBar)findViewById(R.id.progressTransfer);
        // mOtrSwitch = (CompoundButton)findViewById(R.id.otrSwitch);
         mProgressBarOtr = (ProgressBar)findViewById(R.id.progressBarOtr);
+        
+        mButtonAttach.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                
+                if (mViewAttach.getVisibility() == View.GONE)
+                    mViewAttach.setVisibility(View.VISIBLE);
+                else
+                    mViewAttach.setVisibility(View.GONE);
+            }
+            
+        });
+        
+        ((ImageButton) findViewById(R.id.btnAttachAudio)).setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mNewChatActivity.startAudioPicker();
+            }
+            
+        });
+        
+        ((ImageButton) findViewById(R.id.btnAttachPicture)).setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mNewChatActivity.startImagePicker();
+            }
+            
+        });
+        
+        ((ImageButton) findViewById(R.id.btnTakePicture)).setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mNewChatActivity.startPhotoTaker();
+            }
+            
+        });
+        
+        ((ImageButton) findViewById(R.id.btnAttachFile)).setOnClickListener(new OnClickListener()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mNewChatActivity.startFilePicker();
+            }
+            
+        });
+        
         
         mHistory.setOnItemLongClickListener(new OnItemLongClickListener ()
         {
@@ -1619,7 +1680,22 @@ public class ChatView extends LinearLayout {
                     IChatSessionManager sessionMgr = mConn.getChatSessionManager();
                     if (sessionMgr != null) {
 
-                        IChatSession session = sessionMgr.createChatSession(Address.stripResource(mRemoteAddress),false);
+                        String remoteAddress = mRemoteAddress;
+                        IChatSession session;
+                        
+                        if (mContactType == Imps.Contacts.TYPE_NORMAL)
+                        {
+                            remoteAddress = Address.stripResource(mRemoteAddress);
+                       
+                            session = sessionMgr.createChatSession(remoteAddress,false);
+                        }
+                        else
+                        {
+                            if(mRemoteNickname == null)
+                                mRemoteNickname = "anon";
+                            
+                            session = sessionMgr.createMultiUserChatSession(remoteAddress,mRemoteNickname);
+                        }
 
                         return session;
 
@@ -1778,6 +1854,7 @@ public class ChatView extends LinearLayout {
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.LTGRAY);
 
+            mButtonAttach.setVisibility(View.GONE);
 
             mSendButton.setImageResource(R.drawable.ic_send_holo_light);
             mComposeMessage.setHint(R.string.compose_hint);

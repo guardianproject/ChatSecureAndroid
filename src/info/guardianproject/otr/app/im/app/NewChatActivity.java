@@ -157,6 +157,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private ContactListFragment mContactList = null;
 
+    private Imps.ProviderSettings.QueryMap mGlobalSettings = null;
+
     final static class MyHandler extends SimpleAlertHandler {
         public MyHandler(NewChatActivity activity) {
             super(activity);
@@ -837,8 +839,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
+                
                 switch (item.getItemId()) {
-
+/*
                 case R.id.menu_send_image:
                     if (getCurrentChatView() != null && getCurrentChatView().getOtrSessionStatus() == SessionStatus.ENCRYPTED)
                     {
@@ -885,7 +888,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     }
 
                     return true;
-
+*/
                 case R.id.menu_verify_or_view:
                     if (getCurrentChatView() != null)
                         getCurrentChatView().showVerifyDialog();
@@ -916,7 +919,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 case R.id.menu_otr:
                 case R.id.menu_otr_stop:
-
+                case R.id.menu_otr_stop_verified:
+                case R.id.menu_view_profile_verified:
+                    
                     if (getCurrentChatView() != null)
                     {
 
@@ -1545,6 +1550,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 long contactChatId = mCursor.getLong(ChatView.CONTACT_ID_COLUMN);
                 String contactName = mCursor.getString(ChatView.USERNAME_COLUMN);
                 long providerId = mCursor.getLong(ChatView.PROVIDER_COLUMN);
+                
+                int chatType = mCursor.getInt(ChatView.TYPE_COLUMN);
+                
 
                 return ChatViewFragment.newInstance(contactChatId, contactName, providerId);
             }
@@ -2148,11 +2156,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         final View dialogGroup = factory.inflate(R.layout.alert_dialog_group_chat, null);
         TextView tvServer = (TextView) dialogGroup.findViewById(R.id.chat_server);
-        tvServer.setText(ImApp.DEFAULT_GROUPCHAT_SERVER);// need to make this a list
+       // tvServer.setText(ImApp.DEFAULT_GROUPCHAT_SERVER);// need to make this a list
 
         final Spinner listAccounts = (Spinner) dialogGroup.findViewById(R.id.choose_list);
         setupAccountSpinner(listAccounts);
-
+        
         new AlertDialog.Builder(this)
             .setTitle(R.string.create_or_join_group_chat)
             .setView(dialogGroup)
@@ -2217,7 +2225,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         Imps.Provider.DEFAULT_SORT_ORDER);
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_spinner_item, cursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
+                android.R.layout.simple_spinner_dropdown_item, cursorProviders, new String[] { Imps.Provider.ACTIVE_ACCOUNT_USERNAME},
                 new int[] { android.R.id.text1 });
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
@@ -2245,6 +2253,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 }
             });
+        }
+        else
+        {
+            spinner.setVisibility(View.GONE);
         }
 
     }
@@ -2532,8 +2544,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         }
         
     };
-
-    private Imps.ProviderSettings.QueryMap mGlobalSettings = null;
 
     private synchronized Imps.ProviderSettings.QueryMap getGlobalSettings() {
         if (mGlobalSettings == null) {

@@ -493,6 +493,22 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             return mMUCs.get(chatRoomJid);
         }
+        
+        public void reconnectAll ()
+        {
+            for (MultiUserChat muc : mMUCs.values())
+            {
+                if (!muc.isJoined())
+                {
+                    try {
+                        muc.join(muc.getNickname());
+                    } catch (XMPPException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
 
         @Override
         public boolean createChatGroupAsync(String chatRoomJid, String nickname) throws Exception {
@@ -615,7 +631,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             if (mMUCs.containsKey(chatRoomJid))
             {
                 MultiUserChat muc = mMUCs.get(chatRoomJid);
-
+                muc.invite(contact.getAddress().getBareAddress(),"");
             }
 
 
@@ -623,9 +639,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         protected void removeGroupMemberAsync(ChatGroup group, Contact contact) {
-            // TODO Auto-generated method stub
 
 
+            String chatRoomJid = group.getAddress().getAddress();
+
+            if (mMUCs.containsKey(chatRoomJid))
+            {
+                MultiUserChat muc = mMUCs.get(chatRoomJid);
+                try {
+                    muc.kickParticipant(chatRoomJid, contact.getAddress().getBareAddress());
+                } catch (XMPPException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
 
         @Override
@@ -2632,6 +2659,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         {
             mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
             sendPresencePacket();            
+            mChatGroupManager.reconnectAll();
         }
     }    
 

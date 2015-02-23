@@ -86,6 +86,7 @@ public class ContactListManagerAdapter extends
     private Uri mContactUrl;
 
     static final long FAKE_TEMPORARY_LIST_ID = -1;
+    static final long LOCAL_GROUP_LIST_ID = 9999;
     static final String[] CONTACT_LIST_ID_PROJECTION = { Imps.ContactList._ID };
 
     RemoteImService mContext;
@@ -662,7 +663,7 @@ public class ContactListManagerAdapter extends
             mAllContactsLoaded = true;
 
             handleDelayedContactChanges();
-            removeObsoleteContactsAndLists();
+        //    removeObsoleteContactsAndLists();
 
             broadcast(new ContactListBroadcaster() {
                 public void broadcast(IContactListListener listener) throws RemoteException {
@@ -1240,9 +1241,9 @@ public class ContactListManagerAdapter extends
      */
     private void clearValidatedContactsAndLists() {
         // clear the list of validated contacts, contact lists, and blocked contacts
-        mValidatedContacts.clear();
-        mValidatedContactLists.clear();
-        mValidatedBlockedContacts.clear();
+    //    mValidatedContacts.clear();
+     //   mValidatedContactLists.clear();
+     //   mValidatedBlockedContacts.clear();
     }
 
     /**
@@ -1251,8 +1252,8 @@ public class ContactListManagerAdapter extends
      * logout.
      */
     private void clearTemporaryContacts() {
-        String selection = Imps.Contacts.CONTACTLIST + "=" + FAKE_TEMPORARY_LIST_ID;
-        mResolver.delete(mContactUrl, selection, null);
+    //    String selection = Imps.Contacts.CONTACTLIST + "=" + FAKE_TEMPORARY_LIST_ID;
+    //    mResolver.delete(mContactUrl, selection, null);
     }
 
     /**

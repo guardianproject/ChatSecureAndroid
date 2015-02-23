@@ -9,4 +9,5 @@
       <attr name="listBackground" format="color" />
       <attr name="toolbarBackground" format="color" />
       <attr name="inputBackground" format="color"/>      
+      <attr name="attachIcon" format="reference"/>
 </resources>

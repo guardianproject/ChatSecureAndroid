@@ -109,7 +109,7 @@ public class ChatSession {
         SessionID sId = cm.getSessionId(message.getFrom().getAddress(),mParticipant.getAddress().getAddress());
         SessionStatus otrStatus = cm.getSessionStatus(sId);
 
-        message.setTo(mParticipant.getAddress());
+      //  message.setTo(mParticipant.getAddress());
 
         if (otrStatus == SessionStatus.ENCRYPTED)
         {
@@ -124,12 +124,18 @@ public class ChatSession {
                 message.setType(Imps.MessageType.OUTGOING_ENCRYPTED);
             }
 
+            message.setTo(new XmppAddress(sId.getRemoteUserId()));
         }
         else if (otrStatus == SessionStatus.FINISHED)
         {
 
-            onSendMessageError(message, new ImErrorInfo(ImErrorInfo.INVALID_SESSION_CONTEXT,"Please turn off encryption"));
+            onSendMessageError(message, new ImErrorInfo(ImErrorInfo.INVALID_SESSION_CONTEXT,"error - session finished"));
             return -1;
+        }
+        else
+        {
+            //not encrypted, send to all
+            message.setTo(new XmppAddress(XmppAddress.stripResource(sId.getRemoteUserId())));
         }
 
         mHistoryMessages.add(message);
