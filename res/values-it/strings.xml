@@ -418,7 +418,7 @@ Tocca per invitare qualcuno.</string>
   <string name="error_account_settings_priority">La priorità dev\'essere un numero compreso nell\'intervallo [0 .. 127]</string>
   <string name="error_account_settings_port">Il numero di porta dev\'essere un numero</string>
   <string name="account_settings_title">Impostazioni Account</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">ATTENZIONE: Questa versione prematura di ChatSecure che può contenere falle o bug di sicurezza.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruppi</string>

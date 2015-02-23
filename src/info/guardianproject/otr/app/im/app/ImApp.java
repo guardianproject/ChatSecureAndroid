@@ -255,8 +255,9 @@ public class ImApp extends Application {
 
         PRNGFixes.apply(); //Google's fix for SecureRandom bug: http://android-developers.blogspot.com/2013/08/some-securerandom-thoughts.html
 
+        // load these libs up front to shorten the delay after typing the passphrase
         SQLiteDatabase.loadLibs(getApplicationContext());
-        VirtualFileSystem.get().isMounted(); //use this to trigger loadLibs
+        VirtualFileSystem.get().isMounted();
 
         mConnections = new HashMap<Long, IImConnection>();
         mApplicationContext = this;
@@ -358,7 +359,7 @@ public class ImApp extends Application {
 
         Configuration config = getResources().getConfiguration();
 
-        String lang = settings.getString(getString(R.string.pref_default_locale), "");
+        String lang = settings.getString(getString(R.string.key_default_locale_pref), "");
 
 
         if ("".equals(lang)) {
@@ -368,7 +369,7 @@ public class ImApp extends Application {
                 if (configuredLocale != null && !"CHOOSE".equals(configuredLocale)) {
                     lang = configuredLocale;
                     Editor editor = settings.edit();
-                    editor.putString(getString(R.string.pref_default_locale), lang);
+                    editor.putString(getString(R.string.key_default_locale_pref), lang);
                     editor.apply();
                 }
             }
@@ -403,7 +404,7 @@ public class ImApp extends Application {
         preferences, otherwise ChatSecure will be stuck in a crash loop. */
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Editor prefEdit = prefs.edit();
-        prefEdit.putString(context.getString(R.string.pref_default_locale), language);
+        prefEdit.putString(context.getString(R.string.key_default_locale_pref), language);
         prefEdit.apply();
     }
 

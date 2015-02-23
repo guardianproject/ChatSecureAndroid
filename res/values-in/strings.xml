@@ -397,7 +397,7 @@ Sentuh untuk mengundang.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> sedang offline. Pesan yang anda kirim akan diserahkan ketika <xliff:g id="user">%1$s</xliff:g> sudah online.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> tidak terdapat di daftar Kontak anda.</string>
   <string name="account_settings_title">Pengaturan Akun</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">PERINGATAN: Ini adalah rilis awal dari ChatSecure yang mungkin masih memiliki lubang keamanan dan bug.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grup</string>

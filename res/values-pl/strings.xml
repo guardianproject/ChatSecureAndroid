@@ -459,7 +459,7 @@ Kliknij aby zaprosić.</string>
   <string name="error_welcome_database">Poważny błąd: Nie można odblokować lub otworzyć bazy danych aplikacji. Proszę ponownie zainstaluj aplikację lub wyczyść dane.</string>
   <string name="error_no_app_to_handle_url">Brak zainstalowanej aplikacji, która może otworzyć ten link!</string>
   <string name="account_settings_title">Ustawienia konta</string>
-  <string name="pref_default_locale">domLok</string>
+
   <string name="warning_alpha">Ostrzeżenie: To jest wczesna wersja Bezpiecznego komunikatora = ChatSecure więc może posiadać luki bezpieczeństwa.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupy</string>

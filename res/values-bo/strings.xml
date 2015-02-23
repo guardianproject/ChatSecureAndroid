@@ -458,7 +458,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="error_welcome_database">ནོར་འཁྲུལ་ཆེན་པོ། མཉེན་ཆས་ཀྱི་རེའུ་མིག་སྒོ་ཕྱེས་མི་ཐུབ་པའམ་ཡང་ན་དེའི་ནང་དུ་འཇུག་ཐུབ་ཀྱི་མི་འདུག  མཉེན་ཆས་དེ་བསྐྱར་དུ་ནང་འཇུག་བྱེད་པའམ་ཡང་ན་གཙང་མ་བཟོ་རོགས།</string>
   <string name="error_no_app_to_handle_url">འབྲེལ་ཐག་དེར་འགྲོ་ཐུབ་ཆེད་མཉེན་ཆས་མ་ལག་གཅིག་ཀྱང་མི་འདུག</string>
   <string name="account_settings_title">ཐོ་བྱང་སྒྲིག་བཟོ།</string>
-  <string name="pref_default_locale">སྒེ་ཧྥི་ལོ་ཁུ།</string>
+
   <string name="warning_alpha">ཉེན་བརྡ། འདི་ནི་ཉེན་སྲུང་གླེང་མོལ་སྔོན་མའི་གྲས་ཤིག་ཡིན་པས། ད་དུང་ཉེན་སྲུང་གི་དཀའ་ངལ་དང་ནོར་འཁྲུལ་སོགས་ཡོད་སྲིད།</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups"> ཚན་པ་ཁག</string>

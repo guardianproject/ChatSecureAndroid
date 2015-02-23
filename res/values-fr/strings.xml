@@ -399,7 +399,7 @@ Appuyez pour inviter.</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> est hors ligne. Les messages que vous lui envoyez lui seront remis lorsque <xliff:g id="USER_1">%1$s</xliff:g> se reconnectera.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> n\'est pas dans votre liste de contacts.</string>
   <string name="account_settings_title">Paramètres du compte</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">ATTENTION: ceci est une édition anticipée de ChatSecure qui contient peut-être des failles de sécurité ou des bogues.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groupes</string>

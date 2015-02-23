@@ -455,7 +455,7 @@ ChatSecure zal waarschijnlijk crashen. Gebruik in de plaats a.u.b. het \"Log all
   <string name="error_chat_file_transfer_body">Kon het bestand niet lezen</string>
   <string name="error_welcome_database">Grote Fout: Kan de app database niet laden of ontgrendelen. Gelive de app opnieuw te installeren of de data te wissen.</string>
   <string name="account_settings_title">Account Instellingen</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">LET OP: Dit is een prille versie van ChatSecure die beveiligingslekken of fouten kan bevatten.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groepen</string>

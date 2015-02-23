@@ -445,7 +445,7 @@
   <string name="error_welcome_database">Кобна грешка: Не могу да откључам или учитам базу података апликације. Инсталирајте поново апликацију или очистите податке.</string>
   <string name="error_no_app_to_handle_url">Нема апликације за руковање том везом!</string>
   <string name="account_settings_title">Поставке налога</string>
-  <string name="pref_default_locale">српски</string>
+
   <string name="warning_alpha">УПОЗОРЕЊЕ: Ово је рано издање Сигурних порука које може да има сигурносне пропусте или грешке.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Групе</string>

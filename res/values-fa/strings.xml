@@ -337,8 +337,7 @@
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g>روی خط نیست. پیامی که شما ارسال کرده اید هنگامی به مقصد میرسد که <xliff:g id="user">%1$s</xliff:g> روی خط بیاید.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> در لیست تماس شما نیست.</string>
   <string name="account_settings_title">تنظیمات حساب کاربری</string>
-  <string name="pref_default_locale">defLoc
-</string>
+
   <!--added 2011/09/01-->
   <string name="menu_view_groups">گروه ها</string>
   <!--Other-->

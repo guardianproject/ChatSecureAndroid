@@ -397,7 +397,7 @@
   <string name="contact_offline_warning">Пользователь <xliff:g id="USER_0">%1$s</xliff:g> не в сети. Отправленные сообщения будут доставлены, когда пользователь <xliff:g id="USER_1">%1$s</xliff:g> выйдет в сеть.</string>
   <string name="contact_not_in_list_warning">Пользователь <xliff:g id="USER">%1$s</xliff:g> отсутствует в списке контактов.</string>
   <string name="account_settings_title">Настройки учетной записи</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">ВНИМАНИЕ: Это - ранний релиз программы ChatSecure и все еще может содержать ошибки или иметь проблемы безопасности.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Группы</string>

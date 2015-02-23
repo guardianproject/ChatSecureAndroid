@@ -401,7 +401,7 @@ Sareko datuen konektibitatea (baita atzeko planoko datuena) beharrezkoa da aplik
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> erabiltzailea lineaz kanpo dago. Bidaltzen dituzun mezuak<xliff:g id="user">%1$s</xliff:g> konektatzen denean bidaliko zaizkio.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ez dago zure kontaktu zerrendan.</string>
   <string name="account_settings_title">Kontu ezarpenak</string>
-  <string name="pref_default_locale">defHizk</string>
+
   <string name="warning_alpha">KONTUZ: ChatSecure-ren bertsio hau kaleratze azkar bat da eta segurtasun zulo edo akatsak eduki ditzake.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Taldeak</string>

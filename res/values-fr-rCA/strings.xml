@@ -445,7 +445,7 @@
   <string name="error_welcome_database">Erreur majeure : impossible de déverrouiller ou de charger la base de données de l\'appli. Veuillez réinstaller l\'appli ou effacer les données.</string>
   <string name="error_no_app_to_handle_url">Aucune appli installée pour gérer ce lien!</string>
   <string name="account_settings_title">Paramètres des comptes</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">AVERTISSEMENT : ceci est une pré-version de ChatSecure qui pourrait contenir des failles de sécurité ou des bogues.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groupes</string>

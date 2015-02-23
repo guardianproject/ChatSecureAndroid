@@ -453,7 +453,7 @@ Nätverkstrafik (även i bakgrunden) krävs för att kunna logga in med appen.</
   <string name="error_welcome_database">Allvarligt fel: kan inte låsa upp eller ladda appdatabasen. Vänligen installera om appen eller rensa data.</string>
   <string name="error_no_app_to_handle_url">Ingen installerad applikation kan hantera den länken!</string>
   <string name="account_settings_title">Kontoinställningar</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">VARNING: Detta är en tidig release av ChatSecure som fortfarande kan innehålla säkerhetshål eller buggar.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>

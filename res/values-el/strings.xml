@@ -374,7 +374,7 @@
   <string name="contact_offline_warning">Ο χρήστης <xliff:g id="USER_0">%1$s</xliff:g> βρίσκεται εκτός σύνδεσης. Τα μηνύματα που στέλνετε θα παραδοθούν όταν ο χρήστης <xliff:g id="USER_1">%1$s</xliff:g> συνδεθεί στο διαδίκτυο.</string>
   <string name="contact_not_in_list_warning">Η επαφή <xliff:g id="USER">%1$s</xliff:g> δεν υπάρχει στη λίστα επαφών σας.</string>
   <string name="account_settings_title">Ρυθμίσεις λογαριασμού</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">ΠΡΟΣΟΧΗ: Αυτή είναι μια πρώιμη έκδοση του ChatSecure που μπορεί να περιέχει κενά ασφαλείας η bugs.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Ομάδες</string>

@@ -442,7 +442,7 @@ Klikněte pro pozvání.</string>
   <string name="error_chat_file_transfer_body">Soubor nelze na úložišti přečíst</string>
   <string name="error_welcome_database">Kritická chyba: Nelze odemknout nebo načíst databázy aplikace. Nainstalujte prosím znovu aplikaci nebo vyčistěte data.</string>
   <string name="account_settings_title">Nastavení účtu</string>
-  <string name="pref_default_locale">defLoc</string>
+
   <string name="warning_alpha">Varování: Toto je předčasně vypuštěné ChatSecure které ještě může obsahovat bezpečnostní díry nebo chyby.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupiny</string>
