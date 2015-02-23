@@ -274,11 +274,6 @@ public class MessageView extends FrameLayout {
                 EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
 
                 mHolder.mTextViewForMessages.setText(spannablecontent);
-                
-
-                if (linkify)
-                    LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
-                
             } catch (IOException e) {
                 LogCleaner.error(ImApp.LOG_TAG, "error processing message", e);
             }
@@ -309,6 +304,8 @@ public class MessageView extends FrameLayout {
             //mHolder.mTextViewForTimestamp.setVisibility(View.GONE);
 
         }
+        if (linkify)
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
     }
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
@@ -626,11 +623,6 @@ public class MessageView extends FrameLayout {
                  EmojiManager.getInstance(getContext()).addEmoji(getContext(), spannablecontent);
 
                  mHolder.mTextViewForMessages.setText(spannablecontent);
-                 
-
-                 if (linkify) //only linkify text messages
-                     LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
-                 
              } catch (IOException e) {
                  // TODO Auto-generated catch block
                  e.printStackTrace();
@@ -657,6 +649,8 @@ public class MessageView extends FrameLayout {
             mHolder.mTextViewForTimestamp.setText("");
 
         }
+        if (linkify)
+            LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
     }
 
     private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)
