@@ -24,7 +24,7 @@
      
      <group android:enabled="true" android:id="@+id/menu_group_otr_off" android:visible="false">
         
-         <item 
+       <item 
         android:title="@string/menu_otr_start"
          android:icon="@drawable/ic_white_unencrypted"
           app:showAsAction="always"
@@ -36,20 +36,19 @@
           app:showAsAction="always"
            android:id="@+id/menu_otr"
         />
-        <!-- 
+        
              <item android:id="@+id/menu_verify_or_view"
         android:title="@string/menu_verify"
         android:icon="@drawable/ic_white_encrypted_not_verified"
          app:showAsAction="always"
-         /> -->
+         />
              
         </menu>
          </item>
          
          
          </group>
-  
-  <group android:enabled="true" android:id="@+id/menu_group_otr_unverified" android:visible="false">
+     <group android:enabled="true" android:id="@+id/menu_group_otr_unverified" android:visible="false">
         
          <item 
         android:title="@string/menu_otr_start"
