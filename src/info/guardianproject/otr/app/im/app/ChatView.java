@@ -1023,12 +1023,9 @@ public class ChatView extends LinearLayout {
 
         Collection<EmojiGroup> emojiGroups = emojiManager.getEmojiGroups();
 
-        if (emojiGroups.size() == 0)
+        if (emojiGroups.size() > 0)
         {
-            btnEmoji.setVisibility(View.GONE);
-        }
-        else
-        {
+        
             EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mNewChatActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
 
             mEmojiPager.setAdapter(emojiPagerAdapter);
@@ -1046,6 +1043,19 @@ public class ChatView extends LinearLayout {
                         mEmojiPager.setVisibility(View.VISIBLE);
                     else
                         mEmojiPager.setVisibility(View.GONE);
+                }
+
+            });
+        }
+        else
+        {
+            btnEmoji.setOnClickListener(new OnClickListener ()
+            {
+
+                @Override
+                public void onClick(View v) {
+
+                    //what? prompt to install?
                 }
 
             });

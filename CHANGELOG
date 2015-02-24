@@ -1,6 +1,39 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.1-BETA-1 / 2015-02-24 / b938c5b0e7c424bc0be907b78bc38d3e1eb97125
+
+* UI tweaks
+415070e re-instate chat OTR state/drop-down menu
+ad3367b make button panel scroll horizontally
+bd0068f Revert "Only linkify when it is a text message and not media"
+302904d last cleanup of groupchat dialog box
+72fdb80 small clean-up of dropdown dialog for groupchat
+cd82821 add new dark attachment icon for dark theme
+b9ba9f4 use a ScrollView for Account Wizard screens to accomodate long translations
+f57083f add new dark attachment icon for dark theme
+53227fe move share/attach to bottom of the screen popup menu This declutters the actionbar, and matches more what other popular apps 
+9cfcfa3 last cleanup of groupchat dialog box
+
+* Feature fixes
+02044de fix message address targeting for OTR setup Messages were being sent to wrong resource, and OTR init never occured
+853af9e OTR code cleanup to remove still existing issues with encryption start
+
+* Stability
+5fb1ac4 fix crash if loader is working, then ChatSecure quits
+1a3b695 launch all clicked links into a new Task
+
+* Misc
+7d6d558 explain why the SQLCipher libs are loaded at app start
+3b2530c do not translate SharedPreferences key strings
+6f10871 make-release-build: generate APK file name based on `git describe`
+df3cc88 use correct classes and casts in LinkifyHelper
+2391f76 small clean-up of dropdown dialog for groupchat
+6f70426 make MUC chat work better and persist across app instances
+0bbb908 Only linkify when it is a text message and not media Linkify code expects a Spannable which only exists if the message contai
+8d5d2c3 purge dead code from MessageView
+eddb171 add new translations
+
 14.1.0-RC1 / 2015-01-06 / 863bfec7b0881395dbaec8937f999e0c9b0b9dd7
 
 863bfec update translations
