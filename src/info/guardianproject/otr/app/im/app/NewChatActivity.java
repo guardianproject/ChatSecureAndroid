@@ -1195,7 +1195,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
             String sessionId = getCurrentSessionId();
-            Uri vfsUri = IocVfs.importContent(sessionId, info.path);
+            Uri vfsUri = IocVfs.importContent(sessionId, info.path, mimeType);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {

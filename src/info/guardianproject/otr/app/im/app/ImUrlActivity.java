@@ -681,7 +681,7 @@ public class ImUrlActivity extends Activity {
                             if (IocVfs.isVfsUri(mSendUrl))
                                 vfsUri = Uri.parse(mSendUrl);
                             else
-                                vfsUri = IocVfs.importContent(session.getId() + "", mSendUrl);
+                                vfsUri = IocVfs.importContent(session.getId() + "", mSendUrl, mSendType);
                             FileInfo info = SystemServices.getFileInfoFromURI(this, vfsUri);
                             session.offerData(offerId, info.path, mSendType );
 
