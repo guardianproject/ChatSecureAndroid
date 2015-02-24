@@ -544,17 +544,17 @@ public class MessageView extends FrameLayout {
         }.execute();
     }
 
-    public final static int THUMBNAIL_SIZE = 400;
+    public final static int THUMBNAIL_SIZE_DEFAULT = 400;
 
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
      //   Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
         if (IocVfs.isVfsUri(uri)) {
-            return IocVfs.getThumbnailVfs(cr, uri);
+            return IocVfs.getThumbnailVfs(uri, THUMBNAIL_SIZE_DEFAULT);
         }
-        return getThumbnailFile(cr, uri);
+        return getThumbnailFile(uri, THUMBNAIL_SIZE_DEFAULT);
     }
 
-    public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri) {
+    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
 
         java.io.File image = new java.io.File(uri.getPath());
 
@@ -579,7 +579,7 @@ public class MessageView extends FrameLayout {
                 : options.outWidth;
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
+        opts.inSampleSize = originalSize / thumbnailSize;
 
         Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
 

@@ -9,12 +9,12 @@ import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.util.LogCleaner;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -120,7 +120,7 @@ public class IocVfs {
             return uriString.startsWith(VFS_SCHEME + ":/");
     }
 
-    public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
+    public static Bitmap getThumbnailVfs(Uri uri, int thumbnailSize) {
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -143,7 +143,7 @@ public class IocVfs {
                 : options.outWidth;
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = originalSize / MessageView.THUMBNAIL_SIZE;
+        opts.inSampleSize = originalSize / thumbnailSize;
 
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
@@ -183,14 +183,67 @@ public class IocVfs {
      * @return vfs uri
      * @throws IOException
      */
-    public static Uri importContent(String sessionId, String sourcePath) throws IOException {
+    public static Uri importContent(String sessionId, String sourcePath, String mimeType) throws IOException {
         list("/");
         File sourceFile = new File(sourcePath);
         String targetPath = "/" + sessionId + "/upload/" + sourceFile.getName();
         targetPath = createUniqueFilename(targetPath);
-        copyToVfs( sourcePath, targetPath );
+        
+        if (mimeType != null && mimeType.startsWith("image/"))
+        {
+            int defaultImageWidth = 600;
+            //load lower-res bitmap 
+            Bitmap bmp = getThumbnailFile(Uri.fromFile(new File(sourcePath)),defaultImageWidth);
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            
+            if (sourcePath.endsWith(".png") || mimeType.contains("png")) //preserve alpha channel
+                bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            else
+                bmp.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            
+            byte[] byteArray = stream.toByteArray();
+            bmp.recycle();
+            copyToVfs(byteArray, targetPath);
+        }
+        else
+        {
+            copyToVfs( sourcePath, targetPath );
+        }
+        
         list("/");
         return vfsUri(targetPath);
+    }
+    
+    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
+
+        java.io.File image = new java.io.File(uri.getPath());
+
+        if (!image.exists())
+        {
+            image = new info.guardianproject.iocipher.File(uri.getPath());
+            if (!image.exists())
+                return null;
+        }
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+
+
+        BitmapFactory.decodeFile(image.getPath(), options);
+        if ((options.outWidth == -1) || (options.outHeight == -1))
+            return null;
+
+        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                : options.outWidth;
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = originalSize / thumbnailSize;
+
+        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+
+        return scaledBitmap;
     }
 
     public static void exportAll(String sessionId ) throws IOException {
