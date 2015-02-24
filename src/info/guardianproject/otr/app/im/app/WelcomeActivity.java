@@ -53,7 +53,6 @@ import net.hockeyapp.android.UpdateManager;
 public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubscriber  {
 
     private static final String TAG = "WelcomeActivity";
-    private boolean mDidAutoLaunch = false;
     private Cursor mProviderCursor;
     private ImApp mApp;
     private SimpleAlertHandler mHandler;
@@ -255,31 +254,12 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         }
         else
         {
-            if (countSignedIn == 0 && countAvailable > 0 && !mDidAutoLaunch && mDoSignIn) {
-                mDidAutoLaunch = true;
+            if (countSignedIn == 0 && countAvailable > 0 && mDoSignIn) {
                 signInAll();
-                showAccounts();
-            } else if (countSignedIn >= 1) {
-                showActiveAccount();
-            } else {
-                showAccounts();
             }
+            startActivity(new Intent(getBaseContext(), NewChatActivity.class));
+            finish();
         }
-    }
-
-
-    // Show signed in account
-
-    protected boolean showActiveAccount() {
-        if (!mProviderCursor.moveToFirst())
-            return false;
-        do {
-            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) && isSignedIn(mProviderCursor)) {
-                showAccounts();
-                return true;
-            }
-        } while (mProviderCursor.moveToNext());
-        return false;
     }
 
     private void signInAll() {
@@ -393,12 +373,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         } while (mProviderCursor.moveToNext());
 
         return count;
-    }
-
-    void showAccounts() {
-        //startActivity(new Intent(getBaseContext(), AccountListActivity.class));
-        startActivity(new Intent(getBaseContext(), NewChatActivity.class));
-        finish();
     }
 
     void handleIntentAPILaunch (Intent srcIntent)
