@@ -59,28 +59,7 @@
 	     android:padding="3sp"
 	     android:background="?inputBackground"
 	     >
-	<!-- 
-        <ImageButton
-        android:id="@+id/btnActionBox"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
-        android:background="@drawable/ad_selectable_background"
-        android:fontFamily="sans-serif-light"
-      
-        android:paddingBottom="5sp"
-        android:src="@drawable/ic_btn_round_more_normal" />
-       -->
-    <ImageButton
-        android:id="@+id/btnEmoji"
-        android:layout_width="32dip"
-        android:layout_height="32dip"
-        android:background="?inputBackground"
-        android:scaleType="centerInside"
-        
-        android:paddingBottom="5sp"
-        android:src="@drawable/smiley_smile"
-        android:visibility="gone"
-         />
+	
     
     <ImageButton
         android:id="@+id/btnAttach"
@@ -118,20 +97,40 @@
 
       </LinearLayout>
   
-  <LinearLayout android:id="@+id/attachPanel"
-        android:layout_width="match_parent"
+    <HorizontalScrollView
+        android:id="@+id/attachPanel"    
+    android:layout_width="match_parent"
+    android:layout_height="64dip"
+    android:layout_alignParentTop="true"
+    android:fillViewport="true"
+    android:measureAllChildren="false"
+    android:scrollbars="none" 
+      android:visibility="gone"
+    >
+    
+  <LinearLayout 
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
         android:gravity="center"
         android:orientation="horizontal"
         android:background="?toolbarBackground"
-        android:visibility="gone">
+      >
+      <ImageButton
+        android:id="@+id/btnEmoji"
+        android:layout_width="64dip"
+        android:layout_height="64dip"        
+        android:scaleType="centerInside"        
+        android:layout_margin="3dp"
+        android:src="@drawable/smiley_smile"        
+        
+         />
     
+      
           <ImageButton
         android:id="@+id/btnAttachAudio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+        android:layout_width="64dip"
+        android:layout_height="64dip"        
         android:src="@drawable/content_new_audio"
         android:layout_margin="3dp"
          />
@@ -139,9 +138,8 @@
           
        <ImageButton
         android:id="@+id/btnAttachPicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+        android:layout_width="64dip"
+        android:layout_height="64dip"        
         android:src="@drawable/content_picture"
                 android:layout_margin="3dp"
         
@@ -149,9 +147,8 @@
        
     <ImageButton
         android:id="@+id/btnTakePicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+        android:layout_width="64dip"
+        android:layout_height="64dip"        
         android:src="@drawable/content_take_picture"
                 android:layout_margin="3dp"
         
@@ -160,15 +157,15 @@
        
     <ImageButton
         android:id="@+id/btnAttachFile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
+        android:layout_width="64dip"
+        android:layout_height="64dip"        
         android:src="@drawable/content_attachment"
                 android:layout_margin="3dp"
         
          />
-          
     </LinearLayout>
+          </HorizontalScrollView>
+    
    <android.support.v4.view.ViewPager
                android:id="@+id/emojiPager"
         android:layout_width="match_parent"
