@@ -223,10 +223,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private void doOnResume() {
         mHandler.registerForBroadcastEvents();
 
-        int countSignedIn = accountsSignedIn();
         int countAvailable = accountsAvailable();
-        int countConfigured = accountsConfigured();
-
 
         if (countAvailable == 1) {
             // If just one account is available for auto-signin, go there immediately after service starts trying
@@ -254,46 +251,20 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         }
         else
         {
-            if (countSignedIn == 0 && countAvailable > 0 && mDoSignIn) {
-                signInAll();
+            if (countAvailable > 0 && mDoSignIn && mProviderCursor.moveToFirst()) {
+                do {
+                    if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
+                        int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
+                        long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+                        if (mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0) {
+                            signIn(accountId);
+                        }
+                    }
+                } while (mProviderCursor.moveToNext());
             }
             startActivity(new Intent(getBaseContext(), NewChatActivity.class));
             finish();
         }
-    }
-
-    private void signInAll() {
-
-        Log.i(TAG, "signInAll");
-        if (!mProviderCursor.moveToFirst())
-            return;
-
-        do {
-            int position = mProviderCursor.getPosition();
-            signInAccountAtPosition(position);
-
-        } while (mProviderCursor.moveToNext());
-
-    }
-
-    private boolean signInAccountAtPosition(int position) {
-        mProviderCursor.moveToPosition(position);
-
-        if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
-            int state = mProviderCursor.getInt(ACCOUNT_CONNECTION_STATUS);
-            long accountId = mProviderCursor.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
-
-            if (state == Imps.ConnectionStatus.OFFLINE) {
-                boolean isKeepSignedIn = mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0;
-                if (isKeepSignedIn) {
-                    signIn(accountId);
-                    return true;
-                }
-
-            }
-        }
-
-        return false;
     }
 
     private void signIn(long accountId) {
@@ -319,29 +290,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         mSignInHelper.signIn(password, providerId, accountId, isActive);
     }
 
-    boolean isSigningIn(Cursor cursor) {
-        int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
-        return connectionStatus == Imps.ConnectionStatus.CONNECTING;
-    }
-
     private boolean isSignedIn(Cursor cursor) {
         int connectionStatus = cursor.getInt(ACCOUNT_CONNECTION_STATUS);
 
         return connectionStatus == Imps.ConnectionStatus.ONLINE;
-    }
-
-    private int accountsSignedIn() {
-        if (!mProviderCursor.moveToFirst()) {
-            return 0;
-        }
-        int count = 0;
-        do {
-            if (isSignedIn(mProviderCursor)) {
-                count++;
-            }
-        } while (mProviderCursor.moveToNext());
-
-        return count;
     }
 
     private int accountsAvailable() {
@@ -353,21 +305,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_PW_COLUMN) &&
                     !mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN) &&
                     mProviderCursor.getInt(ACTIVE_ACCOUNT_KEEP_SIGNED_IN) != 0) {
-                count++;
-            }
-        } while (mProviderCursor.moveToNext());
-
-        return count;
-    }
-
-    private int accountsConfigured() {
-        if (!mProviderCursor.moveToFirst()) {
-            return 0;
-        }
-        int count = 0;
-        do {
-            if (!mProviderCursor.isNull(ACTIVE_ACCOUNT_USERNAME_COLUMN) &&
-                    !mProviderCursor.isNull(ACTIVE_ACCOUNT_ID_COLUMN)) {
                 count++;
             }
         } while (mProviderCursor.moveToNext());
