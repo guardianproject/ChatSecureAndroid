@@ -1156,12 +1156,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         return list.size() > 0;
     }
 
-    private void handleSendDelete( Uri contentUri, String mimeType, boolean delete ) {
+    private void handleSendDelete( Uri contentUri, String mimeType, boolean delete, boolean resizeImage) {
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
             String sessionId = getCurrentSessionId();
-            Uri vfsUri = ChatFileStore.importContent(sessionId, info.path);
+            Uri vfsUri;
+            if (resizeImage)
+                vfsUri = ChatFileStore.resizeAndImportImage(sessionId, info.path, mimeType);
+            else
+                vfsUri = ChatFileStore.importContent(sessionId, info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {
@@ -1202,7 +1206,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return ;
                 }
                 boolean deleteAudioFile = (requestCode == REQUEST_SEND_AUDIO);
-                handleSendDelete(uri, null, deleteAudioFile);
+                handleSendDelete(uri, null, deleteAudioFile, false);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
@@ -1217,7 +1221,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                                 handler.post( new Runnable() {
                                     @Override
                                     public void run() {
-                                        handleSendDelete(mLastPhoto, "image/*", true);
+                                        handleSendDelete(mLastPhoto, "image/*", true, true);
                                     }
                                 });
                             }

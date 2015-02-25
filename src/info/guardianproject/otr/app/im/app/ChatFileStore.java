@@ -4,7 +4,6 @@
 package info.guardianproject.otr.app.im.app;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -22,6 +21,7 @@ import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.util.LogCleaner;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -106,7 +106,7 @@ public class ChatFileStore {
             return uriString.startsWith(VFS_SCHEME + ":/");
     }
 
-    public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
+    public static Bitmap getThumbnailVfs(Uri uri, int thumbnailSize) {
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -129,7 +129,7 @@ public class ChatFileStore {
                 : options.outWidth;
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = originalSize / MessageView.THUMBNAIL_SIZE;
+        opts.inSampleSize = originalSize / thumbnailSize;
 
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
@@ -231,6 +231,70 @@ public class ChatFileStore {
         copyToVfs( sourcePath, targetPath );
         list("/");
         return vfsUri(targetPath);
+    }
+
+    /**
+     * Resize an image to an efficient size for sending via OTRDATA, then copy
+     * that resized version into vfs. All imported content is stored under
+     * /SESSION_NAME/ The original full path is retained to facilitate browsing
+     * The session content can be deleted when the session is over
+     *
+     * @param imagePath
+     * @return vfs uri
+     * @throws IOException
+     */
+    public static Uri resizeAndImportImage(String sessionId, String imagePath, String mimeType)
+            throws IOException {
+        String targetPath = "/" + sessionId + "/upload/" + imagePath;
+        targetPath = createUniqueFilename(targetPath);
+
+        int defaultImageWidth = 600;
+        //load lower-res bitmap
+        Bitmap bmp = getThumbnailFile(Uri.fromFile(new File(imagePath)), defaultImageWidth);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        if (imagePath.endsWith(".png") || mimeType.contains("png")) //preserve alpha channel
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        else
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
+        byte[] byteArray = stream.toByteArray();
+        bmp.recycle();
+        copyToVfs(byteArray, targetPath);
+
+        return vfsUri(targetPath);
+    }
+
+    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
+
+        java.io.File image = new java.io.File(uri.getPath());
+
+        if (!image.exists())
+        {
+            image = new info.guardianproject.iocipher.File(uri.getPath());
+            if (!image.exists())
+                return null;
+        }
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+
+
+        BitmapFactory.decodeFile(image.getPath(), options);
+        if ((options.outWidth == -1) || (options.outHeight == -1))
+            return null;
+
+        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                : options.outWidth;
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = originalSize / thumbnailSize;
+
+        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+
+        return scaledBitmap;
     }
 
     public static void exportAll(String sessionId ) throws IOException {
