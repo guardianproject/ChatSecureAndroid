@@ -17,9 +17,13 @@
 package info.guardianproject.otr.app.im.app;
 
 import android.app.Activity;
+import android.app.LoaderManager;
 import android.app.ProgressDialog;
+import android.content.AsyncTaskLoader;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.net.Uri.Builder;
@@ -484,59 +488,68 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
     }
 
+    private class CompleteShutdownTask extends AsyncTaskLoader<String> {
+        ProgressDialog dialog;
+
+        CompleteShutdownTask(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onStartLoading() {
+            if (mApp.getActiveConnections().size() > 0)
+            {
+                dialog = new ProgressDialog(WelcomeActivity.this);
+                dialog.setCancelable(true);
+                dialog.setMessage(getString(R.string.signing_out_wait));
+                dialog.show();
+            }
+            forceLoad();
+        }
+
+        @Override
+        public String loadInBackground() {
+            boolean stillConnected = true;
+
+            while (stillConnected)
+            {
+
+                   try{
+                       IImConnection conn = mApp.getActiveConnections().iterator().next();
+
+                       if (conn.getState() == ImConnection.DISCONNECTED || conn.getState() == ImConnection.LOGGING_OUT)
+                       {
+                           stillConnected = false;
+                       }
+                       else
+                       {
+                           conn.logout();
+                           stillConnected = true;
+                       }
+
+
+                       Thread.sleep(500);
+                   }catch(Exception e){}
+
+
+            }
+
+            return "";
+        }
+    }
+
     private void completeShutdown ()
     {
-           new AsyncTask<String, Void, String>() {
-
-            private ProgressDialog dialog;
-
+        getLoaderManager().restartLoader(0, null, new LoaderManager.LoaderCallbacks<String>() {
 
             @Override
-            protected void onPreExecute() {
-                if (mApp.getActiveConnections().size() > 0)
-                {
-                    dialog = new ProgressDialog(WelcomeActivity.this);
-                    dialog.setCancelable(true);
-                    dialog.setMessage(getString(R.string.signing_out_wait));
-                    dialog.show();
-                }
+            public Loader<String> onCreateLoader(int id, Bundle args) {
+                return new CompleteShutdownTask(WelcomeActivity.this);
             }
 
             @Override
-            protected String doInBackground(String... params) {
-
-                boolean stillConnected = true;
-
-                while (stillConnected)
-                {
-
-                       try{
-                           IImConnection conn = mApp.getActiveConnections().iterator().next();
-
-                           if (conn.getState() == ImConnection.DISCONNECTED || conn.getState() == ImConnection.LOGGING_OUT)
-                           {
-                               stillConnected = false;
-                           }
-                           else
-                           {
-                               conn.logout();
-                               stillConnected = true;
-                           }
-
-
-                           Thread.sleep(500);
-                       }catch(Exception e){}
-
-
-                }
-
-                return "";
-              }
-
-            @Override
-            protected void onPostExecute(String result) {
-                super.onPostExecute(result);
-
+            public void onLoadFinished(Loader<String> loader, String result) {
+                ProgressDialog dialog = ((CompleteShutdownTask) loader).dialog;
                 if (dialog != null)
                     dialog.dismiss();
 
@@ -554,10 +567,11 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
                 stopService(cacheWordIntent);
                 finish();
             }
-        }.execute();
 
-
-
+            @Override
+            public void onLoaderReset(Loader<String> loader) {
+            }
+        });
     }
 
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
