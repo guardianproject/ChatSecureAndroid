@@ -97,6 +97,13 @@
           android:title="@string/pref_delete_unsecured_media_title"
           android:summary="@string/pref_delete_unsecured_media_summary"
           android:defaultValue="false" />
+
+  <CheckBoxPreference
+          android:enabled="false"
+          android:key="pref_store_media_on_external_storage"
+          android:title="@string/pref_store_media_on_external_storage_title"
+          android:summary="@string/pref_store_media_on_external_storage_summary"
+          android:defaultValue="false" />
    </PreferenceCategory>
   
    

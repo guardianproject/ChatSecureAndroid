@@ -399,7 +399,16 @@
 		<string name="button_yes_accept_all">Yes, Accept All</string>
         <string name="pref_delete_unsecured_media_title">Delete Insecure Media</string>
         <string name="pref_delete_unsecured_media_summary">After sharing a photo or file, automatically delete it from the original, insecure storage after import</string>
-				
+        <string name="pref_store_media_on_external_storage_title">Store Media On External Storage</string>
+        <string name="pref_store_media_on_external_storage_summary">Media files from chat sessions are stored in an encrypted container that can be stored on internal or external storage.</string>
+
+        <!-- Prompt user to resolve missing External Storage media store -->
+        <string name="external_storage_missing_title">External Storage Missing</string>
+        <string name="external_storage_missing_message">Your chat logs are stored on an SD Card, but no SD Card is present.  Please insert the correct SD Card, or delete the existing chat log and launch ChatSecure again.</string>
+        <string name="media_store_file_missing_title">Chat Media Store Missing</string>
+        <string name="media_store_file_missing_message">Your chat logs are stored on the SD Card, but the file is missing from the current SD Card.  Please insert the correct SD Card, or delete the existing chat log and launch ChatSecure again.</string>
+        <string name="delete_chat_log">Delete Chat Log</string>
+
 		<!-- Actions: Settings: General: Other Tuning -->
 		<string name="pref_group_tuning_title">Other Tuning</string>
 		<string name="start_on_boot">Start ChatSecure Automatically</string>

@@ -678,10 +678,10 @@ public class ImUrlActivity extends Activity {
                             String offerId = UUID.randomUUID().toString();
                             Log.i(TAG, "mSendUrl " +mSendUrl);
                             Uri vfsUri = null;
-                            if (IocVfs.isVfsUri(mSendUrl))
+                            if (ChatFileStore.isVfsUri(mSendUrl))
                                 vfsUri = Uri.parse(mSendUrl);
                             else
-                                vfsUri = IocVfs.importContent(session.getId() + "", mSendUrl);
+                                vfsUri = ChatFileStore.importContent(session.getId() + "", mSendUrl);
                             FileInfo info = SystemServices.getFileInfoFromURI(this, vfsUri);
                             session.offerData(offerId, info.path, mSendType );
 

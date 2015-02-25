@@ -306,6 +306,7 @@ public class MessageView extends FrameLayout {
         }
         if (linkify)
             LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
+        LinkifyHelper.addTorSafeLinks(mHolder.mTextViewForMessages);
     }
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
@@ -384,7 +385,7 @@ public class MessageView extends FrameLayout {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     protected void onClickMediaIcon(String mimeType, Uri mediaUri) {
 
-        if (IocVfs.isVfsUri(mediaUri)) {
+        if (ChatFileStore.isVfsUri(mediaUri)) {
             if (mimeType.startsWith("image")) {
                 Intent intent = new Intent(context, ImageViewActivity.class);
                 intent.putExtra( ImageViewActivity.FILENAME, mediaUri.getPath());
@@ -451,7 +452,7 @@ public class MessageView extends FrameLayout {
 
     protected void onLongClickMediaIcon(final String mimeType, final Uri mediaUri) {
 
-        final java.io.File exportPath = IocVfs.exportPath(mimeType, mediaUri);
+        final java.io.File exportPath = ChatFileStore.exportPath(mimeType, mediaUri);
 
         new AlertDialog.Builder(context)
         .setTitle(context.getString(R.string.export_media))
@@ -460,7 +461,7 @@ public class MessageView extends FrameLayout {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
-                    IocVfs.exportContent(mimeType, mediaUri, exportPath);
+                    ChatFileStore.exportContent(mimeType, mediaUri, exportPath);
                     Intent shareIntent = new Intent();
                     shareIntent.setAction(Intent.ACTION_SEND);
                     shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(exportPath));
@@ -544,17 +545,17 @@ public class MessageView extends FrameLayout {
         }.execute();
     }
 
-    public final static int THUMBNAIL_SIZE = 400;
+    public final static int THUMBNAIL_SIZE_DEFAULT = 400;
 
     public static Bitmap getThumbnail(ContentResolver cr, Uri uri) {
      //   Log.e( MessageView.class.getSimpleName(), "getThumbnail uri:" + uri);
-        if (IocVfs.isVfsUri(uri)) {
-            return IocVfs.getThumbnailVfs(cr, uri);
+        if (ChatFileStore.isVfsUri(uri)) {
+            return ChatFileStore.getThumbnailVfs(uri, THUMBNAIL_SIZE_DEFAULT);
         }
-        return getThumbnailFile(cr, uri);
+        return getThumbnailFile(uri, THUMBNAIL_SIZE_DEFAULT);
     }
 
-    public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri) {
+    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
 
         java.io.File image = new java.io.File(uri.getPath());
 
@@ -579,7 +580,7 @@ public class MessageView extends FrameLayout {
                 : options.outWidth;
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = originalSize / THUMBNAIL_SIZE;
+        opts.inSampleSize = originalSize / thumbnailSize;
 
         Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
 
@@ -651,6 +652,7 @@ public class MessageView extends FrameLayout {
         }
         if (linkify)
             LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
+        LinkifyHelper.addTorSafeLinks(mHolder.mTextViewForMessages);
     }
 
     private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)

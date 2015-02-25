@@ -53,7 +53,6 @@ import net.java.otr4j.session.SessionStatus;
 
 import org.ironrabbit.type.CustomTypefaceManager;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -69,7 +68,6 @@ import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -192,7 +190,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mApp.setAppTheme(this,mToolbar);
         ThemeableActivity.setBackgroundImage(this);
 
-        mToolbar.inflateMenu(R.menu.chat_screen_menu);
+        mToolbar.inflateMenu(R.menu.new_chat_menu);
         setupMenu ();
 
         setTitle(R.string.app_name);
@@ -956,7 +954,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return true;
 
                 case R.id.menu_exit:
-                    doHardShutdown();
+                    WelcomeActivity.shutdownAndLock(NewChatActivity.this);
                     return true;
 
                 case R.id.menu_add_contact:
@@ -1003,7 +1001,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         }
         // if no files to delete - just end the session
-        if (!IocVfs.sessionExists(sessionId)) {
+        if (!ChatFileStore.sessionExists(sessionId)) {
             endCurrentChat();
             return;
         }
@@ -1045,11 +1043,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private void deleteSessionVfs( final String sessionId ) throws Exception {
         // if no files to delete - bail
-        if (!IocVfs.sessionExists(sessionId)) {
+        if (!ChatFileStore.sessionExists(sessionId)) {
             return;
         }
         // delete
-        IocVfs.deleteSession(sessionId);
+        ChatFileStore.deleteSession(sessionId);
     }
 
     private void startContactPicker() {
@@ -1158,44 +1156,16 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         return list.size() > 0;
     }
 
-    private void handleSendDelete( final Uri contentUri, final String mimeType, boolean promptDelete ) {
-        // if no prompt needed - do not delete original
-        if (!promptDelete) {
-            handleSend( contentUri, mimeType, false );
-            return;
-        }
-        // if 'delete_unsecured_media' preference is true
-        if (SettingActivity.getDeleteUnsecuredMedia(this)) {
-            handleSend( contentUri, mimeType, false );
-            return;
-        }
-        // prompt to delete original
-        new AlertDialog.Builder(this).setIcon(android.R.drawable.ic_dialog_alert)
-        .setTitle(getString(R.string.delete_original))
-        .setMessage(getString(R.string.this_file_will_be_copied))
-        .setPositiveButton(getString(R.string.delete), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // send - delete original
-                handleSend( contentUri, mimeType, true );
-            }
-        })
-        .setNegativeButton(getString(R.string.keep), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // send - do not delete original
-                handleSend( contentUri, mimeType, false );
-            }
-        })
-        .show();
-    }
-
-    private void handleSend( Uri contentUri, String mimeType, boolean delete ) {
+    private void handleSendDelete( Uri contentUri, String mimeType, boolean delete, boolean resizeImage) {
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
             String sessionId = getCurrentSessionId();
-            Uri vfsUri = IocVfs.importContent(sessionId, info.path);
+            Uri vfsUri;
+            if (resizeImage)
+                vfsUri = ChatFileStore.resizeAndImportImage(sessionId, info.path, mimeType);
+            else
+                vfsUri = ChatFileStore.importContent(sessionId, info.path);
             // send
             boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
             if (!sent) {
@@ -1235,17 +1205,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 if( uri == null ) {
                     return ;
                 }
-                boolean promptDelete = (requestCode == REQUEST_SEND_AUDIO); // prompt to delete original
-                handleSendDelete(uri, null, promptDelete);
+                boolean deleteAudioFile = (requestCode == REQUEST_SEND_AUDIO);
+                handleSendDelete(uri, null, deleteAudioFile, false);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
-                /**
-                Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                mediaScanIntent.setData(mLastPhoto);
-                this.sendBroadcast(mediaScanIntent);
-                */
-
                 File file = new File(getRealPathFromURI(mLastPhoto));
                 final Handler handler = new Handler();
                 MediaScannerConnection.scanFile(
@@ -1257,7 +1221,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                                 handler.post( new Runnable() {
                                     @Override
                                     public void run() {
-                                        handleSendDelete(mLastPhoto, "image/*", true);
+                                        handleSendDelete(mLastPhoto, "image/*", true, true);
                                     }
                                 });
                             }
@@ -1401,7 +1365,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
 
-            if (info != null && info.path != null && IocVfs.exists(info.path))
+            if (info != null && info.path != null && ChatFileStore.exists(info.path))
             {
                 IChatSession session = getCurrentChatSession();
 
@@ -2461,39 +2425,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private void doHardShutdown() {
-
-        for (IImConnection conn : mApp.getActiveConnections())
-        {
-               try {
-                conn.logout();
-            } catch (RemoteException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-
-        finish();
-        Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
-        // Request lock
-        intent.putExtra("doLock", true);
-        // Clear the backstack
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        if (Build.VERSION.SDK_INT >= 11)
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-
-   }
-
-
     private final ISubscriptionListener.Stub mSubscriptionListener = new ISubscriptionListener.Stub() {
 
         @Override
         public void onSubScriptionRequest(Contact from, long providerId, long accountId) {
-           
+
             showSubscriptionDialog (providerId, from.getAddress().getAddress());
-            
+
         }
 
         @Override

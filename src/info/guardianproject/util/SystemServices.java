@@ -16,7 +16,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.IocVfs;
+import info.guardianproject.otr.app.im.app.ChatFileStore;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
@@ -105,7 +105,7 @@ public class SystemServices {
 
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
-        if (IocVfs.isVfsUri(uri)) {
+        if (ChatFileStore.isVfsUri(uri)) {
             info.path = uri.getPath();
             return info;
         }
@@ -187,9 +187,9 @@ public class SystemServices {
             Log.d("Vcard", vCardText);
             List<String> pathSegments = uri.getPathSegments();
             String targetPath = "/" + pathSegments.get(pathSegments.size() - 1) + ".vcf";
-            IocVfs.copyToVfs(buf, targetPath);
+            ChatFileStore.copyToVfs(buf, targetPath);
             FileInfo info = new FileInfo();
-            info.path = IocVfs.vfsUri(targetPath).toString();
+            info.path = ChatFileStore.vfsUri(targetPath).toString();
             info.type = "text/vcard";
             return info;
         } catch (Exception e) {

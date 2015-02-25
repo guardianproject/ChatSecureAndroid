@@ -237,6 +237,10 @@ public class ChatView extends LinearLayout {
                     boolean otrPolicyAuto = mNewChatActivity.getOtrPolicy() == OtrPolicy.OTRL_POLICY_ALWAYS
                             || this.mNewChatActivity.getOtrPolicy() == OtrPolicy.OPPORTUNISTIC;
 
+                    if (mCurrentChatSession == null)
+                        mCurrentChatSession = getChatSession();
+                    if (mCurrentChatSession == null)
+                        return;
                     IOtrChatSession otrChatSession = mCurrentChatSession.getOtrChatSession();
                     
                     if (otrChatSession != null)

@@ -20,6 +20,7 @@ public class LinkifyHelper {
     private static Pattern xmpp = Pattern.compile("xmpp:[^ \t\n\"\':,]+");
     private static Pattern twitterHandle = Pattern.compile("@([A-Za-z0-9_-]+)");
     private static Pattern hashtag = Pattern.compile("#([A-Za-z0-9_-]+)");
+    private static Pattern bridge = Pattern.compile("bridge:[^ \t\n\"\':,]+");
 
     static TransformFilter returnMatchFilter = new TransformFilter() {
         @Override
@@ -38,6 +39,16 @@ public class LinkifyHelper {
         Linkify.addLinks(text, twitterHandle, "https://twitter.com/", null, returnMatchFilter);
         Linkify.addLinks(text, hashtag, "https://twitter.com/hashtag/", null, returnMatchFilter);
         text.setText(replaceAll(text.getText(), URLSpan.class, converter));
+    }
+
+    /**
+     * These are clickable links that will always be safe to click on, whether
+     * or not ChatSecure is using Tor or not.
+     *
+     * @param text
+     */
+    public static void addTorSafeLinks(TextView text) {
+        Linkify.addLinks(text, bridge, null);
     }
 
     /**

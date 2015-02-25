@@ -34,7 +34,6 @@ import info.guardianproject.util.BackgroundBitmapLoaderTask;
 import info.guardianproject.util.Languages;
 
 import java.security.GeneralSecurityException;
-import org.apache.commons.codec.binary.Hex;
 
 public class LockScreenActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
@@ -183,7 +182,7 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
-                    IocVfs.init(this, "");
+                    ChatFileStore.initWithoutPassword(this);
                     // Simulate cacheword opening
                     afterCacheWordOpened();
                 }  else {
@@ -429,7 +428,7 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
     @Override
     public void onCacheWordOpened() {
         afterCacheWordOpened();
-        IocVfs.init(this, new String(Hex.encodeHex(mCacheWord.getEncryptionKey())));
+        ChatFileStore.init(this, mCacheWord.getEncryptionKey());
     }
 
     /**

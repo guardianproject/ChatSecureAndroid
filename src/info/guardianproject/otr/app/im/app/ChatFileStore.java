@@ -3,25 +3,30 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.iocipher.File;
-import info.guardianproject.iocipher.FileInputStream;
-import info.guardianproject.iocipher.FileOutputStream;
-import info.guardianproject.iocipher.VirtualFileSystem;
-import info.guardianproject.util.LogCleaner;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import org.apache.commons.io.IOUtils;
-
-import android.content.ContentResolver;
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+
+import info.guardianproject.iocipher.File;
+import info.guardianproject.iocipher.FileInputStream;
+import info.guardianproject.iocipher.FileOutputStream;
+import info.guardianproject.iocipher.VirtualFileSystem;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.util.LogCleaner;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.io.IOUtils;
 
 /**
  * Copyright (C) 2014 Guardian Project.  All rights reserved.
@@ -29,29 +34,10 @@ import android.util.Log;
  * @author liorsaar
  *
  */
-public class IocVfs {
-    public static final String TAG = IocVfs.class.getName();
-    private static String dbFile;
+public class ChatFileStore {
+    public static final String TAG = ChatFileStore.class.getName();
+    private static String dbFilePath;
     private static final String BLOB_NAME = "media.db";
-    private static String password;
-
-    //maybe called multiple times to remount
-    public static void init(Context context)  throws IllegalArgumentException {
-
-        if (context.getExternalFilesDir(null) != null)
-            dbFile = new File(context.getExternalFilesDir(null),BLOB_NAME).getAbsolutePath();
-        else
-            dbFile = new File(context.getFilesDir(),BLOB_NAME).getAbsolutePath();
-
-        if (password != null)
-            mount();
-
-    }
-
-    public static void mount() throws IllegalArgumentException {
-        if (!VirtualFileSystem.get().isMounted())
-            VirtualFileSystem.get().mount(dbFile, password);
-    }
 
     public static void unmount() {
         VirtualFileSystem.get().unmount();
@@ -120,7 +106,7 @@ public class IocVfs {
             return uriString.startsWith(VFS_SCHEME + ":/");
     }
 
-    public static Bitmap getThumbnailVfs(ContentResolver cr, Uri uri) {
+    public static Bitmap getThumbnailVfs(Uri uri, int thumbnailSize) {
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -143,7 +129,7 @@ public class IocVfs {
                 : options.outWidth;
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = originalSize / MessageView.THUMBNAIL_SIZE;
+        opts.inSampleSize = originalSize / thumbnailSize;
 
         try {
             FileInputStream fis = new FileInputStream(new File(image.getPath()));
@@ -162,16 +148,70 @@ public class IocVfs {
     }
 
     /**
-     * @param mCacheWord
+     * Setup IOCipher VirtualFileSystem without a user-provided password.
+     * @param context
      */
-    public static void init(Context context, String password)  throws IllegalArgumentException {
+    public static void initWithoutPassword(Activity activity) {
+        init(activity, null);
+    }
 
-      //  Log.w(TAG, "init with password of length " + password.length());
-        if (password.length() > 32)
-            password = password.substring(0, 32);
-        IocVfs.password = password;
+    /**
+     * Careful! All of the {@code File}s in this method are {@link java.io.File}
+     * not {@link info.guardianproject.iocipher.File}s
+     *
+     * @param context
+     * @param key
+     * @throws IllegalArgumentException
+     */
+    public static void init(Context context, byte[] key) throws IllegalArgumentException {
+        // there is only one VFS, so if its already mounted, nothing to do
+        VirtualFileSystem vfs = VirtualFileSystem.get();
+        if (vfs.isMounted()) {
+            Log.w(TAG, "VFS " + vfs.getContainerPath() + " is already mounted, skipping init()");
+            return;
+        }
 
-        init(context);
+        /* TODO None of these key/keyText transformations are necessary since IOCipher/SQLCipher
+         * will handle long strings and blank strings, but changing it might break existing
+         * DBs.  These transformations where gathered from a couple places to be centralized here.
+         */
+        String keyText;
+        if (key == null)
+            keyText = "";
+        else
+            keyText = new String(Hex.encodeHex(key));
+        if (keyText.length() > 32)
+            keyText = keyText.substring(0, 32);
+
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
+        if (settings.getBoolean(
+                context.getString(R.string.key_store_media_on_external_storage_pref), false))
+            dbFilePath = getExternalDbFilePath(context);
+        else
+            dbFilePath = getInternalDbFilePath(context);
+
+        if (!new java.io.File(dbFilePath).exists()) {
+            vfs.createNewContainer(dbFilePath, keyText);
+        }
+        vfs.mount(dbFilePath, keyText);
+    }
+
+    /**
+     * get the external storage path for the chat media file storage file.
+     */
+    public static String getExternalDbFilePath(Context c) {
+        java.io.File externalFilesDir = c.getExternalFilesDir(null);
+        if (externalFilesDir == null)
+            return null;
+        else
+            return externalFilesDir.getAbsolutePath() + "/" + BLOB_NAME;
+    }
+
+    /**
+     * get the internal storage path for the chat media file storage file.
+     */
+    public static String getInternalDbFilePath(Context c) {
+        return c.getFilesDir() + "/" + BLOB_NAME;
     }
 
     /**
@@ -191,6 +231,70 @@ public class IocVfs {
         copyToVfs( sourcePath, targetPath );
         list("/");
         return vfsUri(targetPath);
+    }
+
+    /**
+     * Resize an image to an efficient size for sending via OTRDATA, then copy
+     * that resized version into vfs. All imported content is stored under
+     * /SESSION_NAME/ The original full path is retained to facilitate browsing
+     * The session content can be deleted when the session is over
+     *
+     * @param imagePath
+     * @return vfs uri
+     * @throws IOException
+     */
+    public static Uri resizeAndImportImage(String sessionId, String imagePath, String mimeType)
+            throws IOException {
+        String targetPath = "/" + sessionId + "/upload/" + imagePath;
+        targetPath = createUniqueFilename(targetPath);
+
+        int defaultImageWidth = 600;
+        //load lower-res bitmap
+        Bitmap bmp = getThumbnailFile(Uri.fromFile(new File(imagePath)), defaultImageWidth);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        if (imagePath.endsWith(".png") || mimeType.contains("png")) //preserve alpha channel
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        else
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+
+        byte[] byteArray = stream.toByteArray();
+        bmp.recycle();
+        copyToVfs(byteArray, targetPath);
+
+        return vfsUri(targetPath);
+    }
+
+    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
+
+        java.io.File image = new java.io.File(uri.getPath());
+
+        if (!image.exists())
+        {
+            image = new info.guardianproject.iocipher.File(uri.getPath());
+            if (!image.exists())
+                return null;
+        }
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        options.inInputShareable = true;
+        options.inPurgeable = true;
+
+
+        BitmapFactory.decodeFile(image.getPath(), options);
+        if ((options.outWidth == -1) || (options.outHeight == -1))
+            return null;
+
+        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                : options.outWidth;
+
+        BitmapFactory.Options opts = new BitmapFactory.Options();
+        opts.inSampleSize = originalSize / thumbnailSize;
+
+        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+
+        return scaledBitmap;
     }
 
     public static void exportAll(String sessionId ) throws IOException {
@@ -315,7 +419,4 @@ public class IocVfs {
 
         return file;
     }
-
-
-
 }

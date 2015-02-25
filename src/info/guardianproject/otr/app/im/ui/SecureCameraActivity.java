@@ -4,7 +4,7 @@ import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.IocVfs;
+import info.guardianproject.otr.app.im.app.ChatFileStore;
 import info.guardianproject.otr.app.im.app.MessageView;
 
 import java.io.BufferedOutputStream;
