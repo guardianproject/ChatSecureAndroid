@@ -306,6 +306,7 @@ public class MessageView extends FrameLayout {
         }
         if (linkify)
             LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
+        LinkifyHelper.addTorSafeLinks(mHolder.mTextViewForMessages);
     }
 
     private void showMediaThumbnail (String mimeType, Uri mediaUri, int id, ViewHolder holder)
@@ -651,6 +652,7 @@ public class MessageView extends FrameLayout {
         }
         if (linkify)
             LinkifyHelper.addLinks(mHolder.mTextViewForMessages, new URLSpanConverter());
+        LinkifyHelper.addTorSafeLinks(mHolder.mTextViewForMessages);
     }
 
     private void showAvatar (String address, String nickname, boolean isLeft, int presenceStatus)
