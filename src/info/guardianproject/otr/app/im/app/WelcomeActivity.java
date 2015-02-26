@@ -40,6 +40,7 @@ import android.widget.Toast;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordService;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.ImConnection;
@@ -399,9 +400,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        byte[] encryptionKey = mCacheWord.getEncryptionKey();
        openEncryptedStores(encryptionKey, true);
 
-       // this is no longer configurable
-     //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
-     //  mCacheWord.setTimeoutSeconds(defaultTimeout);
        ChatFileStore.init(this, mCacheWord.getEncryptionKey());
     }
 
@@ -560,6 +558,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
         String pkey = (key != null) ? new String(SQLCipherOpenHelper.encodeRawKey(key)) : "";
+        OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
 
         if (cursorUnlocked(pkey, allowCreate)) {
 
