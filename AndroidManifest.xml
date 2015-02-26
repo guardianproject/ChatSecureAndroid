@@ -184,9 +184,6 @@
         <activity
             android:name=".ui.AboutActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.AppPassphraseActivity"
-            android:exported="false" />
 
         <service
             android:name=".plugin.xmpp.XmppImPlugin"
@@ -313,25 +310,6 @@
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".app.ContactListActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="info.guardianproject.otr.app.im.IMPS_CATEGORY" />
-
-                <data android:mimeType="vnd.android.cursor.dir/imps-contacts" />
-
-                <action android:name="android.intent.action.SEARCH" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name=".app.AddContactActivity"
