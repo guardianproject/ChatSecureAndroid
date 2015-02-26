@@ -431,7 +431,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     protected void doUpdateUserPresenceAsync(Presence presence) {
         org.jivesoftware.smack.packet.Presence packet = makePresencePacket(presence);
 
-
         sendPacket(packet);
         mUserPresence = presence;
         notifyUserPresenceUpdated();
@@ -1250,9 +1249,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 debug(TAG, "receive message: " + packet.getFrom() + " to " + packet.getTo());
 
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
+                
                 String address = smackMessage.getFrom();
                 String body = smackMessage.getBody();
 
+                if (smackMessage.getError() != null)
+                {
+                    smackMessage.getError().getCode();
+                    
+                    body = "Error " + smackMessage.getError().getCode() + " (" + smackMessage.getError().getCondition() + "): " + smackMessage.getError().getMessage();
+                }
+                
+                
                 if (body == null)
                 {
 
@@ -1708,7 +1716,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
             }
             
-            msgXmpp.setFrom(message.getFrom().getAddress());
+            if (message.getFrom() == null)
+                msgXmpp.setFrom(mUser.getAddress().getAddress());
+            else
+                msgXmpp.setFrom(message.getFrom().getAddress());
+            
             msgXmpp.setBody(message.getBody());
 
             sendPacket(msgXmpp);
