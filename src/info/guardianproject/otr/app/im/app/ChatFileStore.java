@@ -151,8 +151,8 @@ public class ChatFileStore {
      * Setup IOCipher VirtualFileSystem without a user-provided password.
      * @param context
      */
-    public static void initWithoutPassword(Activity activity) {
-        init(activity, null);
+    public static void initWithoutPassword(Context context) {
+        init(context, null);
     }
 
     /**
