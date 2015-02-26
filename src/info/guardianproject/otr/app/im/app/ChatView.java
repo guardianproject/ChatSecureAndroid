@@ -1754,19 +1754,7 @@ public class ChatView extends LinearLayout {
     }
 
     boolean isGroupChat() {
-
-        boolean isGroupChat = false;
-
-        if (mCurrentChatSession != null)
-        {
-            try {
-                isGroupChat = mCurrentChatSession.isGroupChatSession();
-            }
-            catch (Exception e){}
-
-        }
-
-        return isGroupChat;
+        return this.mContactType == Imps.Contacts.TYPE_GROUP;
     }
 
     void sendMessage() {

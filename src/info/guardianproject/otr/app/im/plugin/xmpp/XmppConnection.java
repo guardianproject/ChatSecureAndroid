@@ -3097,6 +3097,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     //this is only persisted in memory
                     p.setPriority(presence.getPriority());
                     contact.setPresence(p);
+                    
                 }
             }
             else
