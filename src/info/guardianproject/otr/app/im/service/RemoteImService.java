@@ -241,9 +241,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             Debug.recordTrail(this, PREV_CONNECTIONS_TRAIL_TAG, prevConnections);
         Debug.recordTrail(this, CONNECTIONS_TRAIL_TAG, "0");
         
-        mCacheWord = new CacheWordHandler(this, (ICacheWordSubscriber)this);
-        mCacheWord.connectToService();
-
         mConnections = new Hashtable<String, ImConnectionAdapter>();
         mHandler = new Handler();
 
@@ -276,6 +273,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         mNeedCheckAutoLogin = true;
 
         HeartbeatService.startBeating(getApplicationContext());
+    }
+    
+    private void connectToCacheWord ()
+    {
+
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        mCacheWord.connectToService();
+
     }
 
     private void startForegroundCompat() {
@@ -315,7 +320,22 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-       // Log.d(TAG, "ChatSecure: RemoteImService started");
+        //if the service restarted, then we need to reconnect/reinit to cacheword
+        if ((flags & START_FLAG_REDELIVERY)!=0) { // if crash restart...
+            // do something here
+
+            if (ImApp.mUsingCacheword)
+                connectToCacheWord();
+            else
+            {
+               if (openEncryptedStores(null, false)) {
+                   ChatFileStore.initWithoutPassword(this);
+               } else {
+                   connectToCacheWord(); //first time setup
+               }
+            }
+
+        }
 
         if (intent != null)
         {
@@ -848,7 +868,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     
     @Override
     public void onCacheWordLocked() {
-        
+        //do nothing here?
     }
 
     @Override
