@@ -136,7 +136,7 @@ public class OtrEngineHostImpl implements OtrEngineHost {
 
                 Message msg = new Message(body);
 
-                msg.setFrom(new XmppAddress(sessionID.getLocalUserId()));
+             //   msg.setFrom(new XmppAddress(sessionID.getLocalUserId()));
              //   final Address to = chatSessionAdapter.getAdaptee().getParticipant().getAddress();
                 
                 Address to = new XmppAddress(sessionID.getRemoteUserId());
