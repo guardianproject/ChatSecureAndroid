@@ -1306,10 +1306,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     rec.setType(Imps.MessageType.INCOMING);
 
+                    /*
                     // Detect if this was said by us, and mark message as outgoing
                     if (isGroupMessage && rec.getFrom().getResource().equals(rec.getTo().getUser())) {
                         rec.setType(Imps.MessageType.OUTGOING);
-                    }
+                    }*/
 
                     boolean good = session.onReceiveMessage(rec);
 

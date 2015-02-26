@@ -82,6 +82,11 @@ public class ChatSession {
     public void setMessageListener(MessageListener listener) {
         mListener = listener;
     }
+    
+    public MessageListener getMessageListener ()
+    {
+        return mListener;
+    }
 
     /**
      * Sends a text message to other participant(s) in this session

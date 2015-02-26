@@ -445,15 +445,20 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     String getNickName(String username) {
         ImEntity participant = mChatSession.getParticipant();
         if (mIsGroupChat) {
+            
             ChatGroup group = (ChatGroup) participant;
             List<Contact> members = group.getMembers();
             for (Contact c : members) {
                 if (username.equals(c.getAddress().getAddress())) {
-                    return c.getName();
+                    
+                    return c.getAddress().getResource();
+                        
                 }
             }
+            
             // not found, impossible
-            return username;
+            String[] parts = username.split("/");
+            return parts[parts.length-1];
         } else {
             return ((Contact) participant).getName();
         }
@@ -642,7 +647,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
             insertOrUpdateChat(body);
 
-            insertMessageInDb(bareUsername, body, time, msg.getType());
+            insertMessageInDb(nickname, body, time, msg.getType());
 
             boolean wasMessageSeen = false;
 
