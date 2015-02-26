@@ -535,7 +535,8 @@ public class ChatView extends LinearLayout {
                     (int) mProviderId, -1);
             message.getData().putString("file", file);
             message.getData().putInt("progress", (int)percent);
-
+            scheduleRequery(FAST_QUERY_INTERVAL);
+            
             mHandler.sendMessage(message);
 
         }

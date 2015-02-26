@@ -1180,8 +1180,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
-            e.printStackTrace();
+          //  Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
+           // e.printStackTrace();
         }
     }
 
