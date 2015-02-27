@@ -512,6 +512,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public boolean createChatGroupAsync(String chatRoomJid, String nickname) throws Exception {
 
+            if (mConnection == null || getState() != ImConnection.LOGGED_IN)
+                return false;
+            
             RoomInfo roomInfo = null;
 
             Address address = new XmppAddress (chatRoomJid);
@@ -535,6 +538,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String room = parts[0];
                 String server = parts[1];
 
+                if (nickname == null || nickname.length() == 0)
+                {
+                    nickname = mUsername;
+                }
+                
                 try {
 
                     // Create a MultiUserChat using a Connection for a room
@@ -544,6 +552,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     {
                         // Create the room
                         muc.create(nickname);
+                        
                     }
                     catch (XMPPException iae)
                     {
@@ -579,6 +588,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     muc.join(nickname);
 
                     ChatGroup chatGroup = new ChatGroup(address,room,this);
+                    
                     mGroups.put(address.getAddress(), chatGroup);
                     mMUCs.put(chatRoomJid, muc);
 
