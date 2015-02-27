@@ -1,6 +1,48 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.1-RC-1 / 2015-02-27 / 757c50144bf04975063031204250c0e755c2fef6
+
+* MultiUser Chat / Group fixes
+23454b2 fix creation of new ChatGroup/MUC sessions Previously, new chat instance was being inserted into IMPS when we created a new MU
+6e66920 UI logic for handling group vs normal contact
+a366cfd set provider default sort to unambigious column (_ID instead of name)
+672becb read the contact type to properly determine if it is a groupchat
+fe1c585 Fix handling of groupchat/MUC nickname storage and display
+
+* Usability
+b27841c make Tor bridge: links clickable always, whether on Tor or not
+cee8a3a auto-resize images taken with embedded camera for quick transfer
+3b762b4 make sure all desired accounts sign in on startup
+9c99e50 create prompt screen if chat media store or SD card is missing
+be2c6e2 Trigger message requery when file transfer is done Sometimes the message display doesn't update after you ahve received in an 
+d263292 stop delete prompt after taking audio/pictures, just delete automatically
+
+* OTR sessoon init fixes
+2062b77 OtrEngine doesn't need to set the from - the XMPP Provider will do it
+
+* Stability Improvements
+bfaa660 improved logic for handling service restart/reinit
+de92973 if VFS not mounted, redirect to WelcomeActivity for logic This can happen if user opens app from Notification and not from Lau
+693bc29 an extra check to make sure mounted() before getting image
+7a684a2 reconnect to cacheword on restart of Service after OS kills it
+f9c606f Enable Service to response to CacheWord in case of restart/kills In some cases, on devices with low memory like my Moto E, the
+11aa581 prevent NPE after ending a chat session
+18508b3 purge old code structure that launches NewChatActivity for each account
+a4ed775 prefer internal storage for ChatFileStore, unless there isn't enough space
+424f931 rename IocVfs to ChatFileStore following what it does
+db9c873 rename chat_screen_menu to new_chat_menu, its only used in NewChatActivity
+a02f05e provide single method for "Shutdown & Lock"
+26aca9b AccountWizardActivity: purge unused code to clarify "Shutdown & Exit" usage
+3885625 there is only one VFS, so if its already mounted, nothing to do
+69609ff rename IocVfs.dbFile to dbFilePath to distinguish it from the File instances
+d011614 store the location of IOCipher media store so if its missing, prompt user
+3d4c8c4 move all encrypted store password transformations to single method
+d1d357f create IocVfs.initWithoutPassword(Context) for when no password is set
+f092b41 unmount IOCipher container on "complete shutdown" to zero out stored keys
+8520b14 support new IOCipher v0.3 API
+db2405f switch to IOCipher v0.3
+
 14.1.1-BETA-1 / 2015-02-24 / b938c5b0e7c424bc0be907b78bc38d3e1eb97125
 
 * UI tweaks
