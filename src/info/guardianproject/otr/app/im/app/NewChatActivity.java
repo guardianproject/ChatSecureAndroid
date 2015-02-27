@@ -1953,7 +1953,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             updateChatList();
     }
 
-    private void startChat (long providerId, String username,int userType, boolean isNewChat, String message)
+    private void startChat (long providerId, String address,int userType, boolean isNewChat, String message)
     {
         IImConnection conn = mApp.getConnection(providerId);
 
@@ -1961,15 +1961,15 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         {
             try {
                 IChatSessionManager manager = conn.getChatSessionManager();
-                IChatSession session = manager.getChatSession(username);
+                IChatSession session = manager.getChatSession(address);
                 
                 if (session == null && manager != null) {
                     
                     // Create session.  Stash requested contact ID for when we get called back.
                     if (userType == Imps.ContactsColumns.TYPE_GROUP)
-                        session = manager.createMultiUserChatSession(username, null);
+                        session = manager.createMultiUserChatSession(address, null, isNewChat);
                     else
-                        session = manager.createChatSession(username, isNewChat);
+                        session = manager.createChatSession(address, isNewChat);
                     
                     if (session != null)
                     {
@@ -2275,7 +2275,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
                     IChatSession session = manager.getChatSession(roomAddress);
                     if (session == null) {
-                        session = manager.createMultiUserChatSession(roomAddress, nickname);
+                        session = manager.createMultiUserChatSession(roomAddress, nickname, true);
                         if (session != null)
                         {
                             mRequestedChatId = session.getId();

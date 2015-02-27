@@ -55,6 +55,7 @@ public class ContactView extends FrameLayout {
                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
                                                 Imps.Chats.LAST_MESSAGE_DATE,
                                                 Imps.Chats.LAST_UNREAD_MESSAGE,
+                                                Imps.Chats._ID,
                                                 Imps.Contacts.AVATAR_DATA
 
     };

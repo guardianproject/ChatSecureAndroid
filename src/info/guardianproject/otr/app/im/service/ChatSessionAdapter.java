@@ -174,7 +174,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
     private void init(ChatGroup group, boolean isNewSession) {
         
         mIsGroupChat = true;
-        mContactId = insertGroupContactInDb(group);
+
+        mContactId = insertOrUpdateGroupContactInDb(group);
         group.addMemberListener(mListenerAdapter);
 
         try {            
@@ -218,7 +219,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     public void reInit ()
     {
-        insertOrUpdateChat(null);
+       // insertOrUpdateChat(null);
 
     }
 
@@ -502,13 +503,14 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         values.put(Imps.Chats.LAST_MESSAGE_DATE, System.currentTimeMillis());
          values.put(Imps.Chats.LAST_UNREAD_MESSAGE, message);
-
+         values.put(Imps.Chats.GROUP_CHAT, mIsGroupChat);
          // ImProvider.insert() will replace the chat if it already exist.
          mContentResolver.insert(mChatURI, values);
+         
 
     }
 
-    private long insertGroupContactInDb(ChatGroup group) {
+    private long insertOrUpdateGroupContactInDb(ChatGroup group) {
         // Insert a record in contacts table
         ContentValues values = new ContentValues(4);
         values.put(Imps.Contacts.USERNAME, group.getAddress().getAddress());
@@ -519,24 +521,34 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         Uri contactUri = ContentUris.withAppendedId(
                 ContentUris.withAppendedId(Imps.Contacts.CONTENT_URI, mConnection.mProviderId),
                 mConnection.mAccountId);
-        long id = ContentUris.parseId(mContentResolver.insert(contactUri, values));
-
-        ArrayList<ContentValues> memberValues = new ArrayList<ContentValues>();
-        Contact self = mConnection.getLoginUser();
-        for (Contact member : group.getMembers()) {
-            if (!member.equals(self)) { // avoid to insert the user himself
-                ContentValues memberValue = new ContentValues(2);
-                memberValue.put(Imps.GroupMembers.USERNAME, member.getAddress().getAddress());
-                memberValue.put(Imps.GroupMembers.NICKNAME, member.getName());
-                memberValues.add(memberValue);
+      
+        ContactListManagerAdapter listManager = (ContactListManagerAdapter) mConnection
+                .getContactListManager();
+        
+        long id = listManager.queryGroup(group);
+        
+        if (id == -1)
+        {
+            id = ContentUris.parseId(mContentResolver.insert(contactUri, values));
+        
+            ArrayList<ContentValues> memberValues = new ArrayList<ContentValues>();
+            Contact self = mConnection.getLoginUser();
+            for (Contact member : group.getMembers()) {
+                if (!member.equals(self)) { // avoid to insert the user himself
+                    ContentValues memberValue = new ContentValues(2);
+                    memberValue.put(Imps.GroupMembers.USERNAME, member.getAddress().getAddress());
+                    memberValue.put(Imps.GroupMembers.NICKNAME, member.getName());
+                    memberValues.add(memberValue);
+                }
+            }
+            if (!memberValues.isEmpty()) {
+                ContentValues[] result = new ContentValues[memberValues.size()];
+                memberValues.toArray(result);
+                Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, id);
+                mContentResolver.bulkInsert(memberUri, result);
             }
         }
-        if (!memberValues.isEmpty()) {
-            ContentValues[] result = new ContentValues[memberValues.size()];
-            memberValues.toArray(result);
-            Uri memberUri = ContentUris.withAppendedId(Imps.GroupMembers.CONTENT_URI, id);
-            mContentResolver.bulkInsert(memberUri, result);
-        }
+        
         return id;
     }
 

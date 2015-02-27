@@ -172,8 +172,13 @@ public class DatabaseUtils {
         options.inSampleSize = calculateInSampleSize(options, width, height);
         options.inJustDecodeBounds = false;
         Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);
-        RoundedAvatarDrawable avatar = new RoundedAvatarDrawable(b);
-        return avatar;
+        if (b != null)
+        {
+            RoundedAvatarDrawable avatar = new RoundedAvatarDrawable(b);
+            return avatar;
+        }
+        else
+            return null;
     }
 
     public static int calculateInSampleSize(

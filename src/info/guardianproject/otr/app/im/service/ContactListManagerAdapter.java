@@ -22,6 +22,7 @@ import info.guardianproject.otr.app.im.IContactListListener;
 import info.guardianproject.otr.app.im.ISubscriptionListener;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.Address;
+import info.guardianproject.otr.app.im.engine.ChatGroup;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ContactList;
 import info.guardianproject.otr.app.im.engine.ContactListListener;
@@ -348,6 +349,26 @@ public class ContactListManagerAdapter extends
             result = insertTemporary(c);
         }
 
+        if (cursor != null) {
+            cursor.close();
+        }
+        return result;
+    }
+    
+    public long queryGroup(ChatGroup c) {
+        long result = -1;
+
+        String username = mAdaptee.normalizeAddress(c.getAddress().getAddress());
+        String selection = Imps.Contacts.USERNAME + "=?";
+        String[] selectionArgs = { username };
+        String[] projection = { Imps.Contacts._ID };
+
+        Cursor cursor = mResolver.query(mContactUrl, projection, selection, selectionArgs, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            result = cursor.getLong(0);
+        } 
+        
         if (cursor != null) {
             cursor.close();
         }

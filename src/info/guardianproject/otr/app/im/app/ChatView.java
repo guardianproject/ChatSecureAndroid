@@ -1698,18 +1698,15 @@ public class ChatView extends LinearLayout {
                         String remoteAddress = mRemoteAddress;
                         IChatSession session = null;
                         
-                        if (mContactType == Imps.Contacts.TYPE_NORMAL)
+                        if (mContactType == Imps.Contacts.TYPE_GROUP)
+                        {
+                            session = sessionMgr.createMultiUserChatSession(remoteAddress,null, false);
+                        }
+                        else
                         {
                             remoteAddress = Address.stripResource(mRemoteAddress);
                        
                             session = sessionMgr.createChatSession(remoteAddress,false);
-                        }
-                        else if (mContactType == Imps.Contacts.TYPE_GROUP)
-                        {
-                            if(mRemoteNickname == null)
-                                mRemoteNickname = "anon";
-                            
-                            session = sessionMgr.createMultiUserChatSession(remoteAddress,mRemoteNickname);
                         }
 
                         return session;
