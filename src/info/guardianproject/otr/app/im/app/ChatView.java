@@ -1696,7 +1696,7 @@ public class ChatView extends LinearLayout {
                     if (sessionMgr != null) {
 
                         String remoteAddress = mRemoteAddress;
-                        IChatSession session;
+                        IChatSession session = null;
                         
                         if (mContactType == Imps.Contacts.TYPE_NORMAL)
                         {
@@ -1704,7 +1704,7 @@ public class ChatView extends LinearLayout {
                        
                             session = sessionMgr.createChatSession(remoteAddress,false);
                         }
-                        else
+                        else if (mContactType == Imps.Contacts.TYPE_GROUP)
                         {
                             if(mRemoteNickname == null)
                                 mRemoteNickname = "anon";
