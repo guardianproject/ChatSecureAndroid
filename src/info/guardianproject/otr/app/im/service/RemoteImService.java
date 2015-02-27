@@ -17,6 +17,10 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.CacheWordHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrChatManager;
@@ -26,6 +30,7 @@ import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.IRemoteImService;
 import info.guardianproject.otr.app.im.ImService;
 import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ChatFileStore;
 import info.guardianproject.otr.app.im.app.DummyActivity;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.app.ImPluginHelper;
@@ -36,6 +41,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.plugin.ImPluginInfo;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.provider.SQLCipherOpenHelper;
 import info.guardianproject.otr.app.im.provider.Imps.ProviderSettings.QueryMap;
 import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
@@ -61,6 +67,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.net.Uri.Builder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
@@ -72,7 +80,7 @@ import android.os.RemoteException;
 import android.util.Log;
 import android.widget.Toast;
 
-public class RemoteImService extends Service implements OtrEngineListener, ImService {
+public class RemoteImService extends Service implements OtrEngineListener, ImService, ICacheWordSubscriber {
 
     private static final String PREV_CONNECTIONS_TRAIL_TAG = "prev_connections";
     private static final String CONNECTIONS_TRAIL_TAG = "connections";
@@ -109,6 +117,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public long mHeartbeatInterval;
     private WakeLock mWakeLock;
     private NetworkInfo.State mNetworkState;
+
+    private CacheWordHandler mCacheWord = null;
 
 
     private static final String TAG = "GB.ImService";
@@ -231,7 +241,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         if (prevConnections != null)
             Debug.recordTrail(this, PREV_CONNECTIONS_TRAIL_TAG, prevConnections);
         Debug.recordTrail(this, CONNECTIONS_TRAIL_TAG, "0");
-
+        
         mConnections = new Hashtable<String, ImConnectionAdapter>();
         mHandler = new Handler();
 
@@ -264,6 +274,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         mNeedCheckAutoLogin = true;
 
         HeartbeatService.startBeating(getApplicationContext());
+    }
+    
+    private void connectToCacheWord ()
+    {
+
+        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
+        mCacheWord.connectToService();
+
     }
 
     private void startForegroundCompat() {
@@ -303,7 +321,21 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-       // Log.d(TAG, "ChatSecure: RemoteImService started");
+        //if the service restarted, then we need to reconnect/reinit to cacheword
+        if ((flags & START_FLAG_REDELIVERY)!=0)  // if crash restart... 
+        {
+            if (ImApp.mUsingCacheword)
+                connectToCacheWord();
+            else
+            {
+               if (openEncryptedStores(null, false)) {
+                   ChatFileStore.initWithoutPassword(this);
+               } else {
+                   connectToCacheWord(); //first time setup
+               }
+            }
+
+        }
 
         if (intent != null)
         {
@@ -318,7 +350,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         mWakeLock.release();
                     }
                 }
-                return START_STICKY;
+                return START_REDELIVER_INTENT;
             }
 
             if (HeartbeatService.NETWORK_STATE_ACTION.equals(intent.getAction())) {
@@ -336,7 +368,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         mWakeLock.release();
                     }
                 }
-                return START_STICKY;
+                return START_REDELIVER_INTENT;
             }
 
 
@@ -356,7 +388,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             autoLogin();
         }
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
 
@@ -478,6 +510,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void onDestroy() {
         Debug.recordTrail(this, SERVICE_DESTROY_TRAIL_TAG, new Date());
 
+        mCacheWord.disconnect();
+        
         HeartbeatService.stopBeating(getApplicationContext());
 
         Log.w(TAG, "ImService stopped.");
@@ -831,4 +865,87 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+    
+    @Override
+    public void onCacheWordLocked() {
+        //do nothing here?
+    }
+
+    @Override
+    public void onCacheWordOpened() {
+        
+       byte[] encryptionKey = mCacheWord.getEncryptionKey();
+       openEncryptedStores(encryptionKey, true);
+
+       // this is no longer configurable
+     //  int defaultTimeout = 60 * Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));
+     //  mCacheWord.setTimeoutSeconds(defaultTimeout);
+       ChatFileStore.init(this, encryptionKey);
+
+    }
+
+    @Override
+    public void onCacheWordUninitialized() {
+        // TODO Auto-generated method stub
+        
+    }
+    
+    private boolean openEncryptedStores(byte[] key, boolean allowCreate) {
+        String pkey = (key != null) ? new String(SQLCipherOpenHelper.encodeRawKey(key)) : "";
+
+        OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
+
+        if (cursorUnlocked(pkey, allowCreate)) {
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    @SuppressWarnings("deprecation")
+    private boolean cursorUnlocked(String pKey, boolean allowCreate) {
+        try {
+            Uri uri = Imps.Provider.CONTENT_URI_WITH_ACCOUNT;
+
+            Builder builder = uri.buildUpon();
+            if (pKey != null)
+                builder.appendQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY, pKey);
+            if (!allowCreate)
+                builder = builder.appendQueryParameter(ImApp.NO_CREATE_KEY, "1");
+            uri = builder.build();
+
+            String[] PROVIDER_PROJECTION = { Imps.Provider._ID};
+            ContentResolver contentResolver = getContentResolver();
+
+            Cursor providerCursor = contentResolver.query(uri,PROVIDER_PROJECTION, Imps.Provider.CATEGORY + "=?" /* selection */,
+                    new String[] { ImApp.IMPS_CATEGORY } /* selection args */,
+                    Imps.Provider.DEFAULT_SORT_ORDER);
+
+            if (providerCursor != null)
+            {
+                ImPluginHelper.getInstance(this).loadAvailablePlugins();
+
+                providerCursor.moveToFirst();
+                providerCursor.close();
+                
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        } catch (Exception e) {
+            // Only complain if we thought this password should succeed
+            if (allowCreate) {
+                Log.e(ImApp.LOG_TAG, e.getMessage(), e);
+
+            }
+
+            // needs to be unlocked
+            return false;
+        }
+    }
+    
 }

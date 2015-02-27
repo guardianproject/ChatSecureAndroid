@@ -431,7 +431,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     protected void doUpdateUserPresenceAsync(Presence presence) {
         org.jivesoftware.smack.packet.Presence packet = makePresencePacket(presence);
 
-
         sendPacket(packet);
         mUserPresence = presence;
         notifyUserPresenceUpdated();
@@ -513,6 +512,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public boolean createChatGroupAsync(String chatRoomJid, String nickname) throws Exception {
 
+            if (mConnection == null || getState() != ImConnection.LOGGED_IN)
+                return false;
+            
             RoomInfo roomInfo = null;
 
             Address address = new XmppAddress (chatRoomJid);
@@ -536,6 +538,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 String room = parts[0];
                 String server = parts[1];
 
+                if (nickname == null || nickname.length() == 0)
+                {
+                    nickname = mUsername;
+                }
+                
                 try {
 
                     // Create a MultiUserChat using a Connection for a room
@@ -545,6 +552,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     {
                         // Create the room
                         muc.create(nickname);
+                        
                     }
                     catch (XMPPException iae)
                     {
@@ -580,6 +588,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     muc.join(nickname);
 
                     ChatGroup chatGroup = new ChatGroup(address,room,this);
+                    
                     mGroups.put(address.getAddress(), chatGroup);
                     mMUCs.put(chatRoomJid, muc);
 
@@ -1250,9 +1259,18 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 debug(TAG, "receive message: " + packet.getFrom() + " to " + packet.getTo());
 
                 org.jivesoftware.smack.packet.Message smackMessage = (org.jivesoftware.smack.packet.Message) packet;
+                
                 String address = smackMessage.getFrom();
                 String body = smackMessage.getBody();
 
+                if (smackMessage.getError() != null)
+                {
+                    smackMessage.getError().getCode();
+                    
+                    body = "Error " + smackMessage.getError().getCode() + " (" + smackMessage.getError().getCondition() + "): " + smackMessage.getError().getMessage();
+                }
+                
+                
                 if (body == null)
                 {
 
@@ -1298,10 +1316,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                     rec.setType(Imps.MessageType.INCOMING);
 
+                    /*
                     // Detect if this was said by us, and mark message as outgoing
                     if (isGroupMessage && rec.getFrom().getResource().equals(rec.getTo().getUser())) {
                         rec.setType(Imps.MessageType.OUTGOING);
-                    }
+                    }*/
 
                     boolean good = session.onReceiveMessage(rec);
 
@@ -1708,7 +1727,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 
             }
             
-            msgXmpp.setFrom(message.getFrom().getAddress());
+            if (message.getFrom() == null)
+                msgXmpp.setFrom(mUser.getAddress().getAddress());
+            else
+                msgXmpp.setFrom(message.getFrom().getAddress());
+            
             msgXmpp.setBody(message.getBody());
 
             sendPacket(msgXmpp);
@@ -3084,6 +3107,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     //this is only persisted in memory
                     p.setPriority(presence.getPriority());
                     contact.setPresence(p);
+                    
                 }
             }
             else

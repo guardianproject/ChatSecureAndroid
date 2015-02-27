@@ -106,7 +106,7 @@ public class ChatSessionManagerAdapter extends
         return getChatSessionAdapter(session, isNewSession);
     }
 
-    public IChatSession createMultiUserChatSession(String roomAddress, String nickname)
+    public IChatSession createMultiUserChatSession(String roomAddress, String nickname, boolean isNewChat)
     {
 
         ChatGroupManager groupMan = mConnection.getAdaptee().getChatGroupManager();
@@ -126,9 +126,9 @@ public class ChatSessionManagerAdapter extends
 
             if (chatGroup != null)
             {
-                ChatSession session = getChatSessionManager().createChatSession(chatGroup,true);
+                ChatSession session = getChatSessionManager().createChatSession(chatGroup,isNewChat);
 
-                return getChatSessionAdapter(session, true);
+                return getChatSessionAdapter(session, isNewChat);
             }
             else
             {

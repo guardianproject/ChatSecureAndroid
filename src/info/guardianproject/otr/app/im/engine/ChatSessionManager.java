@@ -17,7 +17,7 @@
 
 package info.guardianproject.otr.app.im.engine;
 
-import info.guardianproject.otr.OtrChatManager;
+import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.otr.app.im.service.ChatSessionManagerAdapter;
 
 import java.util.Hashtable;
@@ -85,13 +85,21 @@ public abstract class ChatSessionManager {
         if (session == null)
         {
             session = new ChatSession(participant, this);
-            mAdapter.getChatSessionAdapter(session, isNewSession);
+            ChatSessionAdapter csa = mAdapter.getChatSessionAdapter(session, isNewSession);
+            
+            
             mSessions.put(sessionKey,session);
 
             for (ChatSessionListener listener : mListeners) {
                 listener.onChatSessionCreated(session);
             }
 
+        }
+        else
+        {
+            ChatSessionAdapter csa = mAdapter.getChatSessionAdapter(session, isNewSession);
+            session.setMessageListener(csa.getAdaptee().getMessageListener());
+            
         }
 
         return session;

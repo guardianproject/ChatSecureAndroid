@@ -230,11 +230,8 @@ public class MessageView extends FrameLayout {
 
         if (showContact && nickname != null)
         {
-            String[] nickParts = nickname.split("/");
-
-            lastMessage = nickParts[nickParts.length-1] + ": " + formatMessage(body);
+            lastMessage = nickname + ": " + formatMessage(body);
             showAvatar(address,nickname,true,presenceStatus);
-
         }
         else
         {
@@ -667,7 +664,7 @@ public class MessageView extends FrameLayout {
 
             RoundedAvatarDrawable avatar = null;
 
-            try { avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+            try { avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),nickname, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
             catch (Exception e){}
 
             if (avatar != null)

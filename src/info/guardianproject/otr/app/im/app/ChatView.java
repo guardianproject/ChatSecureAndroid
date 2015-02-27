@@ -535,7 +535,8 @@ public class ChatView extends LinearLayout {
                     (int) mProviderId, -1);
             message.getData().putString("file", file);
             message.getData().putInt("progress", (int)percent);
-
+            scheduleRequery(FAST_QUERY_INTERVAL);
+            
             mHandler.sendMessage(message);
 
         }
@@ -1695,20 +1696,17 @@ public class ChatView extends LinearLayout {
                     if (sessionMgr != null) {
 
                         String remoteAddress = mRemoteAddress;
-                        IChatSession session;
+                        IChatSession session = null;
                         
-                        if (mContactType == Imps.Contacts.TYPE_NORMAL)
+                        if (mContactType == Imps.Contacts.TYPE_GROUP)
+                        {
+                            session = sessionMgr.createMultiUserChatSession(remoteAddress,null, false);
+                        }
+                        else
                         {
                             remoteAddress = Address.stripResource(mRemoteAddress);
                        
                             session = sessionMgr.createChatSession(remoteAddress,false);
-                        }
-                        else
-                        {
-                            if(mRemoteNickname == null)
-                                mRemoteNickname = "anon";
-                            
-                            session = sessionMgr.createMultiUserChatSession(remoteAddress,mRemoteNickname);
                         }
 
                         return session;
@@ -1754,19 +1752,7 @@ public class ChatView extends LinearLayout {
     }
 
     boolean isGroupChat() {
-
-        boolean isGroupChat = false;
-
-        if (mCurrentChatSession != null)
-        {
-            try {
-                isGroupChat = mCurrentChatSession.isGroupChatSession();
-            }
-            catch (Exception e){}
-
-        }
-
-        return isGroupChat;
+        return this.mContactType == Imps.Contacts.TYPE_GROUP;
     }
 
     void sendMessage() {

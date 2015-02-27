@@ -149,7 +149,7 @@ public class Imps {
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/imps-providers";
 
         /** The default sort order for this table */
-        public static final String DEFAULT_SORT_ORDER = "name ASC";
+        public static final String DEFAULT_SORT_ORDER = "providers._ID ASC";
     }
 
     /**
@@ -2593,7 +2593,7 @@ public class Imps {
             boolean isGroup,
             long contactId,
             boolean isEncrypted,
-            String contact,
+            String nickname,
             String body,
             long time,
             int type,
@@ -2607,7 +2607,7 @@ public class Imps {
         values.put(Imps.Messages.TYPE, type);
         values.put(Imps.Messages.ERROR_CODE, errCode);
         if (isGroup) {
-            values.put(Imps.Messages.NICKNAME, contact);
+            values.put(Imps.Messages.NICKNAME, nickname);
             values.put(Imps.Messages.IS_GROUP_CHAT, 1);
         }
         values.put(Imps.Messages.IS_DELIVERED, 0);

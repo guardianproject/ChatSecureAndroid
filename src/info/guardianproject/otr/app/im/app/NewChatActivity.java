@@ -16,6 +16,7 @@
  */
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrChatManager;
@@ -446,6 +447,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         mApp.getTrustManager().bindDisplayActivity(this);
 
         mApp.checkForCrashes(this);
+        
+        //if VFS is not mounted, then send to WelcomeActivity
+        if (!VirtualFileSystem.get().isMounted())
+        {
+            finish();
+            startActivity(new Intent(this,WelcomeActivity.class));
+            
+        }
     }
 
     @Override
@@ -1180,8 +1189,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
             }
         } catch (Exception e) {
-            Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
-            e.printStackTrace();
+          //  Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
+           // e.printStackTrace();
         }
     }
 
@@ -1262,7 +1271,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         chatSession.inviteContact(username);
                         showInvitationHasSent(username);
                     } else {
-                        startChat(providerId, username,true, message);
+                        startChat(providerId, username,Imps.ContactsColumns.TYPE_NORMAL,true, message);
                     }
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert("Error picking contacts");
@@ -1934,16 +1943,17 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private void openExistingChat(Cursor c) {
 
         if (c != null && (!  c.isAfterLast())) {
+            int type =  c.getInt(c.getColumnIndexOrThrow(Imps.Contacts.TYPE));
             String username = c.getString(c.getColumnIndexOrThrow(Imps.Contacts.USERNAME));
             long providerId = c.getLong(c.getColumnIndexOrThrow(Imps.Contacts.PROVIDER));
 
-            startChat(providerId,username, false, null);
+            startChat(providerId,username,type, false, null);
         }
         else
             updateChatList();
     }
 
-    private void startChat (long providerId, String username, boolean isNewChat, String message)
+    private void startChat (long providerId, String address,int userType, boolean isNewChat, String message)
     {
         IImConnection conn = mApp.getConnection(providerId);
 
@@ -1951,21 +1961,29 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         {
             try {
                 IChatSessionManager manager = conn.getChatSessionManager();
-                IChatSession session = manager.getChatSession(username);
+                IChatSession session = manager.getChatSession(address);
+                
                 if (session == null && manager != null) {
+                    
                     // Create session.  Stash requested contact ID for when we get called back.
-                    session = manager.createChatSession(username, isNewChat);
+                    if (userType == Imps.ContactsColumns.TYPE_GROUP)
+                        session = manager.createMultiUserChatSession(address, null, isNewChat);
+                    else
+                        session = manager.createChatSession(address, isNewChat);
+                    
                     if (session != null)
+                    {
                         mRequestedChatId = session.getId();
 
-                    if (!showChat(session.getId())) {
-                        // We have a session, but it's not in the cursor yet
-                        mRequestedChatId = session.getId();
-                        session.reInit();
+                        if (!showChat(session.getId())) {
+                            // We have a session, but it's not in the cursor yet
+                            mRequestedChatId = session.getId();
+                            session.reInit();
+                        }
+                        
+                        if (message != null)
+                            session.sendMessage(message);
                     }
-                    
-                    if (message != null)
-                        session.sendMessage(message);
 
                 } else {
                     // Already have session
@@ -2257,7 +2275,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     IChatSessionManager manager = mLastConnGroup.getChatSessionManager();
                     IChatSession session = manager.getChatSession(roomAddress);
                     if (session == null) {
-                        session = manager.createMultiUserChatSession(roomAddress, nickname);
+                        session = manager.createMultiUserChatSession(roomAddress, nickname, true);
                         if (session != null)
                         {
                             mRequestedChatId = session.getId();
