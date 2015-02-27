@@ -107,6 +107,10 @@ public class ChatFileStore {
     }
 
     public static Bitmap getThumbnailVfs(Uri uri, int thumbnailSize) {
+        
+        if (!VirtualFileSystem.get().isMounted())
+            return null;
+        
         File image = new File(uri.getPath());
 
         BitmapFactory.Options options = new BitmapFactory.Options();
