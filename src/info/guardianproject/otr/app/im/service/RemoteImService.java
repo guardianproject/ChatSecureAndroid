@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.service;
 import info.guardianproject.cacheword.CacheWordActivityHandler;
 import info.guardianproject.cacheword.CacheWordHandler;
 import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.iocipher.VirtualFileSystem;
 import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
 import info.guardianproject.otr.OtrChatManager;
@@ -321,9 +322,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         //if the service restarted, then we need to reconnect/reinit to cacheword
-        if ((flags & START_FLAG_REDELIVERY)!=0) { // if crash restart...
-            // do something here
-
+        if ((flags & START_FLAG_REDELIVERY)!=0)  // if crash restart... 
+        {
             if (ImApp.mUsingCacheword)
                 connectToCacheWord();
             else
@@ -350,7 +350,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         mWakeLock.release();
                     }
                 }
-                return START_STICKY;
+                return START_REDELIVER_INTENT;
             }
 
             if (HeartbeatService.NETWORK_STATE_ACTION.equals(intent.getAction())) {
@@ -368,7 +368,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
                         mWakeLock.release();
                     }
                 }
-                return START_STICKY;
+                return START_REDELIVER_INTENT;
             }
 
 
@@ -388,7 +388,7 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             autoLogin();
         }
 
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
 
