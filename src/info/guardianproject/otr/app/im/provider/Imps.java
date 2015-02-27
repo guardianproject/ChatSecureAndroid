@@ -149,7 +149,7 @@ public class Imps {
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/imps-providers";
 
         /** The default sort order for this table */
-        public static final String DEFAULT_SORT_ORDER = "name ASC";
+        public static final String DEFAULT_SORT_ORDER = "providers._ID ASC";
     }
 
     /**
