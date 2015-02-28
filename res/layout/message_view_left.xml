@@ -23,6 +23,8 @@
     android:layout_height="wrap_content"
     android:padding="3dp"	
     android:layout_margin="6dp"
+    android:descendantFocusability="blocksDescendants"
+    
      >
      
 			
@@ -59,6 +61,7 @@
             android:layout_height="wrap_content"     
              android:scaleType="centerCrop"
          android:visibility="gone"  
+         android:focusableInTouchMode="true"
              />
                   <TextView
                 android:id="@+id/messagets"

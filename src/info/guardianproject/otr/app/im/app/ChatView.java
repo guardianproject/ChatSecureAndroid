@@ -432,7 +432,6 @@ public class ChatView extends LinearLayout {
             URLSpan[] links = ((MessageView) view).getMessageLinks();
             if (links.length > 0) {
 
-
                 final ArrayList<String> linkUrls = new ArrayList<String>(links.length);
                 for (URLSpan u : links) {
                     linkUrls.add(u.getURL());
@@ -460,10 +459,6 @@ public class ChatView extends LinearLayout {
                     }
                 });
                 b.show();
-            }
-            else
-            {
-                showVerifyDialog();
             }
         }
     };
@@ -534,11 +529,15 @@ public class ChatView extends LinearLayout {
             android.os.Message message = android.os.Message.obtain(null, SHOW_DATA_PROGRESS, (int) (mProviderId >> 32),
                     (int) mProviderId, -1);
             message.getData().putString("file", file);
-            message.getData().putInt("progress", (int)percent);
+            message.getData().putFloat("progress", percent);
+            
+            requeryCursor();
+            mMessageAdapter.notifyDataSetChanged();
             scheduleRequery(FAST_QUERY_INTERVAL);
             
             mHandler.sendMessage(message);
-
+            
+            
         }
 
         @Override
@@ -2059,15 +2058,15 @@ public class ChatView extends LinearLayout {
                 break;
             case SHOW_DATA_PROGRESS:
 
-                int progress = msg.getData().getInt("progress");
-
+                float progress = msg.getData().getFloat("progress");
+                int percent = (int)(progress * 100f);
+                
                 mProgressTransfer.setVisibility(View.VISIBLE);
-                mProgressTransfer.setProgress(progress);
+                mProgressTransfer.setProgress(percent);
                 mProgressTransfer.setMax(100);
 
-                if (progress >= 95)
+                if (percent == 100)
                 {
-
                     mProgressTransfer.setVisibility(View.GONE);
                 }
 

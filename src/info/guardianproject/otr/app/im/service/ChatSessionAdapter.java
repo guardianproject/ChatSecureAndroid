@@ -927,6 +927,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
                         int type = isVerified ? Imps.MessageType.INCOMING_ENCRYPTED_VERIFIED : Imps.MessageType.INCOMING_ENCRYPTED;
 
+                        insertOrUpdateChat(filePath);
+                        
                         Uri messageUri = Imps.insertMessageInDb(service.getContentResolver(),
                                 false, getId(),
                                 true, null,
@@ -949,6 +951,7 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
                             }
                         }
                         mRemoteListeners.finishBroadcast();
+                        
 
                     }
                     catch (Exception e)
