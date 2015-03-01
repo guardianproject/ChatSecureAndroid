@@ -75,10 +75,10 @@
         android:id="@+id/btnAttach"
         android:layout_width="48dip"
         android:layout_height="48dip"
-        android:background="?inputBackground"
-        android:scaleType="centerInside"
-        
+        android:scaleType="centerInside"        
         android:src="?attachIcon"
+                    android:background="@android:color/transparent"
+        
          />
     
       <org.ironrabbit.type.CustomTypefaceEditText
@@ -128,11 +128,12 @@
       >
       <ImageButton
         android:id="@+id/btnEmoji"
-        android:layout_width="64dip"
-        android:layout_height="64dip"        
+        android:layout_width="52dip"
+        android:layout_height="52dip"        
         android:scaleType="centerInside"        
-        android:layout_margin="3dp"
+        android:layout_margin="6dp"
         android:src="@drawable/smiley_smile"        
+            android:background="@android:color/transparent"
         
          />
     
@@ -143,6 +144,8 @@
         android:layout_height="64dip"        
         android:src="@drawable/content_new_audio"
         android:layout_margin="3dp"
+                    android:background="@android:color/transparent"
+        
          />
     
           
@@ -152,6 +155,7 @@
         android:layout_height="64dip"        
         android:src="@drawable/content_picture"
                 android:layout_margin="3dp"
+                    android:background="@android:color/transparent"
         
          />
        
@@ -161,6 +165,8 @@
         android:layout_height="64dip"        
         android:src="@drawable/content_take_picture"
                 android:layout_margin="3dp"
+                            android:background="@android:color/transparent"
+                
         
          />
        
@@ -171,6 +177,8 @@
         android:layout_height="64dip"        
         android:src="@drawable/content_attachment"
                 android:layout_margin="3dp"
+                            android:background="@android:color/transparent"
+                
         
          />
     </LinearLayout>

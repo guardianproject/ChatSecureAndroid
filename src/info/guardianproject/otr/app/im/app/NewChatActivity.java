@@ -110,6 +110,7 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -224,6 +225,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         mHandler = new MyHandler(this);
         mRequestedChatId = -1;
+      
+        ((Button)findViewById(R.id.btnAddAccount)).setOnClickListener (new OnClickListener ()
+        
+        {
+
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                startAccountSetup ();
+            }
+            
+        });
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
         //mChatPager.setSaveEnabled(false);
@@ -954,8 +967,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return true;
 
                 case R.id.menu_view_accounts:
-                    startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
-
+                    startAccountSetup();
+                        
                     return true;
 
                 case R.id.menu_new_chat:
@@ -987,6 +1000,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     }
 
+    private void startAccountSetup ()
+    {
+        startActivity(new Intent(getBaseContext(), ChooseAccountActivity.class));
+
+    }
 
     private void importKeyStore ()
     {

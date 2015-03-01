@@ -531,8 +531,6 @@ public class ChatView extends LinearLayout {
             message.getData().putString("file", file);
             message.getData().putFloat("progress", percent);
             
-            requeryCursor();
-            mMessageAdapter.notifyDataSetChanged();
             scheduleRequery(FAST_QUERY_INTERVAL);
             
             mHandler.sendMessage(message);
@@ -1029,7 +1027,8 @@ public class ChatView extends LinearLayout {
 
         if (emojiGroups.size() > 0)
         {
-        
+            btnEmoji.setVisibility(View.VISIBLE);
+            
             EmojiPagerAdapter emojiPagerAdapter = new EmojiPagerAdapter(mNewChatActivity, mComposeMessage, new ArrayList<EmojiGroup>(emojiGroups));
 
             mEmojiPager.setAdapter(emojiPagerAdapter);
@@ -1053,6 +1052,8 @@ public class ChatView extends LinearLayout {
         }
         else
         {
+            btnEmoji.setVisibility(View.GONE);
+            
             btnEmoji.setOnClickListener(new OnClickListener ()
             {
 
@@ -2065,9 +2066,12 @@ public class ChatView extends LinearLayout {
                 mProgressTransfer.setProgress(percent);
                 mProgressTransfer.setMax(100);
 
-                if (percent == 100)
+                if (percent > 99)
                 {
                     mProgressTransfer.setVisibility(View.GONE);
+                    requeryCursor();
+                    mMessageAdapter.notifyDataSetChanged();
+                    
                 }
 
                 break;
