@@ -97,7 +97,7 @@ public class ChatListenerAdapter extends IChatListener.Stub {
     }
 
     @Override
-    public void onIncomingFileTransferProgress(String file, float percent) throws RemoteException {
+    public void onIncomingFileTransferProgress(String file, int percent) throws RemoteException {
         if (Log.isLoggable(TAG, Log.DEBUG)) {
             LogCleaner.debug(TAG, "onIncomingFileTransferProgress(" + file + "," + percent + ")");
         }

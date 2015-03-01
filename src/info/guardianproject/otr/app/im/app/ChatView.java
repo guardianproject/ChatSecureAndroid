@@ -523,13 +523,13 @@ public class ChatView extends LinearLayout {
         }
 
         @Override
-        public void onIncomingFileTransferProgress(String file, float percent)
+        public void onIncomingFileTransferProgress(String file, int percent)
                 throws RemoteException {
 
             android.os.Message message = android.os.Message.obtain(null, SHOW_DATA_PROGRESS, (int) (mProviderId >> 32),
                     (int) mProviderId, -1);
             message.getData().putString("file", file);
-            message.getData().putFloat("progress", percent);
+            message.getData().putInt("progress", percent);
             
             scheduleRequery(FAST_QUERY_INTERVAL);
             
@@ -2059,14 +2059,13 @@ public class ChatView extends LinearLayout {
                 break;
             case SHOW_DATA_PROGRESS:
 
-                float progress = msg.getData().getFloat("progress");
-                int percent = (int)(progress * 100f);
+                int percent = msg.getData().getInt("progress");
                 
                 mProgressTransfer.setVisibility(View.VISIBLE);
                 mProgressTransfer.setProgress(percent);
                 mProgressTransfer.setMax(100);
 
-                if (percent > 99)
+                if (percent > 95)
                 {
                     mProgressTransfer.setVisibility(View.GONE);
                     requeryCursor();
