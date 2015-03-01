@@ -292,13 +292,11 @@ public class OtrDataHandler implements DataHandler {
                     mDataListener.onTransferProgress(true, offer.getId(), requestThem.getAddress(), offer.getUri(),
                         percent);
 
-                    if (percent > .98f)
-                    {
-                        String mimeType = null;
-                        if (req.getFirstHeader("Mime-Type") != null)
-                            mimeType = req.getFirstHeader("Mime-Type").getValue();
-                        mDataListener.onTransferComplete(true, offer.getId(), requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
-                    }
+                    String mimeType = null;
+                    if (req.getFirstHeader("Mime-Type") != null)
+                        mimeType = req.getFirstHeader("Mime-Type").getValue();
+                    mDataListener.onTransferComplete(true, offer.getId(), requestThem.getAddress(), offer.getUri(), mimeType, offer.getUri());
+                
                 }
 
             } catch (UnsupportedEncodingException e) {

@@ -3174,22 +3174,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     org.jivesoftware.smack.packet.Packet packet = null;
                     
                     if (qPacket.size() > 0)
-                        while ((packet = qPacket.poll())!=null)
+                        while (qPacket.peek()!=null)
                         {
-                            
-                                if (mConnection == null || (!mConnection.isConnected())) {
-                                    debug(TAG, "postponed packet to " + packet.getTo()
-                                            + " because we are not connected");
-                                    postpone(packet);
-                                    return;
-                                }
-                                try {
-                                    mConnection.sendPacket(packet);
-                                } catch (IllegalStateException ex) {
-                                    postpone(packet);
-                                   debug(TAG, "postponed packet to " + packet.getTo()
-                                            + " because socket is disconnected");
-                                }
+                            packet = qPacket.poll();
+                                    
+                            if (mConnection == null || (!mConnection.isConnected())) {
+                                debug(TAG, "postponed packet to " + packet.getTo()
+                                        + " because we are not connected");
+                                postpone(packet);
+                                return;
+                            }
+                            try {
+                                mConnection.sendPacket(packet);
+                            } catch (IllegalStateException ex) {
+                                postpone(packet);
+                               debug(TAG, "postponed packet to " + packet.getTo()
+                                        + " because socket is disconnected");
+                            }
                         }
 
 
