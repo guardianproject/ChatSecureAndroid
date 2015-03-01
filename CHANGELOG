@@ -1,6 +1,13 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.1-RC-3 / 2015-03-01 / 34deffd103b9a2dfcec32f5f4b934dbe049dd921
+
+27ac3ba fixes bug with incorrect display of media transfer progress
+39f01ea small final layout cleanups, menu tuning and related fixes
+9c7ff10 handle NoSuchElement error happening due to poll(); peek() first!
+2df2d14 fix audio playback, media rendering and remove errant tap logic
+
 14.1.1-RC-1 / 2015-02-27 / 757c50144bf04975063031204250c0e755c2fef6
 
 * MultiUser Chat / Group fixes
