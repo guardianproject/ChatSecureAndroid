@@ -2226,7 +2226,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 if (group == null) {
                     debug(TAG, "could not find group " + list.getName() + " in roster");
-                    mRoster.removeEntry(entry);
+                    if (mRoster != null)
+                        mRoster.removeEntry(entry);
                 }
                 else
                 {
