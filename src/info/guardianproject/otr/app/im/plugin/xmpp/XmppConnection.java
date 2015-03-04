@@ -1753,6 +1753,8 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             requestPresenceRefresh(participant.getAddress().getAddress());
             
             ChatSession session = super.createChatSession(participant,isNewSession);
+            
+            requestPresenceRefresh(participant.getAddress().getAddress());
 
          //   mSessions.put(Address.stripResource(participant.getAddress().getAddress()),session);
             return session;
