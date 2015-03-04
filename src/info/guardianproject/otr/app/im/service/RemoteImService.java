@@ -510,7 +510,8 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     public void onDestroy() {
         Debug.recordTrail(this, SERVICE_DESTROY_TRAIL_TAG, new Date());
 
-        mCacheWord.disconnect();
+        if (mCacheWord != null)
+            mCacheWord.disconnect();
         
         HeartbeatService.stopBeating(getApplicationContext());
 
