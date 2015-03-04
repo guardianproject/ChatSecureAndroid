@@ -182,16 +182,28 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
             if (passphrase.isEmpty()) {
                 // Create DB with empty passphrase
                 if (Imps.setEmptyPassphrase(this, false)) {
+                    
+                    try
+                    {
+                        ChatFileStore.initWithoutPassword(this);
+
+                        // Simulate cacheword opening
+                        afterCacheWordOpened();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(ImApp.LOG_TAG,"unable to mount VFS store"); //but let's not crash the whole app right now
+                    }
+                    
                     ChatFileStore.initWithoutPassword(this);
-                    // Simulate cacheword opening
-                    afterCacheWordOpened();
+                    
                 }  else {
                     // TODO failed
                 }
             } else {
                 mCacheWord.setPassphrase(passphrase.toCharArray());
             }
-        } catch (GeneralSecurityException e) {
+        } catch (Exception e) {
             // TODO initialization failed
             Log.e(TAG, "Cacheword pass initialization failed: " + e.getMessage());
         }

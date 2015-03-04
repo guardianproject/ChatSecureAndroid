@@ -329,7 +329,14 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             else
             {
                if (openEncryptedStores(null, false)) {
-                   ChatFileStore.initWithoutPassword(this);
+                   try
+                   {
+                       ChatFileStore.initWithoutPassword(this);
+                   }
+                   catch (Exception e)
+                   {
+                       Log.d(ImApp.LOG_TAG,"unable to mount VFS store"); //but let's not crash the whole app right now
+                   }
                } else {
                    connectToCacheWord(); //first time setup
                }
