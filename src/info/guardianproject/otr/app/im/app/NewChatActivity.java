@@ -910,6 +910,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return true;
 */
                 case R.id.menu_verify_or_view:
+                case R.id.menu_view_profile_verified:
+                    
                     if (getCurrentChatView() != null)
                         getCurrentChatView().showVerifyDialog();
                     return true;
@@ -940,7 +942,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 case R.id.menu_otr:
                 case R.id.menu_otr_stop:
                 case R.id.menu_otr_stop_verified:
-                case R.id.menu_view_profile_verified:
                     
                     if (getCurrentChatView() != null)
                     {
