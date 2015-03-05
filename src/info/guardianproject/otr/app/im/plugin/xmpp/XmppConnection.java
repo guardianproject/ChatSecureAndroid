@@ -399,7 +399,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                         debug(ImApp.LOG_TAG, "compressed avatar length: " + avatarBytesCompressed.length);
 
-                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytesCompressed, hash, jid);
+                        DatabaseUtils.insertAvatarBlob(resolver, Imps.Avatars.CONTENT_URI, mProviderId, mAccountId, avatarBytesCompressed, avatarHash, XmppAddress.stripResource(jid));
 
                         // int providerId, int accountId, byte[] data, String hash,String contact
                         return true;
@@ -1750,7 +1750,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         @Override
         public ChatSession createChatSession(ImEntity participant, boolean isNewSession) {
 
-            qAvatar.push(participant.getAddress().getAddress());
             requestPresenceRefresh(participant.getAddress().getAddress());
             
             ChatSession session = super.createChatSession(participant,isNewSession);
@@ -3109,9 +3108,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     contact.setPresence(p);
                     
                 }
+                
+
+                qAvatar.push(contact.getAddress().getAddress());
             }
             else
             {
+
+                qAvatar.push(contact.getAddress().getAddress());
                 //we don't have a presence yet so set one
                 contact.setPresence(p);
             }
@@ -3144,8 +3148,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                         p = qPresence.pop();
                         contact = handlePresenceChanged(p);
                         if (contact != null)
+                        {
                             alUpdate.add(contact);
-                        
+                        }
+
                     }
                     
                     //Log.d(ImApp.LOG_TAG,"XMPP processed presence q=" + alUpdate.size());                    

@@ -55,7 +55,7 @@ public class ContactView extends FrameLayout {
                                                 Imps.Presence.PRESENCE_CUSTOM_STATUS,
                                                 Imps.Chats.LAST_MESSAGE_DATE,
                                                 Imps.Chats.LAST_UNREAD_MESSAGE,
-                                                Imps.Chats._ID,
+                                                Imps.Contacts.AVATAR_HASH,
                                                 Imps.Contacts.AVATAR_DATA
 
     };
@@ -73,7 +73,10 @@ public class ContactView extends FrameLayout {
     static final int COLUMN_CONTACT_CUSTOM_STATUS = 9;
     static final int COLUMN_LAST_MESSAGE_DATE = 10;
     static final int COLUMN_LAST_MESSAGE = 11;
-    static final int COLUMN_AVATAR_DATA = 12;
+    static final int COLUMN_AVATAR_HASH = 12;
+    static final int COLUMN_AVATAR_DATA = 13;
+    
+    
 
     private ImApp app = null;
     static Drawable AVATAR_DEFAULT_GROUP = null;
@@ -150,7 +153,7 @@ public class ContactView extends FrameLayout {
 
 
         if (!TextUtils.isEmpty(underLineText)) {
-            // highlight/underline the word being searched
+            // highlight/underline the word being searched 
             String lowercase = nickname.toLowerCase();
             int start = lowercase.indexOf(underLineText.toLowerCase());
             if (start >= 0) {
@@ -174,7 +177,7 @@ public class ContactView extends FrameLayout {
             Drawable statusIcon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(presence));
             //statusIcon.setBounds(0, 0, statusIcon.getIntrinsicWidth(),
               //      statusIcon.getIntrinsicHeight());
-            holder.mStatusIcon.setImageDrawable(statusIcon);
+            holder.mStatusIcon.setImageDrawable(statusIcon);address
         }*/
 
 
@@ -203,7 +206,8 @@ public class ContactView extends FrameLayout {
 
                 try
                 {
-                    avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+                  //  avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),address, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+                   avatar = DatabaseUtils.getAvatarFromCursor(cursor, COLUMN_AVATAR_DATA, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
                 }
                 catch (Exception e)
                 {
@@ -402,6 +406,7 @@ public class ContactView extends FrameLayout {
         if (c != null) {
             while (c.moveToNext()) {
                 buf.append(c.getString(0));
+                                                Imps.Avatars.DATA
                 if (!c.isLast()) {
                     buf.append(',');
                 }

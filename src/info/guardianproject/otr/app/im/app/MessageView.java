@@ -20,6 +20,7 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.emoji.EmojiManager;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.LetterAvatar;
@@ -664,7 +665,7 @@ public class MessageView extends FrameLayout {
 
             RoundedAvatarDrawable avatar = null;
 
-            try { avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),nickname, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+            try { avatar = DatabaseUtils.getAvatarFromAddress(this.getContext().getContentResolver(),XmppAddress.stripResource(address), ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
             catch (Exception e){}
 
             if (avatar != null)
