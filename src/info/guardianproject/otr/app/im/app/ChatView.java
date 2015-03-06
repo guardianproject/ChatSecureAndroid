@@ -1849,15 +1849,19 @@ public class ChatView extends LinearLayout {
         if (this.isGroupChat())
         {
             //anything to do here?
+            /*
             visibility = View.VISIBLE;
             message = getContext().getString(R.string.this_is_a_group_chat);
             mWarningText.setTextColor(Color.WHITE);
             mStatusWarningView.setBackgroundColor(Color.LTGRAY);
-
+            */
+            
             mButtonAttach.setVisibility(View.GONE);
-
+            
             mSendButton.setImageResource(R.drawable.ic_send_holo_light);
-            mComposeMessage.setHint(R.string.compose_hint);
+            
+            mComposeMessage.setHint(R.string.this_is_a_group_chat);                
+
 
         }
         else if (mCurrentChatSession != null) {
@@ -1942,9 +1946,10 @@ public class ChatView extends LinearLayout {
         {
           //  visibility = View.VISIBLE;
          //   iconVisibility = View.VISIBLE;
-         //   mWarningText.setTextColor(Color.WHITE);
-        //    mStatusWarningView.setBackgroundColor(Color.DKGRAY);
-      //      message = mContext.getString(R.string.disconnected_warning);
+           // mWarningText.setTextColor(Color.WHITE);
+           // mStatusWarningView.setBackgroundColor(Color.DKGRAY);
+           // message = mContext.getString(R.string.disconnected_warning);
+              mComposeMessage.setHint(R.string.error_suspended_connection);                
 
         }
 
