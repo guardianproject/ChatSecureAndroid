@@ -164,9 +164,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     private final static String SSLCONTEXT_TYPE = "TLS";
 
     private static SSLContext sslContext;
-    private Context aContext;
-
-    private final static String IS_GOOGLE = "google";
 
     private final static int SOTIMEOUT = 60000;
 
@@ -184,10 +181,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
     // Maintains a sequence counting up to the user configured heartbeat interval
     private int heartbeatSequence = 0;
 
-    LinkedList<String> qAvatar = new LinkedList <String>();
+    private LinkedList<String> qAvatar = new LinkedList <String>();
 
-    LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
-    LinkedList<org.jivesoftware.smack.packet.Packet> qPacket = new LinkedList<org.jivesoftware.smack.packet.Packet>();
+    private LinkedList<org.jivesoftware.smack.packet.Presence> qPresence = new LinkedList<org.jivesoftware.smack.packet.Presence>();
+    private LinkedList<org.jivesoftware.smack.packet.Packet> qPacket = new LinkedList<org.jivesoftware.smack.packet.Packet>();
 
     public XmppConnection(Context context) throws IOException, KeyStoreException, NoSuchAlgorithmException, CertificateException {
         super(context);
@@ -195,8 +192,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         synchronized (XmppConnection.class) {
             mGlobalId = mGlobalCount++;
         }
-
-        aContext = context;
 
         Debug.onConnectionStart();
 
@@ -933,29 +928,23 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     }
 
-    private String refreshGoogleToken (String userName, String oldPassword, String domain)
+    private String refreshGoogleToken (String userName, String expiredToken, String domain)
     {
-        String expiredToken = oldPassword;
-
-        if (expiredToken.startsWith(IS_GOOGLE))
-        {
-            expiredToken = expiredToken.split(":")[1];
-        }
-
+        
         //invalidate our old one, that is locally cached
         AccountManager.get(mContext.getApplicationContext()).invalidateAuthToken("com.google", expiredToken);
 
         //request a new one
-        String password = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
+        String newToken = GTalkOAuth2.getGoogleAuthToken(userName + '@' + domain, mContext.getApplicationContext());
 
-        if (password != null)
+        if (newToken != null)
         {
             //now store the new one, for future use until it expires
             ImApp.insertOrUpdateAccount(mContext.getContentResolver(), mProviderId, userName,
-                    GTalkOAuth2.NAME + ':' + password );
+                    GTalkOAuth2.NAME + ':' + newToken );
         }
 
-        return password;
+        return newToken;
 
     }
 
@@ -1265,9 +1254,14 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 if (smackMessage.getError() != null)
                 {
-                    smackMessage.getError().getCode();
+                  //  smackMessage.getError().getCode();
                     
-                    body = "Error " + smackMessage.getError().getCode() + " (" + smackMessage.getError().getCondition() + "): " + smackMessage.getError().getMessage();
+                    String error = "Error " + smackMessage.getError().getCode() + " (" + smackMessage.getError().getCondition() + "): " + smackMessage.getError().getMessage();
+                    
+                    debug (TAG, error);
+                    
+                    return;
+                    
                 }
                 
                 
@@ -1297,7 +1291,6 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     ChatSession session = findOrCreateSession(address, groupMessage);
                     session.onMessageReceipt(dr.getId());
                     
-                //    session.getOtrChatManager().getSessionId(smackMessage.getTo(), smackMessage.getFrom());
                 }
 
                 if (body != null)
@@ -1753,8 +1746,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             requestPresenceRefresh(participant.getAddress().getAddress());
             
             ChatSession session = super.createChatSession(participant,isNewSession);
-            
-            requestPresenceRefresh(participant.getAddress().getAddress());
+
+            //do avatar check if we have a no dominant presence
+            qAvatar.push(participant.getAddress().getAddress());
 
          //   mSessions.put(Address.stripResource(participant.getAddress().getAddress()),session);
             return session;
@@ -3097,6 +3091,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 else if (p.getPriority() >= pOld.getPriority()) //if priority is higher, then override    
                 {
                     contact.setPresence(p);                   
+                    
                 }
                 
                 if (p.getStatus() != Imps.Presence.AVAILABLE)
@@ -3113,12 +3108,10 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
                 
 
-                qAvatar.push(contact.getAddress().getAddress());
             }
             else
             {
 
-                qAvatar.push(contact.getAddress().getAddress());
                 //we don't have a presence yet so set one
                 contact.setPresence(p);
             }
