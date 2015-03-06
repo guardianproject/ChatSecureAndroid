@@ -202,6 +202,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             this,  mDrawer, mToolbar,
             R.string.ok, R.string.cancel
         );
+        
         // Set the drawer toggle as the DrawerListener
         mDrawer.setDrawerListener(mDrawerToggle);
         mDrawerToggle.setDrawerIndicatorEnabled(true);
@@ -374,13 +375,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     public void setTitle(CharSequence title) {
 
         mToolbar.setTitle(title);
-      //  mToolbar.setLogo(null);
+    //    mToolbar.setLogo(null);
     }
 
     public void setTitle(CharSequence title, Drawable icon) {
 
         mToolbar.setTitle(title);
      //   mToolbar.setLogo(icon);
+        
     }
 
 
