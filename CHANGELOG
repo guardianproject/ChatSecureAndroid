@@ -1,6 +1,27 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.1-RC-4 / 2015-03-08 / 126ba01d3e1966998d184e39d0c1bef7d549f11a
+
+9c1ee62 Merge pull request #643 from n8fr8/bug_4650_remoteservice_crash
+8d7cf8e fixes #4682 where presence from can somtimes be null
+5f7086d tune Google OAuth setup and presence/avatar refresh
+0cf3b1f don't use an avatar in the action/title bar
+b6a314b empty space
+a62c2d3 make sure there is an icon for the remove account menu
+9e1c954 make status warning text smaller
+6fbffb3 improve message status display
+6520c27 allow all proper jabberid strings in account setup
+e7be7cd Merge pull request #640 from n8fr8/bug_avatars_not_displayed
+29a0f87 fix view profile menu option
+9ec1b3b refresh presence when new session is created
+e3a43e0 fixes #4653 chatmanager can be null, so make sure to check
+479187c fixes #4652 roster might be null
+3d964d7 fixes #4651 handle exception throwing from problems with ChatFileStore/VFS
+daf181e fixes #4650 cacheword might be null
+461e85e make sure avatars show up in chatview as well The nickname string was being used instead of the address/JID to lookup avatars
+54af765 re-enables proper storage and retrieval of avatars
+
 14.1.1-RC-3 / 2015-03-01 / 34deffd103b9a2dfcec32f5f4b934dbe049dd921
 
 27ac3ba fixes bug with incorrect display of media transfer progress
