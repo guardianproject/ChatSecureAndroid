@@ -255,7 +255,8 @@ public class AddContactActivity extends ActionBarActivity {
                     if (username != null)
                     {
                         Intent intent=new Intent();
-                        intent.putExtra("contact", username);
+                        intent.putExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME, username);
+                        intent.putExtra(ContactsPickerActivity.EXTRA_RESULT_PROVIDER, mProviderId);
                         setResult(RESULT_OK, intent);
                         finish();
                     }

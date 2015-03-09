@@ -697,6 +697,7 @@ public class ContactListManagerAdapter extends
     final class SubscriptionRequestListenerAdapter extends ISubscriptionListener.Stub {
 
         public void onSubScriptionRequest(final Contact from, long providerId, long accountId) {
+                        
             String username = mAdaptee.normalizeAddress(from.getAddress().getAddress());
             String nickname = from.getName();
             queryOrInsertContact(from); // FIXME Miron
@@ -884,6 +885,26 @@ public class ContactListManagerAdapter extends
         }
         cursor.close();
         return uri;
+    }
+    
+    boolean isSubscribed (String username)
+    {
+        boolean result = false;
+        
+        Cursor cursor = mResolver.query(mContactUrl, new String[] { Imps.Contacts._ID,},
+                Imps.Contacts.USERNAME + "=? AND " + Imps.Contacts.SUBSCRIPTION_STATUS + "=" + Imps.Contacts.SUBSCRIPTION_STATUS_NONE, new String[] { username }, null);
+        if (cursor == null) {
+            RemoteImService.debug("query contact " + username + " failed");
+            return false;
+        }
+
+        if (cursor.moveToFirst()) {
+            
+            result = true;
+        } 
+        
+        cursor.close();
+        return result;
     }
 
     boolean updateContact(Contact contact, long listId)

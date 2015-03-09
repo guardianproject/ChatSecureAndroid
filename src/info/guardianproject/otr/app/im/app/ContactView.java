@@ -21,7 +21,6 @@ import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.R.color;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.ui.LetterAvatar;
@@ -342,29 +341,29 @@ public class ContactView extends FrameLayout {
 
     public void setAvatarBorder(int status, RoundedAvatarDrawable avatar) {
         switch (status) {
-        case Imps.Presence.AVAILABLE:
+        case Presence.AVAILABLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_light));
             avatar.setAlpha(255);
             break;
 
-        case Imps.Presence.IDLE:
+        case Presence.IDLE:
             avatar.setBorderColor(getResources().getColor(R.color.holo_green_dark));
             avatar.setAlpha(255);
 
             break;
 
-        case Imps.Presence.AWAY:
+        case Presence.AWAY:
             avatar.setBorderColor(getResources().getColor(R.color.holo_orange_light));
             avatar.setAlpha(255);
             break;
 
-        case Imps.Presence.DO_NOT_DISTURB:
+        case Presence.DO_NOT_DISTURB:
             avatar.setBorderColor(getResources().getColor(R.color.holo_red_dark));
             avatar.setAlpha(255);
 
             break;
 
-        case Imps.Presence.OFFLINE:
+        case Presence.OFFLINE:
             avatar.setBorderColor(getResources().getColor(android.R.color.transparent));
             avatar.setAlpha(100);
             break;

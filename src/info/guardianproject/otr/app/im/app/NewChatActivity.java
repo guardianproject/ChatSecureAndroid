@@ -132,6 +132,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     private static final int REQUEST_TAKE_PICTURE = REQUEST_SEND_AUDIO + 1;
     private static final int REQUEST_SETTINGS = REQUEST_TAKE_PICTURE + 1;
     private static final int REQUEST_TAKE_PICTURE_SECURE = REQUEST_SETTINGS + 1;
+    private static final int REQUEST_ADD_CONTACT = REQUEST_TAKE_PICTURE_SECURE + 1;
 
     private static final int CONTACT_LIST_LOADER_ID = 4444;
     private static final int CHAT_LIST_LOADER_ID = CONTACT_LIST_LOADER_ID+1;
@@ -504,7 +505,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     {
 
         Intent i = new Intent(this, AddContactActivity.class);
-        startActivity(i);
+        startActivityForResult(i,REQUEST_ADD_CONTACT);
 
     }
 
@@ -1278,13 +1279,12 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 startActivity(intent);
 
             }
-
-            if (requestCode == REQUEST_PICK_CONTACTS) {
+            else if (requestCode == REQUEST_PICK_CONTACTS || requestCode == REQUEST_ADD_CONTACT) {
 
                 String username = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 long providerId = resultIntent.getLongExtra(ContactsPickerActivity.EXTRA_RESULT_PROVIDER,-1);
 
-                String message = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_MESSAGE);
+                //String message = resultIntent.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_MESSAGE);
                 try {
 
                     IChatSession chatSession = this.getCurrentChatSession();
@@ -1292,13 +1292,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                         chatSession.inviteContact(username);
                         showInvitationHasSent(username);
                     } else {
-                        startChat(providerId, username,Imps.ContactsColumns.TYPE_NORMAL,true, message);
+                        startChat(providerId, username,Imps.ContactsColumns.TYPE_NORMAL,true, null);
                     }
                 } catch (RemoteException e) {
                     mHandler.showServiceErrorAlert("Error picking contacts");
                     Log.d(ImApp.LOG_TAG,"error picking contact",e);
                 }
-            }
+            }            
 
             IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
                     resultIntent);
