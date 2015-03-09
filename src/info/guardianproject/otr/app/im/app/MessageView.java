@@ -26,6 +26,7 @@ import info.guardianproject.otr.app.im.ui.ImageViewActivity;
 import info.guardianproject.otr.app.im.ui.LetterAvatar;
 import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 import info.guardianproject.util.AudioPlayer;
+import info.guardianproject.util.LinkifyHelper;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
@@ -74,8 +75,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import info.guardianproject.util.LinkifyHelper;
 
 public class MessageView extends FrameLayout {
 

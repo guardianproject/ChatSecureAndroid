@@ -141,38 +141,17 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         if (response == RESULT_OK)
             if (request == REQUEST_CODE_ADD_CONTACT)
             {
-                String newContact = data.getExtras().getString("contact");
+                String newContact = data.getExtras().getString(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
 
                 if (newContact != null)
                 {
-
-                    StringBuilder buf = new StringBuilder();
-
-                    if (mSearchString != null) {
-
-                        buf.append(Imps.Contacts.USERNAME);
-                        buf.append(" LIKE ");
-                        android.database.DatabaseUtils.appendValueToSql(buf, newContact);
-                    }
-
-                    Cursor cursor = getContentResolver().query(Imps.Contacts.CONTENT_URI_CONTACTS_BY, ContactView.CONTACT_PROJECTION,
-                                buf == null ? null : buf.toString(), null, Imps.Contacts.MODE_AND_ALPHA_SORT_ORDER);
-
                     Intent dataNew = new Intent();
+                    
+                    long providerId = data.getExtras().getLong(ContactsPickerActivity.EXTRA_RESULT_PROVIDER);
 
-                    if (cursor.moveToFirst())
-                    {
-                        String username = cursor.getString(ContactView.COLUMN_CONTACT_USERNAME);
-                        dataNew.putExtra(EXTRA_RESULT_USERNAME, username);
-                        dataNew.putExtra(EXTRA_RESULT_PROVIDER, cursor.getLong(ContactView.COLUMN_CONTACT_PROVIDER));
-                        dataNew.putExtra(EXTRA_RESULT_ACCOUNT, cursor.getLong(ContactView.COLUMN_CONTACT_ACCOUNT));
-                        dataNew.putExtra(EXTRA_RESULT_MESSAGE, getString(R.string.subscription_notify_text,username));
-                        setResult(RESULT_OK, dataNew);
-                    }
-
-                    if (!cursor.isClosed())
-                        cursor.close();
-
+                    dataNew.putExtra(EXTRA_RESULT_USERNAME, newContact);
+                    dataNew.putExtra(EXTRA_RESULT_PROVIDER, providerId);
+                    setResult(RESULT_OK, dataNew);
 
                     finish();
 
