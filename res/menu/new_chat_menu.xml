@@ -96,7 +96,6 @@
         android:icon="@drawable/ic_white_encrypted_and_verified"
          app:showAsAction="always"
          />
-    
          
          <item android:id="@+id/menu_show_qr"
         android:title="@string/menu_sidebar_qr"

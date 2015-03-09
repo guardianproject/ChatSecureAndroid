@@ -278,13 +278,14 @@
 
 
         <TextView android:id="@+id/warningText"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="3sp"
             android:textColor="#aaff0000"
             android:text="@string/disconnected_warning"
-            android:fontFamily="sans-serif-light"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            
              />
         
         

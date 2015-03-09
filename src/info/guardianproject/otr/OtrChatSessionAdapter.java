@@ -23,8 +23,10 @@ public class OtrChatSessionAdapter extends Stub {
 
     private SessionID getSessionID ()
     {
-
-        return _chatManager.getSessionId(_localUser, _remoteUser);
+        if (_chatManager != null)
+            return _chatManager.getSessionId(_localUser, _remoteUser);
+        else
+            return null;
     }
 
     public void startChatEncryption() throws RemoteException {

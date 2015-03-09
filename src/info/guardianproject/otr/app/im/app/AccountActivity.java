@@ -98,8 +98,7 @@ public class AccountActivity extends ActionBarActivity {
     public final static String ONION_JABBERCCC = "okj7xc6j2szr2y75.onion";
     public final static String ONION_CALYX = "ijeeynrc6x2uy5ob.onion";
     
-    private static final String USERNAME_ONLY_ALPHANUM = "[^A-Za-z0-9]";
-
+    private static final String USERNAME_VALIDATOR = "[^a-z0-9\\.\\-_\\+]";
     //    private static final int ACCOUNT_KEEP_SIGNED_IN_COLUMN = 4;
     //    private static final int ACCOUNT_LAST_LOGIN_STATE = 5;
 
@@ -689,14 +688,14 @@ public class AccountActivity extends ActionBarActivity {
     boolean parseAccount(String userField) {
         boolean isGood = true;
         String[] splitAt = userField.trim().split("@");
-        mUserName = splitAt[0].replaceAll(USERNAME_ONLY_ALPHANUM, "").toLowerCase(Locale.ENGLISH);
+        mUserName = splitAt[0].toLowerCase(Locale.ENGLISH).replaceAll(USERNAME_VALIDATOR, "");
         mDomain = "";
         mPort = 0;
 
         if (splitAt.length > 1) {
-            mDomain = splitAt[1].toLowerCase(Locale.US);
+            mDomain = splitAt[1].toLowerCase(Locale.ENGLISH);
             String[] splitColon = mDomain.split(":");
-            mDomain = splitColon[0].toLowerCase();
+            mDomain = splitColon[0].toLowerCase(Locale.ENGLISH);
             if (splitColon.length > 1) {
                 try {
                     mPort = Integer.parseInt(splitColon[1]);
