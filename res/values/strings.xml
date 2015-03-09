@@ -534,8 +534,6 @@
 		<string name="error_no_app_to_handle_url">No app installed that can handle that link!</string>
 
 	<string name="account_settings_title">Account Settings</string>
-	
-	<string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
 
 	<!--  added 2011/09/01 -->
 	<string name="menu_view_groups">Groups</string>
