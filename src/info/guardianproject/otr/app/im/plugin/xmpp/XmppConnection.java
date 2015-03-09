@@ -2958,18 +2958,19 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
     private Contact handlePresenceChanged(org.jivesoftware.smack.packet.Presence presence) {
 
-        if (presence == null)
+        if (presence == null || presence.getFrom() == null) //our presence isn't really valid
             return null;
 
+        String from = presence.getFrom();
+        
         if (presence.getType() == Type.error)
         {            
             if (mRoster == null)
                 return null;
             
-            presence = mRoster.getPresence(presence.getFrom());
+            presence = mRoster.getPresence(from);
         }
         
-        String from = presence.getFrom();
         if (TextUtils.isEmpty(from))
             return null;
         
