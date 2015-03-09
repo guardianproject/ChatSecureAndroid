@@ -3,7 +3,7 @@
     android:installLocation="auto"
     android:sharedUserLabel="@string/perm_label"
     android:versionCode="1411005"
-    android:versionName="14.1.1-RC-5" >
+    android:versionName="14.1.1-RC5" >
 
     <supports-screens
         android:anyDensity="true"
