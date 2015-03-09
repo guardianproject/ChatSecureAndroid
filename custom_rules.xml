@@ -27,4 +27,23 @@
     <echo message="target: ${build.target}"></echo>
   </target>
 
+  <target name="-post-package" depends="-getgitdetails">
+    <property file="${sdk.dir}/tools/source.properties"/>
+    <property name="meta.inf.dir" value="${out.dir}/META-INF"/>
+    <property name="build.manifest.file" value="${meta.inf.dir}/BUILD.MF"/>
+    <mkdir dir="${meta.inf.dir}"/>
+    <manifest file="${build.manifest.file}">
+      <attribute name="Implementation-Package-Name" value="${themanifest.manifest.package}"/>
+      <attribute name="Implementation-Version-Name" value="${themanifest.manifest.android:versionName}"/>
+      <attribute name="Implementation-Version-Code" value="${themanifest.manifest.android:versionCode}"/>
+      <attribute name="Git-Revision" value="${git.revision}"/>
+      <attribute name="Android-SDK-Release" value="${Pkg.Revision}"/>
+      <attribute name="Android-SDK-Host-OS" value="${Archive.HostOs}"/>
+      <attribute name="Android-SDK-aapt" value="${aapt}"/>
+      <attribute name="Android-SDK-zipalign" value="${zipalign}"/>
+    </manifest>
+    <jar update="true" destfile="${out.packaged.file}">
+      <fileset dir="${out.dir}" includes="META-INF/BUILD.MF"/>
+    </jar>
+  </target>
 </project>
