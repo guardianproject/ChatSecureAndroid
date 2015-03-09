@@ -61,7 +61,7 @@ fi
 ./update-ant-build.sh
 faketime -f "$TIMESTAMP" ant release
 
-apk=$projectroot/bin/$projectname-$versionName.apk
+apk=$projectroot/bin/$projectname-v$versionName.apk
 
 # mark APK with actual build info, instead of version in manifest
 if [ $versionName != $describe ]; then
