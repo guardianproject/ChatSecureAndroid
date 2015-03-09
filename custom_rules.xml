@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
 
-  <target name="rename-release-with-version-number">
+  <target name="-getgitdetails" >
+    <exec executable="git" outputproperty="git.describe">
+      <arg value="describe"/>
+    </exec>
+    <exec executable="git" outputproperty="git.revision">
+      <arg value="rev-parse"/>
+      <arg value="HEAD"/>
+    </exec>
+  </target>
+
+  <target name="rename-release-with-version-number" depends="-getgitdetails">
     <xmlproperty file="AndroidManifest.xml"
                  prefix="themanifest"
                  collapseAttributes="true"/>
     <!--  see ${sdk.dir}/tools/ant/build.xml -set-release-mode -->
     <property name="out.packaged.file"
-              location="${out.absolute.dir}/${ant.project.name}-v${themanifest.manifest.android:versionName}-unsigned.apk" />
+              location="${out.absolute.dir}/${ant.project.name}-${git.describe}-unsigned.apk" />
     <property name="out.final.file"
-              location="${out.absolute.dir}/${ant.project.name}-v${themanifest.manifest.android:versionName}.apk" />
+              location="${out.absolute.dir}/${ant.project.name}-${git.describe}.apk" />
   </target>
 
   <target name="-set-release-mode"
