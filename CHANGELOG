@@ -1,6 +1,9 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.1.1-RC-4 / 2015-03-09 / abea2282eacc1975738bd643efa9e1e972eda149
+83a06fe fix presence and add contact handling logic to smooth new user experience
+
 14.1.1-RC-4 / 2015-03-08 / 126ba01d3e1966998d184e39d0c1bef7d549f11a
 
 9c1ee62 Merge pull request #643 from n8fr8/bug_4650_remoteservice_crash
