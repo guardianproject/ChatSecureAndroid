@@ -2,8 +2,8 @@
     package="info.guardianproject.otr.app.im"
     android:installLocation="auto"
     android:sharedUserLabel="@string/perm_label"
-    android:versionCode="1411003"
-    android:versionName="14.1.1-RC-3" >
+    android:versionCode="1411004"
+    android:versionName="14.1.1-RC-4" >
 
     <supports-screens
         android:anyDensity="true"
