@@ -42,8 +42,15 @@
       <attribute name="Android-SDK-aapt" value="${aapt}"/>
       <attribute name="Android-SDK-zipalign" value="${zipalign}"/>
     </manifest>
-    <jar update="true" destfile="${out.packaged.file}">
-      <fileset dir="${out.dir}" includes="META-INF/BUILD.MF"/>
-    </jar>
+    <condition property="build.is.debug" value="true" else="false">
+      <equals arg1="${build.target}" arg2="debug" />
+    </condition>
+    <if condition="${build.is.debug}">
+      <else>
+        <jar update="true" destfile="${out.packaged.file}">
+          <fileset dir="${out.dir}" includes="META-INF/BUILD.MF"/>
+        </jar>
+      </else>
+    </if>
   </target>
 </project>
