@@ -12,8 +12,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -46,6 +46,7 @@ class AuthContextImpl implements AuthContext {
     private Session session;
 
     private int authenticationState;
+    SecureRandom secureRandom;
     private byte[] r;
 
     private DHPublicKey remoteDHPublicKey;
@@ -198,10 +199,12 @@ class AuthContextImpl implements AuthContext {
     }
 
     private byte[] getR() {
+        if (secureRandom == null)
+            secureRandom = new java.security.SecureRandom();
         if (r == null) {
             logger.finest("Picking random key r.");
             r = new byte[OtrCryptoEngine.AES_KEY_BYTE_LENGTH];
-            new Random().nextBytes(r);
+            secureRandom.nextBytes(r);
         }
         return r;
     }
