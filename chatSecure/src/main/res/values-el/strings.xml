@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">διάβασε τα άμεσα μηνύματα</string>
+  <string name="ro_perm_desc">
+Επιτρέπει στις εφαρμογές να διαβάζουν δεδομένα απο τον πάροχο IM.</string>
+  <string name="wo_perm_label">γράψε άμεσα μηνύματα</string>
+  <string name="wo_perm_desc">
+Επιτρέπει στις εφαρμογές να γράφουν δεδομένα στον πάροχο IM</string>
+  <string name="perm_label">Έναρξη υπηρεσίας ανταλλαγής άμεσων μηνυμάτων (IM)</string>
+  <string name="perm_desc">Επιτρέπει στις εφαρμογές να εκκινούν την υπηρεσία ανταλλαγής άμεσων μηνυμάτων (IM) μέσω του intent.</string>
+  <!--General: Actions-->
+  <string name="confirm">Επιβεβαίωση</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Ακύρωση</string>
+  <string name="yes">OK</string>
+  <string name="no">Ακύρωση</string>
+  <string name="btn_next">Επόμενο</string>
+  <string name="btn_back">Πίσω</string>
+  <string name="connect">Σύνδεση</string>
+  <!--Views-->
+  <string name="lock_screen_open">Άνοιγμα</string>
+  <string name="title_activity_lock_screen">Κλειδωμένο ChatSecure</string>
+  <string name="lock_screen_create_passphrase">Ρύθμιση Κωδικού</string>
+  <string name="lock_screen_confirm_passphrase">Επικύρωση Κωδικού</string>
+  <string name="lock_screen_passphrase_hint">Κωδικός</string>
+  <string name="lock_screen_passphrase_not_set_enter">Νέος Κωδικός</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Επιβεβαίωση Νέου Κωδικού</string>
+  <string name="lock_screen_passphrases_not_matching">Ο κωδικός δεν ταιριάζει, δοκιμάστε ξανά</string>
+  <string name="lock_screen_skip">Βαριέμαι (μη χρήση κωδικού)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Επιλογή λογαριασμού</string>
+  <string name="choose_account_title">Επιλογή λογαριασμού</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Προσθήκη λογαριασμού <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
+  <string name="menu_about">Σχετικά με</string>
+  <string name="menu_sign_out_all">Αποσύνδεση όλων</string>
+  <string name="signout_all_confirm_message">Αποσύνδεση απο όλες τις υπηρεσίες;</string>
+  <string name="signed_out_prompt">Πραγματοποιήσατε έξοδο από το <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="welcome_first">Πρώτη φορά χρήσης του ChatSecure?</string>
+  <string name="welcome_skip">Ανυπομονείτε να ξεκινήσετε;</string>
+  <string name="welcome_about">Ξεκινήστε</string>
+  <string name="welcome_account">Στήσιμο Λογαριασμού</string>
+  <string name="setup_passphrase_title">Ρύθμιση κωδικού ασφαλείας</string>
+  <string name="setup_passphrase_label1">Κωδικός:</string>
+  <string name="setup_passphrase_label2">Κωδικός (ξανά):</string>
+  <string name="rekey_message">Εισάγετε εναν *νέο* κωδικό ασφαλείας. Πρέπει να περιέχει τουλάχιστον ένα κεφαλαίο, ένα πεζό και ένα νούμερο και να έχει πάνω από 6 χαρακτήρες.</string>
+  <string name="do_rekey">Κρυπτογράφηση των υπάρχοντων σημειώσεων με τον νέο κωδικό ασφαλείας (υπομονή…)</string>
+  <string name="enter_pass">Εισάγετε τον κωδικό ασφαλείας:</string>
+  <string name="new_pass">Καλώς ήρθατε! Εισάγετε έναν ισχυρό κωδικό ασφαλείας για να ασφαλίσετε τις σημειώσεις σας. Πρέπει να περιέχει τουλάχιστον ένα κεφαλαίο, ένα πεζό και ένα νούμερο και να έχει πάνω από 6 χαρακτήρες.</string>
+  <string name="pass_err_length">Ο κωδικός ασφαλείας δεν είναι αρκετά μεγάλος</string>
+  <string name="pass_err_upper">Ο κωδικός ασφαλείας δεν περιέχει καθόλου κεφαλαία γράμματα</string>
+  <string name="pass_err_lower">Ο κωδικός ασφαλείας δεν περιέχει καθόλου πεζά γράμματα</string>
+  <string name="pass_err_num">Ο κωδικός ασφαλείας δεν περιέχει καθόλου νούμερα</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">Σχετικά με το ChatSecure</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Πώς και είναι ασφαλές;</string>
+  <string name="about_otr">Το \'Off-the-Record Messaging\' είναι ενα σύστημα ασφαλείας σχεδιασμένο να παρέχει ιδιωτικότητα μιμούμενο τα χαρακτηριστικά μιας ιδιωτικής συζήτησης στον αληθινό κόσμο και συμπεριλαμβάνει Κρυπτογραφία, Αυθεντικοποίηση, Πιστοποίηση και Πρόωθηση Απορρήτου
+
+Το OTR πρωτόκολλο είναι συμβατό και με εφαρμογές chat όπως το Adium και το Pidgin.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Είναι ασφαλείς οι συζητήσεις μου;</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Νέος λογαριασμός</string>
+  <string name="menu_add_account">Προσθήκη λογαριασμού</string>
+  <string name="menu_edit_account">Αλλαγή λογαριασμού</string>
+  <string name="menu_remove_account">Διαγραφή λογαριασμού</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Όνομα χρήστη:</string>
+  <string name="label_password">Κωδικός πρόσβασης:</string>
+  <string name="remember_password">Απομνημόνευση του κωδικού πρόσβασης.</string>
+  <string name="keep_me_signed_in">Αυτόματη σύνδεση.</string>
+  <string name="sign_up">Δεν έχετε λογαριασμό;</string>
+  <string name="sign_in">Σύνδεση</string>
+  <string name="check_save_password">Για την ασφάλεια σας, αν το τηλέφωνο σας χαθεί η κλαπεί, πηγαίνετε στην ιστοσελίδα στον υπολογιστή σας και αλλάξτε τον κωδικό ασφαλείας σας.</string>
+  <string name="check_auto_sign_in">Αυτή η επιλογή σάς συνδέει αυτόματα κάθε φορά που ανοίγετε αυτήν την εφαρμογή. Για να απενεργοποιήσετε αυτήν την επιλογή, αποσυνδεθείτε και αφήστε κενό το πλαίσιο επιλογής \\"Αυτόματη σύνδεση\\".</string>
+  <string name="use_tor">Σύνδεση μέσω Tor (απαιτεί την εφαρμογή Orbot)</string>
+  <string name="account_setup_example_email_address">χρήστης@σελίδα.com</string>
+  <string name="account_setup_new_username">νέο όνομα χρήστη</string>
+  <string name="account_setup_service_provider">πάροχος υπηρεσίας (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">κωδικός</string>
+  <string name="account_setup_password_confirm">επιβεβαιώστε τον κωδικό</string>
+  <string name="account_setup_advanced_button">Προχωρημένες Ρυθμίσεις Λογαριασμού</string>
+  <string name="account_select_type">Τύπος λογαριασμού</string>
+  <string name="btn_create_new_account">Εγγραφή λογαριασμού</string>
+  <string name="account_setup_pers_sub">Επιμονή</string>
+  <string name="account_setup_pers_pw_title">Να θυμάσαι τον κωδικό</string>
+  <string name="account_setup_pers_pw_on">O κωδικός αποθηκεύτηκε στην cache</string>
+  <string name="account_setup_pers_pw_off">O κωδικός δεν αποθηκεύτηκε στην cache</string>
+  <string name="account_setup_pers_auto_title">Αυτόματη Σύνδεση</string>
+  <string name="account_setup_pers_auto_on">Σύνδεση κατα την εκκίνηση του ChatSecure</string>
+  <string name="account_setup_pers_auto_off">Αποφυγή σύνδεσης κατα την εκκίνηση του ChatSecure</string>
+  <string name="account_setup_pers_now_title">Σύνδεση Τώρα</string>
+  <string name="account_setup_pers_now_on">Σύνδεση μετά την ρύθμιση λογαριασμού</string>
+  <string name="account_setup_pers_now_off">Αποφυγή σύνδεσης μετά την ρύθμιση λογαριασμού</string>
+  <string name="account_setup_personal_sub">Προσωπικά (προαιρετικό)</string>
+  <string name="account_setup_personal_alias_title">Ψευδώνυμο λογαριασμού (όνομα)</string>
+  <string name="account_setup_personal_alias_sub">Πώς εμφανίζεται ο λογαριασμός σας online</string>
+  <string name="account_setup_personal_profile_title">Προφίλ</string>
+  <string name="account_setup_personal_profile_sub">Μία σύντομη περιγραφή του εαυτού σας</string>
+  <string name="account_setup_advanced_enc_force">Χρήση μόνο κρυπτογραφίας / απόρριψη σκέτου κειμένου</string>
+  <string name="account_setup_advanced_enc_auto">Όταν είναι δυνατό, κρυπτογράφησε τα chat αυτόματα</string>
+  <string name="account_setup_advanced_enc_req">Κρυπτογραφία chat έπειτα από ζήτηση</string>
+  <string name="account_setup_advanced_enc_off">Απενεργοποίηση κρυπτογραφίας του chat</string>
+  <string name="account_setup_signin_a">Επικύρωση στοιχείων…</string>
+  <string name="account_setup_signin_b">Παραγωγή ζεύγους κλειδιών…</string>
+  <string name="account_setup_signin_c">Γίνεται σύνδεση…</string>
+  <string name="account_wizard_setup_title">Οδηγός Λογαριασμού</string>
+  <string name="account_wizard_account_title">ID λογαριασμού</string>
+  <string name="account_wizard_host_title">Ρύθμιση Server</string>
+  <string name="account_wizard_ready_title">Είστε έτοιμος;</string>
+  <string name="account_wizard_account_body">Εισάγετε το ID του λογαριασμού σας(user@hostname):</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Επιλογή domain</string>
+  <string name="registering_new_account_">Καταχώριση νέου λογαριασμού…</string>
+  <string name="signing_in_to">εκκίνηση του ChatSecure…</string>
+  <string name="menu_cancel_signin">Ακύρωση σύνδεσης</string>
+  <string name="signing_in_wait">Σύνδεση…</string>
+  <string name="signing_out_wait">Γίνεται απεγγραφή\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">Αναζήτηση SRV</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Επέτρεψε την αποστολή του ονόματος και κωδικού χρήστη ως απλό κείμενο όταν χρησιμοποιείτε μη κρυπτογραφημένη μεταφορά.</string>
+  <string name="allow_plain_text_auth">Επέτρεψε αυθεντικοποίηση με σκέτο κείμενο</string>
+  <string name="verify_that_the_certificate_is_trusted">Έλεγχος για την εγκυρότητα του πιστοποιητικού</string>
+  <string name="tls_verification">TLS Επικύρωση</string>
+  <string name="require_tls_ssl_connection">Απαίτηση Σύνδεσης TLS</string>
+  <string name="transport_encryption">Κρυπτογράφηση μεταφοράς</string>
+  <string name="how_encrypted_chats_are_started">πώς ξεκινούν οι κρυπτογραφημένες συζητήσεις</string>
+  <string name="the_server_to_connect_to_if_needed">Ο server στον οποίον συνδέεστε, αν χρειαστεί</string>
+  <string name="connect_server">Σύνδεση σε Server</string>
+  <string name="tcp_port_for_xmpp_server">Πόρτα TCP για τον XMPP Server</string>
+  <string name="server_port">Πόρτα διακομιστή</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">για διάκριση αυτής της σύνδεσης απο άλλους λογαριασμούς που είναι συνδεδεμένοι</string>
+  <string name="xmpp_resource_prio_title">Προτεραιότητα πόρων XMPP</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Συζητήσεις</string>
+  <string name="no_messages">Δεν υπάρχουν συζητήσεις
+
+Πατήστε εδώ για να ξεκινήσετε μία!</string>
+  <string name="empty_account_message">Δεν έχετε ρυθμισμένους
+λογαριασμούς
+
+Πατήστε εδώ για να προσθέσετε έναν!</string>
+  <string name="buddy_list_title">Λίστα επαφών - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Προσθήκη επαφής</string>
+  <string name="menu_remove_contact">Διαγραφή επαφής</string>
+  <string name="menu_block_contact">Αποκλεισμός επαφής</string>
+  <string name="menu_contact_nickname">Ψευδώνυμο επαφής</string>
+  <string name="menu_view_blocked">Αποκλεισμένος/η</string>
+  <string name="confirm_delete_contact">Η επαφή \"<xliff:g id="USER">%1$s</xliff:g>\" θα διαγραφεί.</string>
+  <string name="confirm_block_contact">Θα γίνει αποκλεισμός της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="confirm_unblock_contact">Θα γίνει κατάργηση αποκλεισμού της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="add_contact_success">Έγινε προσθήκη της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="delete_contact_success">Η επαφή \"<xliff:g id="USER">%1$s</xliff:g>\" διαγράφηκε.</string>
+  <string name="block_contact_success">Έγινε αποκλεισμός της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="unblock_contact_success">Κατάργηση αποκλεισμού της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="menu_new_chat">Νέο Chat</string>
+  <string name="menu_search_contacts">Αναζήτηση Επαφών</string>
+  <string name="menu_show_grid">Εμφάνιση πλέγματος</string>
+  <string name="menu_start_chat">Έναρξη συζήτησης</string>
+  <string name="menu_view_profile">Εμφάνιση Προφίλ</string>
+  <string name="menu_verify">Επαλήθευση κλειδιού</string>
+  <string name="ongoing_conversation">Ενεργές συζητήσεις (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> συνδεδεμένες επαφές</string>
+  <string name="subscriptions">Προσκλήσεις φίλων</string>
+  <string name="unknown_contact">(\"<i>\"Άγνωστος\"</i>\")</string>
+  <string name="empty_contact_group">Κενή</string>
+  <string name="empty_conversation_group">Δεν υπάρχουν συνομιλίες</string>
+  <string name="search_label">Επαφή</string>
+  <string name="search_hint">εισάγετε το όνομα μιας επαφής για συνομιλία</string>
+  <string name="search_button_text">Εμπρος</string>
+  <string name="empty_chat_list">Δεν υπάρχουν ενεργές συζητήσεις.</string>
+  <string name="add_contact_title">Προσθήκη επαφής</string>
+  <string name="input_contact_label">Διεύθυνση ηλεκτρονικού ταχυδρομείου του ατόμου που θέλετε να προσκαλέσετε:</string>
+  <string name="choose_list_label">Επιλέξτε μια λίστα:</string>
+  <string name="invite_instruction">Πληκτρολογήστε ένα όνομα για να το προσθέσετε από τις επαφές.</string>
+  <string name="invite_label">Αποστολή πρόσκλησης</string>
+  <string name="contact_profile_title">Προφίλ επαφής</string>
+  <string name="label_status">Κατάσταση:</string>
+  <string name="label_client_type">Τύπος προγράμματος-πελάτη:</string>
+  <string name="client_type_computer">Υπολογιστής</string>
+  <string name="client_type_mobile">Κινητό</string>
+  <string name="blocked_list_title">Αποκλεισμένες επαφές - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Δεν υπάρχουν αποκλεισμένες επαφές.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Συζήτηση με τον χρήστη <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="me">Εγώ</string>
+  <string name="contact_online">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> συνδέθηκε</string>
+  <string name="contact_away">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> βρίσκεται μακριά από τον υπολογιστή του</string>
+  <string name="contact_busy">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> είναι απασχολημένος/η</string>
+  <string name="contact_offline">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> βρίσκεται εκτός σύνδεσης</string>
+  <string name="contact_joined">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> συνδέθηκε</string>
+  <string name="contact_left">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> αποχώρησε</string>
+  <string name="menu_send_image">Αποστολή Φωτογραφίας</string>
+  <string name="menu_send_file">Αποστολή αρχείου</string>
+  <string name="menu_send_audio">Αποστολή Ήχου</string>
+  <string name="menu_take_picture">Λήψη φωτογραφίας</string>
+  <string name="file_transfer">Αποστολή Αρχείου</string>
+  <string name="transfer_complete">Αποστολή Επιτυχής</string>
+  <string name="transfer_in_progress">Αποστολή εν εξέλιξη</string>
+  <string name="accept_transfer_">Αποδοχή μεταφοράς;</string>
+  <string name="wants_to_send_you_the_file">θέλει να σας στείλει το αρχείο </string>
+  <string name="send">Αποστολή</string>
+  <string name="compose_hint">Στείλτε ένα μήνυμα</string>
+  <string name="compose_hint_secure">Αποστολή ασφαλούς μηνύματος</string>
+  <string name="menu_resend">Επαναποστολή</string>
+  <string name="menu_end_conversation">Τερματισμός συζήτησης</string>
+  <string name="menu_clear_chat">Καθαρισμός του chat</string>
+  <string name="menu_insert_smiley">Εισαγ.εικον.smiley</string>
+  <string name="menu_switch_chats">Εναλλαγή συζητήσεων</string>
+  <string name="menu_plus">Μενού+</string>
+  <string name="select_link_title">Επιλογή συνδέσμου</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> σας προσκάλεσε να συμμετέχετε σε ομαδική συζήτηση.</string>
+  <string name="invitation_sent_prompt">Έγινε αποστολή πρόσκλησης στον χρήστη: <xliff:g id="USER">%1$s</xliff:g>.</string>
+  <string name="accept_invitation">Αποδοχή</string>
+  <string name="decline_invitation">Απόρριψη</string>
+  <string name="menu_new_group_chat">Ομαδικό Chat</string>
+  <string name="create_or_join_group_chat">Φτιάξτε η μπείτε σε Ομάδα Συζήτησης</string>
+  <string name="connecting_to_group_chat_">Σύνδεση στο ομαδικό chat…</string>
+  <string name="menu_invite_contact">Πρόσκληση…</string>
+  <string name="contacts_picker_title">Επιλογή επαφής (επαφών) για αποστολή πρόσκλησης</string>
+  <string name="contact_filter_hint">Πληκτρολογήστε για να βρείτε την επαφή</string>
+  <string name="empty_contact_list">Δεν βρέθηκαν επαφές.
+
+Πατήστε για να προσθέσετε κάποιες.</string>
+  <string name="approve_subscription_error">Δεν ήταν δυνατή η έγκριση συνδρομής από τον χρήστη <xliff:g id="USER">%1$s</xliff:g>. Δοκιμάστε ξανά αργότερα.</string>
+  <string name="decline_subscription_error">Δεν ήταν δυνατή η απόρριψη συνδρομής από τον χρήστη <xliff:g id="USER">%1$s</xliff:g>. Δοκιμάστε ξανά αργότερα.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Έναρξη κρυπτογραφίας</string>
+  <string name="menu_otr_stop">Παύση Κρυπτογραφίας</string>
+  <string name="starting_otr_chat">Εκκίνηση κρυπτογραφημένης συζήτησης…</string>
+  <string name="stopping_otr_chat">Τερματισμός κρυπτογραφημένης συζήτησης…</string>
+  <string name="label_fingerprint_remote">Αποτύπωμα Ασφαλείας</string>
+  <string name="label_fingerprint_local">Αποτύπωμα Ασφαλείας</string>
+  <string name="menu_sign_in">Σύνδεση</string>
+  <string name="menu_gen_key">Ανανέωση Κλειδιού</string>
+  <string name="otr_session_status_plaintext">Απενεργοποιημένη κρυπτογραφία</string>
+  <string name="otr_session_status_encrypted">Ενεργή κρυπτογραφία (πατήστε για επιβεβαίωση)</string>
+  <string name="otr_session_status_finished">Η επαφή σας έχει σταματήσει την κρυπτογραφημένη συνομιλία.</string>
+  <string name="otr_session_status_verified">Κρυπτογραφημένο και επικυρωμένο!</string>
+  <string name="otr_gen_key">Παραγωγή νέου ζεύγους κλειδιών OTR…</string>
+  <!--Security: OTR: Keyring-->
+  <string name="menu_import_keys">Ενεργοποίηση KeySync</string>
+  <string name="successfully_imported_otr_keyring">Επιτυχής εισαγωγή ζεύγους κλειδιών OTR</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">Σκανάρετε ένα QR</string>
+  <string name="menu_fingerprint">Το αποτυπωμά σου</string>
+  <string name="menu_verify_fingerprint">Εγχειρίδιο</string>
+  <string name="menu_verify_secret">Ερώτηση</string>
+  <string name="their_fingerprint_verified_">Αποτύπωμα Ασφαλείας (εγκεκριμένο)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Σίγουρα θέλετε να επικυρώσετε αυτό το αποτύπωμά;</string>
+  <string name="verify_key_">Επικύρωση αποτυπώματος;</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Το απομακρυσμένο αποτύπωμα έχει επικυρωθεί!</string>
+  <string name="fingerprint_for_you">Αποτύπωμα για εσάς</string>
+  <string name="fingerprint_for_">Αποτύπωμα για</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Αυθεντικοποίηση</string>
+  <string name="smp_question_summary">Εισάγετε μια ερώτηση για αποστολή στην επαφή σας, και την απάντηση που περιμένετε να εισάγουν, για να πιστοποιήσετε οτι είναι αυτοί που ισχυρίζονται οτι είναι</string>
+  <string name="smp_question_hint">ερώτηση ασφαλείας</string>
+  <string name="qmp_answer_hint">αναμενώμενη απάντηση</string>
+  <string name="otr_qa_send">Αποστολή</string>
+  <string name="otr_qa_cancel">Ακύρωση</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Ασφαλής κλήση</string>
+  <string name="pref_sip_account_title">Ασφαλής κλήση</string>
+  <string name="pref_sip_account_summary">Εισάγετε τον Ostel.co ή κάποιον άλλον ασφαλή SIP λογαριασμό εδώ για πραγματοποίηση κλήσεων</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Στήσιμο Λογαριασμού</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Ασφάλεια και Ιδιωτικότητα </string>
+  <string name="encryption_and_anonymity_title">Κρυπτογραφία και ανωνυμία</string>
+  <string name="menu_view_encrypt_chat">Κρυπτογράφηση On/Off</string>
+  <string name="pref_cacheword_timeout_title">Λήξη Κωδικού Ασφαλείας</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">Διεπαφή Χρήστη</string>
+  <string name="menu_locale">Γλώσσα</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Γλώσσες</string>
+  <string name="pref_theme_dark">Χρήση Σκοτεινού Θέματος</string>
+  <string name="pref_theme_dark_summary">Αλλαγή θέματος εφαρμογής σε σκοτεινό</string>
+  <string name="pref_in_memory_db_title">Αποθήκευση μηνυμάτων μόνο στην μνήμη</string>
+  <string name="pref_in_memory_db_summary">Αποθήκευση μηνυμάτων μόνο στην μνήμη, όχι στην κάρτα μνήμης, για άμυνα ενάντια απόσπαση μηνυμάτων. (μπορεί να προκαλέσει απώλεια μηνυμάτων)</string>
+  <string name="pref_background_title">Εικόνα φόντου</string>
+  <string name="pref_show_grid">Εμφάνιση πλέγματος επαφών</string>
+  <string name="pref_show_grid_summary">Εμφάνιση λίστας επαφών σαν εικονίδια</string>
+  <string name="button_yes_accept_all">Ναι, αποδοχή όλων</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Άλλη Ρύθμιση</string>
+  <string name="start_on_boot">Αυτόματη εκκίνηση του ChatSecure</string>
+  <string name="start_on_boot_summary">Πάντα εκκίνηση και αυτόματη σύνδεση στους προηγούμενα συνδεδεμένους λογαριασμούς</string>
+  <string name="hide_offline_contacts">Απόκρυψη επαφών εκτός σύνδεσης</string>
+  <string name="foreground_service_title">Χρήση υψηλότερης προτεραιότητας προσκήνιου</string>
+  <string name="foreground_service_summary">Μείωση της πιθανότητας του Android να επανεκκινήσει το service με τις συνδέσεις. Αυτό θα προσθέσει και μια ειδοποίηση στην περιοχή ειδοποιήσεων.</string>
+  <string name="heartbeat_interval_title">Διάστημα μεταξύ χτύπων</string>
+  <string name="heartbeat_interval_summary">Χρησιμοποιήστε μεγαλύτερη τιμή (σε λεπτά) για εξοικονόμιση μπαταρίας. Μια υψηλότερη τιμή μπορεί να προκαλέσει τον πάροχο να κλείσει την σύνδεση λόγω αδράνειας της.</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Ρυθμίσεις ειδοποιήσεων</string>
+  <string name="notification_enabled_title">Ειδοποιήσεις άμεσων μηνυμάτων (IM)</string>
+  <string name="notification_enabled_summary">Να εμφανίζεται ειδοποίηση στη γραμμή κατάστασης όταν γίνεται λήψη άμεσου μηνύματος (IM)</string>
+  <string name="notification_vibrate_title">Δόνηση</string>
+  <string name="notification_vibrate_summary">Δόνηση κατά τη λήψη άμεσων μηνυμάτων (IM)</string>
+  <string name="notification_sound_title">Ήχος</string>
+  <string name="notification_sound_summary">Αναπαραγωγή ήχου κλήσης κατά τη λήψη άμεσου μηνύματος (IM)</string>
+  <string name="notification_ringtone_title">Χρήση ήχου κλήσης του ChatSecure</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Ενεργοποίηση Debug Logs</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Τα δεδομένα παρασκηνίου είναι απενεργοποιημένα</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> χρειάζεται ενεργοποιημένα τα δεδομένα παρασκηνίου.</string>
+  <string name="bg_data_prompt_ok">Ενεργοποίηση</string>
+  <string name="bg_data_prompt_cancel">Τερματισμός</string>
+  <string name="signout_kill_confirm_message">Αποσύνδεση απο όλες τις υπηρεσίες ΚΑΙ τερματισμός όλων των διεργασιών (hard exit) ;</string>
+  <string name="prompt_create_new_account_">Δημιουργία νέο λογαριασμού;</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Δημιουργία ένος νέου chat λογαριασμού για τον χρήστη \'%1$s\';</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Νέα μηνύματα <xliff:g id="PROVIDER">%1$s</xliff:g></string>
+  <string name="notify_groupchat_label">Πρόσκληση σε ομαδική συζήτηση</string>
+  <string name="new_messages_notify">Νέα μηνύματα από</string>
+  <string name="starting_the_chatsecure_service_">Ξεκινάει η υπηρεσία ChatSecure…</string>
+  <string name="app_unlocked">Ενεργοποιημένο και ξεκλείδωτο</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Προσοχή</string>
+  <string name="general_error">Κωδικός σφάλματος <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed">Δεν είναι δυνατή η σύνδεση στην υπηρεσία <xliff:g id="SERVICE">%1$s</xliff:g>. Δοκιμάστε ξανά αργότερα."\n"(Λεπτομέρειες: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="add_list_failed">Δεν έγινε προσθήκη της λίστας.</string>
+  <string name="block_contact_failed">Δεν έγινε αποκλεισμός της επαφής.</string>
+  <string name="unblock_contact_failed">Δεν έγινε κατάργηση αποκλεισμού της επαφής.</string>
+  <string name="select_contact">Επιλέξτε πρώτα μια επαφή.</string>
+  <string name="disconnected">\"Χωρίς σύνδεση!\"\n</string>
+  <string name="service_error">Σφάλμα υπηρεσίας!</string>
+  <string name="load_contact_list_failed">Δεν έγινε φόρτωση της λίστας επαφών.</string>
+  <string name="cant_connect_to_server">Δεν είναι δυνατή η σύνδεση με τον διακομιστή. Ελέγξτε τη σύνδεσή σας.</string>
+  <string name="contact_already_exist">Ο χρήστης <xliff:g id="USER">%1$s</xliff:g> υπάρχει ήδη στη λίστα επαφών σας.</string>
+  <string name="contact_blocked">Έγινε αποκλεισμός της επαφής \"<xliff:g id="USER">%1$s</xliff:g>\".</string>
+  <string name="contact_not_loaded">Περιμένετε μέχρι να φορτώσει η λίστα επαφών σας.</string>
+  <string name="network_error">Προέκυψε σφάλμα δικτύου.</string>
+  <string name="wifi_not_connected_error">Απαιτείται WiFi για αυτήν την συνεδρία</string>
+  <string name="service_not_support">Ο διακομιστής δεν υποστηρίζει αυτήν τη δυνατότητα.</string>
+  <string name="invalid_password">Ο κωδικός πρόσβασης που εισάγατε δεν είναι έγκυρος.</string>
+  <string name="internal_server_error">Παρουσιάστηκε σφάλμα στον διακομιστή.</string>
+  <string name="not_implemented">Ο διακομιστής δεν υποστηρίζει αυτήν τη δυνατότητα.</string>
+  <string name="service_unavaiable">Ο διακομιστής δεν είναι διαθέσιμος αυτήν τη στιγμή.</string>
+  <string name="timeout">Η περίοδος σύνδεσης με τον διακομιστή έληξε.</string>
+  <string name="version_not_supported">Ο διακομιστής δεν υποστηρίζει την τρέχουσα έκδοση.</string>
+  <string name="message_queue_full">Η ουρά μηνυμάτων είναι πλήρης.</string>
+  <string name="domain_not_supported">Ο διακομιστής δεν υποστηρίζει την προώθηση προς τον τομέα διαδικτύου.</string>
+  <string name="unknown_user">Το όνομα χρήστη που εισάγατε δεν αναγνωρίζεται.</string>
+  <string name="recipient_blocked_the_user">Λυπούμαστε, αλλά έχετε αποκλειστεί από τον χρήστη.</string>
+  <string name="session_expired">Η περίοδος σύνδεσης έληξε, συνδεθείτε ξανά.</string>
+  <string name="forced_logout">συνδεθήκατε από άλλο πρόγραμμα-πελάτη.</string>
+  <string name="already_logged_in">έχετε ήδη συνδεθεί από άλλο πρόγραμμα-πελάτη.</string>
+  <string name="msisdn_error">Λυπούμαστε, δεν είναι δυνατή η ανάγνωση του αριθμού τηλεφώνου από την κάρτα SIM. Επικοινωνήστε με την εταιρεία κινητής τηλεφωνίας για βοήθεια.</string>
+  <string name="not_signed_in">Δεν είστε συνδεδεμένοι αυτήν τη στιγμή.</string>
+  <string name="account_setup_error_validating">To ChatSecure αντιμετώπισε σφάλμα κατά την επαλήθευση του ονόματος ή του κωδικού σας - παρακαλούμε ελέγξτε τα ξανά και δοκιμάστε πάλι.</string>
+  <string name="account_setup_error_keypair">Τo ChatSecure αντιμετώπισε ένα σφάλμα κατά την παραγωγή του ζεύγους κλειδιών.</string>
+  <string name="account_setup_error_server">To ChatSecure αντιμετώπισε ένα σφάλμα κατά την σύνδεση - ξαναελέγξτε την σύνδεση σας στο δίκτυο και δοκιμάστε ξανά.</string>
+  <string name="account_setup_error_connectivity">To ChatSecure αντιμετώπισε ένα σφάλμα κατά την σύνδεση - ξαναελέγξτε την σύνδεση σας στο δίκτυο και δοκιμάστε ξανά.</string>
+  <string name="error_suspended_connection">Το ChatSecure έχασε μια σύνδεση στο δίκτυο</string>
+  <string name="error_reestablish_connection">Το ChatSecure προσπαθεί να ξαναεγκαθιδρύσει την σύνδεση</string>
+  <string name="signin_password_prompt">Εισάγετε τον κωδικό:</string>
+  <string name="warning_tor_connect">Εφόσον χρησιμοποιείτε το Tor πρέπει να εισάγετε στις Προηγμένες ρυθμίσεις λογαριασμού το hostname στο πεδίο XMPP \"Server πρός σύνδεση.\"</string>
+  <string name="unable_to_create_or_join_group_chat">Αδυναμία δημιουργίας η σύνδεσης σε ομάδα συζήτησης</string>
+  <string name="sorry_we_cannot_share_that_file_type">Δυστηχώς δεν μπορεί να διαμοιραστεί αυτός ο τύπος αρχείου</string>
+  <string name="err_otr_share_no_encryption">Πρέπει να ενεργοποιήσετε την κρυπτογραφία για να διαμοιράσετε αρχεία</string>
+  <string name="please_enable_chat_encryption_to_share_files">Ενεργοποιήστε κρυπτογραφίας συζήτησης για διαμοιρασμό αρχείων</string>
+  <string name="swipe_alert">Το ChatSecure ανίχνευσε ένα αίτημα αφαίρεσης του απο τις εκτελούμενες εφαρμογές. Το ChatSecure πιθανότατα θα σταματήσει να λειτουργεί. Παρακαλούμε χρησιμοποιήστε την επιλογή \"Απεγγραφή απο όλα\" απο την οθόνη των λογαριασμών αντ\'αυτού.</string>
+  <string name="msg_sent_failed">Δεν ήταν δυνατή η αποστολή αυτού του μηνύματος.</string>
+  <string name="disconnected_warning">Το μήνυμα θα σταλεί ξανά όταν επανασυνδεθείτε</string>
+  <string name="contact_offline_warning">Ο χρήστης <xliff:g id="USER_0">%1$s</xliff:g> βρίσκεται εκτός σύνδεσης. Τα μηνύματα που στέλνετε θα παραδοθούν όταν ο χρήστης <xliff:g id="USER_1">%1$s</xliff:g> συνδεθεί στο διαδίκτυο.</string>
+  <string name="contact_not_in_list_warning">Η επαφή <xliff:g id="USER">%1$s</xliff:g> δεν υπάρχει στη λίστα επαφών σας.</string>
+  <string name="account_settings_title">Ρυθμίσεις λογαριασμού</string>
+
+  <string name="warning_alpha">ΠΡΟΣΟΧΗ: Αυτή είναι μια πρώιμη έκδοση του ChatSecure που μπορεί να περιέχει κενά ασφαλείας η bugs.</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Ομάδες</string>
+  <string name="_open_conversations">ανοιχτές συζητήσεις ()</string>
+  <string name="menu_exit">Έξοδος</string>
+  <string name="menu_panic">Πανικός</string>
+  <string name="buddies">Φίλοι</string>
+  <string name="contacts">Επαφές</string>
+  <string name="mtm_accept_cert">Έγκριση Πιστοποιητικού Server;</string>
+  <string name="menu_sidebar_qr">Αποτύπωμα</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Λίστα επαφών</string>
+  <string name="menu_settings">Ρυθμίσεις</string>
+  <string name="menu_view_accounts">Λίστα λογαριασμών</string>
+  <string name="menu_sign_out">Αποσύνδεση</string>
+  <string name="menu_view_contact_list">Λίστα επαφών</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Τοπική Περιοχή (Bonjour/ZeroConf)</string>
+  <string name="google_account">Λογαριασμός Google</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">Συνδεδεμένος</string>
+  <string name="presence_busy">Απασχολημένος/η</string>
+  <string name="presence_away">Μακριά από τον υπολογιστή</string>
+  <string name="presence_idle">Αδρανής</string>
+  <string name="presence_offline">Εκτός σύνδεσης</string>
+  <string name="presence_invisible">Να εμφανίζομαι εκτός σύνδεσης</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Είμαι χαρούμενος</item>
+    <item>Είμαι λυπημένος</item>
+    <item>Κλείνω το μάτι</item>
+    <item>Κοροϊδεύω</item>
+    <item>Είμαι έκπληκτος</item>
+    <item>Φιλάω</item>
+    <item>Φωνάζω</item>
+    <item>Cool</item>
+    <item>Κάνω τα λόγια μου πράξη</item>
+    <item>Είπα χαζομάρα</item>
+    <item>Ντρέπομαι</item>
+    <item>Αγγελούδι</item>
+    <item>Δεν έχω αποφασίσει</item>
+    <item>Κλαίω</item>
+    <item>Δεν αποκαλύπτω τίποτα</item>
+    <item>Γελάω</item>
+    <item>Είμαι μπερδεμένος</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Είμαι χαρούμενος</item>
+    <item>Είμαι λυπημένος</item>
+    <item>Κλείνω το μάτι</item>
+    <item>Κοροϊδεύω</item>
+    <item>Είμαι έκπληκτος</item>
+    <item>Φιλάω</item>
+    <item>Φωνάζω</item>
+    <item>Cool</item>
+    <item>Κάνω τα λόγια μου πράξη</item>
+    <item>Είπα χαζομάρα</item>
+    <item>Ντρέπομαι</item>
+    <item>Αγγελούδι</item>
+    <item>Δεν έχω αποφασίσει</item>
+    <item>Κλαίω</item>
+    <item>Δεν αποκαλύπτω τίποτα</item>
+    <item>Γελάω</item>
+    <item>Είμαι μπερδεμένος</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_need_a_new_account">Νέος λογαριασμός</string>
+</resources>

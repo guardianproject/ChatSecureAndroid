@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">インスタントメッセージを読む</string>
+  <string name="ro_perm_desc">
+アプリケーションがIMのコンテンツ・プロバイダーからデータを読み取ることを許可する。</string>
+  <string name="wo_perm_label">インスタントメッセージを作成</string>
+  <string name="wo_perm_desc">
+アプリケーションがIMのコンテンツ・プロバイダーにデータを書き込むことを許可する。</string>
+  <string name="perm_label">IM/チャットの起動</string>
+  <string name="perm_desc">アプリケーションがintent経由でIMサービスを開始することを許可します。</string>
+  <!--General: Actions-->
+  <string name="confirm">確認</string>
+  <string name="ok">OK</string>
+  <string name="cancel">キャンセル</string>
+  <string name="yes">OK</string>
+  <string name="no">キャンセル</string>
+  <string name="btn_next">次へ</string>
+  <string name="btn_back">戻る</string>
+  <string name="connect">接続</string>
+  <string name="play">再生</string>
+  <string name="setup">セットアップ</string>
+  <!--Views-->
+  <string name="lock_screen_open">開く</string>
+  <string name="title_activity_lock_screen">ChatSecure はロックされました</string>
+  <string name="lock_screen_create_passphrase">パスワードを設定</string>
+  <string name="lock_screen_confirm_passphrase">パスワードを確認</string>
+  <string name="lock_screen_passphrase_hint">パスワード</string>
+  <string name="lock_screen_passphrase_not_set_enter">パスワードなしに連絡先やメッセージへアクセスすることを防止するために、オプションで ChatSecure にマスターパスワードを設定することができます:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">新しいパスワードを確認</string>
+  <string name="lock_screen_passphrases_not_matching">パスワードが一致しません、再度入力してください</string>
+  <string name="lock_screen_skip">スキップ &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">情報プロンプト</string>
+  <string name="app_passphrase_view_password_question">パスワードを入力してください</string>
+  <string name="password_please">パスワードを入力してください…</string>
+  <string name="passphrase">パスフレーズ</string>
+  <string name="passphrase_again">パスフレーズ (再び)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">アカウントを選択してください</string>
+  <string name="choose_account_title">アカウントを選択してください</string>
+  <string name="conversations">(<xliff:g id="NUMBER" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account"><xliff:g id="ACCOUNT">%1$s</xliff:g>アカウント</string>
+  <string name="menu_about">アプリについて</string>
+  <string name="menu_sign_out_all">すべてサインアウト</string>
+  <string name="signout_all_confirm_message">すべてのサービスからログアウトしますか？</string>
+  <string name="signed_out_prompt">既に<xliff:g id="ACCOUNT">%1$s</xliff:g>をログアウトしています。</string>
+  <string name="signed_out_prompt_with_error"><xliff:g id="ACCOUNT">%1$s</xliff:g> をログアウトしています。理由 <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">ChatSecure を使うのは初めてですか?</string>
+  <string name="welcome_skip">開始するまで待てませんか？</string>
+  <string name="welcome_about">Gibberbotについて</string>
+  <string name="welcome_account">アカウント設定</string>
+  <string name="setup_passphrase_title">パスフレーズの設定</string>
+  <string name="setup_passphrase">不正なアクセスから ChatSecure のデータを保護するため、始める前に安全なパスフレーズを選択してください。</string>
+  <string name="setup_passphrase_label1">パスフレーズ:</string>
+  <string name="setup_passphrase_label2">パスフレーズ（再入力）:</string>
+  <string name="rekey_message">*新しい* パスフレーズを入力してください。これは、少なくとも1つの大文字、1つの小文字、および1つの数字が含まれており、6文字以上でなければなりません。</string>
+  <string name="do_rekey">新しいパスフレーズを使用して、既存のメモを暗号化しています (お待ちください…)</string>
+  <string name="enter_pass">パスフレーズを入力してください:</string>
+  <string name="new_pass">
+ようこそ! あなたのメモを保護するために強力なパスフレーズを入力してください。これは、少なくとも1つの大文字、1つの小文字、および1つの数字が含まれており、6文字以上でなければなりません。</string>
+  <string name="pass_err_length">パスフレーズの長さが足りません</string>
+  <string name="pass_err_upper">パスフレーズに大文字が含まれていません</string>
+  <string name="pass_err_lower">パスフレーズに小文字が含まれていません</string>
+  <string name="pass_err_num">パスフレーズに数字が含まれていません</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">ChatSecure について</string>
+  <string name="about_welcome">ChatSecureは、あなたの会話や通信が他人からのぞき見されるのを防止するため、追加のセキュリティ機能を提供する、モバイル インスタント メッセージング アプリです。\n\nこのアプリは、Google GTalk や、Jabber.org などのJabber または XMPP プロトコルを使用するすべてのチャットサービスをサポートしています。</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">どう安全なんですか？</string>
+  <string name="about_otr">\'オフ ザ レコード/OTR メッセージング\'は、暗号化、認証、否認および前方秘匿性を含む、現実世界でのプライベートな会話の特性を模倣することで、プライバシーを有効にするために設計されたセキュリティシステムです。\n\nOTR プロトコルは、AdiumやPidginのようなデスクトップ チャット クライアントに対応しています。</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">私のチャットは安全ですか？</string>
+  <string name="about_security">互換性のあるアプリケーションやプログラムを使用して他の人とメッセージを送受信する時のみ、ChatSecureのチャット暗号化機能は動作するため、あなたの連絡先が、モバイル用のChatSecureか、デスクトップ用のAdiumやPidginを使用していることを確認する必要があります。ChatSecureがチャットをいつ、どのように暗号化しようとするか、アカウント設定で確実に調整することができます。\n\nでは始めましょう!</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">新しいアカウント</string>
+  <string name="menu_add_account">アカウントを追加</string>
+  <string name="menu_edit_account">アカウントを編集</string>
+  <string name="menu_remove_account">アカウントを削除</string>
+  <string name="menu_use_existing_account">既存のアカウント</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">ユーザー@ホスト</string>
+  <string name="label_password">パスワード</string>
+  <string name="remember_password">パスワードを保存する</string>
+  <string name="keep_me_signed_in">自動ログイン</string>
+  <string name="sign_up">アカウントがない場合</string>
+  <string name="sign_in">ログイン</string>
+  <string name="check_save_password">セキュリティ保護のため、お使いの携帯電話を紛失したり盗まれた場合は、コンピュータ上のWebサイトにアクセスし、パスワードを変更してください。</string>
+  <string name="check_auto_sign_in">このオプションをONにするとこのアプリケーションを開くたびに自動的にこのアカウントでログインします。このオプションをOFFにするにはログアウトしてから「自動ログイン」をOFFにしてください。</string>
+  <string name="use_tor">Tor経由で接続します (Orbotアプリが必要です)</string>
+  <string name="account_setup_example_email_address">ユーザー@ドメイン</string>
+  <string name="account_setup_new_username">新しいユーザー名</string>
+  <string name="account_setup_service_provider">サービス プロバイダー (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">パスワード</string>
+  <string name="account_setup_password_confirm">パスワードを確認</string>
+  <string name="account_setup_advanced_button">アカウントの詳細設定</string>
+  <string name="account_select_type">アカウント設定</string>
+  <string name="btn_create_new_account">アカウントを登録</string>
+  <string name="account_setup_pers_sub">永続性</string>
+  <string name="account_setup_pers_pw_title">パスワードを記憶する</string>
+  <string name="account_setup_pers_pw_on">パスワードはキャッシュされました</string>
+  <string name="account_setup_pers_pw_off">パスワードがキャッシュされていません</string>
+  <string name="account_setup_pers_auto_title">自動サインイン</string>
+  <string name="account_setup_pers_auto_on">ChatSecureの起動時に接続する</string>
+  <string name="account_setup_pers_auto_off">ChatSecureの起動時に接続しない</string>
+  <string name="account_setup_pers_now_title">今すぐログイン</string>
+  <string name="account_setup_pers_now_on">アカウント設定後に自動接続</string>
+  <string name="account_setup_pers_now_off">アカウント設定後に自動接続しない</string>
+  <string name="account_setup_personal_sub">パーソナル（オプション）</string>
+  <string name="account_setup_personal_alias_title">アカウント名（あなたのニックネーム）</string>
+  <string name="account_setup_personal_alias_sub">アカウントをオンラインで表示する方法</string>
+  <string name="account_setup_personal_profile_title">プロフィール</string>
+  <string name="account_setup_personal_profile_sub">簡単な自己紹介</string>
+  <string name="account_setup_advanced_enc_force">暗号化されていないテキストを強制的に暗号化、または拒否する</string>
+  <string name="account_setup_advanced_enc_auto">可能な場合は、自動的にチャットを暗号化</string>
+  <string name="account_setup_advanced_enc_req">要求した時に、チャットを暗号化</string>
+  <string name="account_setup_advanced_enc_off">チャットの暗号化を無効にする</string>
+  <string name="account_setup_signin_a">信用証明書を照合中…</string>
+  <string name="account_setup_signin_b">鍵ペア生成中…</string>
+  <string name="account_setup_signin_c">ログイン中..</string>
+  <string name="account_wizard_setup_title">アカウントウィザード</string>
+  <string name="account_wizard_account_title">アカウントIDを</string>
+  <string name="account_wizard_host_title">サーバーの構成</string>
+  <string name="account_wizard_ready_title">準備ができている？</string>
+  <string name="account_wizard_setup_body">XMPPチャットサービス用にChatSecureを設定するには、アカウントIDを入力してください。メールアドレスなどです:</string>
+  <string name="account_wizard_account_body">:アカウントID（ユーザ@ホスト名）を入力してください</string>
+  <string name="account_wizard_host_body">（5222がデフォルトです）を入力するか、あなたのjabber/xmppを編集するチャットサーバーのホスト名とポート番号をしてください。</string>
+  <string name="account_wizard_ready_body">ChatSecureが設定されました。これで、サービスに接続し、安全に、秘密を守ってチャットを開始することができます!</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">チャット サービス ドメイン</string>
+  <string name="registering_new_account_">新しいアカウントを登録しています…</string>
+  <string name="signing_in_to">予定を取得しています…</string>
+  <string name="menu_cancel_signin">ログインをキャンセル</string>
+  <string name="signing_in_wait">ログインしています…</string>
+  <string name="signing_out_wait">ログアウトしています\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">SRV ルックアップ</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">ドメイン名から実際の XMPP サーバーを検索するために DNS SRV を使用する</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">暗号化されていない転送を使用する際に、ユーザー名とパスワードがプレーンテキストで送信されるのを許可する</string>
+  <string name="allow_plain_text_auth">プレーンテキストの認証を許可する</string>
+  <string name="verify_that_the_certificate_is_trusted">証明書が信頼済であることを検証する</string>
+  <string name="tls_verification">TLS 検証</string>
+  <string name="require_tls_ssl_connection">TLS 接続が必要</string>
+  <string name="transport_encryption">転送の暗号化</string>
+  <string name="how_encrypted_chats_are_started">暗号化されたチャットの開始方法</string>
+  <string name="the_server_to_connect_to_if_needed">必要であれば、サーバーの接続先</string>
+  <string name="connect_server">接続サーバー</string>
+  <string name="tcp_port_for_xmpp_server">XMPPサーバーのTCPポート</string>
+  <string name="server_port">サーバー ポート</string>
+  <string name="xmpp_resource">XMPP リソース</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">ログインしている他のクライアントからこの接続を区別するため</string>
+  <string name="xmpp_resource_prio_title">XMPP リソース優先度</string>
+  <string name="xmpp_resource_prio_summary">複数のアクティブなリソースを持つクライアントへのメッセージは、最も高い優先度のリソースに送信されます</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">会話</string>
+  <string name="no_messages">会話はありません。\n\n開始するにはここをタップしてください!</string>
+  <string name="empty_account_message">アカウントが設定されていません。\n\n追加するにはここをタップしてください!</string>
+  <string name="buddy_list_title">連絡先リスト - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">連絡先を追加</string>
+  <string name="menu_remove_contact">連絡先を削除</string>
+  <string name="menu_block_contact">連絡先をブロック</string>
+  <string name="menu_contact_nickname">連絡先ニックネーム</string>
+  <string name="menu_view_blocked">ブロック</string>
+  <string name="nickname">ニックネーム</string>
+  <string name="confirm_delete_contact">連絡先「<xliff:g id="USER">%1$s</xliff:g>」を削除します。</string>
+  <string name="confirm_block_contact">連絡先「<xliff:g id="USER">%1$s</xliff:g>」をブロックします。</string>
+  <string name="confirm_unblock_contact">連絡先「<xliff:g id="USER">%1$s</xliff:g>」のブロックを解除します。</string>
+  <string name="add_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」を追加しました。</string>
+  <string name="delete_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」を削除しました。</string>
+  <string name="block_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」をブロックしました。</string>
+  <string name="unblock_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」のブロックを解除しました。</string>
+  <string name="menu_new_chat">新しいチャット</string>
+  <string name="menu_search_contacts">連絡先を検索</string>
+  <string name="menu_show_grid">グリッドを表示</string>
+  <string name="menu_start_chat">チャットを始める</string>
+  <string name="menu_view_profile">プロフィールを表示</string>
+  <string name="menu_verify">連絡先を検証</string>
+  <string name="ongoing_conversation">チャット中（<xliff:g id="NUMBER">%1$d</xliff:g>）</string>
+  <string name="online_count">オンライン<xliff:g id="NUMBER">%1$d</xliff:g>人</string>
+  <string name="subscriptions">友達を招待</string>
+  <string name="unknown_contact">（\"<i>\"不明\"</i>\"）</string>
+  <string name="empty_contact_group">未登録</string>
+  <string name="empty_conversation_group">チャットなし</string>
+  <string name="search_label">連絡先</string>
+  <string name="search_hint">チャットする連絡先の名前を入力してください</string>
+  <string name="search_button_text">移動</string>
+  <string name="empty_chat_list">アクティブなチャットはありません。</string>
+  <string name="add_contact_title">連絡先を追加</string>
+  <string name="input_contact_label">招待する人のメールアドレス:</string>
+  <string name="choose_list_label">リストを選択:</string>
+  <string name="invite_instruction">連絡先から追加する名前を入力してください。</string>
+  <string name="invite_label">招待状を送る</string>
+  <string name="contact_profile_title">連絡先プロフィール</string>
+  <string name="label_status">ステータス:</string>
+  <string name="label_client_type">クライアントタイプ:</string>
+  <string name="client_type_computer">パソコン</string>
+  <string name="client_type_mobile">携帯</string>
+  <string name="blocked_list_title">ブロックしている連絡先-<xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">ブロック中のユーザーはいません。</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with"><xliff:g id="USER">%1$s</xliff:g>とチャット</string>
+  <string name="me">自分</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g>さんはオンラインです</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g>さんは退席中です</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g>さんは取り込み中です</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>さんはオフラインです</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>さんが参加しました</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>さんが退出しました</string>
+  <string name="menu_send_image">写真を送信</string>
+  <string name="menu_send_file">ファイルを送信</string>
+  <string name="menu_send_audio">オーディオを送信</string>
+  <string name="menu_take_picture">写真を撮影</string>
+  <string name="file_transfer">ファイル転送</string>
+  <string name="transfer_complete">転送が完了しました</string>
+  <string name="transfer_in_progress">転送中です</string>
+  <string name="accept_transfer_">転送を承認しますか?</string>
+  <string name="wants_to_send_you_the_file">ファイルを送信したい</string>
+  <string name="no_connection_for_sending">共有を送信するために利用可能な接続がありません!</string>
+  <string name="send">送信</string>
+  <string name="compose_hint">メッセージを送信</string>
+  <string name="compose_hint_secure">安全にメッセージを送信</string>
+  <string name="menu_resend">再送信</string>
+  <string name="menu_end_conversation">チャット終了</string>
+  <string name="menu_clear_chat">チャット履歴を消去</string>
+  <string name="menu_insert_smiley">絵文字を挿入</string>
+  <string name="menu_switch_chats">チャットを切り替え</string>
+  <string name="menu_plus">Menu+</string>
+  <string name="select_link_title">リンクを選択</string>
+  <string name="delete">削除</string>
+  <string name="keep_files">ファイルを保持</string>
+  <string name="delete_chat_session_secured_storage">チャットセッションのセキュリティで保護されたストレージを削除しますか?</string>
+  <string name="all_files_will_be_deleted">すべてのセッションのアップロードとダウンロードファイルが完全に削除されます。警告: この操作は元に戻すことはできません!</string>
+  <string name="delete_original">下のファイルを削除しますか?</string>
+  <string name="this_file_will_be_copied">このファイルは、送信される前に保護されたストレージにコピーされます。デバイスのセキュリティで保護されていないストレージから、元のファイルを削除しますか?</string>
+  <string name="keep">保持</string>
+  <string name="export">エクスポート</string>
+  <string name="export_media">メディアファイルをエクスポートしますか?</string>
+  <string name="export_media_file_to">このメディアファイルは %1$s にエクスポートされます</string>
+  <string name="end_chat_title">チャットを終了しますか?</string>
+  <string name="end_chat_summary">このセッションのすべての保護されたメディアアイテムは削除されます。サムネイルアイコン上で長押しして、メディアアイテムをエクスポートしてください。</string>
+  <string name="end_chat_and_delete">チャット終了およびファイル削除</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>さんからグループチャットに招待されました。</string>
+  <string name="invitation_sent_prompt">招待状を<xliff:g id="USER">%1$s</xliff:g>さんに送りました。</string>
+  <string name="accept_invitation">承認</string>
+  <string name="decline_invitation">拒否</string>
+  <string name="menu_new_group_chat">グループチャット</string>
+  <string name="create_or_join_group_chat">グループチャットを作成または参加</string>
+  <string name="connecting_to_group_chat_">グループチャットに接続しています…</string>
+  <string name="menu_invite_contact">招待…</string>
+  <string name="contacts_picker_title">招待する連絡先を選択してください</string>
+  <string name="contact_filter_hint">入力して、連絡先を検索</string>
+  <string name="empty_contact_list">連絡先が見つかりません。\n\n招待するにはタップしてください。</string>
+  <string name="subscription_prompt">連絡先を追加?</string>
+  <string name="approve_subscription">はい</string>
+  <string name="decline_subscription">いいえ</string>
+  <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g>さんからの登録依頼を承認できませんでした。しばらくしてからもう一度試してください。</string>
+  <string name="decline_subscription_error"><xliff:g id="USER">%1$s</xliff:g>さんからの登録依頼を拒否できませんでした。しばらくしてからもう一度試してください。</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">暗号化を開始</string>
+  <string name="menu_otr_stop">暗号化を停止</string>
+  <string name="starting_otr_chat">暗号化されたチャットセッションを開始しています…</string>
+  <string name="stopping_otr_chat">暗号化されたチャットセッションを停止しています…</string>
+  <string name="label_fingerprint_remote">セキュリティ指紋</string>
+  <string name="label_fingerprint_local">セキュリティ指紋</string>
+  <string name="menu_sign_in">サインイン</string>
+  <string name="menu_gen_key">鍵の再生成</string>
+  <string name="otr_session_status_plaintext">暗号化は off です</string>
+  <string name="otr_session_status_encrypted">暗号化は on です (タップで確認)</string>
+  <string name="otr_session_status_finished">連絡先が暗号化されたチャットを停止しました。</string>
+  <string name="otr_session_status_verified">暗号化と検証をしました!</string>
+  <string name="otr_gen_key">新しい OTR キーペアを生成しています…</string>
+  <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">インポートするOTRキーストアを検出しました。今すぐQRパスワードをスキャンしますか?</string>
+  <string name="menu_import_keys">キー同期を有効にする</string>
+  <string name="successfully_imported_otr_keyring">OTRキーリングをインポートしました</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">QRをスキャン</string>
+  <string name="menu_fingerprint">自分のフィンガープリント</string>
+  <string name="menu_verify_fingerprint">手動</string>
+  <string name="menu_verify_secret">質問</string>
+  <string name="their_fingerprint_verified_">セキュリティ フィンガープリント (検証済)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">このフィンガープリントを確認しますか?</string>
+  <string name="verify_key_">フィンガープリントを検証しますか?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">リモートのフィンガープリントを検証しました!</string>
+  <string name="fingerprint_for_you">あなたへのフィンガープリント</string>
+  <string name="fingerprint_for_">へのフィンガープリント</string>
+  <string name="install_barcode_scanner_title">バーコードスキャナーをインストールしますか?</string>
+  <string name="install_barcode_scanner_message">このアプリケーションはバーコードスキャナーが必要です。インストールしますか?</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">認証</string>
+  <string name="smp_question_summary">彼らが本人であることを検証するために、連絡先に送信する質問、およびあなたが期待する回答を入力してください。</string>
+  <string name="smp_question_hint">たずねる質問</string>
+  <string name="qmp_answer_hint">期待する回答</string>
+  <string name="remote_verified_us">連絡先はあなたを認証しました。あなた自身の質問をして、連絡先を認証してください。</string>
+  <string name="otr_qa_title">OTR Q&amp;A 検証</string>
+  <string name="chat_encryption_title">チャット暗号化</string>
+  <string name="otr_qa_send">送信</string>
+  <string name="otr_qa_cancel">キャンセル</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">安全な呼び出し</string>
+  <string name="pref_sip_account_title">安全な音声</string>
+  <string name="pref_sip_account_summary">呼び出し統合のために、OStel.coや他の安全なSIPサービスアカウントを入力してください</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">アカウントを設定する</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">セキュリティおよびプライバシー</string>
+  <string name="encryption_and_anonymity_title">暗号化と匿名性</string>
+  <string name="menu_view_encrypt_chat">暗号化On/Off</string>
+  <string name="pref_cacheword_timeout_title">パスワード タイムアウト</string>
+  <string name="pref_cacheword_timeout_summary">アプリの暗号化がロック解除されるべきまでの時間</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Tor でクリック可能なリンク</string>
+  <string name="pref_linkify_on_tor_summary">Tor を使用するアカウントで、チャット内のリンクをクリック可能にします (警告、プライバシーが漏れる可能性があります!)</string>
+  <string name="pref_group_looknfeel_title">ユーザーインターフェイス</string>
+  <string name="menu_locale">言語</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">言語</string>
+  <string name="use_system_default">システムデフォルトを使用</string>
+  <string name="pref_theme_dark">ダーク テーマを使用</string>
+  <string name="pref_theme_dark_summary">アプリのテーマをダークに変更します</string>
+  <string name="pref_in_memory_db_title">インメモリ メッセージ ストレージのみ</string>
+  <string name="pref_in_memory_db_summary">メッセージの抽出から保護するために、フラッシュストレージではなく、メモリ内にメッセージを格納します。 (メッセージを損失することがあります)</string>
+  <string name="pref_background_title">背景画像</string>
+  <string name="pref_background_summary">アプリの背景画像壁紙のパスを設定してください (\"/sdcard/foo.jpg\")</string>
+  <string name="pref_show_grid">連絡先グリッドを表示</string>
+  <string name="pref_show_grid_summary">アバターグリッドとして連絡先リストを表示します</string>
+  <string name="button_yes_accept_all">はい、すべて承認</string>
+  <string name="pref_delete_unsecured_media_title">安全でないメディアを削除</string>
+  <string name="pref_delete_unsecured_media_summary">写真やファイルを共有した後、インポート後、元の、安全でないストレージから自動的に削除します</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">その他のチューニング</string>
+  <string name="start_on_boot">ChatSecure を自動的に開始する</string>
+  <string name="start_on_boot_summary">常に起動し、以前ログインしたアカウントに自動的にログインします</string>
+  <string name="hide_offline_contacts">オフラインの連絡先を表示しない</string>
+  <string name="foreground_service_title">フォアグラウンド優先度を使用</string>
+  <string name="foreground_service_summary">Androidが接続サービスを再起動する可能性を減らします。これは通知領域に通知が配置されます。</string>
+  <string name="heartbeat_interval_title">ハートビート間隔</string>
+  <string name="heartbeat_interval_summary">バッテリーを節約するにはより高い値(分単位)を使用してください。高い値にすると、プロバイダーが非アクティブな接続を閉じる可能性があります。</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">通知設定</string>
+  <string name="notification_enabled_title">チャットの通知</string>
+  <string name="notification_enabled_summary">チャット受信: ステータスバーで通知</string>
+  <string name="notification_vibrate_title">バイブレーション</string>
+  <string name="notification_vibrate_summary">チャット受信: バイブレーションON</string>
+  <string name="notification_sound_title">音</string>
+  <string name="notification_sound_summary">チャット受信: 着信音ON</string>
+  <string name="notification_ringtone_title">カスタムの着信音を選択</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">デバッグログを有効にする</string>
+  <string name="pref_debug_summary">デバッグのために標準出力 / logcat にアプリ ログ データを出力します</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">バックグラウンドデータが無効です</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g>ではバックグラウンドデータを有効にする必要があります。</string>
+  <string name="bg_data_prompt_ok">有効にする</string>
+  <string name="bg_data_prompt_cancel">終了</string>
+  <string name="signout_kill_confirm_message">すべてのサービスをログアウトし、すべてのプロセスを終了しますか (ハード終了)?</string>
+  <string name="prompt_create_new_account_">新しいアカウントを作成しますか?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">ユーザー名 \'%1$s\' の新しいチャット アカウントを作成しますか?</string>
+  <string name="dialog_cert_title">証明書情報</string>
+  <string name="dialog_cert_subject">証明書:</string>
+  <string name="dialog_cert_issuer">発行者:</string>
+  <string name="dialog_cert_fingerprint">SHA1 フィンガープリント: </string>
+  <string name="dialog_cert_issue_date">発行: </string>
+  <string name="dialog_cert_expires">期限: </string>
+  <string name="dialog_connect_chatroom_title">チャットルームに参加しますか?</string>
+  <string name="dialog_connect_chatroom_message">外部アプリが、チャットルームに接続しようとしています。許可しますか?</string>
+  <string name="dialog_settings_choose_background_title">背景を選択</string>
+  <string name="dialog_settings_choose_background_body">ギャラリーから背景画像を選択しますか?</string>
+  <string name="dialog_settings_choose_background_picker">画像を選択</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">新しい<xliff:g id="PROVIDER">%1$s</xliff:g>メッセージが届きました</string>
+  <string name="num_unread_chats"><xliff:g id="NUMBER">%1$d</xliff:g> 未読のチャット</string>
+  <string name="subscription_notify_text"><xliff:g id="user">%s</xliff:g> から新しい友達の招待</string>
+  <string name="file_notify_text">新しいファイル <xliff:g id="FILENAME">%s</xliff:g> <xliff:g id="USER">%s</xliff:g> から</string>
+  <string name="notify_groupchat_label">グループチャットの招待</string>
+  <string name="group_chat_invite_notify_text"><xliff:g id="USER">%s</xliff:g> から新しいグループチャットの招待</string>
+  <string name="new_messages_notify">新しいメッセージ。送信者</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure サービスを開始しています…</string>
+  <string name="app_unlocked">有効化 &amp; ロック解除しました</string>
+  <string name="toast_chat_copied_to_clipboard">メッセージをクリップボードにコピーしました</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">注意</string>
+  <string name="error_prefix">エラー: </string>
+  <string name="general_error">エラーコード<xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed"><xliff:g id="SERVICE">%1$s</xliff:g>サービスにログインできませんでした。しばらくしてからやり直してください。"\n"（詳細:<xliff:g id="DESCRIPTION">%2$s</xliff:g>）</string>
+  <string name="add_list_failed">リストを追加できませんでした。</string>
+  <string name="block_contact_failed">連絡先をブロックできませんでした。</string>
+  <string name="unblock_contact_failed">連絡先のブロックを解除できませんでした。</string>
+  <string name="select_contact">まず連絡先を選択してください。</string>
+  <string name="disconnected">\"切断されました。\"\n</string>
+  <string name="service_error">サービスエラー</string>
+  <string name="load_contact_list_failed">連絡先リストを読み込めませんでした。</string>
+  <string name="cant_connect_to_server">サーバーに接続できません。接続を確認してください。</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>さんは既に連絡先リストに登録されています。</string>
+  <string name="contact_blocked">「<xliff:g id="USER">%1$s</xliff:g>」はブロックされています。</string>
+  <string name="contact_not_loaded">連絡先リストを読み込んでいます。しばらくお待ちください。</string>
+  <string name="network_error">ネットワークエラーが発生しました。</string>
+  <string name="wifi_not_connected_error">この接続にはWiFiが必要です</string>
+  <string name="service_not_support">この機能はサーバーでサポートされていません。</string>
+  <string name="invalid_password">入力されたパスワードは無効です。</string>
+  <string name="internal_server_error">サーバーでエラーが発生しました。</string>
+  <string name="not_implemented">この機能はサーバーでサポートされていません。</string>
+  <string name="service_unavaiable">現在サーバーを使用できません。</string>
+  <string name="timeout">サーバーがタイムアウトしました。</string>
+  <string name="version_not_supported">現在のバージョンはサーバーでサポートされていません。</string>
+  <string name="message_queue_full">メッセージキューがいっぱいです。</string>
+  <string name="domain_not_supported">このドメインへの転送はサーバーでサポートされていません。</string>
+  <string name="unknown_user">入力されたユーザー名を認識できません。</string>
+  <string name="recipient_blocked_the_user">ユーザーによってブロックされています。</string>
+  <string name="session_expired">セッションは期限切れになりました。もう一度ログインしてください。</string>
+  <string name="forced_logout">別のクライアントからログインしています。</string>
+  <string name="already_logged_in">別のクライアントから既にログインしています。</string>
+  <string name="msisdn_error">SIMカードから電話番号を読み取れませんでした。通信事業者にお問い合わせください。</string>
+  <string name="not_signed_in">現在ログインしていません。</string>
+  <string name="account_setup_error_validating">ユーザー名とパスワードを検証中に ChatSecure でエラーが発生しました - 確認して、再度実行してください。</string>
+  <string name="account_setup_error_keypair">鍵ペアの生成中に ChatSecure でエラーが発生しました。</string>
+  <string name="account_setup_error_server">チャットサーバに接続中 ChatSecure でエラーが発生しました - 設定を確認して、再度実行してください。</string>
+  <string name="account_setup_error_connectivity">接続中に ChatSecure でエラーが発生しました - ネットワーク接続を再度確認して、実行してください。</string>
+  <string name="error_suspended_connection">ネットワークはオフラインです</string>
+  <string name="error_reestablish_connection">ChatSecure は接続を再確立しています</string>
+  <string name="account_wizard_no_domain_warning">アカウントIDに @ホスト名.com の部分を入力していません。再度入力してください!</string>
+  <string name="account_wizard_no_root_domain_warning">サーバーのホスト名に .com, .net のような接尾語がありません。再度入力してください!</string>
+  <string name="signin_password_prompt">あなたのpassword:を入力してください</string>
+  <string name="warning_tor_connect">Tor を使用しているので、アカウントの詳細設定に直接 XMPP \'接続サーバー\' のホスト名を入力する必要があります</string>
+  <string name="warning_weak_crypto">警告: このサービスは、弱い暗号の証明書を使用しています。アップグレードするには、管理者に連絡してください。</string>
+  <string name="warning_pinned_cert_mismatch">提供された証明書は、ピンニングされた証明書と一致しません:</string>
+  <string name="unable_to_create_or_join_group_chat">グループチャットを作成または参加することができません</string>
+  <string name="sorry_we_cannot_share_that_file_type">申し訳ありません、そのファイルタイプは共有できません</string>
+  <string name="err_otr_share_no_encryption">ファイルを共有するには暗号化を有効にする必要があります</string>
+  <string name="please_enable_chat_encryption_to_share_files">ファイルを共有するためチャット暗号化を有効にしてください</string>
+  <string name="unsupported_incoming_data">取得したデータはサポートされていません、共有できません!</string>
+  <string name="swipe_alert">ChatSecureは、そのタスクを削除する要求が行われたことを検出しました。 ChatSecureはおそらくクラッシュします。代わりに、アカウント一覧画面からすべてサインアウトのメニュー項目をご利用下さい。</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">このファイル形式に使用可能なビューアーがありません</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">コードをスキャンする前に、安全な会話を開始してください</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR キーリングがインポートされていません; ファイルが適切な形式で、適切な場所に存在することを確認してください</string>
+  <string name="otr_keysync_warning_message">デスクトップ OtrFileConverter ツールから、お使いのデバイスのストレージのルートディレクトリに、\'otr_keystore.ofcaes\' ファイルをコピーしてください</string>
+  <string name="msg_sent_failed">メッセージを送信できませんでした。</string>
+  <string name="disconnected_warning">切断されています。再接続時にメッセージが送信されます。</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>さんはオフラインです。<xliff:g id="USER_1">%1$s</xliff:g>さんがオンラインになったら、メッセージを送信します。</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>さんは連絡先リストに登録されていません。</string>
+  <string name="error_account_password_mismatch">パスワードが一致しません</string>
+  <string name="error_account_settings_priority">優先度は [0 .. 127] の範囲の数字でなければなりません</string>
+  <string name="error_account_settings_port">ポート番号は数字でなければなりません</string>
+  <string name="error_chat_file_transfer_title">転送エラー</string>
+  <string name="error_chat_file_transfer_body">ストレージのファイルを読み込むことができません</string>
+  <string name="error_welcome_database">メジャーエラー: ロック解除やアプリのデータベースをロードすることができません。アプリを再インストールするかデータをクリアデータしてください。</string>
+  <string name="error_no_app_to_handle_url">リンクを処理するアプリがインストールされていません!</string>
+  <string name="account_settings_title">アカウント設定</string>
+
+  <string name="warning_alpha">警告: これはChatSecureの早期リリースです。まだセキュリティホールやバグを含んでいる可能性があります。</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">グループ</string>
+  <string name="_open_conversations">会話を開く</string>
+  <string name="menu_exit">シャットダウン &amp; ロック</string>
+  <string name="menu_panic">パニック</string>
+  <string name="buddies">仲間</string>
+  <string name="contacts">連絡先</string>
+  <string name="mtm_accept_cert">サーバー証明書を受け付けますか?</string>
+  <string name="menu_sidebar_qr">あなたのフィンガープリントを表示</string>
+  <string name="loading">ロード中…</string>
+  <!--Other-->
+  <string name="about_link">ChatSecure について\nhttps://guardianproject.info/apps/chatsecure/</string>
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">連絡先リスト</string>
+  <string name="menu_settings">設定</string>
+  <string name="menu_view_accounts">チャットアカウント一覧</string>
+  <string name="menu_sign_out">ログアウト</string>
+  <string name="menu_view_contact_list">連絡先リスト</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">ローカル (Bonjour/ZeroConf)</string>
+  <string name="google_account">Google アカウント</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">オンライン</string>
+  <string name="presence_busy">取り込み中</string>
+  <string name="presence_away">退席中</string>
+  <string name="presence_idle">アイドル状態</string>
+  <string name="presence_offline">オフライン</string>
+  <string name="presence_invisible">オフラインとして表示</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>幸せ</item>
+    <item>悲しい</item>
+    <item>ウィンク</item>
+    <item>ペロッ</item>
+    <item>びっくり</item>
+    <item>キス</item>
+    <item>叫び</item>
+    <item>クール</item>
+    <item>ドル口</item>
+    <item>げっ！</item>
+    <item>恥ずかしい</item>
+    <item>エンジェル</item>
+    <item>うーん…</item>
+    <item>泣く</item>
+    <item>口チャック</item>
+    <item>笑う</item>
+    <item>混乱</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>幸せ</item>
+    <item>悲しい</item>
+    <item>ウィンク</item>
+    <item>ペロッ</item>
+    <item>びっくり</item>
+    <item>キス</item>
+    <item>叫び</item>
+    <item>クール</item>
+    <item>ドル口</item>
+    <item>げっ！</item>
+    <item>恥ずかしい</item>
+    <item>エンジェル</item>
+    <item>うーん…</item>
+    <item>泣く</item>
+    <item>口チャック</item>
+    <item>笑う</item>
+    <item>混乱</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_have_an_existing_xmpp_account">既存のアカウント</string>
+  <string name="account_existing_full">指定したJabber/ XMPPサーバーの自分の既存のアカウントに接続します。</string>
+  <string name="i_want_to_chat_using_my_google_account">Google アカウント </string>
+  <string name="account_google_full">既存のGoogleアカウントを使用して、他のGoogleユーザーとチャットします。</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi メッシュ チャット</string>
+  <string name="account_wifi_full">同じローカルWiFiネットワークやメッシュ上の他の人とチャットします - インターネットやサーバは必要ありません!</string>
+  <string name="account_wifi_button">WiFi チャットを有効にする</string>
+  <string name="i_need_a_new_account">新しいアカウント</string>
+  <string name="account_new_full">ビルトインの、またはあなたが任意に選んだからリストから、新しい、無料のアカウントをサービスに登録してください。</string>
+  <string name="account_new_button">新しいアカウントを作成</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">秘密のID!</string>
+  <string name="account_burner_full">1回簡単にタップして、匿名で、使い捨ての \"バーナー\" チャットアカウントを作成してください (Orbot が必要です: Tor for Android)</string>
+  <string name="account_burner_button">IDを生成</string>
+  <string name="this_is_a_group_chat">これはグループチャットです</string>
+  <string name="_resent_">[再送]</string>
+  <string name="resent">[再送]</string>
+  <string name="unable_to_securely_share_this_file">このファイルを安全に共有することができません</string>
+  <string name="install_orbot_">Orbotをインストールしますか?</string>
+  <string name="you_must_have_orbot">あなたはOrbotをインストールし、それを介してプロキシ転送を有効化している必要があります。インストールしますか?</string>
+  <string name="always">いつも</string>
+  <string name="start_orbot_">Orbotを開始しますか?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbotが実行されていないようです。起動して、Torに接続しますか?</string>
+  <string name="muc_dialog_nickname">ルームで使用するニックネーム</string>
+  <string name="muc_dialog_room">作成または参加するルームの名前\"</string>
+  <string name="muc_dialog_server">グループ チャット サーバー (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">キーストアが破損しています。ChatSecureを再インストールするか、アプリの \'データをクリア\' してください</string>
+  <string name="you_received_an_unreadable_encrypted_message">受け取った暗号化されたメッセージは読めません</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">あなたが送信したメッセージを解読することができませんでした</string>
+  <string name="swipe_hint">&lt; 左や右にスワイプで追加のオプション &gt;</string>
+</resources>

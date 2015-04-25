@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mtm_accept_cert">Hyväksytäänkö palvelimen antama tuntematon varmenne?</string>
+    <string name="mtm_trust_anchor">Palvelimen varmenne ei ole tunnetun varmentajan (CA) allekirjoittama.</string>
+    <string name="mtm_accept_servername">Sallitaanko palvelimen nimi, joka ei vastaa varmeenteessa olevaa nimeä?</string>
+    <string name="mtm_hostname_mismatch">Palvelimella ei ole varmennetta nimelle \"%s\". Varmenteen sisältämät nimet:</string>
+
+    <string name="mtm_connect_anyway">Haluatko jatkaa yhteyden muodostamista?</string>
+    <string name="mtm_cert_details">Sertifikaatin tiedot:</string>
+
+    <string name="mtm_decision_always">Aina</string>
+    <string name="mtm_decision_once">Kerran</string>
+    <string name="mtm_decision_abort">Keskeytä</string>
+
+    <string name="mtm_notification">Varmenteen tarkistus</string>
+</resources>

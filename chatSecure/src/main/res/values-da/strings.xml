@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">læs beskeder</string>
+  <string name="ro_perm_desc">
+Tillader applikationer at læse data fra IM-indholdsleverandøren.
+</string>
+  <string name="wo_perm_label">skriv beskeder</string>
+  <string name="wo_perm_desc">
+Tillader applikationer at skrive data til IM-indholdsleverandøren.</string>
+  <string name="perm_label">start IM-tjeneste</string>
+  <string name="perm_desc">Lader programmer starte IM-tjeneste efter hensigt.</string>
+  <!--General: Actions-->
+  <string name="confirm">Bekræft</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Annuller</string>
+  <string name="yes">OK</string>
+  <string name="no">Annuller</string>
+  <string name="btn_next">Næste</string>
+  <string name="btn_back">Tilbage</string>
+  <string name="connect">Forbind</string>
+  <!--Views-->
+  <string name="lock_screen_open">Åben</string>
+  <string name="title_activity_lock_screen">ChatSecure låst</string>
+  <string name="lock_screen_create_passphrase">Sæt adgangskode</string>
+  <string name="lock_screen_confirm_passphrase">Bekræft adgangskode</string>
+  <string name="lock_screen_passphrase_hint">Adgangskode</string>
+  <string name="lock_screen_passphrase_not_set_enter">Ny adgangskode</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Bekræft ny adgangskode</string>
+  <string name="lock_screen_passphrases_not_matching">Adgangskoder var ikke identiske, prøv igen </string>
+  <string name="lock_screen_skip">Jeg er så doven (ingen adgangskode!)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Vælg en konto</string>
+  <string name="choose_account_title">Vælg en konto</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Tilføj <xliff:g id="ACCOUNT">%1$s</xliff:g> konto</string>
+  <string name="menu_about">Om</string>
+  <string name="menu_sign_out_all">Log alle af</string>
+  <string name="signout_all_confirm_message">Vil du logge ud af alle tjenester?</string>
+  <string name="signed_out_prompt">Du er blevet logget ud af <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Du er blevet logget ud af <xliff:g id="account">%1$s</xliff:g>, fordi <xliff:g id="reason">%2$s</xliff:g>.</string>
+  <string name="welcome_first">Førstegangsbruger?</string>
+  <string name="welcome_skip">Utålmodig for at komme i gang?</string>
+  <string name="welcome_about">Kom i gang</string>
+  <string name="welcome_account">Kontoopsætning</string>
+  <string name="setup_passphrase_title">Opsætning af adgangsfrase</string>
+  <string name="setup_passphrase">Før du starter skal du vælge en sikker adgangsfrase som skal beskytte dine ChatSecure-data fra uønsket adgang.</string>
+  <string name="setup_passphrase_label1">Adgangsfrase:</string>
+  <string name="setup_passphrase_label2">Adgangsfrase (bekræftelse):</string>
+  <string name="rekey_message">Skriv en *ny* adgangsfrase. Den skal indeholde mindst et stort bogstav, et lille bogstav, et tal og skal være længere end seks karakterer.</string>
+  <string name="do_rekey">Krypterer eksisterende noter med den nye adgangsfrase (vær tålmodig…)</string>
+  <string name="enter_pass">Skriv din adgangsfrase:</string>
+  <string name="new_pass">Velkommen! Skriv en stærk adgangsfrase for at sikre dine noter. Den skal indeholde et stort bogstav, et lille bogstav, et tal og skal være længere end seks karakterer.</string>
+  <string name="pass_err_length">Din adgangsfrase var ikke lang nok</string>
+  <string name="pass_err_upper">Din adgangsfrase indeholdt ikke store bogstaver</string>
+  <string name="pass_err_lower">Din adgangsfrase indeholdt ikke små bogstaver</string>
+  <string name="pass_err_num">Din adgangsfrase indeholdt ikke nogle ta</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">Om ChatSecure</string>
+  <string name="about_welcome">ChatSecure er en mobil chat-applikation (også kendt som instant messaging) som indeholder ekstra sikkerhedsfaciliteter, der forhindrer aflytning af dine samtaler og kommuikation.
+
+Applikationen understøtter enhver chat service der anvender Jabber eller XMPP protokollen, såsom Google GTalk eller Jabber.org.</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Hvordan er den sikker?</string>
+  <string name="about_otr">\'Off-the-Record tekstudveksling\' er et sikkerhedssystem designet til at forøge din digitale brevhemmelighed, ved at efterligne egenskaberne for en privat samtale i den fysiske verden. Dette inkluderer kryptering, autentifikation, benægtbarhed og fremadrettet hemmelighed.
+
+OTR-protokollen er kompatibel med chatklienter til computere, såsom Adium eller Pidgin.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Er mine chat-samtaler sikre?</string>
+  <string name="about_security">Chatsecures krypteringsfeature virker kun i samtaler med andre som anvender kompatible klienter, så du bør sikre dig at dine kontakter bruger ChatSecure til mobile enheder og Adium eller Pidgin til computere. Du kan kontrollere præcist hvordan og hvornår ChatSecure forsøger at kryptere dine samtaler i Kontoindstillinger.
+
+Lad os så komme i gang!</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Ny kont</string>
+  <string name="menu_add_account">Tilføj konto</string>
+  <string name="menu_edit_account">Rediger konto</string>
+  <string name="menu_remove_account">Fjern konto</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Bruger@Server:</string>
+  <string name="label_password">Adgangskode:</string>
+  <string name="remember_password">Husk min adgangskode.</string>
+  <string name="keep_me_signed_in">Log automatisk ind.</string>
+  <string name="sign_up">Har du ikke en konto?</string>
+  <string name="sign_in">Log ind</string>
+  <string name="check_save_password">For din egen sikkerheds skyld, bør du ændre adgangskode ved at gå til hjemmesiden via en computer, hvis du mister din telefon.</string>
+  <string name="check_auto_sign_in">Denne valgmulighed logger dig automatisk ind, hver gang du åbner dette program. For at deaktivere denne valgmulighed skal du logge ud og så fjerne markeringen i afkrydsningsfeltet \"Log automatisk ind\".</string>
+  <string name="use_tor">Forbind via Tor (kræver Orbot app)</string>
+  <string name="account_setup_example_email_address">bruger@domæne.dk</string>
+  <string name="account_setup_new_username">nyt brugernavn</string>
+  <string name="account_setup_service_provider">serviceudbyder (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">adgangskode</string>
+  <string name="account_setup_password_confirm">bekræft adgangskode</string>
+  <string name="account_setup_advanced_button">Avancerede kontoindstillinger</string>
+  <string name="account_select_type">Kontotype</string>
+  <string name="btn_create_new_account">Registrer konto</string>
+  <string name="account_setup_pers_sub">Vedvarenhed</string>
+  <string name="account_setup_pers_pw_title">Husk adgangskode</string>
+  <string name="account_setup_pers_pw_on">Adgangskode huskes</string>
+  <string name="account_setup_pers_pw_off">Adgangskode huskes ikke</string>
+  <string name="account_setup_pers_auto_title">Log automatisk ind</string>
+  <string name="account_setup_pers_auto_on">Forbind ved opstart af ChatSecure</string>
+  <string name="account_setup_pers_auto_off">Forbind ikke ved opstart af ChatSecure</string>
+  <string name="account_setup_pers_now_title">Log ind nu</string>
+  <string name="account_setup_pers_now_on">Forbind med følgende kontoopsætning</string>
+  <string name="account_setup_pers_now_off">Forbind ikke med følgende kontoopsætning</string>
+  <string name="account_setup_personal_sub">Personlige oplysninger (valgfrit)</string>
+  <string name="account_setup_personal_alias_title">Kontoalias (dit navn)</string>
+  <string name="account_setup_personal_alias_sub">Hvordan din konto vises på nettet</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">En kort svada om dig selv</string>
+  <string name="account_setup_advanced_enc_force">Gennemtving kryptering / afvis råtekst-overførsel</string>
+  <string name="account_setup_advanced_enc_auto">Krypterer samtaler automatiskt, hvis muligt.</string>
+  <string name="account_setup_advanced_enc_req">Krypter samtaler som anmodet</string>
+  <string name="account_setup_advanced_enc_off">Deaktiver samtalekryptering</string>
+  <string name="account_setup_signin_a">Validerer brugerlogin..</string>
+  <string name="account_setup_signin_b">Genererer nøglepar…</string>
+  <string name="account_setup_signin_c">Logger ind…</string>
+  <string name="account_wizard_setup_title">Konto-guide</string>
+  <string name="account_wizard_account_title">Dit konto-ID</string>
+  <string name="account_wizard_host_title">Konfigurer server</string>
+  <string name="account_wizard_ready_title">Er du klar?</string>
+  <string name="account_wizard_setup_body">Skriv dit konto-ID for at konfigurere ChatSecure til din XMPP chat-service. Dit ID ligner en email-adresse:</string>
+  <string name="account_wizard_account_body">Skriv dit konto-ID (brugernavn@servernavn):</string>
+  <string name="account_wizard_host_body">Skriv eller rediger dit Jabber/XMPP chat-service servernavn og portnummer (5222 is default).</string>
+  <string name="account_wizard_ready_body">ChatSecure er nu konfigureret, og det er tid til at forbinde til din service og begynde at samtale sikkert og privat!</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Vælg et domæne</string>
+  <string name="registering_new_account_">Registrerer ny konto…</string>
+  <string name="signing_in_to">sætter gang i ChatSecure…</string>
+  <string name="menu_cancel_signin">Annuller login</string>
+  <string name="signing_in_wait">Logger ind …</string>
+  <string name="signing_out_wait">Logger ud\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">Brug SRV-opslag</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Brug DNS SRV til at finde XMPP-servere ud fra domænenavn</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Tillad at brugernavn og adgangskode sendes ukrypteret når der anvendes en ukrypteret forbindelse</string>
+  <string name="allow_plain_text_auth">Tillad råtekst autentificering</string>
+  <string name="verify_that_the_certificate_is_trusted">Kontroller at der er tillid til certifikatet </string>
+  <string name="tls_verification">TLS-verficering</string>
+  <string name="require_tls_ssl_connection">Gennemtving TLS-krypteret forbindelse</string>
+  <string name="transport_encryption">Transport-kryptering</string>
+  <string name="how_encrypted_chats_are_started">hvorledes krypterede samtaler startes</string>
+  <string name="the_server_to_connect_to_if_needed">Serveren der skal forbindes til, hvis nødvendig</string>
+  <string name="connect_server">Forbindelses-server</string>
+  <string name="tcp_port_for_xmpp_server">TCP-port for XMPP-server</string>
+  <string name="server_port">Server-port</string>
+  <string name="xmpp_resource">XMPP-ressource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">for at adskille denne forbindelse fra andre klienter der også er logget ind</string>
+  <string name="xmpp_resource_prio_title">XMPP ressourceprioritet</string>
+  <string name="xmpp_resource_prio_summary">Beskeder til klienter med flere aktive ressourcer vil blive afleveret til ressourcen med højeste prioritet</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Samtaler</string>
+  <string name="no_messages">Ingen samtaler.
+
+Tryk her for at starte e!</string>
+  <string name="empty_account_message">Du har ingen
+konfigurerede konti.
+
+Tryk her for at tilføje!</string>
+  <string name="buddy_list_title">Kontaktliste - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Tilføj kontakt</string>
+  <string name="menu_remove_contact">Slet kontakt</string>
+  <string name="menu_block_contact">Bloker kontakt</string>
+  <string name="menu_contact_nickname">Kontakt kaldenavn</string>
+  <string name="menu_view_blocked">Blokeret</string>
+  <string name="confirm_delete_contact">Kontakten \"<xliff:g id="user">%1$s</xliff:g>\" slettes.</string>
+  <string name="confirm_block_contact">Kontakten "<xliff:g id="user">%1$s</xliff:g>" blokeres.</string>
+  <string name="confirm_unblock_contact">Blokeringen af kontakten "<xliff:g id="user">%1$s</xliff:g>" ophæves.</string>
+  <string name="add_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er tilføjet.</string>
+  <string name="delete_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er slettet.</string>
+  <string name="block_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er blokeret.</string>
+  <string name="unblock_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er ikke længere blokeret.</string>
+  <string name="menu_new_chat">Ny Chat</string>
+  <string name="menu_search_contacts">Søg i Kontakter</string>
+  <string name="menu_show_grid">Vis tern</string>
+  <string name="menu_start_chat">Start chat</string>
+  <string name="menu_view_profile">Vis Profil</string>
+  <string name="menu_verify">Bekræft nøgle</string>
+  <string name="ongoing_conversation">Igangværende chats (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> er online</string>
+  <string name="subscriptions">Venneinvitationer</string>
+  <string name="unknown_contact">(\"<i>\"Ukendt\"</i>\")</string>
+  <string name="empty_contact_group">Tom</string>
+  <string name="empty_conversation_group">Der er ingen samtaler</string>
+  <string name="search_label">Kontakt</string>
+  <string name="search_hint">skriv navnet på en kontakt at chatte med</string>
+  <string name="search_button_text">Udfør</string>
+  <string name="empty_chat_list">Der er ingen aktive chats.</string>
+  <string name="add_contact_title">Tilføj kontakt</string>
+  <string name="input_contact_label">E-mail-adresse på den person, du ønsker at invitere:</string>
+  <string name="choose_list_label">Vælg en liste:</string>
+  <string name="invite_instruction">Indtast et navn for at tilføje fra Kontakter.</string>
+  <string name="invite_label">Send invitation</string>
+  <string name="contact_profile_title">Kontaktens profil</string>
+  <string name="label_status">Status:</string>
+  <string name="label_client_type">Klienttype:</string>
+  <string name="client_type_computer">Computer</string>
+  <string name="client_type_mobile">Mobil</string>
+  <string name="blocked_list_title">Blokerede kontakter – <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Der er ingen blokerede kontakter.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Chat med <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="me">Mig</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g> er online</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> er ikke til stede</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> er optaget</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> er offline</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> har tilsluttet sig</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> er gået</string>
+  <string name="menu_send_image">Send billede</string>
+  <string name="menu_send_file">Send fil</string>
+  <string name="menu_send_audio">Send lyd</string>
+  <string name="menu_take_picture">Tag billede</string>
+  <string name="file_transfer">Filoverførsel</string>
+  <string name="transfer_complete">Overførsel færdig</string>
+  <string name="transfer_in_progress">Overførsel i gang</string>
+  <string name="accept_transfer_">Accepter overførsel?</string>
+  <string name="wants_to_send_you_the_file">vil sende dig filen</string>
+  <string name="send">Send</string>
+  <string name="compose_hint">Send besked</string>
+  <string name="compose_hint_secure">Send sikker besked</string>
+  <string name="menu_resend">Gensend</string>
+  <string name="menu_end_conversation">Afslut chat</string>
+  <string name="menu_clear_chat">Ryd Chat</string>
+  <string name="menu_insert_smiley">Indsæt smiley</string>
+  <string name="menu_switch_chats">Skift til chat</string>
+  <string name="menu_plus">Menu+</string>
+  <string name="select_link_title">Vælg link</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> har inviteret dig til at deltage i en gruppechat.</string>
+  <string name="invitation_sent_prompt">Invitationen er sendt til <xliff:g id="USER">%1$s</xliff:g>.</string>
+  <string name="accept_invitation">Accepter</string>
+  <string name="decline_invitation">Afvis</string>
+  <string name="menu_new_group_chat">Gruppesamtale</string>
+  <string name="create_or_join_group_chat">Opret eller deltag i gruppesamtale</string>
+  <string name="connecting_to_group_chat_">Forbinder til gruppesamtale</string>
+  <string name="menu_invite_contact">Inviter …</string>
+  <string name="contacts_picker_title">Vælg kontakt(er), der skal inviteres</string>
+  <string name="contact_filter_hint">Indtast for at finde kontakt</string>
+  <string name="empty_contact_list">Ingen kontakter fundet.
+
+Rør skærm for at invitere.</string>
+  <string name="approve_subscription_error">Tilmelding fra <xliff:g id="USER">%1$s</xliff:g> kunne ikke godkendes. Prøv igen senere.</string>
+  <string name="decline_subscription_error">Tilmelding fra <xliff:g id="USER">%1$s</xliff:g> kunne ikke afvises. Prøv igen senere.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Start Kryptering</string>
+  <string name="menu_otr_stop">Stop Kryptering</string>
+  <string name="starting_otr_chat">Starter krypteret samtale…</string>
+  <string name="stopping_otr_chat">Stopper krypteret samtale…</string>
+  <string name="label_fingerprint_remote">Sikkerhedsfingeraftryk</string>
+  <string name="label_fingerprint_local">Sikkerhedsfingeraftryk</string>
+  <string name="menu_sign_in">Log ind</string>
+  <string name="menu_gen_key">Regenerer nøgle</string>
+  <string name="otr_session_status_plaintext">Kryptering er deaktiveret</string>
+  <string name="otr_session_status_encrypted">Kryptering er aktiveret (rør for at verificere)</string>
+  <string name="otr_session_status_finished">Din kontakt har abrudt den krypterede samtale.</string>
+  <string name="otr_session_status_verified">Krypteret og verificeret!</string>
+  <string name="otr_gen_key">Genererer nyt OTR-nøglepar…</string>
+  <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">Vi kan se der eksisterer et OTR-nøglelager der kan importeres. Vil du scanne QR-adgangskoden nu?</string>
+  <string name="menu_import_keys">Aktiver KeySync</string>
+  <string name="successfully_imported_otr_keyring">OTR-nøglering importeret</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">Skan QR</string>
+  <string name="menu_fingerprint">Dit Fingeraftryk</string>
+  <string name="menu_verify_fingerprint">Manuelt</string>
+  <string name="menu_verify_secret">Spørgsmål</string>
+  <string name="their_fingerprint_verified_">Sikkerhedsfingeraftryk (verificeret)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Er du sikker på at du vil bekræfte dette fingeraftryk?</string>
+  <string name="verify_key_">Bekræft fingeraftryk?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Fingeraftryk for fjernforbindelse blev bekræftet!</string>
+  <string name="fingerprint_for_you">Dit fingeraftryk </string>
+  <string name="fingerprint_for_">Fingeraftryk for </string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Autentifikation</string>
+  <string name="smp_question_summary">Skriv et spørgsmål som sendes til din kontakt, og det forventede svar, for at kontrollere at vedkommende er identisk med den person vedkommende udgiver sig for at være.</string>
+  <string name="smp_question_hint">spørgsmålet der skal stilles</string>
+  <string name="qmp_answer_hint">det forventede svar</string>
+  <string name="remote_verified_us">Din kontakt har autentificeret dig. Nu skal du autentificere din kontakt ved at stille dit eget spørgsmål til vedkommende.</string>
+  <string name="otr_qa_send">Send</string>
+  <string name="otr_qa_cancel">Annuller</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Sikkert opkald</string>
+  <string name="pref_sip_account_title">Sikker stemmeopkald</string>
+  <string name="pref_sip_account_summary">Skriv din OStel.co eller anden sikker SIP-servicekonto her for integration af opkald</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Kontoopsætning</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Sikkerhed og privatliv</string>
+  <string name="encryption_and_anonymity_title">Kryptering og Anonymitet</string>
+  <string name="menu_view_encrypt_chat">Kryptering Aktiveret/Deaktiveret</string>
+  <string name="pref_cacheword_timeout_title">Adgangskodetidsfrist udløbet </string>
+  <string name="pref_cacheword_timeout_summary">Tid hvori krypteringen skal vise oplåst</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">Brugerinterface</string>
+  <string name="menu_locale">Sprog</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Sprog</string>
+  <string name="pref_theme_dark">Brug mørkt tema</string>
+  <string name="pref_theme_dark_summary">Ændre applikationstemaet til mørk</string>
+  <string name="pref_in_memory_db_title">Brug kun hukommelse til lagring af beskeder</string>
+  <string name="pref_in_memory_db_summary">Gem kun beskeder i dynamisk hukommelse, ikke i statisk flash-lager. Dette forhindrer angreb hvor beskeder ville kunne udtrækkes via analyse af flash-mediet. (kan forårsage beskedtab)</string>
+  <string name="pref_background_title">Baggrundsbillede</string>
+  <string name="pref_background_summary">Sæt filsti (\"/sdcard/foo.jpg\") til et billede der bruges som baggrund i applikationen.</string>
+  <string name="pref_show_grid">Vis kontakt-tern</string>
+  <string name="pref_show_grid_summary">Vis kontaktliste som profilbilledgitter </string>
+  <string name="button_yes_accept_all">Ja, accepter alle</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Anden fintuning</string>
+  <string name="start_on_boot">Start ChatSecure automatiskt</string>
+  <string name="start_on_boot_summary">Start altid og log automatisk ind med sidst anvendte konti</string>
+  <string name="hide_offline_contacts">Skjul offline kontakter</string>
+  <string name="foreground_service_title">Brug forgrundsprioritet</string>
+  <string name="foreground_service_summary">Reducer risikoen for at Android genstarter forbindelsesservicen. Dette vil placere en permanent notifikation i notifikationsområdet.</string>
+  <string name="heartbeat_interval_title">Heartbeat-interval</string>
+  <string name="heartbeat_interval_summary">Brug en højere værdi (i minutter) for at spare batterikapacitet. En høj værdi vil måske forårsage at din udbyder lukker forbindelsen pga. inaktivitet.</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Meddelelsesindstillinger</string>
+  <string name="notification_enabled_title">IM-meddelelser</string>
+  <string name="notification_enabled_summary">Underret i statuslinjen, når der kommer en IM</string>
+  <string name="notification_vibrate_title">Vibrer</string>
+  <string name="notification_vibrate_summary">Vibrer også, når der kommer en IM</string>
+  <string name="notification_sound_title">Lyd</string>
+  <string name="notification_sound_summary">Spil også ringetone, når der kommer en IM</string>
+  <string name="notification_ringtone_title">Brug ChatSecures egen beskedtone</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Aktiver fejlsøgningslog</string>
+  <string name="pref_debug_summary">Omdirriger applikationens log til standard out / logcat for fejlsøgning</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Baggrundsdata er deaktiveret</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> kræver, at baggrundsdata aktiveres.</string>
+  <string name="bg_data_prompt_ok">Aktiver</string>
+  <string name="bg_data_prompt_cancel">Afslut</string>
+  <string name="signout_kill_confirm_message">Vil du logge ud af alle services OG afslutte alle kørende processer (hård afslutning)?</string>
+  <string name="prompt_create_new_account_">Opret ny konto?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Opret en ny chat-konto for brugernavn \'%1$s\'?</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Nye <xliff:g id="PROVIDER">%1$s</xliff:g>-beskeder</string>
+  <string name="notify_groupchat_label">Gruppechatinvitation</string>
+  <string name="new_messages_notify">Ny(e) besked(er) fra</string>
+  <string name="starting_the_chatsecure_service_">Starter ChatSecure servicen…</string>
+  <string name="app_unlocked">Aktiveret &amp; låst op</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Bemærk</string>
+  <string name="general_error">Fejlkode <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed">Der kunne ikke logges ind på tjenesten <xliff:g id="SERVICE">%1$s</xliff:g>. Prøv igen senere."\n"(Detalje: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="add_list_failed">Listen blev ikke tilføjet.</string>
+  <string name="block_contact_failed">Kontakten blev ikke blokeret.</string>
+  <string name="unblock_contact_failed">Blokeringen af kontakten blev ikke ophævet.</string>
+  <string name="select_contact">Vælg en kontakt først.</string>
+  <string name="disconnected">\"Afbrudt!\"\n</string>
+  <string name="service_error">Servicefejl!</string>
+  <string name="load_contact_list_failed">Listen over kontakter blev ikke indlæst.</string>
+  <string name="cant_connect_to_server">Der kan ikke oprettes forbindelse til serveren. Kontroller din forbindelse.</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> findes allerede på din liste over kontakter.</string>
+  <string name="contact_blocked">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er blevet blokeret.</string>
+  <string name="contact_not_loaded">Vent, mens din liste over kontakter indlæses.</string>
+  <string name="network_error">Der opstod en netværksfejl.</string>
+  <string name="wifi_not_connected_error">WiFI er nødvendig for denne forbindelse.</string>
+  <string name="service_not_support">Serveren understøtter ikke denne funktionalitet.</string>
+  <string name="invalid_password">Den adgangskode, du indtastede, er ikke gyldig.</string>
+  <string name="internal_server_error">Serveren registrerede en fejl.</string>
+  <string name="not_implemented">Serveren understøtter ikke denne funktionalitet.</string>
+  <string name="service_unavaiable">Serveren er ikke tilgængelig i øjeblikket.</string>
+  <string name="timeout">Der opstod timeout for serveren.</string>
+  <string name="version_not_supported">Serveren understøtter ikke den aktuelle version.</string>
+  <string name="message_queue_full">Beskedkøen er fuld.</string>
+  <string name="domain_not_supported">Serveren understøtter ikke videresendelse til domænet.</string>
+  <string name="unknown_user">Det indtastede brugernavn kunne ikke genkendes.</string>
+  <string name="recipient_blocked_the_user">Beklager! Du er blokeret af brugeren.</string>
+  <string name="session_expired">Sessionen er udløbet. Log ind igen.</string>
+  <string name="forced_logout">du er logget ind fra en anden klient.</string>
+  <string name="already_logged_in">du er allerede logget ind fra en anden klient.</string>
+  <string name="msisdn_error">Beklager! Telefonnummeret kan ikke læses fra dit SIM-kort. Kontakt din udbyder for at få hjælp.</string>
+  <string name="not_signed_in">Du er ikke logget ind i øjeblikket.</string>
+  <string name="account_setup_error_validating">ChatSecure stødte på en fejl under validering af brugernavn eller adgangskode - kontroller dem og prøv igen.</string>
+  <string name="account_setup_error_keypair">ChatSecure stødte på en fejl under generering af nøglepar.</string>
+  <string name="account_setup_error_server">ChatSecure stødte på en fejl under etablering af forbindelse til server - kontoller din konfiguration og prøv igen.</string>
+  <string name="account_setup_error_connectivity">ChatSecure stødte på en fejl under etablering af forbindelse - kontoller din netværksforbindelse og prøv igen.</string>
+  <string name="error_suspended_connection">ChatSecure har mistet en forbindelse til netværket</string>
+  <string name="error_reestablish_connection">ChatSecure prøver at genetablere en forbindelse</string>
+  <string name="account_wizard_no_domain_warning">Du skrev ikke @servernavn delen af dit konto-ID. Prøv venligst igen!</string>
+  <string name="account_wizard_no_root_domain_warning">Dit servernavn har ikke et .com, .net eller lignende efter sig. Prøv venligst igen!</string>
+  <string name="signin_password_prompt">Skriv din adgangskode:</string>
+  <string name="warning_tor_connect">Siden du anvender Tor, skal du angive XMPP \'Forbindelses-server\' direkte i avancerede kontoindstillinger</string>
+  <string name="unable_to_create_or_join_group_chat">Kunne ikke oprette eller deltage i gruppesamtale</string>
+  <string name="sorry_we_cannot_share_that_file_type">Beklager, vi kan ikke dele filer af denne type</string>
+  <string name="err_otr_share_no_encryption">Du skal aktivere kryptering for at dele filer</string>
+  <string name="please_enable_chat_encryption_to_share_files">Aktiver samtale-kryptering for at dele filer</string>
+  <string name="swipe_alert">ChatSecure har modtaget en forespørgsel om at fjerne sin operativsystemprocess. ChatSecure vil nu formentlig fejle. Vær venlig at bruge \'Log alle af\' funktionen fra kontilisteskærmen i stedet. </string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Der er ingen fremviser tilgængelig for dette filformat</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Start venligst en sikker samtale inden du scanner koder</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-nøglering ike importeret; kontroller at filen eksisterer på den korrekte sti og i det korrekte format</string>
+  <string name="otr_keysync_warning_message">Kopier filen \'otr_keystore.ofcaes\' fra computerværktøjet OtrFileConverter til rod-mappen af din enheds lager</string>
+  <string name="msg_sent_failed">Beskeden kunne ikke sendes.</string>
+  <string name="disconnected_warning">Beskeder afsendes ved genetablering af forbindelse</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> er offline. Dine sendte beskeder sendes, når <xliff:g id="USER_1">%1$s</xliff:g> er online igen.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> er ikke på din liste over kontakter.</string>
+  <string name="account_settings_title">Account Settings</string>
+
+  <string name="warning_alpha">ADVARSEL: Dette er en tidlig udgave af ChatSecure som kan indeholde sikkerhedshuller eller andre fejl.</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Grupper</string>
+  <string name="_open_conversations">åbne samtaler</string>
+  <string name="menu_exit">Afslut</string>
+  <string name="menu_panic">Panik</string>
+  <string name="buddies">Kontakter</string>
+  <string name="contacts">Kontakter</string>
+  <string name="mtm_accept_cert">Accepter servercertifikat?</string>
+  <string name="menu_sidebar_qr">Fingeraftryk</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Kontaktliste</string>
+  <string name="menu_settings">Indstillinger</string>
+  <string name="menu_view_accounts">Kontoliste</string>
+  <string name="menu_sign_out">Log ud</string>
+  <string name="menu_view_contact_list">Kontaktliste</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Lokalområde (Bonjour/ZeroConf)</string>
+  <string name="google_account">Google-konto</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">Online</string>
+  <string name="presence_busy">Optaget</string>
+  <string name="presence_away">Ikke til stede</string>
+  <string name="presence_idle">Ikke aktiv</string>
+  <string name="presence_offline">Offline</string>
+  <string name="presence_invisible">Vis som offline</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Glad</item>
+    <item>Trist</item>
+    <item>Blinker</item>
+    <item>Rækker tunge</item>
+    <item>Overrasket</item>
+    <item>Kysser</item>
+    <item>Råber</item>
+    <item>Sej</item>
+    <item>Pengeglad</item>
+    <item>Forlegen</item>
+    <item>Flov</item>
+    <item>Engel</item>
+    <item>Uafklaret</item>
+    <item>Græder</item>
+    <item>Lukket med syv segl</item>
+    <item>Griner</item>
+    <item>Forvirret</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Glad</item>
+    <item>Trist</item>
+    <item>Blinker</item>
+    <item>Rækker tunge</item>
+    <item>Overrasket</item>
+    <item>Kysser</item>
+    <item>Råber</item>
+    <item>Sej</item>
+    <item>Pengeglad</item>
+    <item>Forlegen</item>
+    <item>Flov</item>
+    <item>Engel</item>
+    <item>Uafklaret</item>
+    <item>Græder</item>
+    <item>Lukket med syv segl</item>
+    <item>Griner</item>
+    <item>Forvirret</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_need_a_new_account">Ny kont</string>
+</resources>

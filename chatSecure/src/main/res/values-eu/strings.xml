@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">mezuak irakurri</string>
+  <string name="ro_perm_desc">
+Aplikazioek BM eduki hornitzailetik irakurtzea baimentzen du.</string>
+  <string name="wo_perm_label">Mezua idatzi</string>
+  <string name="wo_perm_desc">
+Aplikazioek BM eduki hornitzailean irakurtzea baimentzen du.</string>
+  <string name="perm_label">BM zerbitzua hasi</string>
+  <string name="perm_desc">Aplikazioari \"intent\" bidez IM zerbitzua hastea baimentzen dio.</string>
+  <!--General: Actions-->
+  <string name="confirm">Baieztatu</string>
+  <string name="ok">Ados</string>
+  <string name="cancel">Utzi</string>
+  <string name="yes">Ados</string>
+  <string name="no">Utzi</string>
+  <string name="btn_next">Hurrengoa</string>
+  <string name="btn_back">Atzera</string>
+  <string name="connect">Konektatu</string>
+  <!--Views-->
+  <string name="lock_screen_open">Ireki</string>
+  <string name="title_activity_lock_screen">ChatSecure blokeatuta</string>
+  <string name="lock_screen_create_passphrase">Pasahitza ezarri</string>
+  <string name="lock_screen_confirm_passphrase">Pasahitza baieztatu</string>
+  <string name="lock_screen_passphrase_hint">Pasahitza</string>
+  <string name="lock_screen_passphrase_not_set_enter">Pasahitz berria</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Pasahitz berria egiaztatu</string>
+  <string name="lock_screen_passphrases_not_matching">Pasahitzak ez datoz bat, saiatu berriro mesedez</string>
+  <string name="lock_screen_skip">Alfer nabil (Pasahitzik ez!)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Kontu bat aukeratu</string>
+  <string name="choose_account_title">Kontu bat aukeratu</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account"><xliff:g id="account">%1$s</xliff:g> kontua gehitu</string>
+  <string name="menu_about">Honi buruz</string>
+  <string name="menu_sign_out_all">Saio guztiak itxi</string>
+  <string name="signout_all_confirm_message">Zerbitzu guztien saioa itxi nahi duzu?</string>
+  <string name="signed_out_prompt"><xliff:g id="account">%1$s</xliff:g> zerbitzariak saioa bukatu du.</string>
+  <string name="signed_out_prompt_with_error"><xliff:g id="account">%1$s</xliff:g> zerbitzariak saioa bukatu du, arrazoi honengatik: <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">ChatSecure erabiltzen duzun lehen aldia?</string>
+  <string name="welcome_skip">Hasteko irrikatan?</string>
+  <string name="welcome_about">Sarrera</string>
+  <string name="welcome_account">Kontu konfigurazioa</string>
+  <string name="setup_passphrase_title">Pasaesaldia konfiguratu</string>
+  <string name="setup_passphrase">Hasi baino lehen pasaesaldi seguru bat aukeratu mesedez, zure datuen bidegabeko atzipenak galarazteko.</string>
+  <string name="setup_passphrase_label1">Pasaesaldia:</string>
+  <string name="setup_passphrase_label2">Pasaesaldia (berriz):</string>
+  <string name="rekey_message">Sartu pasaesaldi *berri* bat. Gutxienez legra larri bat, letra xehe bat eta zenbaki bat izan behar ditu, eta sei karaktere baino gehiagokoa izan behar du.</string>
+  <string name="do_rekey">Zure notak pasaesaldi berriarekin zifratzen (pazientzia…)</string>
+  <string name="enter_pass">Sartu zure pasaesaldia:</string>
+  <string name="new_pass">Ongi etorri! Sartu pasaesaldi sendo bat zure notak babesteko. Gutxienez letra larri bat, letra xehe bat eta zenbaki bat izan behar ditu, eta sei karaktere baino gehiagokoa izan behar du.</string>
+  <string name="pass_err_length">Zure pasaesaldia ez du luzera nahikorik</string>
+  <string name="pass_err_upper">Zure pasaesaldiak ez du letra larririk</string>
+  <string name="pass_err_lower">Zure pasaesaldiak ez du letra xeherik</string>
+  <string name="pass_err_num">Zure pasaesaldiak ez du zenbakirik</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">ChatSecure-ri buruz</string>
+  <string name="about_welcome">ChatSecure mobiletarako berehalako mezularitzako aplikazioa da. Segurtasun ezaugarri gehigarriak ditu eta besteek zure elkarrizketak eta komunikazioak miatzea saihesten du.
+
+Aplikazio honek Jabber edo XMPP protokoloa erabiltzen duten edozen berriketa zerbitzari erabil dezake, Google GTalk edo jabber.org adibidez.</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Nola da segurua?</string>
+  <string name="about_otr">\'OTR mezularitza\'  pribatutasuna ahalbidetzeko segurtasun sistema da, mundu errealeko elkarrizketa pribatuetako ezaugarriak bilatzen dituena, besteak beste kautotzea, ukagarritasuna eta aurrerako sekretua.
+
+OTR-protokoloa Adium edo Pidgin ordenagailuetako berriketa bezeroekin bateragarria da.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Nire berriketak seguruak dira?</string>
+  <string name="about_security">ChatSecure-ren zifratze ezaugarriak bateragarriak diren aplikazio edo programekin bakarrik dabiltza. Zure kontaktuak mobiletan ChatSecure eta ordenagailuetan Adium edo Pidgin instalatuta dituztela ziurtatu. Ezarpenean kontrola dezakezu ChatSecure-k nola eta noiz saiatuko den zure berriketak zifratzen.
+
+Goazen aurrera!</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Kontu berria</string>
+  <string name="menu_add_account">Kontua gehitu</string>
+  <string name="menu_edit_account">Kontua editatu</string>
+  <string name="menu_remove_account">Kontua ezabatu</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Erabiltzailea@Ostalaria</string>
+  <string name="label_password">Pasahitza:</string>
+  <string name="remember_password">Gogoratu nire pasahitza.</string>
+  <string name="keep_me_signed_in">Saioa hasi automatikoki.</string>
+  <string name="sign_up">Ez duzu konturik?</string>
+  <string name="sign_in">Saioa hasi</string>
+  <string name="check_save_password">Zure segurtasunerako, zure mobila galdu edo lapurtzean ordenagailuarekin webgunera joan eta aldatu zure pasahitza.</string>
+  <string name="check_auto_sign_in">Aukera honek aplikazio hasterakoan automatikoki saioa hasten du. Aukera ezgaitzeko lehenengo saioa bukatu eta gero \"Saioa hasi automatikoki\" kontrol-laukia hustu.</string>
+  <string name="use_tor">Tor bidez konektatua (Orbot aplikazioa behar da)</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">erabiltzaile berria</string>
+  <string name="account_setup_service_provider">hornitzailea (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">pasahitza</string>
+  <string name="account_setup_password_confirm">pasahitza berretzi</string>
+  <string name="account_setup_advanced_button">Kontu ezarpen aurreratuak</string>
+  <string name="account_select_type">Kontu mota</string>
+  <string name="btn_create_new_account">Kontua erregistratu</string>
+  <string name="account_setup_pers_sub">Iraunkortasuna</string>
+  <string name="account_setup_pers_pw_title">Pasahitza gogoratu</string>
+  <string name="account_setup_pers_pw_on">Pasahitza katxean</string>
+  <string name="account_setup_pers_pw_off">Pasahitza ez dago katxean</string>
+  <string name="account_setup_pers_auto_title">Saioa hasi automatikoki</string>
+  <string name="account_setup_pers_auto_on">ChatSecure hastean konektatu</string>
+  <string name="account_setup_pers_auto_off">Ez konektatu ChatSecure hastean</string>
+  <string name="account_setup_pers_now_title">Saioa hasi orain</string>
+  <string name="account_setup_pers_now_on">Kontu ezarpen hau erabiliz konektatu</string>
+  <string name="account_setup_pers_now_off">Ez konektatu kontu ezarpen hau erabiliz</string>
+  <string name="account_setup_personal_sub">Pertsonala (aukerazkoa)</string>
+  <string name="account_setup_personal_alias_title">Kontuaren alias-a (zure izena)</string>
+  <string name="account_setup_personal_alias_sub">Zure kontua linean nola ikusten den</string>
+  <string name="account_setup_personal_profile_title">Profila</string>
+  <string name="account_setup_personal_profile_sub">Zuri buruzko sarrera txikia</string>
+  <string name="account_setup_advanced_enc_force">Zifratzea derrigortu / testu soila baztertu</string>
+  <string name="account_setup_advanced_enc_auto">Aukera dagoenean berriketak automatikoki zifratu</string>
+  <string name="account_setup_advanced_enc_req">Eskatzen denean berriketak zifratu</string>
+  <string name="account_setup_advanced_enc_off">Berriketa zifratzea ezgaitu</string>
+  <string name="account_setup_signin_a">Kredentzialak balioztatzen…</string>
+  <string name="account_setup_signin_b">Gako bikotea sortzen…</string>
+  <string name="account_setup_signin_c">Saioa hasten…</string>
+  <string name="account_wizard_setup_title">Kontu Laguntzailea</string>
+  <string name="account_wizard_account_title">Zure kontuaren IDa</string>
+  <string name="account_wizard_host_title">Zerbitzaria konfiguratu</string>
+  <string name="account_wizard_ready_title">Prest zaude?</string>
+  <string name="account_wizard_setup_body">ChatSecure zure XMPP berriketa zerbitzarirako konfiguratzeko zure kontuaren ID-a sartu. Eposta baten antzekoa da:</string>
+  <string name="account_wizard_account_body">Sartu zure kontuaren IDa mesedez (erabiltzailea@ostalaria)</string>
+  <string name="account_wizard_host_body">Mesedez sartu edo editatu zure jabber/xmpp berriketa zerbitzariko ostalari izena eta portu zenbakia (5222 defektuz).</string>
+  <string name="account_wizard_ready_body">ChatSecure konfiguratuta dago. Orain zure zerbitzura konektatzeko garaia da, salbu, seguru eta pribatuki berriketa egiteko!</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Domeinua hautatu</string>
+  <string name="registering_new_account_">Kontu berria erregistratzen…</string>
+  <string name="signing_in_to">ChatSecure martxan jartzen…</string>
+  <string name="menu_cancel_signin">Saio hasiera kantzelatu</string>
+  <string name="signing_in_wait">Saioa hasi\u2026</string>
+  <string name="signing_out_wait">Saioa bukatzen\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">SRV bilaketa egin</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">DNS-tako SRV eremua eta domeinu izena erabili XMPP zerbitzaria topatzeko</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Zifratu gabeko garraioa erabiltzean erabiltzaile izena eta pasahitza testu soilean bidaltzea ahalbidetu</string>
+  <string name="allow_plain_text_auth">Testu soileko kautotzea gaitu</string>
+  <string name="verify_that_the_certificate_is_trusted">Egiaztatu ziurtagiria fidagarria dela</string>
+  <string name="tls_verification">TLS egiaztapena</string>
+  <string name="require_tls_ssl_connection">TLS konexioa beharrezkoa</string>
+  <string name="transport_encryption">Garraioaren zifratzea</string>
+  <string name="how_encrypted_chats_are_started">nola hasten diren berriketa zifratuak</string>
+  <string name="the_server_to_connect_to_if_needed">Konektatzeko zerbitzaria, behar izatekotan</string>
+  <string name="connect_server">Konektatzeko zerbitzaria</string>
+  <string name="tcp_port_for_xmpp_server">XMPP zerbitzariaren TCP portua</string>
+  <string name="server_port">Zerbitzari portua</string>
+  <string name="xmpp_resource">XMPP Baliabidea</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">konexio hau izena emanda dauden beste bezeroengandik bereizteko.</string>
+  <string name="xmpp_resource_prio_title">XMPP baliabide lehentasuna</string>
+  <string name="xmpp_resource_prio_summary">Baliabide anitz dituzten bezeroentzako mezuak lehentasun handiena duen baliabidera bidaliko dira.</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Elkarrizketak</string>
+  <string name="no_messages">Elkarrizketarik ez.
+
+Hemen ikutu bat hasteko!</string>
+  <string name="empty_account_message">Ez duzu konturik
+konfiguratuta.
+
+Hemen ikutu  bat gehitzeko!</string>
+  <string name="buddy_list_title">Kontaktu zerrenda - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Kontaktua gehitu</string>
+  <string name="menu_remove_contact">Kontaktua ezabatu</string>
+  <string name="menu_block_contact">Kontaktua blokeatu</string>
+  <string name="menu_contact_nickname">Kontaktuaren ezizena</string>
+  <string name="menu_view_blocked">Blokeatuta</string>
+  <string name="confirm_delete_contact">"<xliff:g id="user">%1$s</xliff:g>" kontaktua ezabatuko da.</string>
+  <string name="confirm_block_contact">"<xliff:g id="user">%1$s</xliff:g>" kontaktua blokeatuko da.</string>
+  <string name="confirm_unblock_contact">"<xliff:g id="user">%1$s</xliff:g>" kontaktua desblokeatuko da.</string>
+  <string name="add_contact_success">"<xliff:g id="user">%1$s</xliff:g>" kontaktua gehituta.</string>
+  <string name="delete_contact_success">"<xliff:g id="user">%1$s</xliff:g>" kontaktua ezabatuta.</string>
+  <string name="block_contact_success">"<xliff:g id="user">%1$s</xliff:g>" kontaktua blokeatuta.</string>
+  <string name="unblock_contact_success">"<xliff:g id="user">%1$s</xliff:g>" kontaktua desblokeatuta.</string>
+  <string name="menu_new_chat">Berriketa berria</string>
+  <string name="menu_search_contacts">Kontaktuak bilatu</string>
+  <string name="menu_show_grid">Sareta erakutsi</string>
+  <string name="menu_start_chat">Berriketa hasi</string>
+  <string name="menu_view_profile">Profila ikusi</string>
+  <string name="menu_verify">Gakoa egiaztatu</string>
+  <string name="ongoing_conversation">Abian diren berriketak (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> linean</string>
+  <string name="subscriptions">Lagun gonbidapenak</string>
+  <string name="unknown_contact">(<i>Ezezaguna</i>) </string>
+  <string name="empty_contact_group">Hutsik</string>
+  <string name="empty_conversation_group">Elkarrizketarik ez</string>
+  <string name="search_label">Kontaktua</string>
+  <string name="search_hint">idatzi norekin egin nahi duzun berriketan</string>
+  <string name="search_button_text">Joan</string>
+  <string name="empty_chat_list">Txat aktiborik ez.</string>
+  <string name="add_contact_title">Kontaktua gehitu</string>
+  <string name="input_contact_label">Gonbidatu nahi duzun pertsonaren posta elektroniko helbidea:</string>
+  <string name="choose_list_label">Zerrenda bat hautatu:</string>
+  <string name="invite_instruction">Idatzi izen bat kontaktuetatik gehitzeko.</string>
+  <string name="invite_label">Gonbidapena bidali</string>
+  <string name="contact_profile_title">Kontaktuaren profila</string>
+  <string name="label_status">Egoera:</string>
+  <string name="label_client_type">Bezero mota:</string>
+  <string name="client_type_computer">Ordenagailua</string>
+  <string name="client_type_mobile">Mugikorra</string>
+  <string name="blocked_list_title">Blokeatutako kontaktuak - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Blokeatutako kontaturik ez.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Hasi berriketan <xliff:g id="user">%1$s</xliff:g> -(r)ekin</string>
+  <string name="me">Ni</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> linean dago</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> kanpoan dago</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> lanpetuta dago</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> lineaz kanpo dago</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> etorri da</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> joan da</string>
+  <string name="menu_send_image">Argazkia bidali</string>
+  <string name="menu_send_file">Fitxategia bidali</string>
+  <string name="menu_send_audio">Audioa bidali</string>
+  <string name="menu_take_picture">Argazkia atera</string>
+  <string name="file_transfer">Fitxategi transferentzia</string>
+  <string name="transfer_complete">Transferentzia bukatuta</string>
+  <string name="transfer_in_progress">Transferenzia aurrera doa</string>
+  <string name="accept_transfer_">Transferentzia onartu?</string>
+  <string name="wants_to_send_you_the_file">fitxategi hau bidali nahi dizu</string>
+  <string name="send">Bidali</string>
+  <string name="compose_hint">Mezua bidali</string>
+  <string name="compose_hint_secure">Mezu segurua bidali</string>
+  <string name="menu_resend">Berbidali</string>
+  <string name="menu_end_conversation">Berriketa amaitu</string>
+  <string name="menu_clear_chat">Berriketa ezabatu</string>
+  <string name="menu_insert_smiley">Txertatu aurpegiera</string>
+  <string name="menu_switch_chats">Txatak trukatu</string>
+  <string name="menu_plus">Menua+</string>
+  <string name="select_link_title">Lotura aukeratu</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> erabiltzaileak talde berriketara gonbidatu zaitu.</string>
+  <string name="invitation_sent_prompt"><xliff:g id="user">%1$s</xliff:g> erabiltzaileari gonbidapena bidalita.</string>
+  <string name="accept_invitation">Onartu</string>
+  <string name="decline_invitation">Ukatu</string>
+  <string name="menu_new_group_chat">Talde berriketa</string>
+  <string name="create_or_join_group_chat">Talde berriketa sortu edo sartu</string>
+  <string name="connecting_to_group_chat_">Talde berriketara konektatzen…</string>
+  <string name="menu_invite_contact">Gonbidatu\u2026</string>
+  <string name="contacts_picker_title">Gonbidatzeko kontaktua(k) hautatu</string>
+  <string name="contact_filter_hint">Idatzy kontaktua bilatzeko</string>
+  <string name="empty_contact_list">Ez dago kontakturik.
+
+Ikutu gonbidatzeko.</string>
+  <string name="approve_subscription_error">Ezin da <xliff:g id="user">%1$s</xliff:g> erabiltzailearen harpidetza onartu. Saiatu geroago mesedez.</string>
+  <string name="decline_subscription_error">Ezin da <xliff:g id="user">%1$s</xliff:g> erabiltzailearen harpidetza ukatu. Saiatu geroago mesedez.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Enkriptazioa hasi</string>
+  <string name="menu_otr_stop">Enkriptazioa gelditu</string>
+  <string name="starting_otr_chat">Berriketa zifratuko saioa hasten…</string>
+  <string name="stopping_otr_chat">Berriketa zifratuko saioa bukatzen…</string>
+  <string name="label_fingerprint_remote">Segurtazun hatzmarka</string>
+  <string name="label_fingerprint_local">Segurtazun hatzmarka</string>
+  <string name="menu_sign_in">Saioa hasi</string>
+  <string name="menu_gen_key">Giltza birsortu</string>
+  <string name="otr_session_status_plaintext">Zifratzea ezgaituta dago</string>
+  <string name="otr_session_status_encrypted">Zifratzea gaituta (Ikutu egiaztatzeko)</string>
+  <string name="otr_session_status_finished">Zure kontaktuak berriketa zifratua gelditu du.</string>
+  <string name="otr_session_status_verified">Zifratuta eta egiaztatuta!</string>
+  <string name="otr_gen_key">OTR gako bikote berria sortzen…</string>
+  <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">Inportatzeko OTR gako biltegi bat topatuta. QR pasahitza orain eskaneatu nahi duzu?</string>
+  <string name="menu_import_keys">Gako Sinkronizazioa gaitu</string>
+  <string name="successfully_imported_otr_keyring">OTR gako parea ongi inportatu da</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">QR eskaneatu</string>
+  <string name="menu_fingerprint">Zure hatz-marka</string>
+  <string name="menu_verify_fingerprint">Eskuz</string>
+  <string name="menu_verify_secret">Galdera</string>
+  <string name="their_fingerprint_verified_">Segurtasun hatzmarka (egiaztatuta)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Ziur hatzmarka hau baieztatu nahi duzula?</string>
+  <string name="verify_key_">Hatzmarka baieztatu?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Hurruneko hatzmarka egiaztatua izan da!</string>
+  <string name="fingerprint_for_you">Zuretzako hatzmarka</string>
+  <string name="fingerprint_for_">Honentzako hatzmarka: </string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Kautotzea</string>
+  <string name="smp_question_summary">Sartu zure kontaktura bidaliko den galdera eta dagokion erantzuna, benetan bera dela egiaztatzeko.</string>
+  <string name="smp_question_hint">egingo den galdera</string>
+  <string name="qmp_answer_hint">erantzun egokia</string>
+  <string name="remote_verified_us">Zure kontaktua ondo kautotu zaitu. Orain zuk kautotu behar duzu, zure galdera propioa eginez.</string>
+  <string name="otr_qa_send">Bidali</string>
+  <string name="otr_qa_cancel">Utzi</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Dei segurua</string>
+  <string name="pref_sip_account_title">Dei seguruak</string>
+  <string name="pref_sip_account_summary">Hemen OStel.co edo beste SIP zerbitzu segurua sartu dei integraziorako</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Kontu konfigurazioa</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Segurtasuna eta pribatutasuna</string>
+  <string name="encryption_and_anonymity_title">Enkriptazioa eta Anonimotasuna</string>
+  <string name="menu_view_encrypt_chat">Enkriptatu piztu/itzali</string>
+  <string name="pref_cacheword_timeout_title">Pasahitzaren iraungitzea</string>
+  <string name="pref_cacheword_timeout_summary">Zifratze aplikazioa desblokeatuta mantenduko den denbora</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">Erabiltzaile interfazea</string>
+  <string name="menu_locale">Hizkuntza</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Hizkuntzak</string>
+  <string name="pref_theme_dark">Itxura iluna erabili</string>
+  <string name="pref_theme_dark_summary">Aplikazioaren itxura ilunera aldatu</string>
+  <string name="pref_in_memory_db_title">Memoriako mezu biltegia bakarrik</string>
+  <string name="pref_in_memory_db_summary">Mezuak memoriak gordeko dira bakarrik, ez flash biltegian, mezuen eskuratzea saihesteko. (Mezuen galera ekar dezake)</string>
+  <string name="pref_background_title">Atzeko irudia</string>
+  <string name="pref_background_summary">Aplikazioaren atzeko planorako irudiarentzako helbidea (\"/sdcard/foo.jpg\") zehaztu</string>
+  <string name="pref_show_grid">Kontaktu sareta erakutzi</string>
+  <string name="pref_show_grid_summary">Kontaktuen zerrenda avatar-en sareta moduan erakutsi</string>
+  <string name="button_yes_accept_all">Bai, guztia onartu</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Bestelako ezarpenak</string>
+  <string name="start_on_boot">Hasi ChatSecure automatikoki</string>
+  <string name="start_on_boot_summary">Hasi eta berehala lehendik saioa hasitan zuten kontuekin saioa hasi</string>
+  <string name="hide_offline_contacts">Lineaz kanpoko kontaktuak ezkutatu</string>
+  <string name="foreground_service_title">Lehen planoko lehentasuna erabili</string>
+  <string name="foreground_service_summary">Android-ek zure konexio zerbitzua berrazieratzeko aukerak txikitu. Janikarazpen arean jakinarazpen bat jarriko du.</string>
+  <string name="heartbeat_interval_title">Taupada tartea</string>
+  <string name="heartbeat_interval_summary">Balio handiagoa erabili (minututan) bateria aurrezteko. Balio handi batekin hornitzaileak konexioa itxi lezake, jarduera faltagatik.</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Jakinarazpen ezarpenak</string>
+  <string name="notification_enabled_title">BM ezarpenak</string>
+  <string name="notification_enabled_summary">Jakinarazi egoera barran BM bat heltzerakoan</string>
+  <string name="notification_vibrate_title">Bibratu</string>
+  <string name="notification_vibrate_summary">BM bat heltzerakoan ere bibratu</string>
+  <string name="notification_sound_title">Soinua</string>
+  <string name="notification_sound_summary">BM bat heltzerakoan ere dei-tonua jo</string>
+  <string name="notification_ringtone_title">ChatSecure-rentzat doinu berezia erabili</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Arazketa log-ak gaitu</string>
+  <string name="pref_debug_summary">Aplikazioaren arazketarako datuak irteera estandarrera / logcat-era bidali.</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Sareko datuak ezgaituta</string>
+  <string name="bg_data_prompt_message">
+Sareko datuen konektibitatea (baita atzeko planoko datuena) beharrezkoa da aplikazioan saioa has dezazun.
+
+</string>
+  <string name="bg_data_prompt_ok">Gaitu</string>
+  <string name="bg_data_prompt_cancel">Irten</string>
+  <string name="signout_kill_confirm_message">Zerbitzu guztietan saioa bukatu ETA prozesu guztiak akatu nahi dituzu (irteera gogorra)?</string>
+  <string name="prompt_create_new_account_">Kontu berria sortu?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">\'%1$s\' erabiltzailearentzako berriketa berria sortu? </string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label"><xliff:g id="provider">%1$s</xliff:g> mezu berriak</string>
+  <string name="notify_groupchat_label">Talde txat gonbidapena</string>
+  <string name="new_messages_notify">Mezu berria(k):</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure zerbitzua hasten…</string>
+  <string name="app_unlocked">Gaituta eta desblokeatuta</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Arreta</string>
+  <string name="general_error"><xliff:g id="code">%1$d</xliff:g> errore kodea</string>
+  <string name="add_list_failed">Zerrenda ez da gehitu.</string>
+  <string name="block_contact_failed">Kontaktua ez zegoen blokeatuta</string>
+  <string name="unblock_contact_failed">Kontaktua ez zegoen desblokeatuta</string>
+  <string name="select_contact">Hautatu kontaktu bat lehenbizi, mesedez.</string>
+  <string name="disconnected">Deskonektatuta!
+</string>
+  <string name="service_error">Zerbitzu errorea!</string>
+  <string name="load_contact_list_failed">Kontaktu zerrenda ez da kargatu.</string>
+  <string name="cant_connect_to_server">Ezin da zerbitzarira konektatu. Egiaztatu zure konexioa.</string>
+  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" dagoeneko zure kontaktu zerrendan dago.</string>
+  <string name="contact_blocked">"<xliff:g id="user">%1$s</xliff:g>" kontaktua blokeatua izan da</string>
+  <string name="contact_not_loaded">Mesedez itxaron zure kontaktu zerrenda kargatu bitartean.</string>
+  <string name="network_error">Sare akats bat gertatu da.</string>
+  <string name="wifi_not_connected_error">Konexio honetarako WiFi-a beharrezkoa da.</string>
+  <string name="service_not_support">Zerbitzariak ez du funtzionalitate hau onartzen.</string>
+  <string name="invalid_password">Sartu duzun pasahitza ez du balio.</string>
+  <string name="internal_server_error">Zerbitzariak akats bat aurkitu du.</string>
+  <string name="not_implemented">Zerbitzariak ez du funtzionaltasun hau.</string>
+  <string name="service_unavaiable">Zerbitzaria oran ez dago eskuragarri.</string>
+  <string name="timeout">Zerbitzariak denbora muga gainditu du.</string>
+  <string name="version_not_supported">Zerbitzariak ez du egungo bertsioa onartzen.</string>
+  <string name="message_queue_full">Mezu ilara beterik dago.</string>
+  <string name="domain_not_supported">Zerbitzariak ezin du domeinu horretara bideratu.</string>
+  <string name="unknown_user">Sartu duzun erabiltzaile izena ezezeguna da.</string>
+  <string name="recipient_blocked_the_user">Barkatu, erabiltzaileak blokeatu zaitu.</string>
+  <string name="session_expired">Saioa iraungi da, saioa hasi berriro mesedez.</string>
+  <string name="forced_logout">beste bezero batetik saioa hasi duzu.</string>
+  <string name="already_logged_in">beste bezero batetik saioa hasi duzu.</string>
+  <string name="msisdn_error">Barkatu, SIM txartelean ezin da telefono zenbakia irakurri. Eskatu laguntza zure operadoreari.</string>
+  <string name="not_signed_in">Ez duzu saioa hasita.</string>
+  <string name="account_setup_error_validating">ChatSecurek errorea izan du zure erabiltzaile izena edo pasahitza balioztatzean - biak egiaztatu eta berriro saiatu mesedez.</string>
+  <string name="account_setup_error_keypair">ChatSecure-k errorea izan du gako bikotea sortzean.</string>
+  <string name="account_setup_error_server">ChatSecure-k errorea izan du berriketa zerbitzarira konektatzean - konfigurazioa egiaztatu eta saiatu berriro mesedez.</string>
+  <string name="account_setup_error_connectivity">ChatSecure-k errorea izan du konektatzean - egiaztatu sarera konektatuta zaudela eta saiatu berriro, mesedez.</string>
+  <string name="error_suspended_connection">ChatSecure-k sarerako konexioa galdu du</string>
+  <string name="error_reestablish_connection">ChatSecure konexioa berrezartzen saiatzen dabil</string>
+  <string name="account_wizard_no_domain_warning">ez duzu @ostalaria.com zatia jarri zure kontuaren ID-an. Saiatu berriz!</string>
+  <string name="account_wizard_no_root_domain_warning">Zure zerbitzariaren ostalari izenak ez du .com, .net edo antzeko atzizkirik. Saiatu berriz!</string>
+  <string name="signin_password_prompt">Sartu zure pasahitza:</string>
+  <string name="warning_tor_connect">Tor erabiltzen zaudenez, XMPP \'Konektatzeko zerbitzaria\'-ren ostalari izena kontuaren ezarpen aurreratuetan sartu behar duzu.</string>
+  <string name="unable_to_create_or_join_group_chat">Ezin da talde berriketara sartu</string>
+  <string name="sorry_we_cannot_share_that_file_type">Barkatu, ezin dugu fitxategi mota hori partekatu</string>
+  <string name="err_otr_share_no_encryption">Fitxategiak partekatzeko zifratzea gaitu behar duzu</string>
+  <string name="please_enable_chat_encryption_to_share_files">Berriketaren zifratzea gaitu fitxategiak partekatzeko mesedez</string>
+  <string name="swipe_alert">ChatSecure-k bere eginkizunak kentzeko eskaera egin dela ikusi du. Ziurrenik ChatSecure apurtuko da. Mesedez, kontaktuen zerrendako menuko Saio guztiak itxi elementua erabili.</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Ez dago fitxategi mota honentzako aplikaziorik</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Mesedez elkarrizketa segurua hasi kodeak eskaneatzen hasi baino lehen</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Ez da OTR gako parea inportatu; egiaztatu fitxategia formatu eta kokapen egokian dagoela</string>
+  <string name="otr_keysync_warning_message">Mesedez, kopiatu OtrFileConverter ordenagailuko aplikazioak sortuta \'otr_keystore.ofcaes\' fitxategia zure gailuaren biltegiko erro karpetara.</string>
+  <string name="msg_sent_failed">Mezu ezin izan da bidali.</string>
+  <string name="disconnected_warning">Mezuak berkonektatzean bidaliko dira</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> erabiltzailea lineaz kanpo dago. Bidaltzen dituzun mezuak<xliff:g id="user">%1$s</xliff:g> konektatzen denean bidaliko zaizkio.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ez dago zure kontaktu zerrendan.</string>
+  <string name="account_settings_title">Kontu ezarpenak</string>
+
+  <string name="warning_alpha">KONTUZ: ChatSecure-ren bertsio hau kaleratze azkar bat da eta segurtasun zulo edo akatsak eduki ditzake.</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Taldeak</string>
+  <string name="_open_conversations">elkarrizketa(k) ireki</string>
+  <string name="menu_exit">Irten</string>
+  <string name="menu_panic">Ikara</string>
+  <string name="buddies">Lagunak</string>
+  <string name="contacts">Kontaktuak</string>
+  <string name="mtm_accept_cert">Zerbitzariko ziurtagiria onartu?</string>
+  <string name="menu_sidebar_qr">Hatzmarka</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Kontaktu zerrenda</string>
+  <string name="menu_settings">Ezarpenak</string>
+  <string name="menu_view_accounts">Kontuak</string>
+  <string name="menu_sign_out">Saioa amaitu</string>
+  <string name="menu_view_contact_list">Kontaktu zerrenda</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Area lokala (Bonjour/ZeroConf)</string>
+  <string name="google_account">Google kontua</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">Linean</string>
+  <string name="presence_busy">Lanpetuta</string>
+  <string name="presence_away">Kanpoan</string>
+  <string name="presence_idle">Inaktibo</string>
+  <string name="presence_offline">Lineaz kanpo</string>
+  <string name="presence_invisible">Lineaz kanpo agertu</string>
+  <!--Other: Smileys-->
+  <!--[Do not localize!]-->
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_need_a_new_account">Kontu berria</string>
+</resources>

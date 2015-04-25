@@ -1,0 +1,43 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 21
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        applicationId "info.guardianproject.otr.app.im"
+        minSdkVersion 9
+        targetSdkVersion 21
+
+        testApplicationId "info.guardianproject.otr.app.im.test"
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile project(':androidPinning')
+    compile project(':library')
+    compile project(':tibetanTextLibrary')
+    compile project(':cachewordlib')
+    compile project(':memorizingTrustManager')
+    compile project(':library')
+    compile project(':library')
+    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.google.guava:guava:11.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile files('libs/asmack-android-8.jar')
+    compile files('libs/commons-codec.jar')
+    compile files('libs/commons-io-2.2.jar')
+    compile files('libs/gp-bcc-lib.jar')
+    compile files('libs/HockeySDK.jar')
+    compile files('libs/IOCipher-v0.3-debug.jar')
+    compile files('libs/jsoup-1.5.2.jar')
+    compile files('libs/sqlcipher.jar')
+}

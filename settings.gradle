@@ -1,0 +1,8 @@
+include ':androidPinning'
+include ':memorizingTrustManager'
+include ':tibetanTextLibrary'
+include ':cachewordlib'
+include ':library'
+include ':library'
+include ':library'
+include ':chatSecure'

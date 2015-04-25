@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mtm_accept_cert">Unbekanntes Zertifikat akzeptieren?</string>
+    <string name="mtm_trust_anchor">Das Serverzertifikat stammt nicht von einer bekannten Ausstellungsstelle (CA).</string>
+    <string name="mtm_accept_servername">Abweichenden Servernamen akzeptieren?</string>
+    <string name="mtm_hostname_mismatch">Der Server konnte sich nicht als \"%s\" ausweisen. Das Zertifikat gilt nur für:</string>
+
+    <string name="mtm_connect_anyway">Verbindung trotzdem aufbauen?</string>
+    <string name="mtm_cert_details">Zertifikat-Details:</string>
+
+    <string name="mtm_decision_always">Immer</string>
+    <string name="mtm_decision_once">Einmal</string>
+    <string name="mtm_decision_abort">Abbrechen</string>
+
+    <string name="mtm_notification">Zertifikatsprüfung</string>
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Força / Requeix</item>
+    <item>Intenta automàticament</item>
+    <item>Com s\'ha sol·licitat</item>
+    <item>Inhabilitat / Mai</item>
+  </string-array>
+  <string-array name="otr_options_values">
+    <item>força</item>
+    <item>automàtic</item>
+    <item>demanat</item>
+    <item>inhabilitat</item>
+  </string-array>
+  <string-array name="account_domains">
+    <item>dukgo.com</item>
+    <item>jabber.calyxinstitute.org</item>
+    <item>xmpp.jp</item>
+    <item>jabberpl.org</item>
+    <item>neko.im</item>
+    <item>bam.yt</item>
+  </string-array>
+</resources>

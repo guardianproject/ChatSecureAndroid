@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="ro_perm_label">read instant messages</string>
+  <string name="ro_perm_desc">
+        Allows applications to read data from the IM content provider.
+    </string>
+  <string name="wo_perm_label">write instant messages</string>
+  <string name="wo_perm_desc">
+        Allows applications to write data to the IM content provider.
+    </string>
+  <string name="im_label">ChatSecure</string>
+  <string name="landing_page_title">Chat - Select an account</string>
+  <string name="menu_about">About</string>
+  <string name="menu_add_account">Add account</string>
+  <string name="menu_edit_account">Edit account</string>
+  <string name="menu_remove_account">Remove account</string>
+  <string name="menu_sign_out_all">Sign out all</string>
+  <string name="choose_account_title">Chat - Select an account</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="menu_cancel_signin">取消登入</string>
+  <string name="menu_add_contact">新增聯絡人</string>
+  <string name="menu_remove_contact">刪除聯絡人</string>
+  <string name="menu_block_contact">封鎖聯絡人</string>
+  <string name="menu_view_blocked">封鎖</string>
+  <string name="menu_view_accounts">帳戶清單</string>
+  <string name="menu_new_chat">New Chat</string>
+  <string name="menu_settings">設定</string>
+  <string name="menu_search_contacts">Search Contacts</string>
+  <string name="menu_start_chat">開始即時通訊</string>
+  <string name="menu_sign_out">登出</string>
+  <string name="menu_view_profile">觀看個人檔案</string>
+  <string name="menu_otr_start">Start Encryption</string>
+  <string name="menu_otr_stop">Stop Encryption</string>
+  <string name="menu_clear_chat">Clear Chat</string>
+  <string name="menu_end_conversation">結束即時通訊</string>
+  <string name="menu_view_contact_list">聯絡人清單</string>
+  <string name="menu_invite_contact">邀請…</string>
+  <string name="menu_switch_chats">切換即時通訊</string>
+  <string name="menu_insert_smiley">插入表情符號</string>
+  <string name="menu_scan">Scan Fingerprint</string>
+  <string name="menu_fingerprint">Your Fingerprint</string>
+  <string name="menu_verify">Verify Fingerprint</string>
+  <string name="menu_plus">[Menu] +</string>
+  <string name="confirm">確認</string>
+  <string name="signout_all_confirm_message">Do you want to sign out all services?</string>
+  <string name="confirm_delete_contact">刪除「<xliff:g id="USER">%1$s</xliff:g>」？</string>
+  <string name="confirm_block_contact">封鎖「<xliff:g id="USER">%1$s</xliff:g>」。</string>
+  <string name="confirm_unblock_contact">「<xliff:g id="USER">%1$s</xliff:g>」會被解除封鎖。</string>
+  <string name="ok">確定</string>
+  <string name="cancel">取消</string>
+  <string name="yes">確定</string>
+  <string name="no">取消</string>
+  <string name="signed_out_prompt">您已登出 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
+  <string name="signed_out_prompt_with_error">由於 <xliff:g id="REASON">%2$s</xliff:g>，您已登出 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
+  <string name="add_account">新增 <xliff:g id="ACCOUNT">%1$s</xliff:g> 帳戶</string>
+  <string name="label_username">使用者名稱：</string>
+  <string name="label_password">密碼：</string>
+  <string name="remember_password">記住我的密碼。</string>
+  <string name="keep_me_signed_in">自動登入</string>
+  <string name="sign_up">您有帳戶嗎？</string>
+  <string name="check_save_password">For your security, if your phone is lost or stolen, go to the Web site on your computer and change your password.</string>
+  <string name="check_auto_sign_in">此選項可讓您開啟應用程式時自動登入。如要停用，請登出並清除 [自動登入] 核取方塊。</string>
+  <string name="sign_in">登入</string>
+  <string name="signing_in_to">登入 <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
+  <string name="signing_in_wait">登入中…</string>
+  <string name="bg_data_prompt_title">已停用背景資料</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> 需要啟用背景資料。</string>
+  <string name="bg_data_prompt_ok">啟用</string>
+  <string name="bg_data_prompt_cancel">結束</string>
+  <string name="ongoing_conversation">進行中的即時通訊 (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count">線上人數 <xliff:g id="NUMBER">%1$d</xliff:g></string>
+  <string name="subscriptions">邀請朋友</string>
+  <string name="unknown_contact">("<i>" 未知的 "</i>")</string>
+  <string name="empty_contact_group">沒有聯絡人</string>
+  <string name="empty_conversation_group">沒有對話</string>
+  <string name="contacts_picker_title">選取要邀請的聯絡人</string>
+  <string name="contact_filter_hint">輸入關鍵字尋找聯絡人</string>
+  <string name="empty_contact_list">找不到聯絡人。</string>
+  <string name="blocked_list_title">已封鎖聯絡人 - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">沒有封鎖的聯絡人。</string>
+  <string name="contact_profile_title">聯絡人檔案</string>
+  <string name="label_status">狀態：</string>
+  <string name="label_client_type">用戶端類型：</string>
+  <string name="client_type_computer">電腦</string>
+  <string name="client_type_mobile">行動裝置</string>
+  <string name="presence_available">線上</string>
+  <string name="presence_busy">忙碌</string>
+  <string name="presence_away">外出</string>
+  <string name="presence_idle">閒置</string>
+  <string name="presence_offline">離線</string>
+  <string name="presence_invisible">顯示離線</string>
+  <string name="preference_title"><xliff:g id="provider">%1$s</xliff:g> settings (dev only)</string>
+  <string name="data_channel_label">Data channel</string>
+  <string name="data_encoding_label">Data encoding</string>
+  <string name="cir_channel_label">CIR channel</string>
+  <string name="host_label">Host</string>
+  <string name="msisdn_label">MSISDN</string>
+  <string name="http">HTTP</string>
+  <string name="sms">SMS</string>
+  <string name="tcp">TCP</string>
+  <string name="xml">XML</string>
+  <string name="wbxml">WBXML</string>
+  <string name="save">Save</string>
+  <string name="chat_with">與<xliff:g id="USER">%1$s</xliff:g>進行即時通訊</string>
+  <string name="me">我</string>
+  <string name="compose_hint">請在此輸入文字</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g> 在線上</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> 顯示離開</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> 目前忙碌</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> 顯示離線</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> 已加入</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> 已離開</string>
+  <string name="time_stamp">\'傳送時間：\'<xliff:g id="HOUR">hh</xliff:g>\':\'<xliff:g id="MINUTE">mm</xliff:g>\' \'<xliff:g id="AMPM">a</xliff:g>\'，\'<xliff:g id="DATE">EEEE</xliff:g></string>
+  <string name="send">傳送</string>
+  <string name="msg_sent_failed">訊息無法傳送。</string>
+  <string name="disconnected_warning">與伺服器連線中斷。您的訊息將在下次登入時傳送。</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> 顯示離線。您的訊息將在 <xliff:g id="USER_1">%1$s</xliff:g> 登入時傳送。</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>不在您的聯絡人清單。</string>
+  <string name="select_link_title">選取連結</string>
+  <string name="empty_chat_list">沒有進行中的即時通訊</string>
+  <string name="add_contact_title">新增聯絡人</string>
+  <string name="input_contact_label">您要邀請的對象電子郵件地址：</string>
+  <string name="choose_list_label">選擇一個清單：</string>
+  <string name="invite_instruction">輸入聯絡人姓名。</string>
+  <string name="invite_label">傳送邀請</string>
+  <string name="provider_full_name_xmpp">Jabber/XMPP</string>
+  <string name="account_setup_title">Account Setup</string>
+  <string name="encryption_and_anonymity_title">Encryption and Anonymity</string>
+  <string name="hide_offline_contacts">隱藏離線聯絡人</string>
+  <string name="notification_group_title">通知設定</string>
+  <string name="notification_enabled_title">即時訊息通知</string>
+  <string name="notification_enabled_summary">收到即時訊息時，在狀態列中顯示通知</string>
+  <string name="notification_vibrate_title">震動</string>
+  <string name="notification_vibrate_summary">收到即時訊息時振動提醒</string>
+  <string name="notification_sound_title">音效</string>
+  <string name="notification_sound_summary">收到即時訊息時播放鈴聲</string>
+  <string name="notification_ringtone_title">選取鈴聲</string>
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>邀請您加入群組即時通訊。</string>
+  <string name="invitation_sent_prompt">已傳送邀請給 <xliff:g id="USER">%1$s</xliff:g>。</string>
+  <string name="accept_invitation">接受</string>
+  <string name="decline_invitation">拒絕</string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g>想要將您新增到聯絡人清單。</string>
+  <string name="approve_subscription">接受</string>
+  <string name="decline_subscription">拒絕</string>
+  <string name="approve_subscription_error">訂閱 <xliff:g id="USER">%1$s</xliff:g> 資訊失敗。請稍後再試一次。</string>
+  <string name="decline_subscription_error">拒絕訂閱 <xliff:g id="USER">%1$s</xliff:g> 資訊失敗。請稍後再試一次。</string>
+  <string name="newMessages_label">來自 <xliff:g id="PROVIDER">%1$s</xliff:g> 的新訊息</string>
+  <string name="num_unread_chats"><xliff:g id="NUMBER">%1$d</xliff:g> 個未讀即時訊息</string>
+  <string name="subscription_notify_text"><xliff:g id="USER">%s</xliff:g>傳送朋友邀請給您</string>
+  <string name="notify_groupchat_label">群組即時通訊邀請</string>
+  <string name="group_chat_invite_notify_text">來自<xliff:g id="USER">%s</xliff:g>的群組即時通訊邀請</string>
+  <string name="add_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」已新增。</string>
+  <string name="delete_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」已刪除。</string>
+  <string name="block_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」已封鎖。</string>
+  <string name="unblock_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」已解除封鎖。</string>
+  <string name="perm_label">開始即時訊息服務</string>
+  <string name="perm_desc">允許應用程式透過網際網路啟動即時訊息服務</string>
+  <string name="error">注意</string>
+  <string name="login_service_failed">無法登入 <xliff:g id="SERVICE">%1$s</xliff:g> 服務。請稍候再試一次。"\n" (詳細內容：<xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="add_list_failed">清單未增加</string>
+  <string name="block_contact_failed">聯絡人未封鎖。</string>
+  <string name="unblock_contact_failed">聯絡人未解除封鎖。</string>
+  <string name="select_contact">請先選取聯絡人。</string>
+  <string name="disconnected">"已中斷連線！"\n</string>
+  <string name="service_error">服務錯誤！</string>
+  <string name="load_contact_list_failed">聯絡人清單未載入。</string>
+  <string name="cant_connect_to_server">無法連線到伺服器。請檢查連線狀態。</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>已在您的聯絡人清單。</string>
+  <string name="contact_blocked">「<xliff:g id="USER">%1$s</xliff:g>」已封鎖。</string>
+  <string name="contact_not_loaded">請等待聯絡人清單載入完成。</string>
+  <string name="network_error">網路發生問題。</string>
+  <string name="service_not_support">伺服器不支援此功能。</string>
+  <string name="invalid_password">您輸入的密碼無效。</string>
+  <string name="internal_server_error">伺服器發生問題。</string>
+  <string name="not_implemented">伺服器不支援此功能。</string>
+  <string name="service_unavaiable">目前無法存取伺服器。</string>
+  <string name="timeout">伺服器連線逾時。</string>
+  <string name="version_not_supported">伺服器不支援目前版本。</string>
+  <string name="message_queue_full">訊息佇列已滿。</string>
+  <string name="domain_not_supported">伺服器不支援網域名稱轉址。</string>
+  <string name="unknown_user">您輸入的使用者名稱無法辨識。</string>
+  <string name="recipient_blocked_the_user">很抱歉，您被此使用者封鎖。</string>
+  <string name="session_expired">登入時限已到，請重新登入。</string>
+  <string name="forced_logout">您已在其他用戶端登入。</string>
+  <string name="already_logged_in">您已在其他用戶端登入。</string>
+  <string name="msisdn_error">很抱歉，無法從 SIM 卡讀取電話號碼。請向您的電信業者尋求協助。</string>
+  <string name="not_signed_in">您尚未登入。</string>
+  <string name="general_error">錯誤代碼 <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string-array name="default_smiley_names"><item>開心</item>
+<item>傷心</item>
+<item>眨眼</item>
+<item>吐舌頭</item>
+<item>驚訝</item>
+<item>紅唇</item>
+<item>大喊</item>
+<item>酷</item>
+<item>滿嘴錢</item>
+<item>說錯話</item>
+<item>害羞</item>
+<item>天使</item>
+<item>還沒決定</item>
+<item>嚎啕大哭</item>
+<item>不要告訴別人</item>
+<item>開懷大笑</item>
+<item>疑惑</item>
+</string-array>
+  <string-array name="default_smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string-array name="smiley_names"><item>Happy</item>
+<item>Sad</item>
+<item>Winking</item>
+<item>Tongue sticking out</item>
+<item>Surprised</item>
+<item>Kissing</item>
+<item>Yelling</item>
+<item>Cool</item>
+<item>Money mouth</item>
+<item>Foot in mouth</item>
+<item>Embarrassed</item>
+<item>Angel</item>
+<item>Undecided</item>
+<item>Crying</item>
+<item>Lips are sealed</item>
+<item>Laughing</item>
+<item>Confused</item>
+</string-array>
+  <string-array name="smiley_texts"><item>:-)</item>
+<item>:-(</item>
+<item>;-)</item>
+<item>:-P</item>
+<item>=-O</item>
+<item>:-*</item>
+<item>:O</item>
+<item>B-)</item>
+<item>:-$</item>
+<item>:-!</item>
+<item>:-[</item>
+<item>O:-)</item>
+<item>:-\\</item>
+<item>:\'(</item>
+<item>:-X</item>
+<item>:-D</item>
+<item>o_O</item>
+</string-array>
+  <string name="buddy_list_title">Contact List - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_contact_list">Contact List</string>
+  <string name="menu_view_encrypt_chat">Encrypt On/Off</string>
+  <string name="use_tor">Connect via Tor (Requires Orbot app)</string>
+  <string name="app_name">ChatSecure</string>
+  <string name="welcome_first">First time using ChatSecure?</string>
+  <string name="welcome_skip">Can\'t wait to get started?</string>
+  <string name="welcome_about">Get Started</string>
+  <string name="welcome_account">Account Setup</string>
+  <string name="about_welcome_title">About ChatSecure</string>
+  <string name="about_welcome">ChatSecure is a mobile instant messaging app that provides extra security features that prevent others from snooping on your conversations and communications.\n\nThe app supports any chat service that uses the Jabber or XMPP protocol, such as Google GTalk or Jabber.org.</string>
+  <string name="about_otr_title">How is it secure?</string>
+  <string name="about_otr">\'Off-the-Record Messaging\' is a security system designed to enable privacy by mimicking the characteristics of a private conversation in the real world, including Encryption, Authentication, Deniability and Forward Secrecy.\n\nThe OTR-protocol is compatible with desktop chat clients such as Adium or Pidgin.</string>
+  <string name="about_security_title">Are My Chats Secure?</string>
+  <string name="about_security">ChatSecure\'s chat encryption feature only works when messaging with others using a compatible app or program, so you should ensure your contacts are using ChatSecure for mobile and Adium or Pidgin for the desktop. You can fine-tune exactly how and when ChatSecure attempts to encrypt your chats in Account Settings.\n\nLet\'s get started!</string>
+  <string name="setup_passphrase_title">Passphrase Setup</string>
+  <string name="setup_passphrase">Before you get started please choose a secure passphrase to protect your ChatSecure data from unjust access.</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">Passphrase (again):</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">password</string>
+  <string name="account_setup_advanced_button">Advanced Account Settings</string>
+  <string name="account_setup_pers_sub">Persistence</string>
+  <string name="account_setup_pers_pw_title">Remember Password</string>
+  <string name="account_setup_pers_pw_on">Password cached</string>
+  <string name="account_setup_pers_pw_off">Password not cached</string>
+  <string name="account_setup_pers_auto_title">Automatically Sign In</string>
+  <string name="account_setup_pers_auto_on">Connect at ChatSecure start-up</string>
+  <string name="account_setup_pers_auto_off">Don\'t connect at ChatSecure start-up</string>
+  <string name="account_setup_pers_now_title">Sign In Now</string>
+  <string name="account_setup_pers_now_on">Connect following account setup</string>
+  <string name="account_setup_pers_now_off">Don\'t connect following account setup</string>
+  <string name="account_setup_personal_sub">Personal (optional)</string>
+  <string name="account_setup_personal_alias_title">Account Alias (your name)</string>
+  <string name="account_setup_personal_alias_sub">How your account appears online</string>
+  <string name="account_setup_personal_profile_title">Profile</string>
+  <string name="account_setup_personal_profile_sub">A brief blurb about yourself</string>
+  <string name="account_setup_advanced_enc_force">Force encryption / refuse plaintext</string>
+  <string name="account_setup_advanced_enc_auto">When possible, encrypt chats automatically</string>
+  <string name="account_setup_advanced_enc_req">Encrypt chats as requested</string>
+  <string name="account_setup_advanced_enc_off">Disable chat encryption</string>
+  <string name="account_setup_signin_a">Validating credentials...</string>
+  <string name="account_setup_signin_b">Generating keypair...</string>
+  <string name="account_setup_signin_c">Signing in...</string>
+  <string name="account_setup_error_validating">ChatSecure encountered an error while validating your username or password - please check them and try again.</string>
+  <string name="account_setup_error_keypair">ChatSecure encountered an error while generating a keypair.</string>
+  <string name="account_setup_error_server">ChatSecure encountered an error while connecting to the chat server - please check your configuration and try again.</string>
+  <string name="account_setup_error_connectivity">ChatSecure encountered an error while connecting - please doublecheck your network connectivity and try again.</string>
+  <string name="label_fingerprint_remote">Their Fingerprint</string>
+  <string name="label_fingerprint_local">Your Fingerprint</string>
+  <string name="menu_sign_in">Sign In</string>
+  <string name="menu_gen_key">Regen Key</string>
+  <string name="error_suspended_connection">ChatSecure has lost a connection to the network</string>
+  <string name="error_reestablish_connection">ChatSecure is attempting to restablish a connection</string>
+  <string name="otr_session_status_plaintext">Warning: This chat is NOT encrypted</string>
+  <string name="otr_session_status_encrypted">This chat is secure but the identities of the participants have NOT been verified</string>
+  <string name="otr_session_status_finished">Warning: chat encryption has been stopped.</string>
+  <string name="otr_session_status_verified">This chat is secured and verified</string>
+  <string name="account_wizard_setup_title">Account Wizard</string>
+  <string name="account_wizard_account_title">Your Account ID</string>
+  <string name="account_wizard_host_title">Configure Server</string>
+  <string name="account_wizard_ready_title">Are You Ready?</string>
+  <string name="account_wizard_setup_body">Enter your account ID to configure ChatSecure for your XMPP chat service. It looks like an email address:</string>
+  <string name="account_wizard_account_body">Please enter your account ID (user@hostname):</string>
+  <string name="account_wizard_host_body">Please enter or edit your jabber/xmpp chat server hostname and port number (5222 is default).</string>
+  <string name="account_wizard_ready_body">ChatSecure has been configured, and now it is time to connect to your service, and start chatting safely, securely and privately!</string>
+  <string name="account_wizard_no_domain_warning">You didn\'t enter an @hostname.com part for your account ID. Try again!</string>
+  <string name="account_wizard_no_root_domain_warning">Your server hostname didn\'t have a .com, .net or similar appendix. Try again!</string>
+  <string name="signin_password_prompt">Enter your password:</string>
+  <string name="pref_account_user">pref_account_user</string>
+  <string name="pref_account_pass">pref_account_pass</string>
+  <string name="pref_account_domain">pref_account_domain</string>
+  <string name="pref_account_xmpp_resource">pref_account_xmpp_resource</string>
+  <string name="pref_account_port">pref_account_port</string>
+  <string name="pref_account_server">pref_account_server</string>
+  <string name="pref_security_allow_plain_auth">pref_security_allow_plain_auth</string>
+  <string name="pref_security_require_tls">pref_security_require_tls</string>
+  <string name="pref_security_tls_cert_verify">pref_security_tls_cert_verify</string>
+  <string name="pref_security_otr_mode">pref_security_otr_mode</string>
+  <string name="pref_security_use_tor">pref_security_use_tor</string>
+  <string name="pref_security_do_dns_srv">pref_security_do_dns_srv</string>
+  <string name="pref_hide_offline_contacts">pref_hide_offline_contacts</string>
+  <string name="pref_enable_notification">pref_enable_notification</string>
+  <string name="pref_notification_vibrate">pref_notification_vibrate</string>
+  <string name="pref_notification_sound">pref_notification_sound</string>
+  <string name="pref_notification_ringtone">pref_notification_ringtone</string>
+  <string name="account_settings_title">Account Settings</string>
+  <string name="warning_alpha">WARNING: This is an early release of ChatSecure that may still include security holes or bugs.</string>
+  <string name="menu_view_groups">Groups</string>
+  <string name="otr_gen_key">Generating new OTR keypair...</string>
+  <string name="search_label">Contact</string>
+  <string name="search_hint">type the name of a contact to chat with</string>
+  <string name="search_button_text">Go</string>
+  <string name="menu_locale">Language</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Languages</string>
+  <string name="KEY_PREF_LANGUAGE_SUMMARY">What language should InTheClear display?</string>
+  <string name="do_srv_lookup">Do SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Use DNS SRV to find actual XMPP server from domain name</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Allow the username and password to be sent as plain text when using an unencrypted transport</string>
+  <string name="allow_plain_text_auth">Allow Plain Text Auth</string>
+  <string name="verify_that_the_certificate_is_trusted">Verify that the certificate is trusted</string>
+  <string name="tls_verification">TLS Verification</string>
+  <string name="require_tls_ssl_connection">Require TLS/SSL connection</string>
+  <string name="transport_encryption">Transport Encryption</string>
+  <string name="how_encrypted_chats_are_started">how encrypted chats are started</string>
+  <string name="the_server_to_connect_to_if_needed">The server to connect to, if needed</string>
+  <string name="connect_server">Connect Server</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port for XMPP Server</string>
+  <string name="server_port">Server Port</string>
+  <string name="xmpp_resource">XMPP Resource</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">to distinguish this connection from other clients that are also logged in</string>
+  <string name="btn_next">Next</string>
+  <string name="btn_back">Back</string>
+  <string name="title_chats">Conversations</string>
+</resources>
