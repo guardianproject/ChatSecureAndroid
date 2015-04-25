@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    /*
+    * Copyright 2008, Google Inc.
+    *
+    * Licensed under the Apache License, Version 2.0 (the "License");
+    * you may not use this file except in compliance with the License.
+    * You may obtain a copy of the License at
+    *
+    *     http://www.apache.org/licenses/LICENSE-2.0
+    *
+    * Unless required by applicable law or agreed to in writing, software
+    * distributed under the License is distributed on an "AS IS" BASIS,
+    * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    * See the License for the specific language governing permissions and
+    * limitations under the License.
+    */
+-->
+
+
+<resources>
+
+    
+    
+    <style name="Theme.ChatSwitcher" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/dialog_im_switch_chats_strip</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    
+    <style name="btn_white">
+    	<item name="android:gravity">center_vertical|center_horizontal</item>
+    	<item name="android:textColor">#fff</item>
+    	<item name="android:textSize">14sp</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+    <style name="btn_gray">
+    	<item name="android:gravity">center_vertical|center_horizontal</item>
+    	<item name="android:textColor">#b6b</item>
+    	<item name="android:textSize">14sp</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+    <style name="btn_black">
+    	<item name="android:gravity">center_vertical|center_horizontal</item>
+    	<item name="android:textColor">#fff</item>
+    	<item name="android:textSize">12sp</item>
+    	<item name="android:textStyle">bold</item>
+    </style>
+    
+  
+
+    <!-- the following can be used to style the overflow menu button
+         only do this if you have an *extremely* good reason to!! -->
+    <!--<style name="MyOverflowButton" parent="Widget.Sherlock.ActionButton.Overflow">
+        <item name="android:src">@drawable/ic_menu_view</item>
+        <item name="android:background">@drawable/action_button_background</item>
+    </style>-->
+
+    
+
+    <style name="ChatSwitcherDialogTheme">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
+    </style>
+
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light" >    
+         <item name="messageRoundBackground">@drawable/message_view_rounded_light</item>             
+         <item name="messageTextPrimary">#111111</item>
+         <item name="messageTextSecondary">#777777</item>
+                  
+         <item name="listBackground">#eceff1</item>
+         
+         <item name="toolbarBackground">#CFD8DC</item>
+         <item name="inputBackground">#CCECEFF1</item>
+    <!-- customize the color palette -->
+   
+   		<item name="contactTextPrimary">#111111</item>
+         <item name="contactTextSecondary">#777777</item>
+   
+    <item name="colorPrimary">#aaaaaa</item>
+    <item name="colorPrimaryDark">#333333</item>
+    <item name="colorAccent">#00aa00</item>
+    
+    <item name="windowActionBar">true</item>
+       <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+       <item name="windowActionModeOverlay">true</item>
+       
+       <item name="attachIcon">@drawable/content_new_attachment_dark</item>
+     </style>
+    
+   <style name="AppThemeDark" parent="@style/Theme.AppCompat" >
+        <item name="messageTextPrimary">#dddddd</item>
+       <item name="messageRoundBackground">@drawable/message_view_rounded_dark</item>                     
+         <item name="messageTextSecondary">#aaaaaa</item>
+         <item name="listBackground">#263238</item>                     
+		<item name="contactTextPrimary">#dddddd</item>
+         <item name="contactTextSecondary">#aaaaaa</item>
+         
+         <item name="toolbarBackground">#263238</item>
+                  <item name="inputBackground">#CC263238</item>
+         
+    <!-- customize the color palette -->
+    
+    <item name="colorPrimary">#eeeeee</item>
+    <item name="colorPrimaryDark">#111111</item>
+    <item name="colorAccent">#006600</item>
+    
+    <item name="windowActionBar">true</item>
+       <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+       <item name="windowActionModeOverlay">true</item>
+              <item name="attachIcon">@drawable/content_new_attachment</item>
+       
+    </style>
+    
+   <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+    <item name="spinBars">true</item>
+    <item name="color">@android:color/white</item>
+</style>
+    
+
+</resources>

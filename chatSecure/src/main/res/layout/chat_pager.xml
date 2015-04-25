@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:layout_width="match_parent"
+android:layout_height="match_parent" >
+<android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    android:minHeight="?attr/actionBarSize" />
+<android.support.v4.widget.DrawerLayout
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="?attr/actionBarSize"
+    >
+    <!-- The main content view -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/content_frame"
+     >
+        
+    <info.guardianproject.otr.app.im.app.ChatViewPager
+		android:layout_width="match_parent" 
+		android:layout_height="match_parent" 
+		android:id="@+id/chatpager"/>
+    </LinearLayout>    
+    <!-- The navigation drawer -->
+    
+    <ScrollView
+    android:id="@+id/left_drawer"
+	android:layout_height="match_parent"
+	android:layout_width="240dp"
+	android:fillViewport="true"
+	    android:layout_gravity="start"        
+	
+    android:background="@color/background_gray"
+	>
+    <LinearLayout
+        	android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+     >
+    <fragment    
+         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        
+        android:name="info.guardianproject.otr.app.im.app.AccountsFragment"                
+         />
+     <Button android:id="@+id/btnAddAccount"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="5dip"
+	                android:text="@string/menu_add_account" android:layout_width="match_parent"
+	                android:textColor="#eeeeee"
+	                />
+    
+        
+    </LinearLayout>
+    </ScrollView>
+ </android.support.v4.widget.DrawerLayout>
+ </RelativeLayout>

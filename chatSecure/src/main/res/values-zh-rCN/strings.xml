@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">阅读即时信息</string>
+  <string name="ro_perm_desc">
+允许程序读取从IM内容提供商的数据</string>
+  <string name="wo_perm_label">编辑即时信息</string>
+  <string name="wo_perm_desc">
+允许程序写入输入到IM内容提供商</string>
+  <string name="perm_label">启动即时消息服务</string>
+  <string name="perm_desc">允许应用程序通过 intent 启动即时消息服务。</string>
+  <!--General: Actions-->
+  <string name="confirm">确认</string>
+  <string name="ok">确定</string>
+  <string name="cancel">取消</string>
+  <string name="yes">确定</string>
+  <string name="no">取消</string>
+  <string name="btn_next">下一步</string>
+  <string name="btn_back">返回</string>
+  <string name="connect">连接</string>
+  <!--Views-->
+  <string name="lock_screen_open">打开</string>
+  <string name="title_activity_lock_screen">ChatSecure已锁定</string>
+  <string name="lock_screen_create_passphrase">设置密码</string>
+  <string name="lock_screen_confirm_passphrase">确认密码</string>
+  <string name="lock_screen_passphrase_hint">密码</string>
+  <string name="lock_screen_passphrase_not_set_enter">新密码</string>
+  <string name="lock_screen_passphrase_not_set_confirm">确认新密码</string>
+  <string name="lock_screen_passphrases_not_matching">密码不匹配，请重试</string>
+  <string name="lock_screen_skip">懒人模式(无密码)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">聊天 - 选择一个帐户</string>
+  <string name="choose_account_title">聊天 - 选择一个帐户</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">添加 <xliff:g id="ACCOUNT">%1$s</xliff:g> 帐户</string>
+  <string name="menu_about">关于</string>
+  <string name="menu_sign_out_all">登出所有</string>
+  <string name="signout_all_confirm_message">你要退出所有的服务？</string>
+  <string name="signed_out_prompt">您已经退出了 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
+  <string name="welcome_first">是否第一次使用ChatSecure？</string>
+  <string name="welcome_skip">Can\'t迫不及待地开始了吗？</string>
+  <string name="welcome_about">关于Gibberbot</string>
+  <string name="welcome_account">帐户设置</string>
+  <string name="setup_passphrase_title">口令设置</string>
+  <string name="setup_passphrase">在您开始之前请先选择一个安全密码来保护您的ChatSecure数据来防止不正当的访问。</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">密码（再次）:</string>
+  <string name="rekey_message">输入一个新的密码，这个密码必须包含至少一个大写字母，一个小写字母和一个数字，并且要大于6位数字。</string>
+  <string name="do_rekey">使用这个新的密码来加密您已经存在的笔记</string>
+  <string name="enter_pass">输入您的密码：</string>
+  <string name="new_pass">欢迎！请输入一个强壮的密码来保护您的笔记，这个密码必须包含至少一个大写字母，小写字母和数字，而且必须大于6位数。</string>
+  <string name="pass_err_length">您的密码不足够长</string>
+  <string name="pass_err_upper">您的密码没包含任何大写字母</string>
+  <string name="pass_err_lower">您的密码没包含任何小写字母</string>
+  <string name="pass_err_num">您的密码没包含任何数字</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">关于ChatSecure</string>
+  <string name="about_welcome">ChatSecure是一个手机即时通讯应用提供额外的安全特性，防止他人截取您的对话。
+该应用支持任何使用Jabber和XMPP协议的聊天服务，比如谷歌的Gtalk或者Jabber.org</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">它是如何保障？</string>
+  <string name="about_otr">OTR消息是一种安全系统用来模仿真实世界中的对话（就像面对面说话），包括加密，认证，不可否认性以及正向加密。
+OTR协议跟桌面客户端（比如：Adium或Pidgin）兼容</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">是我的聊天安全吗？</string>
+  <string name="about_security">ChatSecure的加密聊天特性只工作在当你的聊天对象也在使用兼容的app或程序的时候，所以您需要确保您的联系人也正在使用手机的ChatSecure或电脑的Adium或Pidgin。在账户设置中您可以微调何时以何种方法让ChatSecure尝试加密您的聊天。
+来开始吧！</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">新账户</string>
+  <string name="menu_add_account">新增帐户</string>
+  <string name="menu_edit_account">编辑帐户</string>
+  <string name="menu_remove_account">删除帐户</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">User@Host</string>
+  <string name="label_password">密码：</string>
+  <string name="remember_password">记住密码</string>
+  <string name="keep_me_signed_in">自动登录</string>
+  <string name="sign_up">n\u2019t有帐户吗？</string>
+  <string name="sign_in">登录</string>
+  <string name="check_save_password">为安全起见，如果您的手机丢失或被盗，请使用您的电脑访问网站并修改密码</string>
+  <string name="check_auto_sign_in">启用此选项，每次程序启动后将会自动为您自动登录。如要取消，请去除“为我自动登录”选项</string>
+  <string name="use_tor">通过Tor连接（需要Orbot应用程序）</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">新用户名</string>
+  <string name="account_setup_service_provider">服务提供者(dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">密码</string>
+  <string name="account_setup_password_confirm">确认密码</string>
+  <string name="account_setup_advanced_button">高级帐号设置</string>
+  <string name="account_select_type">账户种类</string>
+  <string name="btn_create_new_account">注册帐号</string>
+  <string name="account_setup_pers_sub">坚持</string>
+  <string name="account_setup_pers_pw_title">记住密码</string>
+  <string name="account_setup_pers_pw_on">密码缓存</string>
+  <string name="account_setup_pers_pw_off">密码不缓存</string>
+  <string name="account_setup_pers_auto_title">自动登录</string>
+  <string name="account_setup_pers_auto_on">在ChatSecure启动的时候连接</string>
+  <string name="account_setup_pers_auto_off">不要在ChatSecure启动的时候连接</string>
+  <string name="account_setup_pers_now_title">立即登录</string>
+  <string name="account_setup_pers_now_on">连接以下帐户设置</string>
+  <string name="account_setup_pers_now_off">Don\'t联络以下帐户设置</string>
+  <string name="account_setup_personal_sub">个人（可选）</string>
+  <string name="account_setup_personal_alias_title">账户别名（您的姓名）</string>
+  <string name="account_setup_personal_alias_sub">如何在网络上出现您的帐户</string>
+  <string name="account_setup_personal_profile_title">简介</string>
+  <string name="account_setup_personal_profile_sub">关于自己短暂的Blurb的</string>
+  <string name="account_setup_advanced_enc_force">垃圾强制加密明文/</string>
+  <string name="account_setup_advanced_enc_auto">如果可能的话，会自动加密聊天</string>
+  <string name="account_setup_advanced_enc_req">按要求加密聊天</string>
+  <string name="account_setup_advanced_enc_off">禁用聊天加密</string>
+  <string name="account_setup_signin_a">验证凭据…</string>
+  <string name="account_setup_signin_b">生成密钥对…</string>
+  <string name="account_setup_signin_c">登入中..</string>
+  <string name="account_wizard_setup_title">帐户向导</string>
+  <string name="account_wizard_account_title">您的帐户ID</string>
+  <string name="account_wizard_host_title">配置服务器</string>
+  <string name="account_wizard_ready_title">你准备好了吗？</string>
+  <string name="account_wizard_setup_body">输入您的账户ID以为您的XMPP聊天服务配置ChatSecure。这个账户看起来像一个电子邮件地址：</string>
+  <string name="account_wizard_account_body">请输入您的帐户ID（用户@主机名）:</string>
+  <string name="account_wizard_host_body">请输入或编辑您的jabber/xmpp聊天服务器的主机名和端口号（默认是5222）。</string>
+  <string name="account_wizard_ready_body">ChatSecure已经完成配置，现在您可以连接到您的服务并开始安全得，保密得，隐私得聊天。</string>
+  <string name="_via_orbot">Orbot (Tor代理)</string>
+  <string name="select_domain_new_account">选择域</string>
+  <string name="registering_new_account_">正在注册新账户</string>
+  <string name="signing_in_to">获取ChatSecure状态</string>
+  <string name="menu_cancel_signin">取消登录</string>
+  <string name="signing_in_wait">正以\u2026登录</string>
+  <string name="signing_out_wait">正在退出\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">进行SRV查阅</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">从域名中使用DNS SRV查找XMPP服务器</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">当使用非加密传输模式时，允许用户名和密码以明文方式传送</string>
+  <string name="allow_plain_text_auth">允许明文授权</string>
+  <string name="verify_that_the_certificate_is_trusted">检测证书是否可信</string>
+  <string name="tls_verification">TLS确认</string>
+  <string name="require_tls_ssl_connection">要求TLS连接</string>
+  <string name="transport_encryption">加密传输</string>
+  <string name="how_encrypted_chats_are_started">加密聊天已启动</string>
+  <string name="the_server_to_connect_to_if_needed">必要时连接服务器</string>
+  <string name="connect_server">连接服务器</string>
+  <string name="tcp_port_for_xmpp_server">XMPP服务器的TCP端口</string>
+  <string name="server_port">服务器端口</string>
+  <string name="xmpp_resource">XMPP资源</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">识别此连接是否已被其它客户登录</string>
+  <string name="xmpp_resource_prio_title">XMPP资源优先级</string>
+  <string name="xmpp_resource_prio_summary">发送给具有多个活动资源的客户端上的消息将被发送到具有最高优先级的源上</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">会话</string>
+  <string name="no_messages">没有聊天。
+点击这里来开始一个！</string>
+  <string name="empty_account_message">你没有⏎
+被设置的账户。⏎
+⏎
+点击这里来添加！</string>
+  <string name="buddy_list_title">联系人列表 - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">添加联系人</string>
+  <string name="menu_remove_contact">删除联系人</string>
+  <string name="menu_block_contact">阻止联系人</string>
+  <string name="menu_contact_nickname">联系人昵称</string>
+  <string name="menu_view_blocked">已阻止</string>
+  <string name="confirm_delete_contact">将会删除联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="confirm_block_contact">将会阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="confirm_unblock_contact">将会解除阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="add_contact_success">已添加联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="delete_contact_success">联系人“<xliff:g id="USER">%1$s</xliff:g>”已删除。</string>
+  <string name="block_contact_success">已阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="unblock_contact_success">联系人“<xliff:g id="USER">%1$s</xliff:g>”已解除阻止。</string>
+  <string name="menu_new_chat">新聊天</string>
+  <string name="menu_search_contacts">搜索联系人</string>
+  <string name="menu_show_grid">显示格子</string>
+  <string name="menu_start_chat">开始聊天</string>
+  <string name="menu_view_profile">查看资料</string>
+  <string name="menu_verify">验证钥匙</string>
+  <string name="ongoing_conversation">当前聊天 (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> 人在线</string>
+  <string name="subscriptions">好友邀请</string>
+  <string name="unknown_contact">（\"<i>\"未知\"</i>\"）</string>
+  <string name="empty_contact_group">空</string>
+  <string name="empty_conversation_group">无会话</string>
+  <string name="search_label">联系</string>
+  <string name="search_hint">输入联系人名称发起聊天</string>
+  <string name="search_button_text">开始</string>
+  <string name="empty_chat_list">无活动聊天。</string>
+  <string name="add_contact_title">添加联系人</string>
+  <string name="input_contact_label">您希望邀请的用户的电子邮件地址：</string>
+  <string name="choose_list_label">选择一个列表：</string>
+  <string name="invite_instruction">输入用户名以从联系人添加。</string>
+  <string name="invite_label">发送邀请</string>
+  <string name="contact_profile_title">联系人个人资料</string>
+  <string name="label_status">状态：</string>
+  <string name="label_client_type">客户端类型：</string>
+  <string name="client_type_computer">计算机</string>
+  <string name="client_type_mobile">移动设备</string>
+  <string name="blocked_list_title">已阻止的联系人 - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">无已阻止的联系人。</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">与<xliff:g id="USER">%1$s</xliff:g>聊天</string>
+  <string name="me">我</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g>在线</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g>离开</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g>正忙</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>处于离线状态</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>已加入</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>已离开</string>
+  <string name="menu_send_image">发送照片</string>
+  <string name="menu_send_file">发送文件</string>
+  <string name="menu_send_audio">发送音频</string>
+  <string name="menu_take_picture">照相</string>
+  <string name="file_transfer">文件传输</string>
+  <string name="transfer_complete">传输完成</string>
+  <string name="transfer_in_progress">正在传输</string>
+  <string name="accept_transfer_">是否接受传输？</string>
+  <string name="wants_to_send_you_the_file">想发送给您文件</string>
+  <string name="send">发送</string>
+  <string name="compose_hint">发送消息</string>
+  <string name="compose_hint_secure">发送安全消息</string>
+  <string name="menu_resend">重新发送</string>
+  <string name="menu_end_conversation">结束聊天</string>
+  <string name="menu_clear_chat">清除聊天</string>
+  <string name="menu_insert_smiley">插入表情符</string>
+  <string name="menu_switch_chats">切换聊天</string>
+  <string name="menu_plus">MENU+</string>
+  <string name="select_link_title">选择链接</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>邀请您加入群聊。</string>
+  <string name="invitation_sent_prompt">已向<xliff:g id="USER">%1$s</xliff:g>发送邀请。</string>
+  <string name="accept_invitation">接受</string>
+  <string name="decline_invitation">拒绝</string>
+  <string name="menu_new_group_chat">群聊</string>
+  <string name="create_or_join_group_chat">创建或加入群聊</string>
+  <string name="connecting_to_group_chat_">正在连接到群聊</string>
+  <string name="menu_invite_contact">邀请\u2026</string>
+  <string name="contacts_picker_title">选择要邀请的联系人</string>
+  <string name="contact_filter_hint">输入查找联系人</string>
+  <string name="empty_contact_list">没有找到任何联系人。
+点击邀请。</string>
+  <string name="approve_subscription_error">无法批准来自<xliff:g id="USER">%1$s</xliff:g>的好友申请。请稍后再试。</string>
+  <string name="decline_subscription_error">无法拒绝来自<xliff:g id="USER">%1$s</xliff:g>的好友申请。请稍后再试。</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">启动加密</string>
+  <string name="menu_otr_stop">停止加密</string>
+  <string name="starting_otr_chat">正在启动加密聊天会话</string>
+  <string name="stopping_otr_chat">正在停止加密聊天会话</string>
+  <string name="label_fingerprint_remote">安全指纹</string>
+  <string name="label_fingerprint_local">安全指纹</string>
+  <string name="menu_sign_in">登录</string>
+  <string name="menu_gen_key">再生的关键</string>
+  <string name="otr_session_status_plaintext">加密已关闭</string>
+  <string name="otr_session_status_encrypted">加密运行中（点击验证）</string>
+  <string name="otr_session_status_finished">您的联系人已经停止此加密聊天</string>
+  <string name="otr_session_status_verified">已加密和验证！</string>
+  <string name="otr_gen_key">正在转换新的OTR密钥…</string>
+  <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">我们监测到可被倒入的OTR秘钥库。你是否愿意开始QR密码扫描？</string>
+  <string name="menu_import_keys">启用KeySync</string>
+  <string name="successfully_imported_otr_keyring">成功导入OTR密钥环</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">扫描QR</string>
+  <string name="menu_fingerprint">您的指纹</string>
+  <string name="menu_verify_fingerprint">手册</string>
+  <string name="menu_verify_secret">问题</string>
+  <string name="their_fingerprint_verified_">安全指纹（已验证）</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">确定要验证该指纹吗？</string>
+  <string name="verify_key_">是否验证指纹？</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">远端的指纹成功验证！</string>
+  <string name="fingerprint_for_you">指纹为您</string>
+  <string name="fingerprint_for_">指纹为</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">验证</string>
+  <string name="smp_question_summary">输入一个问题给你的联系人并且得到你希望的答案以验证他们是不是你想联系的人（对暗号）</string>
+  <string name="smp_question_hint">要问的问题</string>
+  <string name="qmp_answer_hint">希望得到的答案</string>
+  <string name="remote_verified_us">您的联系人已经成功的认证了您，现在您可以问一些自己的问题来验证您的联系人。</string>
+  <string name="otr_qa_send">发送</string>
+  <string name="otr_qa_cancel">取消</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">安全电话</string>
+  <string name="pref_sip_account_title">安全语音</string>
+  <string name="pref_sip_account_summary">在这里输入您的OStel.co或其他安全SIP服务账户以集成电话。</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">帐户设置</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">安全和隐私</string>
+  <string name="encryption_and_anonymity_title">加密和匿名</string>
+  <string name="menu_view_encrypt_chat">加密On/Off</string>
+  <string name="pref_cacheword_timeout_title">密码超时</string>
+  <string name="pref_cacheword_timeout_summary">程序加密保持解锁状态时间</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">用户界面</string>
+  <string name="menu_locale">语言</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">多国语言</string>
+  <string name="pref_theme_dark">使用暗色主题</string>
+  <string name="pref_theme_dark_summary">改为使用深色应用主题</string>
+  <string name="pref_in_memory_db_title">只在内存中存储消息</string>
+  <string name="pref_in_memory_db_summary">只把消息存在内存中而不存在闪存中以抵御电子数据提取(可能会丢失消息)</string>
+  <string name="pref_background_title">背景图片</string>
+  <string name="pref_background_summary">将(“/sdcard/foo.jpg”)设置为背景图片壁纸</string>
+  <string name="pref_show_grid">显示联系人格子</string>
+  <string name="pref_show_grid_summary">显示联系人列表作为头像格子</string>
+  <string name="button_yes_accept_all">接受全部</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">其他调整</string>
+  <string name="start_on_boot">自动开始ChatSecure</string>
+  <string name="start_on_boot_summary">始终启动并且自动登录所有的帐号</string>
+  <string name="hide_offline_contacts">隐藏离线联系人</string>
+  <string name="foreground_service_title">使用前景优先级</string>
+  <string name="foreground_service_summary">减少安卓重启链接服务的几率。这将放一个通知在通知栏。</string>
+  <string name="heartbeat_interval_title">心跳包间隔</string>
+  <string name="heartbeat_interval_summary">使用高值(分钟)来节省电池。一个过高的值可能会导致您的链接被提供者因长时间不活动而切断。</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">通知设置</string>
+  <string name="notification_enabled_title">即时消息通知</string>
+  <string name="notification_enabled_summary">收到即时消息时在状态栏中显示通知</string>
+  <string name="notification_vibrate_title">振动</string>
+  <string name="notification_vibrate_summary">在收到即时消息的同时振动</string>
+  <string name="notification_sound_title">声音</string>
+  <string name="notification_sound_summary">在收到即时消息的同时播放铃声</string>
+  <string name="notification_ringtone_title">使用ChatSecure自定义铃声</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">开启纠错记录</string>
+  <string name="pref_debug_summary">为纠错将应用的登陆数据导出为标准格式</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">已停用背景数据</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> 需要启用背景数据。</string>
+  <string name="bg_data_prompt_ok">启用</string>
+  <string name="bg_data_prompt_cancel">退出</string>
+  <string name="signout_kill_confirm_message">你要退出所有的服务并关闭所有进程吗?(硬退出)</string>
+  <string name="prompt_create_new_account_">建立新账户?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">建立一个用户名为\'%1$s\'的新的聊天账户?</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">来自<xliff:g id="PROVIDER">%1$s</xliff:g>的新消息</string>
+  <string name="notify_groupchat_label">群聊邀请</string>
+  <string name="new_messages_notify">有新消息</string>
+  <string name="starting_the_chatsecure_service_">正在启动ChatSecure服务…</string>
+  <string name="app_unlocked">激活的 &amp; 已解锁的</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">注意</string>
+  <string name="general_error">错误代码 <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed">无法登录<xliff:g id="SERVICE">%1$s</xliff:g>服务。请稍后再试。"\n"（详细信息：<xliff:g id="DESCRIPTION">%2$s</xliff:g>）</string>
+  <string name="add_list_failed">未添加该列表。</string>
+  <string name="block_contact_failed">未阻止联系人。</string>
+  <string name="unblock_contact_failed">联系人未解除阻止。</string>
+  <string name="select_contact">请先选择一个联系人。</string>
+  <string name="disconnected">\"已断开连接！\"\n</string>
+  <string name="service_error">服务错误！</string>
+  <string name="load_contact_list_failed">未载入联系人列表。</string>
+  <string name="cant_connect_to_server">无法连接到服务器。请检查您的连接。</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>已在您的联系人列表中。</string>
+  <string name="contact_blocked">已阻止联系人“<xliff:g id="USER">%1$s</xliff:g>”。</string>
+  <string name="contact_not_loaded">正在载入联系人列表，请稍候。</string>
+  <string name="network_error">出现网络错误。</string>
+  <string name="wifi_not_connected_error">此次连接需要WiFi</string>
+  <string name="service_not_support">服务器不支持此功能。</string>
+  <string name="invalid_password">您输入的密码无效。</string>
+  <string name="internal_server_error">服务器遇到一个错误。</string>
+  <string name="not_implemented">服务器不支持此功能。</string>
+  <string name="service_unavaiable">服务器当前不可用。</string>
+  <string name="timeout">服务器已超时。</string>
+  <string name="version_not_supported">服务器不支持当前版本。</string>
+  <string name="message_queue_full">消息队列已满。</string>
+  <string name="domain_not_supported">服务器不支持转发至该域。</string>
+  <string name="unknown_user">您输入的用户名无法识别。</string>
+  <string name="recipient_blocked_the_user">抱歉，您已被该用户阻止。</string>
+  <string name="session_expired">此会话已过期，请重新登录。</string>
+  <string name="forced_logout">您已从另一个客户端登录。</string>
+  <string name="already_logged_in">您已从另一个客户端登录。</string>
+  <string name="msisdn_error">抱歉，无法从您的 SIM 卡读取手机号码。请与运营商联系寻求帮助。</string>
+  <string name="not_signed_in">您当前未登录。</string>
+  <string name="account_setup_error_validating">ChatSecure在验证您的用户或密码的时候遇到了错误，请检查并重试。</string>
+  <string name="account_setup_error_keypair">ChatSecure在生成一对密钥的时候遇到错误。</string>
+  <string name="account_setup_error_server">ChatSecure连接聊天服务器的时候发生错误，请检查网络连接。</string>
+  <string name="account_setup_error_connectivity">ChatSecure连接聊天服务器时发生错误，请检查您的网络后重试。</string>
+  <string name="error_suspended_connection">ChatSecure失去网络连接</string>
+  <string name="error_reestablish_connection">ChatSecure正在尝试重新建立链接</string>
+  <string name="account_wizard_no_domain_warning">您的帐号无法进入@hostname.com，请重试</string>
+  <string name="account_wizard_no_root_domain_warning">您的服务器主机没有包括.com、.net或详细后缀，请重试</string>
+  <string name="signin_password_prompt">输入您的password:</string>
+  <string name="warning_tor_connect">当您使用Tor的时候，您必须直接的输入XMPP服务器的主机名到高级账户设置中。</string>
+  <string name="unable_to_create_or_join_group_chat">无法创建或加入群聊</string>
+  <string name="sorry_we_cannot_share_that_file_type">对不起，我们无法共享此类文件类型</string>
+  <string name="err_otr_share_no_encryption">你必须启用加密才能共享文件</string>
+  <string name="please_enable_chat_encryption_to_share_files">请启用加密聊天以共享文件</string>
+  <string name="swipe_alert">ChatSecure检测到一个请求去删除自身任务. ChatSecure将有可能崩溃, 请从帐户列表使用退出所有帐号选项。</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">没有针对该格式的阅览器可用</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">请在扫码之前开始一个安全聊天.</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR密钥环没有被导入； 请检查文件是否为正确的格式和路径</string>
+  <string name="otr_keysync_warning_message">请从桌面OtrFileConverter工具将\'otr_keystore.ofcaes\'文件复制到你设备存储空间的根目录。</string>
+  <string name="msg_sent_failed">无法发送此消息。</string>
+  <string name="disconnected_warning">消息将在重新连接后再发送</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>处于离线状态。您发送的消息将在<xliff:g id="USER_1">%1$s</xliff:g>下次上线时传送出去。</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>不在您的联系人列表中。</string>
+  <string name="account_settings_title">帐号设置</string>
+
+  <string name="warning_alpha">警告！这是一个早期的ChatSecure发行版，可能包含安全问题导致聊天被窥探！！！</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">群组</string>
+  <string name="_open_conversations">打开对话</string>
+  <string name="menu_exit">退出</string>
+  <string name="menu_panic">恐慌</string>
+  <string name="buddies">好友</string>
+  <string name="contacts">联系人</string>
+  <string name="mtm_accept_cert">是否接受服务器证书？</string>
+  <string name="menu_sidebar_qr">指纹</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">联系人列表</string>
+  <string name="menu_settings">设置</string>
+  <string name="menu_view_accounts">帐户列表</string>
+  <string name="menu_sign_out">退出</string>
+  <string name="menu_view_contact_list">联系人列表</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">本地区域 (Bonjour/ZeroConf)</string>
+  <string name="google_account">谷歌账户</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">在线</string>
+  <string name="presence_busy">忙碌</string>
+  <string name="presence_away">离开</string>
+  <string name="presence_idle">空闲</string>
+  <string name="presence_offline">离线</string>
+  <string name="presence_invisible">显示为离线</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>快乐</item>
+    <item>伤心</item>
+    <item>眨眼</item>
+    <item>舌头伸出来</item>
+    <item>惊讶</item>
+    <item>接吻</item>
+    <item>大喊</item>
+    <item>凉</item>
+    <item>钱口</item>
+    <item>脚口</item>
+    <item>尴尬</item>
+    <item>天使</item>
+    <item>未定</item>
+    <item>哭泣</item>
+    <item>守口如瓶</item>
+    <item>笑</item>
+    <item>困惑</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>快乐</item>
+    <item>伤心</item>
+    <item>眨眼</item>
+    <item>舌头伸出来</item>
+    <item>惊讶</item>
+    <item>接吻</item>
+    <item>大喊</item>
+    <item>凉</item>
+    <item>钱口</item>
+    <item>脚口</item>
+    <item>尴尬</item>
+    <item>天使</item>
+    <item>未定</item>
+    <item>哭泣</item>
+    <item>守口如瓶</item>
+    <item>笑</item>
+    <item>困惑</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_need_a_new_account">新账户</string>
+</resources>

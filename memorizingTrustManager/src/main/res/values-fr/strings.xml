@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mtm_accept_cert">Accept Unknown Certificate?</string>
+    <string name="mtm_trust_anchor">Le certificat du serveur n’est pas signé par une Autorité de Certification reconnue.</string>
+    <string name="mtm_accept_servername">Accept Mismatching Server Name?</string>
+    <string name="mtm_hostname_mismatch">Server could not authenticate as \"%s\". The certificate is only valid for:</string>
+
+    <string name="mtm_connect_anyway">Do you want to connect anyway?</string>
+    <string name="mtm_cert_details">Détails du certificat :</string>
+
+    <string name="mtm_decision_always">Toujours</string>
+    <string name="mtm_decision_once">Une seule fois</string>
+    <string name="mtm_decision_abort">Annuler</string>
+
+    <string name="mtm_notification">Certificate Verification</string>
+</resources>

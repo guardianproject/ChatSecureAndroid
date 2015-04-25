@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2008 Esmertec AG.
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+  
+   <PreferenceCategory android:title="@string/pref_group_security_title">
+  
+  <ListPreference android:title="Chat Encryption"
+    android:key="pref_security_otr_mode"
+    android:entryValues="@array/otr_options_values"
+    android:entries="@array/otr_options"
+    android:summary="@string/how_encrypted_chats_are_started"
+    android:defaultValue="auto">
+  </ListPreference>
+
+  <CheckBoxPreference
+          android:key="pref_linkify_on_tor"
+          android:title="@string/pref_linkify_on_tor_title"
+          android:summary="@string/pref_linkify_on_tor_summary"
+          android:defaultValue="false" />
+
+ <!--
+   <EditTextPreference 
+          android:key="pref_sip_account"
+          android:title="@string/pref_sip_account_title"
+          android:summary="@string/pref_sip_account_summary"
+           />
+-->
+
+  <!-- 
+  <CheckBoxPreference
+          android:key="pref_in_memory_db"
+          android:title="@string/pref_in_memory_db_title"
+          android:summary="@string/pref_in_memory_db_summary"
+          android:defaultValue="true" />
+          -->
+         
+         <!--          <EditTextPreference 
+          android:key="pref_cacheword_timeout"
+          android:title="@string/pref_cacheword_timeout_title"
+          android:summary="@string/pref_cacheword_timeout_summary"
+           /> 
+           -->
+    
+
+  </PreferenceCategory>
+  
+   
+    
+   <PreferenceCategory android:title="@string/pref_group_looknfeel_title">
+       <ListPreference
+            android:key="pref_language"
+            android:title="@string/KEY_PREF_LANGUAGE_TITLE" >
+        </ListPreference>
+
+ 
+  <CheckBoxPreference
+          android:key="themeDark"
+          android:title="@string/pref_theme_dark"
+          android:summary="@string/pref_theme_dark_summary"
+          android:defaultValue="false" />
+ 
+  <!-- 
+  <CheckBoxPreference
+          android:key="showGrid"
+          android:title="@string/pref_show_grid"
+          android:summary="@string/pref_show_grid_summary"
+          android:defaultValue="false" />
+   -->
+ 
+   <EditTextPreference 
+          android:key="pref_background"
+          android:title="@string/pref_background_title"
+          android:summary="@string/pref_background_summary"
+           />
+   
+  <CheckBoxPreference
+          android:key="pref_delete_unsecured_media"
+          android:title="@string/pref_delete_unsecured_media_title"
+          android:summary="@string/pref_delete_unsecured_media_summary"
+          android:defaultValue="false" />
+
+  <CheckBoxPreference
+          android:enabled="false"
+          android:key="pref_store_media_on_external_storage"
+          android:title="@string/pref_store_media_on_external_storage_title"
+          android:summary="@string/pref_store_media_on_external_storage_summary"
+          android:defaultValue="false" />
+   </PreferenceCategory>
+  
+   
+      <PreferenceCategory android:title="@string/pref_group_tuning_title">
+   
+  <CheckBoxPreference
+          android:key="pref_start_on_boot"
+          android:title="@string/start_on_boot"
+          android:summary="@string/start_on_boot_summary"
+          android:defaultValue="true" />
+  
+   <CheckBoxPreference
+          android:key="pref_foreground_enable"
+          android:title="@string/foreground_service_title"
+          android:summary="@string/foreground_service_summary"
+          android:defaultValue="true" />
+
+  <EditTextPreference 
+          android:key="pref_heartbeat_interval"
+          android:title="@string/heartbeat_interval_title"
+          android:summary="@string/heartbeat_interval_summary"
+          android:numeric="integer"
+          android:maxLength="2"
+          android:defaultValue="60" />
+   
+   <CheckBoxPreference android:key="pref_hide_offline_contacts"
+    android:title="@string/hide_offline_contacts"
+    android:defaultValue="false" />
+   
+  </PreferenceCategory>
+  
+  <PreferenceCategory android:title="@string/notification_group_title">
+
+        <CheckBoxPreference
+                android:key="pref_enable_notification"
+                android:title="@string/notification_enabled_title"
+                android:summary="@string/notification_enabled_summary"
+                android:defaultValue="true" />
+
+        <CheckBoxPreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="pref_enable_notification"
+                android:key="pref_notification_vibrate"
+                android:title="@string/notification_vibrate_title"
+                android:summary="@string/notification_vibrate_summary"
+                android:defaultValue="true"
+                 />
+
+        <CheckBoxPreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="pref_enable_notification"
+                android:key="pref_notification_sound"
+                android:title="@string/notification_sound_title"
+                android:summary="@string/notification_sound_summary"
+                android:defaultValue="false"
+                 />
+        
+         <Preference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="pref_enable_notification"
+                android:key="pref_notification_ringtone"
+                android:title="@string/notification_ringtone_title"
+                android:defaultValue="false"
+                 />
+         
+         
+<!-- 
+        <info.guardianproject.otr.app.im.app.ImRingtonePreference
+                android:layout="?android:attr/preferenceLayoutChild"
+                android:dependency="pref_notification_sound"
+                android:key="pref_notification_ringtone"
+                android:persistent="false"
+                android:title="@string/notification_ringtone_title"
+                android:ringtoneType="notification" />
+  -->
+    </PreferenceCategory>
+
+  
+
+ 
+  <CheckBoxPreference
+          android:key="prefDebug"
+          android:title="@string/pref_debug_title"
+          android:summary="@string/pref_debug_summary"
+          android:defaultValue="false" />
+ 
+  
+</PreferenceScreen>

@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">hızlı iletiler oku</string>
+  <string name="ro_perm_desc">Uygulamaların IM (anlık mesajlaşma) sağlayıcısından bilgi almasına izin verin.</string>
+  <string name="wo_perm_label">hızlı iletiler yaz</string>
+  <string name="wo_perm_desc">Uygulamaların IM (anlık mesajlaşma) sağlayıcısından bilgi almasına izin verin.</string>
+  <string name="perm_label">IM hizmetini başlat</string>
+  <string name="perm_desc">Amacını bildirerek uygulamaların IM hizmetini başlatmasına izin verir.</string>
+  <!--General: Actions-->
+  <string name="confirm">Doğrula</string>
+  <string name="ok">Tamam</string>
+  <string name="cancel">İptal</string>
+  <string name="yes">Tamam</string>
+  <string name="no">İptal</string>
+  <string name="btn_next">İleri</string>
+  <string name="btn_back">Geri</string>
+  <string name="connect">Bağlan</string>
+  <string name="play">Oynat</string>
+  <string name="setup">Kur</string>
+  <!--Views-->
+  <string name="lock_screen_open">Aç</string>
+  <string name="title_activity_lock_screen">ChatSecure kilitlendi</string>
+  <string name="lock_screen_create_passphrase">Parola oluştur</string>
+  <string name="lock_screen_confirm_passphrase">Parola Onayla</string>
+  <string name="lock_screen_passphrase_hint">Parola</string>
+  <string name="lock_screen_passphrase_not_set_enter">Yeni Parola</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Yeni Parola Onayla</string>
+  <string name="lock_screen_passphrases_not_matching">Parola uyumlu değil, lütfen yeniden deneyin</string>
+  <string name="lock_screen_skip">Tembelin tekiyim (Ne Parolası!)</string>
+  <string name="app_passphrase_view_password_question">Lütfen Parola Girin</string>
+  <string name="password_please">Parola lütfen…</string>
+  <string name="passphrase">Parola</string>
+  <string name="passphrase_again">Parola (tekrar)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Hesap seç</string>
+  <string name="choose_account_title">Hesap seç</string>
+  <string name="conversations">Bağlantı numarası</string>
+  <string name="add_account"><xliff:g id="ACCOUNT">%1$s</xliff:g> hesabını ekle</string>
+  <string name="menu_about">Hakkında</string>
+  <string name="menu_sign_out_all">Hepsinden çıkış yap</string>
+  <string name="signout_all_confirm_message">Tüm servislerden çıkış yapmak istiyor musunuz?</string>
+  <string name="signed_out_prompt"><xliff:g id="ACCOUNT">%1$s</xliff:g> oturumunuz  kapatıldı.</string>
+  <string name="signed_out_prompt_with_error"><xliff:g id="account">%1$s</xliff:g> oturumunuz <xliff:g id="reason">%2$s</xliff:g> nedeniyle kapatıldı.</string>
+  <string name="welcome_first">ChatSecure\'ü ilk kez mi kullanıyorsunuz?</string>
+  <string name="welcome_skip">Başlamak için sabırsızlanıyor musunuz?</string>
+  <string name="welcome_about">Başlayın</string>
+  <string name="welcome_account">Hesap Kurulumu</string>
+  <string name="setup_passphrase_title">Parola Ayarlama</string>
+  <string name="setup_passphrase">Lütfen başlamadan önce ChatSecure bilgilerinizi izinsiz girişlerden korumak için güvenli bir parola oluşturun.</string>
+  <string name="setup_passphrase_label1">Parola:</string>
+  <string name="setup_passphrase_label2">Parola (tekrar):</string>
+  <string name="rekey_message">*Yeni* bir parola giriniz. Parolanız en az bir büyük harf, bir küçük harf ve bir numara barındırmalı ve 6 karakterden daha uzun olmalıdır.</string>
+  <string name="do_rekey">Varolan notlarınızı yeni parola ile şifreliyoruz (lütfen bekleyiniz…)</string>
+  <string name="enter_pass">Parolanızı girin:</string>
+  <string name="new_pass">Hoşgeldiniz! Notlarınızı koruma altına almak için güçlü bir parola oluşturun. Parolanız en az bir büyük harf, bir küçük harf ve bir numara barındırmalı ve 6 karakterden daha uzun olmalıdır.</string>
+  <string name="pass_err_length">Parolanız yeterince uzun değil.</string>
+  <string name="pass_err_upper">Parolanız hiç büyük harf barındırmıyor.</string>
+  <string name="pass_err_lower">Parolanız hiç küçük harf barındırmıyor.</string>
+  <string name="pass_err_num">Parolanız hiç sayı barındırmıyor.</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">ChatSecure hakkında</string>
+  <string name="about_welcome">ChatSecure başkalarının görüşmelerinizi dinlemesini engelleyen bir mobil anlık mesajlaşma uygulamasıdır. Bu uygulama Jabber veya XMPP protokolünü kullanan tüm sohbet servisleri ile uyumludur; örneğin Google GTalk veya Jabber.org</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Nasıl güvenli?</string>
+  <string name="about_otr">\'Kayıt-dışı mesajlaşma\', Off-the-Record -OTR, gerçek hayattaki gizli konuşmayı örnek alarak geliştirilmiş bir güvenlik sistemidir; Şifreleme, Onaylama, Reddedilebilirlik ve Gizliliğin Aktarılması gibi özelliklere sahiptir. OTR masaüstü bilgisayarlarla da uyumludur; örneğin Adium ve Pidgin.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Sohbetlerim Güvende Mi?</string>
+  <string name="about_security">ChatSecure\'ün sohbet şifreleme özelliği ancak diğer taraf da uyumlu bir uygulama veya yazılım kullandığında geçerlidir; yani bağlantılarınızın mobil iletişimde ChatSecure, masaüstü bilgisayarlarında ise Adium veya Pidgin kullandıklarına emin olun. ChatSecure\'ün sohbetlerinizi hangi durumlarda ve nasıl şifreleyeceğini ayarlamak için Hesap Ayarları menüsünü kullanabilirsiniz. Hadi başlayın!</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Yeni Hesap</string>
+  <string name="menu_add_account">Hesap ekle</string>
+  <string name="menu_edit_account">Hesabı düzenle</string>
+  <string name="menu_remove_account">Hesabı sil</string>
+  <string name="menu_use_existing_account">Mevcut Hesap</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Kullanıcı adı:</string>
+  <string name="label_password">Parola:</string>
+  <string name="remember_password">Parolamı hatırla.</string>
+  <string name="keep_me_signed_in">Oturumumu otomatik olarak aç.</string>
+  <string name="sign_up">Hesabınız yok mu?</string>
+  <string name="sign_in">Oturum aç</string>
+  <string name="check_save_password">Güvenliğiniz için, eğer telefonunuz kaybolur veya çalınırsa, bilgisayarınızdan web sayfasına gidip parolanızı değiştirin.</string>
+  <string name="check_auto_sign_in">Bu seçenek, bu uygulamayı her açtığınızda oturumunuzu otomatik olarak açar. Bu seçeneği devre dışı bırakmak için oturumu kapatın ve ardından \\"Oturumumu otomatik olarak aç\\" onay kutusunun işaretini kaldırın.</string>
+  <string name="use_tor">Tor kullanarak bağlan (Orbot uygulamasını yeniden başlatmanız gerekir)</string>
+  <string name="account_setup_example_email_address">kullanıcı@alanadı.com</string>
+  <string name="account_setup_new_username">Yeni kullanıcı adı</string>
+  <string name="account_setup_service_provider">Servis sağlayıcı (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">parola</string>
+  <string name="account_setup_password_confirm">Parolayı onayla</string>
+  <string name="account_setup_advanced_button">Gelişmiş Hesap Ayarları</string>
+  <string name="account_select_type">Hesap Türü</string>
+  <string name="btn_create_new_account">Hesabı kaydet</string>
+  <string name="account_setup_pers_sub">Süreklilik</string>
+  <string name="account_setup_pers_pw_title">Parolayı Hatırla</string>
+  <string name="account_setup_pers_pw_on">Parola önbelleğe alındı</string>
+  <string name="account_setup_pers_pw_off">Parola önbelleğe alınmadı</string>
+  <string name="account_setup_pers_auto_title">Otomatik Giriş Yap</string>
+  <string name="account_setup_pers_auto_on">ChatSecure başlatıldığında bağlan</string>
+  <string name="account_setup_pers_auto_off">ChatSecure başlatıldığında bağlanma</string>
+  <string name="account_setup_pers_now_title">Şimdi giriş yap</string>
+  <string name="account_setup_pers_now_on">Hesap kurulumuna göre bağlan</string>
+  <string name="account_setup_pers_now_off">Hesap kurulumuna göre bağlan</string>
+  <string name="account_setup_personal_sub">Kişisel (isteğe bağlı)</string>
+  <string name="account_setup_personal_alias_title">Hesap Adı (isminiz)</string>
+  <string name="account_setup_personal_alias_sub">Hesabınız nasıl görünüyor</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Kendinizi kısacık tanıtın</string>
+  <string name="account_setup_advanced_enc_force">Şifrelemeyi zorunlu kıl / açık metni reddet</string>
+  <string name="account_setup_advanced_enc_auto">Mümkün olduğunda sohbetleri otomatik olarak şifrele</string>
+  <string name="account_setup_advanced_enc_req">Sohbetleri talep edildiğinde şifrele</string>
+  <string name="account_setup_advanced_enc_off">Sohbetleri şifrelemeyi kaldır</string>
+  <string name="account_setup_signin_a">Giriş bilgileri doğrulanıyor…</string>
+  <string name="account_setup_signin_b">Anahtar çifti oluşturuluyor…</string>
+  <string name="account_setup_signin_c">Giriş yapılıyor…</string>
+  <string name="account_wizard_setup_title">Hesap Sihirbazı</string>
+  <string name="account_wizard_account_title">Hesabınızın ID\'si</string>
+  <string name="account_wizard_host_title">Sunucu Yapılandır</string>
+  <string name="account_wizard_ready_title">Hazır mısınız?</string>
+  <string name="account_wizard_setup_body">XMPP sohbet servisine bağlanırken kullandığınız ChatSecure ayarlarınızı yapmak için hesap bilgilerinizi girin. Bir email hesabı gibi görünür:</string>
+  <string name="account_wizard_account_body">Lütfen ID\'nizi girin (user@hostname)</string>
+  <string name="account_wizard_host_body">Lütfen jabber/xmpp sohbet sunucu adresini ve portunu girin veya düzenleyin (varsayılan 5222).</string>
+  <string name="account_wizard_ready_body">ChatSecure ayarlarınız yapıldı, şimdi servise bağlanıp güvenli ve gizli sohbet edebilirsiniz!</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Alan adı seçin</string>
+  <string name="registering_new_account_">Yeni hesap kaydediliyor…</string>
+  <string name="signing_in_to">ChatSecure açılıyor…</string>
+  <string name="menu_cancel_signin">Oturum açmayı iptal et</string>
+  <string name="signing_in_wait">Oturum açılıyor…</string>
+  <string name="signing_out_wait">Oturum kapatılıyor\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">SRV sorgulaması yap</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Alan adından XMPP sunucusu bulmak için DNS SRV kullan</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Şifrelenmemiş bir bağlantı üzerindeyken kullanıcı adı ve parolanın şifrelenmeden gönderilmesine izin ver</string>
+  <string name="allow_plain_text_auth">Açık metin ile onaylamaya izin ver</string>
+  <string name="verify_that_the_certificate_is_trusted">Sertifikanın güvenilir olduğunu doğrula</string>
+  <string name="tls_verification">TLS Doğrulaması</string>
+  <string name="require_tls_ssl_connection">TLS bağlantısı gerekli</string>
+  <string name="transport_encryption">İletişim şifrelemesi</string>
+  <string name="how_encrypted_chats_are_started">Şifreli sohbet nasıl başlatılır</string>
+  <string name="the_server_to_connect_to_if_needed">Gerektiğinde bağlanılacak sunucu</string>
+  <string name="connect_server">Sunucuya Bağlan</string>
+  <string name="tcp_port_for_xmpp_server">XMPP Sunucusu için TCP Portu</string>
+  <string name="server_port">Sunucu Portu</string>
+  <string name="xmpp_resource">XMPP Kaynağı</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">Bağlanan diğer kullanıcılardan bu bağlantıyı ayırmak için</string>
+  <string name="xmpp_resource_prio_title">XMPP Kaynak Önceliği</string>
+  <string name="xmpp_resource_prio_summary">Birden çok aktif kaynağı olan kullanıcılara gönderilecen iletiler en öncelikli kaynağa gönderilecek</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Görüşmeler</string>
+  <string name="no_messages">Görüşme yok.\n \n Başlatmak için buraya basın!</string>
+  <string name="empty_account_message">Yapılandırılacak bir
+hesabınız yoktur.
+
+Eklemek için basın!</string>
+  <string name="buddy_list_title">Bağlantı listesi</string>
+  <string name="menu_add_contact">Kişi ekle</string>
+  <string name="menu_remove_contact">Kişiyi sil</string>
+  <string name="menu_block_contact">Kişiyi engelle</string>
+  <string name="menu_contact_nickname">Kişi takma adı</string>
+  <string name="menu_view_blocked">Engellenenler</string>
+  <string name="nickname">Rumuz</string>
+  <string name="confirm_delete_contact">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi silinecek.</string>
+  <string name="confirm_block_contact">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellenecek.</string>
+  <string name="confirm_unblock_contact">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisinin engellemesi kaldırılacak.</string>
+  <string name="add_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi eklendi.</string>
+  <string name="delete_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi silindi.</string>
+  <string name="block_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellendi.</string>
+  <string name="unblock_contact_success">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisinin engellemesi kaldırıldı.</string>
+  <string name="menu_new_chat">Yeni Sohbet</string>
+  <string name="menu_search_contacts">Kişileri Ara</string>
+  <string name="menu_show_grid">Izgarayı Göster</string>
+  <string name="menu_start_chat">Sohbeti başlat</string>
+  <string name="menu_view_profile">Profili görüntüle</string>
+  <string name="menu_verify">Anahtarı Doğrula</string>
+  <string name="ongoing_conversation">Devam eden sohbetler (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> çevrimiçi</string>
+  <string name="subscriptions">Arkadaş davetiyeleri</string>
+  <string name="unknown_contact">(\"<i>\"Bilinmiyor\"</i>\")</string>
+  <string name="empty_contact_group">Boş</string>
+  <string name="empty_conversation_group">Konuşma yok</string>
+  <string name="search_label">Kişi</string>
+  <string name="search_hint">Sohbet edilecek bağlantının ismini yazın</string>
+  <string name="search_button_text">Git</string>
+  <string name="empty_chat_list">Etkin sohbet yok.</string>
+  <string name="add_contact_title">Kişi ekle</string>
+  <string name="input_contact_label">Davet etmek istediğiniz kullanıcının e-posta adresi:</string>
+  <string name="choose_list_label">Liste seçin:</string>
+  <string name="invite_instruction">Kişiler\'den eklemek için bir ad yazın.</string>
+  <string name="invite_label">Davetiye gönder</string>
+  <string name="contact_profile_title">Kişi profili</string>
+  <string name="label_status">Durum:</string>
+  <string name="label_client_type">İstemci türü:</string>
+  <string name="client_type_computer">Bilgisayar</string>
+  <string name="client_type_mobile">Mobil</string>
+  <string name="blocked_list_title">Engellenmiş kişiler - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Engellenmiş kişi yok.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with"><xliff:g id="USER">%1$s</xliff:g> ile sohbet et</string>
+  <string name="me">Ben</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g> çevrimiçi</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> dışarıda</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g> meşgul</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> çevrimdışı</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> katıldı</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> ayrıldı</string>
+  <string name="menu_send_image">Fotoğraf Gönder</string>
+  <string name="menu_send_file">Dosya Gönder</string>
+  <string name="menu_send_audio">Ses Gönder</string>
+  <string name="menu_take_picture">Fotoğraf Çek</string>
+  <string name="file_transfer">Dosya Aktarımı</string>
+  <string name="transfer_complete">Aktarım Tamamla</string>
+  <string name="transfer_in_progress">Aktarım devam eden</string>
+  <string name="accept_transfer_">Aktarımı kabul?</string>
+  <string name="wants_to_send_you_the_file">size dosyayı göndermek istiyor</string>
+  <string name="no_connection_for_sending">Paylaşımını göndermek için uygun bağlantı yok!</string>
+  <string name="send">Gönder</string>
+  <string name="compose_hint">Bir ileti gönder</string>
+  <string name="compose_hint_secure">Güvenli ileti gönder</string>
+  <string name="menu_resend">Tekrar gönder</string>
+  <string name="menu_end_conversation">Sohbeti sonlandır</string>
+  <string name="menu_clear_chat">Sohbeti Temizle</string>
+  <string name="menu_insert_smiley">İfade ekle</string>
+  <string name="menu_switch_chats">Sohbetler arasında geçiş yap</string>
+  <string name="menu_plus">Menü+</string>
+  <string name="select_link_title">Bağlantıyı seç</string>
+  <string name="delete">Sil</string>
+  <string name="keep_files">Dosyaları Tut</string>
+  <string name="delete_chat_session_secured_storage">Sohbet Oturumunu Güvenli Depolamadan Sil?</string>
+  <string name="delete_original">Orjinali Sil?</string>
+  <string name="keep">Sakla</string>
+  <string name="export">Dışarı aktar</string>
+  <string name="end_chat_title">Sohbet sonlandırılsın mı?</string>
+  <string name="end_chat_and_delete">Sohbeti Bitir ve Dosyaları Sil</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> sizi bir grup sohbetine katılmaya davet etti.</string>
+  <string name="invitation_sent_prompt"><xliff:g id="USER">%1$s</xliff:g> kullanıcısına davetiye gönderildi.</string>
+  <string name="accept_invitation">Kabul Et</string>
+  <string name="decline_invitation">Reddet</string>
+  <string name="menu_new_group_chat">Grup Sohbet</string>
+  <string name="create_or_join_group_chat">Grup Sohbet Oluştur ya da Katıl</string>
+  <string name="connecting_to_group_chat_">Grup sohbete bağlanılıyor…</string>
+  <string name="menu_invite_contact">Davet et…</string>
+  <string name="contacts_picker_title">Davet edilecek kişileri seç</string>
+  <string name="contact_filter_hint">Kişiyi bulmak üzere yazın</string>
+  <string name="empty_contact_list">Hiçbir kişi bulunamadı.
+
+Davet etmek için buraya basın.</string>
+  <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik onaylanamıyor. Lütfen daha sonra tekrar deneyin.</string>
+  <string name="decline_subscription_error"><xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik reddedilemiyor. Lütfen daha sonra tekrar deneyin.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Şifrelemeyi Başlat</string>
+  <string name="menu_otr_stop">Şifrelemeyi Durdur</string>
+  <string name="starting_otr_chat">Şifrelenmiş sohbet oturumu başlatılıyor…</string>
+  <string name="stopping_otr_chat">Şifrelenmiş sohbet oturumu durduruluyor…</string>
+  <string name="label_fingerprint_remote">Parmak İzi Güvenliği</string>
+  <string name="label_fingerprint_local">Parmak İzi Güvenliği</string>
+  <string name="menu_sign_in">Giriş Yap</string>
+  <string name="menu_gen_key">Anahtarı yenile</string>
+  <string name="otr_session_status_plaintext">Şifreleme Kapalı</string>
+  <string name="otr_session_status_encrypted">Şifreleme Açık (Kontrol etmek için basın)</string>
+  <string name="otr_session_status_finished">Karşı taraf şifreli görüşmeyi durdurdu.</string>
+  <string name="otr_session_status_verified">Şifrelendi ve doğrulandı!</string>
+  <string name="otr_gen_key">Yeni OTR anahtar çifti oluşturuluyor…</string>
+  <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">Bir OTR anahtarı algılandı. QR parolasını şimdi taramak ister misiniz?</string>
+  <string name="menu_import_keys">KeySync Etkinleştir</string>
+  <string name="successfully_imported_otr_keyring">OTR anahtar demeti başarıyla aktarıldı</string>
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">QR Tara</string>
+  <string name="menu_fingerprint">Parmak iziniz</string>
+  <string name="menu_verify_fingerprint">El ile</string>
+  <string name="menu_verify_secret">Soru</string>
+  <string name="their_fingerprint_verified_">Güvenli Parmak İzi (Doğrulandı)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Bu parmak izini onaylamak istediğinizden emin misiniz?</string>
+  <string name="verify_key_">Parmak İzini Doğrula?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Uzak parmak izi doğrulandı!</string>
+  <string name="fingerprint_for_you">Senin için parmak izi</string>
+  <string name="fingerprint_for_">Parmak izi için</string>
+  <string name="install_barcode_scanner_title">Barkod Tarayıcıyı Kur?</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Onaylama</string>
+  <string name="smp_question_summary">Karşı tarafın iddia ettiği kişi olduğunu kanıtlaması için soracağınız soruyu ve beklediğiniz cevabı yazın.</string>
+  <string name="smp_question_hint">sorulacak soru</string>
+  <string name="qmp_answer_hint">beklenen cevap</string>
+  <string name="remote_verified_us">Bağlantınız sizi onayladı. | Şimdi de siz ona sorunuzu sorarak onaylayın.</string>
+  <string name="otr_qa_title">OTR Q&amp;A Doğrulaması</string>
+  <string name="chat_encryption_title">Sohbet Şifreleme</string>
+  <string name="otr_qa_send">Gönder</string>
+  <string name="otr_qa_cancel">İptal</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Güvenli Konuşma</string>
+  <string name="pref_sip_account_title">Secure Voice</string>
+  <string name="pref_sip_account_summary">Arama bütünleşmesi için OStel.co veya başka güvenli SIP servis hesabınızı buraya girin</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Hesap Kurulumu</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Güvenlik ve Gizlilik</string>
+  <string name="encryption_and_anonymity_title">Şifreleme ve Anonimlik</string>
+  <string name="menu_view_encrypt_chat">Şifreleme Aç/Kapa</string>
+  <string name="pref_cacheword_timeout_title">Parola zamanaşımına uğradı</string>
+  <string name="pref_cacheword_timeout_summary">Uygulamanın şifreleme dışı sayılma zaman sınırı</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">Kullanıcı Arayüzü</string>
+  <string name="menu_locale">Dil</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Diller</string>
+  <string name="use_system_default">Sistem öntanımını kullan</string>
+  <string name="pref_theme_dark">Koyu Temayı Kullan</string>
+  <string name="pref_theme_dark_summary">Koyu renkli uygulama teması olarak değiştir</string>
+  <string name="pref_in_memory_db_title">İletileri sadece hafızaya al</string>
+  <string name="pref_in_memory_db_summary">İletilerin alınmasını engellemek için onları çıkarılabilir diskte değil sadece hafızada tut. (İletilerin kaybolmasına yol açabilir.)</string>
+  <string name="pref_background_title">Arkaplan görüntüsü</string>
+  <string name="pref_background_summary">Bu dosya yolunu uygulamanın arkaplan görüntüsü olarak seç (\"/sdcard/foo.jpg\")</string>
+  <string name="pref_show_grid">Bağlantı Izgarasını Göster</string>
+  <string name="pref_show_grid_summary">Bağlantı listesini avatar ızgarası olarak göster</string>
+  <string name="button_yes_accept_all">Evet, Hepsi Kabul Et</string>
+  <string name="pref_delete_unsecured_media_title">Güvensiz Medyaları Sil</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Diğer Ayarlar</string>
+  <string name="start_on_boot">CharSecure\'ü otomatik olarak başlat</string>
+  <string name="start_on_boot_summary">Önceden girilen hesaplara otomatik olarak bağlan</string>
+  <string name="hide_offline_contacts">Çevrimdışı kişileri gizle</string>
+  <string name="foreground_service_title">Öncelikli süreçleri kullan</string>
+  <string name="foreground_service_summary">Android\'in bağlantı servisini yeniden başlatma şansını azalt. | Bu, bildirim alanında gösterilecektir.</string>
+  <string name="heartbeat_interval_title">Sinyal Aralığı</string>
+  <string name="heartbeat_interval_summary">Şarj tasarrufu için yüksek bir değer girin (dk).  Yüksek bir değer içerik sağlayıcının etkin olmadığınızdan bağlantınızı kesmenize neden olabilir.</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Bildirim ayarları</string>
+  <string name="notification_enabled_title">IM bildirimleri</string>
+  <string name="notification_enabled_summary">IM geldiğinde durum çubuğunda bildir</string>
+  <string name="notification_vibrate_title">Titreşim</string>
+  <string name="notification_vibrate_summary">IM geldiğinde aynı zamanda titret</string>
+  <string name="notification_sound_title">Ses</string>
+  <string name="notification_sound_summary">IM geldiğinde aynı zamanda zil sesi çal</string>
+  <string name="notification_ringtone_title">ChatSecure özel zil sesi kullan</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Hata Ayıklama günlüğünü etkinleştir</string>
+  <string name="pref_debug_summary">Uygulama çıkış kayıt verisini hata ayıklama için standart çıkışa / logcat\'e</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Arka plan verileri devre dışı</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> arka plan verilerinin etkinleştirilmesine gereksinim duyuyor.</string>
+  <string name="bg_data_prompt_ok">Etkinleştir</string>
+  <string name="bg_data_prompt_cancel">Çık</string>
+  <string name="signout_kill_confirm_message">Tüm servislerden çıkmak ve tüm işlemleri durdurmak mı istiyorsunuz (hard exit)?</string>
+  <string name="prompt_create_new_account_">Yeni hesap oluştur?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">\'%1$s\' kullanıcısı için yeni bir sohbet hesabı oluşturulsun mu?</string>
+  <string name="dialog_cert_title">Serfitica Bilgisi</string>
+  <string name="dialog_cert_subject">Serfitika:</string>
+  <string name="dialog_cert_fingerprint">SHA1 Parmak İzi:</string>
+  <string name="dialog_connect_chatroom_title">Sohbet Odasına Katıl?</string>
+  <string name="dialog_settings_choose_background_title">Arkaplan Seç</string>
+  <string name="dialog_settings_choose_background_picker">Resiö Seç</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Yeni <xliff:g id="PROVIDER">%1$s</xliff:g> iletileri</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> okunmamış sohbet</string>
+  <string name="subscription_notify_text"><xliff:g id="user">%s</xliff:g> kullanıcısından yeni arkadaş davetiyesi</string>
+  <string name="file_notify_text"><xliff:g id="filename">%1$s</xliff:g> kullanıcısından yeni dosya <xliff:g id="user">%2$s</xliff:g></string>
+  <string name="notify_groupchat_label">Grup sohbeti davetiyeleri</string>
+  <string name="group_chat_invite_notify_text"><xliff:g id="user">%s</xliff:g> kullanıcısından gelen yeni grup sohbeti daveti</string>
+  <string name="new_messages_notify">Gelen yeni ileti(ler)</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure servisi başlatılıyor…</string>
+  <string name="app_unlocked">Etkinleştirildi &amp; kilidi açıldı</string>
+  <string name="toast_chat_copied_to_clipboard">mesaj panoya kopyalandı</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Dikkat</string>
+  <string name="error_prefix">Hata:</string>
+  <string name="general_error">Hata kodu <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed"><xliff:g id="SERVICE">%1$s</xliff:g> hizmetinde oturum açılamıyor. Lütfen daha sonra tekrar deneyin."\n"(Ayrıntılı bilgi: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="add_list_failed">Liste eklenmedi.</string>
+  <string name="block_contact_failed">Kişi engellenmedi.</string>
+  <string name="unblock_contact_failed">Kişinin engellemesi kaldırılmadı.</string>
+  <string name="select_contact">Lütfen önce bir kişi seçin.</string>
+  <string name="disconnected">\"Bağlantı kesildi!\"\n</string>
+  <string name="service_error">Hizmet hatası!</string>
+  <string name="load_contact_list_failed">Kişi listesi yüklenmedi.</string>
+  <string name="cant_connect_to_server">Sunucuya bağlanılamıyor. Lütfen bağlantınızı kontrol edin.</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> zaten Kişi listenizde var.</string>
+  <string name="contact_blocked">\"<xliff:g id="USER">%1$s</xliff:g>\" kişisi engellenmiş.</string>
+  <string name="contact_not_loaded">Kişi listeniz yüklenirken lütfen bekleyin.</string>
+  <string name="network_error">Bir ağ hatası oluştu.</string>
+  <string name="wifi_not_connected_error">Bu bağlantı için WiFi gereklidir.</string>
+  <string name="service_not_support">Sunucu bu işlevi desteklemiyor.</string>
+  <string name="invalid_password">Girdiğiniz parola geçerli değil.</string>
+  <string name="internal_server_error">Sunucu bir hata ile karşılaştı.</string>
+  <string name="not_implemented">Sunucu bu işlevi desteklemiyor.</string>
+  <string name="service_unavaiable">Sunucu şu an kullanılamıyor.</string>
+  <string name="timeout">Sunucu zaman aşımına uğradı.</string>
+  <string name="version_not_supported">Sunucu geçerli sürümü desteklemiyor.</string>
+  <string name="message_queue_full">İleti kuyruğu dolu.</string>
+  <string name="domain_not_supported">Sunucu alan adına yönlendirmeyi desteklemiyor.</string>
+  <string name="unknown_user">Girdiğiniz kullanıcı adı tanınmıyor.</string>
+  <string name="recipient_blocked_the_user">Maalesef, kullanıcı tarafından engellenmişsiniz.</string>
+  <string name="session_expired">Oturum zaman aşımına uğradı, lütfen tekrar oturum açın.</string>
+  <string name="forced_logout">başka bir istemciden oturum açtınız.</string>
+  <string name="already_logged_in">başka bir istemciden zaten oturum açtınız.</string>
+  <string name="msisdn_error">Maalesef, telefon numarası SIM kartınızdan okunamıyor. Lütfen yardım için operatörünüze başvurun.</string>
+  <string name="not_signed_in">Şu anda oturumunuz açık değil.</string>
+  <string name="account_setup_error_validating">ChatSecure kullanıcı adınızı veya parolanızı onaylarken bir sorunla karşılaştı - lütfen kontrol edip yeniden deneyin.</string>
+  <string name="account_setup_error_keypair">ChatSecure anahtar eşi oluştururken bir sorunla karşılaştı.</string>
+  <string name="account_setup_error_server">ChatSecure sohbet sunucusuyla bağlanırken bir sorunla karşılaştı - lütfen ayarlarınızı gözden geçirip tekrar deneyin.</string>
+  <string name="account_setup_error_connectivity">ChatSecure bağlanırken bir sorunla karşılaştı - lütfen internet bağlantınızı kontrol edip tekrar deneyin.</string>
+  <string name="error_suspended_connection">ChatSecure ağdaki bir bağlantıyı kaybetti</string>
+  <string name="error_reestablish_connection">ChatSecure yeniden bağlantı kurmaya çalışıyor</string>
+  <string name="account_wizard_no_domain_warning">ID\'nizin bir parçası olan @hostname.com kısmını girmediniz. Yeniden deneyin!</string>
+  <string name="account_wizard_no_root_domain_warning">Sunucu ismi .com .net vb. bir uzantıya sahip değil. Yeniden deneyin!</string>
+  <string name="signin_password_prompt">Parolanızı girin:</string>
+  <string name="warning_tor_connect">Tor ağını kullandığınız için, XMPP \'Bağlantı Sunucusu\' ismini Gelişmiş Hesap Ayarları menüsünden kendiniz girmelisiniz</string>
+  <string name="warning_weak_crypto">UYARI: Bu ​​hizmet ZAYIF şifrelemeli bir sertifika kullanıyor. Lütfen, yöneticiye yükseltmek için bildirin.</string>
+  <string name="unable_to_create_or_join_group_chat">Grup sohbet oluştur ya da katıl devre dışı bırak</string>
+  <string name="sorry_we_cannot_share_that_file_type">Üzgünüz, bu dosya türü paylaşılamaz</string>
+  <string name="err_otr_share_no_encryption">Dosyaları paylaşmak için şifreleme etkinleştirmeniz gerekir</string>
+  <string name="please_enable_chat_encryption_to_share_files">Dosyaları paylaşmak için sohbet şifrelemeyi etkinleştirmeniz gerekir</string>
+  <string name="swipe_alert">ChatSecure kendi görevini kaldırmak için yapılmış bir istek algıladı. ChatSecure muhtemelen çökecek. Bunun yerine lütfen hesap listesi ekranından Hepsinden çıkış yap menü öğresini kullanın.</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Bu dosya türü için hiçbir görüntüleyici bulunmuyor</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Lütfen kodlarını taramadan önce güvenli bir konuşma başlat</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR anahtar demeti aktarılmadı; lütfen dosyanın var olduğunu, doğru formatta ve klasörde olduğunu kontrol edin</string>
+  <string name="otr_keysync_warning_message">Lütfen \'otr_keystore.ofcaes\' dosyasını masaüstü OtrFileConverter aracından cihazınızın kök dizinine kopyalayın </string>
+  <string name="msg_sent_failed">Bu ileti gönderilemedi.</string>
+  <string name="disconnected_warning">Yeniden bağlantı kurulduğunda iletiler gönderilecek</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> çevrimdışı. Gönderdiğiniz iletiler <xliff:g id="USER_1">%1$s</xliff:g> çevrimiçi olduğunda teslim edilecek.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> Kişi listenizde yok.</string>
+  <string name="error_account_password_mismatch">Parolanız eşleşmiyor</string>
+  <string name="error_account_settings_port">Port numarası bir sayı olmalıdır</string>
+  <string name="error_chat_file_transfer_title">Aktarım Hatası</string>
+  <string name="account_settings_title">Hesap Ayarları</string>
+
+  <string name="warning_alpha">DİKKAT: ChatSecure\'ün bu eski sürümü güvenlik açıkları barındırıyor olabilir.</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Gruplar</string>
+  <string name="_open_conversations">Görüşme(ler)i aç</string>
+  <string name="menu_exit">Çıkış</string>
+  <string name="menu_panic">Panik</string>
+  <string name="buddies">Arkadaşlar</string>
+  <string name="contacts">Kişiler</string>
+  <string name="mtm_accept_cert">Sunucu Sertifikası Kabul Et?</string>
+  <string name="menu_sidebar_qr">Parmak İzi</string>
+  <string name="loading">yükleniyor…</string>
+  <!--Other-->
+  <string name="about_link">ChatSecure Hakkında\nhttps://guardianproject.info/apps/chatsecure/</string>
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Kişi Listesi</string>
+  <string name="menu_settings">Ayarlar</string>
+  <string name="menu_view_accounts">Hesap listesi</string>
+  <string name="menu_sign_out">Çıkış</string>
+  <string name="menu_view_contact_list">Kişi listesi</string>
+  <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Yerel Ağ Sohbeti (Bonjour/ZeroConf)</string>
+  <string name="google_account">Google hesabı</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">Çevrimiçi</string>
+  <string name="presence_busy">Meşgul</string>
+  <string name="presence_away">Dışarıda</string>
+  <string name="presence_idle">Boşta</string>
+  <string name="presence_offline">Çevrimdışı</string>
+  <string name="presence_invisible">Çevrimdışı göster</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Mutlu</item>
+    <item>Üzgün</item>
+    <item>Göz kırpma</item>
+    <item>Dil çıkarmış</item>
+    <item>Şaşırmış</item>
+    <item>Öpücük</item>
+    <item>Bağırma</item>
+    <item>Sakin</item>
+    <item>Para ağızlı</item>
+    <item>Ayak ağızda</item>
+    <item>Utanmış</item>
+    <item>Melek</item>
+    <item>Kararsız</item>
+    <item>Ağlama</item>
+    <item>Dudakları mühürlü</item>
+    <item>Gülme</item>
+    <item>Kafası karışmış</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Mutlu</item>
+    <item>Üzgün</item>
+    <item>Göz kırpma</item>
+    <item>Dil çıkarmış</item>
+    <item>Şaşırmış</item>
+    <item>Öpücük</item>
+    <item>Bağırma</item>
+    <item>Sakin</item>
+    <item>Para ağızlı</item>
+    <item>Ayak ağızda</item>
+    <item>Utanmış</item>
+    <item>Melek</item>
+    <item>Kararsız</item>
+    <item>Ağlama</item>
+    <item>Dudakları mühürlü</item>
+    <item>Gülme</item>
+    <item>Kafası karışmış</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_have_an_existing_xmpp_account">Mevcut Hesap</string>
+  <string name="i_want_to_chat_using_my_google_account">Google Hesabı</string>
+  <string name="account_wifi_full">Aynı yerel WiFi veya mesh ağı üzerinde diğer kişilerle sohbet et - internet veya sunucuya gerek yok!</string>
+  <string name="account_wifi_button">WiFi Sohbeti Etkinleştir</string>
+  <string name="i_need_a_new_account">Yeni Hesap</string>
+  <string name="account_new_button">Yeni Hesap Oluştur</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Gizli Kimlik!</string>
+  <string name="account_burner_button">Kimlik Oluştur</string>
+  <string name="this_is_a_group_chat">Bu bir grup sohbetidir</string>
+  <string name="install_orbot_">Orbot Kur?</string>
+  <string name="always">Her zaman</string>
+  <string name="start_orbot_">Orbot\'u  Başlat?</string>
+  <string name="muc_dialog_nickname">odada kullanmak için takma ad</string>
+  <string name="muc_dialog_room">oluşturmak veya katılma için oda adı</string>
+  <string name="muc_dialog_server">grup sohbet sunucusu (konferans.sitesi.com)</string>
+  <string name="you_received_an_unreadable_encrypted_message">Okunamayan bir şifreli mesaj aldınız</string>
+</resources>

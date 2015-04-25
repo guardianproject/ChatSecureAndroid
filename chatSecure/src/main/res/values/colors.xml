@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2007-2008 Esmertec AG.
+ * Copyright (C) 2007-2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<resources>
+    <color name="chat_msg">#ff000000</color>
+    <color name="chat_msg_presence">#ffad45d6</color>
+    <color name="chat_contact">#000</color>
+    <color name="nonchat_contact">#fff</color>
+    <color name="status_popup_text">#ff000000</color>
+    <color name="error">#ffcc5555</color>
+    
+        <color name="android_green">#ccA4C639</color>
+            <color name="android_green_light">#ccA4C639</color>
+    <color name="honeycombish_blue">#cc58BAED</color>
+    <color name="soft_grey">#CFD8DC</color>
+    
+    <color name="background_light">#DDDEDEDE</color>
+    <color name="background_med">#DDABABAB</color>
+    <color name="background_dark">#DD343434</color>
+    
+<!--     <color name="message_background_light">#CCDEDEDE</color>
+ -->
+  <color name="chat_background_light">#DEDEDE</color>
+      <color name="message_background_light">#FFFFFF</color>      
+      
+      <color name="chat_background_dark">#333333</color>
+    <color name="message_background_dark">#565656</color>
+    
+     <!-- A light Holo shade of blue -->
+    <color name="holo_blue_light">#cc33b5e5</color>
+    <!-- A light Holo shade of green -->
+    <color name="holo_green_light">#cc99cc00</color>
+    <!-- A light Holo shade of red -->
+    <color name="holo_red_light">#ccff4444</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#cc0099cc</color>
+    <!-- A dark Holo shade of green -->
+    <color name="holo_green_dark">#cc669900</color>
+    <!-- A dark Holo shade of red -->
+    <color name="holo_red_dark">#cccc0000</color>
+    <!-- A Holo shade of purple -->
+    <color name="holo_purple">#ccaa66cc</color>
+    <!-- A light Holo shade of orange -->
+    <color name="holo_orange_light">#ccffbb33</color>
+    <!-- A dark Holo shade of orange -->
+    <color name="holo_orange_dark">#ccff8800</color>
+    <!-- A really bright Holo shade of blue -->
+    <color name="holo_blue_bright">#cc00ddff</color>
+    
+     <!-- A light Holo shade of gray -->
+    <color name="holo_grey_light">#ECEFF1</color>
+    
+     <!-- A light Holo shade of gray -->
+    <color name="holo_grey_dark">#CACDD0</color>
+    
+    <color name="otr_red">#ffcaca</color>
+    <color name="otr_yellow">#ffecc0</color>
+    <color name="otr_green">#e2f0b6</color>
+    
+    <!-- 
+    <color name="otr_red">#FF4444</color>
+    <color name="otr_yellow">#FFBB33</color>
+    <color name="otr_green">#99CC00</color>
+    
+     -->
+     
+    <color name="incoming_message_bg_plaintext">#AAEAF7FB</color>
+    <color name="incoming_message_bg_encrypted">#ffecc0</color>
+    <color name="incoming_message_bg_verified">#e2f0b6</color>
+    <color name="incoming_message_fg">#333333</color>
+    
+    <color name="outgoing_message_bg">#AAEAF7FB</color>
+    <color name="outgoing_message_fg">#333333</color>
+    
+    <color name="contact_status_fg_light">#aaffffff</color>
+    
+    <color name="contact_status_bg">#aaffffff</color>
+    <color name="contact_status_avatar_overlay">#aa555555</color>
+    
+    <color name="background_gray">#37474F</color>
+        
+    
+    
+</resources>

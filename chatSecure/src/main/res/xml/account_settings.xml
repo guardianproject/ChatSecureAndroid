@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2008 Esmertec AG.
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+	android:title="@string/account_settings_title">
+
+	<EditTextPreference android:key="pref_account_xmpp_resource"
+		android:summary="@string/to_distinguish_this_connection_from_other_clients_that_are_also_logged_in"
+		android:defaultValue="ChatSecure"
+		android:title="@string/xmpp_resource" />
+	<EditTextPreference android:key="pref_account_xmpp_resource_prio"
+		android:summary="@string/xmpp_resource_prio_summary"
+		android:defaultValue="20"
+		android:numeric="integer"
+		android:title="@string/xmpp_resource_prio_title" />
+	<EditTextPreference android:key="pref_account_port"
+		android:title="@string/server_port"
+		android:defaultValue="5222"
+		android:numeric="integer"
+		android:maxLength="5"
+		android:summary="@string/tcp_port_for_xmpp_server" />
+	<EditTextPreference android:key="pref_account_server"
+		android:title="@string/connect_server"
+		android:summary="@string/the_server_to_connect_to_if_needed" />
+
+	<PreferenceCategory android:title="@string/encryption_and_anonymity_title">
+
+		<ListPreference android:title="Chat Encryption"
+			android:key="pref_security_otr_mode"
+			android:entryValues="@array/otr_options_values"
+			android:entries="@array/otr_options"
+			android:summary="@string/how_encrypted_chats_are_started"
+			android:defaultValue="auto" />
+			
+		<CheckBoxPreference android:key="pref_security_require_tls"
+			android:defaultValue="true"
+			android:title="@string/transport_encryption"
+			android:summary="@string/require_tls_ssl_connection"
+			android:enabled="true" />
+
+		<CheckBoxPreference android:key="pref_security_allow_plain_auth"
+			android:enabled="true"
+			android:defaultValue="false"
+			android:title="@string/allow_plain_text_auth"
+			android:summary="@string/allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport" />
+
+		<CheckBoxPreference android:key="pref_security_do_dns_srv"
+			android:title="@string/do_srv_lookup"
+			android:enabled="true"
+			android:summary="@string/use_dns_srv_to_find_actual_xmpp_server_from_domain_name"
+			android:defaultValue="true" />
+
+	</PreferenceCategory>
+
+</PreferenceScreen>
