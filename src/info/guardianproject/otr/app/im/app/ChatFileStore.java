@@ -3,17 +3,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
@@ -24,9 +13,20 @@ import info.guardianproject.util.LogCleaner;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Copyright (C) 2014 Guardian Project.  All rights reserved.
@@ -236,6 +236,25 @@ public class ChatFileStore {
         list("/");
         return vfsUri(targetPath);
     }
+    
+    /**
+     * Copy device content into vfs.
+     * All imported content is stored under /SESSION_NAME/
+     * The original full path is retained to facilitate browsing
+     * The session content can be deleted when the session is over
+     * @param sourcePath
+     * @return vfs uri
+     * @throws IOException
+     */
+    public static Uri importContent(String sessionId, String fileName, InputStream sourceStream) throws IOException {
+        list("/");
+        String targetPath = "/" + sessionId + "/upload/" + fileName;
+        targetPath = createUniqueFilename(targetPath);
+        copyToVfs( sourceStream, targetPath );
+        list("/");
+        return vfsUri(targetPath);
+    }
+
 
     /**
      * Resize an image to an efficient size for sending via OTRDATA, then copy
@@ -254,7 +273,7 @@ public class ChatFileStore {
 
         int defaultImageWidth = 600;
         //load lower-res bitmap
-        Bitmap bmp = getThumbnailFile(Uri.fromFile(new File(imagePath)), defaultImageWidth);
+        Bitmap bmp = getThumbnailFile(imagePath, defaultImageWidth);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         if (imagePath.endsWith(".png") || mimeType.contains("png")) //preserve alpha channel
@@ -269,13 +288,13 @@ public class ChatFileStore {
         return vfsUri(targetPath);
     }
 
-    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
+    public static Bitmap getThumbnailFile(String path, int thumbnailSize) {
 
-        java.io.File image = new java.io.File(uri.getPath());
+        java.io.File image = new java.io.File(path);
 
         if (!image.exists())
         {
-            image = new info.guardianproject.iocipher.File(uri.getPath());
+            image = new info.guardianproject.iocipher.File(path);
             if (!image.exists())
                 return null;
         }
@@ -333,6 +352,18 @@ public class ChatFileStore {
 
         fos.close();
         fis.close();
+    }
+    
+    public static void copyToVfs(InputStream sourceIS, String targetPath) throws IOException {
+        // create the target directories tree
+        mkdirs( targetPath );
+        // copy
+        FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
+
+        IOUtils.copyLarge(sourceIS, fos);
+
+        fos.close();
+        sourceIS.close();
     }
 
     /**
