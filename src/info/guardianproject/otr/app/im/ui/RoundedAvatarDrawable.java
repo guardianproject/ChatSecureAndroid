@@ -39,7 +39,7 @@ public class RoundedAvatarDrawable extends Drawable {
   private final int mBitmapHeight;
 
   private Paint mPaintBorder;
-  private int mBorderWidth = 6;
+  private int mBorderWidth = 4;
 
   public RoundedAvatarDrawable(Bitmap bitmap) {
     mBitmap = bitmap;
