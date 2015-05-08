@@ -902,9 +902,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 maybe_reconnect();
 
             } else {
-                debug(TAG, "will not retry");
-                disconnect();
-                disconnected(info);
+               //debug(TAG, "will not retry"); //WE MUST ALWAYS RETRY!
+               // disconnect();
+               // disconnected(info);
             }
 
 
@@ -1011,12 +1011,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             getContactListManager().listenToRoster(mRoster);
 
         }
-        else
-        {
-            disconnect();
-            disconnected(new ImErrorInfo(ImpsErrorInfo.SERVER_UNAVAILABLE,
-                    "not connected on login"));
-        }
+        
 
     }
 
