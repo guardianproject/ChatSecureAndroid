@@ -305,14 +305,10 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         Intent notificationIntent = new Intent(this, NewChatActivity.class);
         PendingIntent launchIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
 
+        mNotifyBuilder.setContentIntent(launchIntent);
+        
         mNotifyBuilder.setContentText(getString(R.string.app_unlocked));
         
-    // Because the ID remains unchanged, the existing notification is
-    // updated.
-    //    mNotifyManager.notify(
-      //      notifyId,
-        //    mNotifyBuilder.build());
-    
         startForeground(notifyId, mNotifyBuilder.build());
     }
 
