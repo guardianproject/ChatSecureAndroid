@@ -314,11 +314,17 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     private void updateNotification ()
     {
-        String message = getString(R.string.app_unlocked);
+        String message = null;
         
         if (!isNetworkAvailable())
         {
             message = getString(R.string.error_suspended_connection);
+            mNotifyBuilder.setSmallIcon(R.drawable.notify_chatsecure_offline);
+        }
+        else
+        {
+            message = getString(R.string.app_unlocked);
+            mNotifyBuilder.setSmallIcon(R.drawable.notify_chatsecure);
         }
         
         mNotifyBuilder.setContentText(message);
