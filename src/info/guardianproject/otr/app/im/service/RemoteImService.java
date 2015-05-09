@@ -316,6 +316,9 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
     {
         String message = null;
         
+        if (mNotifyBuilder == null)
+            return; //can't update it yet!
+        
         if (!isNetworkAvailable())
         {
             message = getString(R.string.error_suspended_connection);
