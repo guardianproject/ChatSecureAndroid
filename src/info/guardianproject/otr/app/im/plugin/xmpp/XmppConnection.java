@@ -23,6 +23,7 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
+import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
@@ -2520,12 +2521,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         execute(new Runnable() {
             @Override
             public void run() {
-
-                debug(TAG, "network type changed");
-                mNeedReconnect = false;
-                setState(LOGGING_IN, null);
-                reconnect();
-
+                if (mState == SUSPENDED || mState == SUSPENDING)
+                {
+                    debug(TAG, "network type changed");
+                    mNeedReconnect = false;
+                    setState(LOGGING_IN, null);
+                    reconnect();
+                }
             }
         });
 
@@ -2672,10 +2674,21 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         if (state == LOGGED_IN)
         {
             mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
-            sendPresencePacket();            
+            sendPresencePacket();  
+            refreshSessionPresence();
             mChatGroupManager.reconnectAll();
         }
     }    
+    
+    private void refreshSessionPresence ()
+    {
+        
+        for (ChatSessionAdapter session : mSessionManager.getAdapter().getActiveChatSessions())
+        {
+            requestPresenceRefresh(session.getAddress());
+        }
+        
+    }
 
     public void debug(String tag, String msg) {
         //  if (Log.isLoggable(TAG, Log.DEBUG)) {
