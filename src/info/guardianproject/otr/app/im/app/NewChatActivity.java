@@ -1237,7 +1237,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     return ;
                 }
                 boolean deleteAudioFile = (requestCode == REQUEST_SEND_AUDIO);
-                handleSendDelete(uri, null, deleteAudioFile, false);
+                boolean resizeImage = requestCode == REQUEST_SEND_IMAGE; //resize if is an image, not shared as "file"
+                handleSendDelete(uri, null, deleteAudioFile, resizeImage);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {

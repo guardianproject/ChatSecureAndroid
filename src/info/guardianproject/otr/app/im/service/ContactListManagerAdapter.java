@@ -298,8 +298,8 @@ public class ContactListManagerAdapter extends
     public void loadContactLists() {
         if (mAdaptee.getState() == ContactListManager.LISTS_NOT_LOADED) {
             clearValidatedContactsAndLists();
+            mAdaptee.loadContactListsAsync();
        }
-        mAdaptee.loadContactListsAsync();
         
     }
 

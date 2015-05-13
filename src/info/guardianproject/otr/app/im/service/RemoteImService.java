@@ -402,9 +402,37 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
 
     @Override
     public void onLowMemory() {
-        super.onLowMemory();
+        
     }
 
+
+    @Override
+    public void onTrimMemory(int level) {
+
+        /**
+         *  TRIM_MEMORY_COMPLETE, TRIM_MEMORY_MODERATE, TRIM_MEMORY_BACKGROUND, 
+ TRIM_MEMORY_UI_HIDDEN, TRIM_MEMORY_RUNNING_CRITICAL, TRIM_MEMORY_RUNNING_LOW, or 
+ TRIM_MEMORY_RUNNING_MODERATE.
+         */
+        
+        switch (level)
+        {
+        case TRIM_MEMORY_BACKGROUND:
+        case TRIM_MEMORY_UI_HIDDEN:
+        
+            Log.w(TAG,"in the background/no UI, so we should be efficient");
+            
+            return;
+            
+        case TRIM_MEMORY_RUNNING_LOW:
+        case TRIM_MEMORY_RUNNING_CRITICAL:
+        
+            Log.w(TAG,"memory is low or critical");
+            
+            return;
+        
+        }
+    }
 
     private void clearConnectionStatii() {
         ContentResolver cr = getContentResolver();

@@ -31,6 +31,7 @@ import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -549,39 +550,41 @@ public class MessageView extends FrameLayout {
         if (ChatFileStore.isVfsUri(uri)) {
             return ChatFileStore.getThumbnailVfs(uri, THUMBNAIL_SIZE_DEFAULT);
         }
-        return getThumbnailFile(uri, THUMBNAIL_SIZE_DEFAULT);
+        return getThumbnailFile(cr, uri, THUMBNAIL_SIZE_DEFAULT);
     }
 
-    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
+    public static Bitmap getThumbnailFile(ContentResolver cr, Uri uri, int thumbnailSize) {
 
-        java.io.File image = new java.io.File(uri.getPath());
 
-        if (!image.exists())
+        try
         {
-            image = new info.guardianproject.iocipher.File(uri.getPath());
-            if (!image.exists())
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true;
+            options.inInputShareable = true;
+            options.inPurgeable = true;
+    
+            InputStream is = cr.openInputStream(uri);
+            BitmapFactory.decodeStream(is, null, options);
+            if ((options.outWidth == -1) || (options.outHeight == -1))
                 return null;
+    
+            int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
+                    : options.outWidth;
+    
+            BitmapFactory.Options opts = new BitmapFactory.Options();
+            opts.inSampleSize = originalSize / thumbnailSize;
+    
+            is = cr.openInputStream(uri);
+         
+            Bitmap scaledBitmap = BitmapFactory.decodeStream(is, null, options);
+    
+            return scaledBitmap;
         }
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        options.inInputShareable = true;
-        options.inPurgeable = true;
-
-
-        BitmapFactory.decodeFile(image.getPath(), options);
-        if ((options.outWidth == -1) || (options.outHeight == -1))
+        catch (Exception e)
+        {
+            Log.d(ImApp.LOG_TAG,"could not getThumbnailFile",e);
             return null;
-
-        int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
-                : options.outWidth;
-
-        BitmapFactory.Options opts = new BitmapFactory.Options();
-        opts.inSampleSize = originalSize / thumbnailSize;
-
-        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
-
-        return scaledBitmap;
+        }
     }
 
     private String formatMessage (String body)

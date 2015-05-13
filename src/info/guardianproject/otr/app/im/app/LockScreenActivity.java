@@ -109,11 +109,6 @@ public class LockScreenActivity extends ThemeableActivity implements ICacheWordS
             }
         });
 
-        if (!mHasBackground) {
-            LinearLayout llRoot = (LinearLayout) findViewById(R.id.llRoot);
-            BackgroundBitmapLoaderTask task = new BackgroundBitmapLoaderTask(this, llRoot);
-            task.execute(R.drawable.csbackground);
-        }
     }
 
     @Override
