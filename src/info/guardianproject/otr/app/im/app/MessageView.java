@@ -79,7 +79,7 @@ import android.widget.Toast;
 
 public class MessageView extends FrameLayout {
 
-    private static int sCacheSize = 512; // 1MiB
+    private static int sCacheSize = 10; // 1MiB
     private static LruCache<String,Bitmap> mBitmapCache = new LruCache<String,Bitmap>(sCacheSize);
 
     public enum DeliveryState {
