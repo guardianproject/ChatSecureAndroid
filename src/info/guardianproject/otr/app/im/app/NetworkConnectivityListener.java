@@ -55,7 +55,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
      * established, or may be attempting to establish, connectivity with another
      * network. If so, {@code mOtherNetworkInfo} will be non-null.
      */
-    private NetworkInfo mOtherNetworkInfo;
+  //  private NetworkInfo mOtherNetworkInfo;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -80,20 +80,16 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
             // Getting from intent is deprecated - get from manager
             mNetworkInfo = manager.getActiveNetworkInfo();
-            mOtherNetworkInfo = (NetworkInfo) intent
-                    .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
+         //   mOtherNetworkInfo = (NetworkInfo) intent
+           //         .getParcelableExtra(ConnectivityManager.EXTRA_OTHER_NETWORK_INFO);
     
             mReason = intent.getStringExtra(ConnectivityManager.EXTRA_REASON);
             mIsFailover = intent.getBooleanExtra(ConnectivityManager.EXTRA_IS_FAILOVER, false);
     
             if (mNetworkInfo != null && mNetworkInfo.isConnected())
             {
-                mState = State.CONNECTED;
-            } 
-            else if (mOtherNetworkInfo != null && mOtherNetworkInfo.isConnected())
-            {                
-                //well still need to switch socket/IPs so let's say its not connected
-                mState = State.NOT_CONNECTED;                
+                    mState = State.CONNECTED;
+                
             }
             else {
                 mState = State.NOT_CONNECTED;
@@ -120,7 +116,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
     }
 
 
-    public enum State {
+    public static enum State {
         UNKNOWN,
 
         /** This state is returned if there is connectivity to any network **/
@@ -163,7 +159,7 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
             mContext.unregisterReceiver(this);
             mContext = null;
             mNetworkInfo = null;
-            mOtherNetworkInfo = null;
+         //   mOtherNetworkInfo = null;
             mIsFailover = false;
             mReason = null;
             mListening = false;
@@ -215,9 +211,10 @@ public class NetworkConnectivityListener extends BroadcastReceiver {
      *
      * @return NetworkInfo
      */
+    /**
     public NetworkInfo getOtherNetworkInfo() {
         return mOtherNetworkInfo;
-    }
+    }*/
 
     /**
      * Returns true if the most recent event was for an attempt to switch over
