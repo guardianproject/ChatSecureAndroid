@@ -105,6 +105,7 @@ public class ContactView extends FrameLayout {
 
     public void bind(Cursor cursor, String underLineText, boolean showChatMsg, boolean scrolling) {
 
+        /*
         if (Debug.DEBUG_ENABLED)
         {
             StringBuffer debug = new StringBuffer();
@@ -117,9 +118,10 @@ public class ContactView extends FrameLayout {
                 else if (value == null)
                     debug.append(name+":(null)");
             }
-            Log.d(ImApp.LOG_TAG,"contact:" + debug.toString());
 
-        }
+           Log.d(ImApp.LOG_TAG,"contact:" + debug.toString());
+
+        }*/
         
         ViewHolder holder = (ViewHolder)getTag();
         
