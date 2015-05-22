@@ -665,14 +665,20 @@ public class ImUrlActivity extends Activity {
                             {
                                 InputStream is = getContentResolver().openInputStream(mSendUri);
                                 String fileName = mSendUri.getLastPathSegment();
-                                vfsUri = ChatFileStore.importContent(session.getId() + "", fileName, is);
+                                FileInfo importInfo = SystemServices.getFileInfoFromURI(this, mSendUri);
+
+                                if (importInfo.type != null && importInfo.type.startsWith("image"))
+                                    vfsUri = ChatFileStore.resizeAndImportImage(this, session.getId() + "", mSendUri, importInfo.type);
+                                else
+                                    vfsUri = ChatFileStore.importContent(session.getId() + "", fileName, is);
+
                             }
                             
                             FileInfo info = SystemServices.getFileInfoFromURI(this, vfsUri);
                             session.offerData(offerId, info.path, mSendType );
 
                             Imps.insertMessageInDb(
-                                    getContentResolver(), false, session.getId(), true, null, mSendUri.toString(),
+                                    getContentResolver(), false, session.getId(), true, null, vfsUri.toString(),
                                     System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
                                     0, offerId, mSendType);
 

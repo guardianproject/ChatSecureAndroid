@@ -14,6 +14,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
@@ -266,57 +267,56 @@ public class ChatFileStore {
      * @return vfs uri
      * @throws IOException
      */
-    public static Uri resizeAndImportImage(String sessionId, String imagePath, String mimeType)
+    public static Uri resizeAndImportImage(Context context, String sessionId, Uri uri, String mimeType)
             throws IOException {
+        String imagePath = uri.getPath();
         String targetPath = "/" + sessionId + "/upload/" + imagePath;
         targetPath = createUniqueFilename(targetPath);
 
         int defaultImageWidth = 600;
         //load lower-res bitmap
-        Bitmap bmp = getThumbnailFile(imagePath, defaultImageWidth);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
+        Bitmap bmp = getThumbnailFile(context, uri, defaultImageWidth);
+        
+        File file = new File(targetPath);
+        FileOutputStream out = new FileOutputStream(file);
+        
         if (imagePath.endsWith(".png") || mimeType.contains("png")) //preserve alpha channel
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
         else
-            bmp.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
 
-        byte[] byteArray = stream.toByteArray();
-        bmp.recycle();
-        copyToVfs(byteArray, targetPath);
+        out.flush();
+        out.close();        
+        bmp.recycle();        
 
         return vfsUri(targetPath);
     }
 
-    public static Bitmap getThumbnailFile(String path, int thumbnailSize) {
+    public static Bitmap getThumbnailFile(Context context, Uri uri, int thumbnailSize) throws IOException {
 
-        java.io.File image = new java.io.File(path);
-
-        if (!image.exists())
-        {
-            image = new info.guardianproject.iocipher.File(path);
-            if (!image.exists())
-                return null;
-        }
-
+        InputStream is = context.getContentResolver().openInputStream(uri);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
-
-
-        BitmapFactory.decodeFile(image.getPath(), options);
+        
+        BitmapFactory.decodeStream(is, null, options);
+        
         if ((options.outWidth == -1) || (options.outHeight == -1))
             return null;
 
         int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
                 : options.outWidth;
 
+        is.close();
+        is = context.getContentResolver().openInputStream(uri);
+        
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / thumbnailSize;
 
-        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+        Bitmap scaledBitmap = BitmapFactory.decodeStream(is, null, opts);
 
+        is.close();
         return scaledBitmap;
     }
 
@@ -379,6 +379,7 @@ public class ChatFileStore {
         out.write(buf);
         out.close();
     }
+    
 
     public static void copyToExternal(String sourcePath, java.io.File targetPath) throws IOException {
         // copy
@@ -429,9 +430,16 @@ public class ChatFileStore {
 
     private static String formatUnique(String filename, int counter) {
         int lastDot = filename.lastIndexOf(".");
-        String name = filename.substring(0,lastDot);
-        String ext = filename.substring(lastDot);
-        return name + "(" + counter + ")" + ext;
+        if (lastDot != -1)
+        {
+            String name = filename.substring(0,lastDot);
+            String ext = filename.substring(lastDot);
+            return name + "-" + counter + "." + ext;
+        }
+        else
+        {
+            return filename + counter;
+        }
     }
 
     public static String getDownloadFilename(String sessionId, String filenameFromUrl) {
