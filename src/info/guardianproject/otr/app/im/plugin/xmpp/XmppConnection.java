@@ -1277,15 +1277,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 }
 
-                DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
+                DeliveryReceipts.DeliveryReceipt drIncoming = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
 
-                if (dr != null) {
+                if (drIncoming != null) {
 
-                    debug(TAG, "got delivery receipt for " + dr.getId());
+                    debug(TAG, "got delivery receipt for " + drIncoming.getId());
                     boolean groupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
                     ChatSession session = findOrCreateSession(address, groupMessage);
-                    session.onMessageReceipt(dr.getId());
+                    session.onMessageReceipt(drIncoming.getId());
                     
                 }
 
@@ -1723,11 +1723,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             msgXmpp.setBody(message.getBody());
 
-            sendPacket(msgXmpp);
+            if (message.getID() != null)
+                msgXmpp.setPacketID(message.getID());
+            else
+                message.setID(msgXmpp.getPacketID());
             
-            //set message ID value on internal message
-            message.setID(msgXmpp.getPacketID());
-
+            sendPacket(msgXmpp);            
 
         }
 

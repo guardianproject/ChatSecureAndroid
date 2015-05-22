@@ -2005,6 +2005,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                             mRequestedChatId = session.getId();
                             session.reInit();
                         }
+                        else
+                        {
+                            mRequestedChatId = -1;//we showed the chat, so set this to -1;
+                        }
                         
                         if (message != null)
                             session.sendMessage(message);

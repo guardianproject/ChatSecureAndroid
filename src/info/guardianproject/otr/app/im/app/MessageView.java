@@ -748,11 +748,9 @@ public class MessageView extends FrameLayout {
             } else if (delivery == DeliveryState.UNDELIVERED) {
 
                 deliveryText.append(DELIVERED_FAIL);
-
             }
-
         }
-
+        
         if (messageType != Imps.MessageType.POSTPONED)
             deliveryText.append(DELIVERED_SUCCESS);//this is for sent, so we know show 2 checks like WhatsApp!
 

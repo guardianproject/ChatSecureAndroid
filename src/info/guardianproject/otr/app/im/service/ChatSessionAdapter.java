@@ -333,7 +333,6 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         info.guardianproject.otr.app.im.engine.Message msg = new info.guardianproject.otr.app.im.engine.Message(text);
 
         msg.setFrom(mConnection.getLoginUser().getAddress());
-
         msg.setType(Imps.MessageType.OUTGOING);
 
         mChatSession.sendMessageAsync(msg);
@@ -395,8 +394,9 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         }
 
         while (c.moveToNext()) {
-            String body = c.getString(1);
             String id = c.getString(2);
+            String body = c.getString(1);
+            
             info.guardianproject.otr.app.im.engine.Message msg = new info.guardianproject.otr.app.im.engine.Message(body);
             // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
             msg.setFrom(mConnection.getLoginUser().getAddress());
@@ -642,7 +642,10 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
         ContentValues values = new ContentValues(1);
         values.put(Imps.Messages.TYPE, type);
-        values.put(Imps.Messages.DATE, time);
+        
+        if (time != -1)
+            values.put(Imps.Messages.DATE, time);
+        
         return mContentResolver.update(builder.build(), values, null, null);
     }
 
