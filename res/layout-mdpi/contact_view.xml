@@ -54,7 +54,15 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textColor="#999999"
                 />
+                   <ImageView
+            android:id="@+id/media_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"                      
+            android:layout_margin="3dp"
+             android:scaleType="centerCrop"    
+              android:focusableInTouchMode="false"
                   
+             />
                   
                   
     <ImageView
@@ -80,7 +88,7 @@
             android:scaleType="centerCrop" 
             android:layout_margin="6dp"
             android:visibility="gone"            
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="left|top"
             />	
 	        
 </view>

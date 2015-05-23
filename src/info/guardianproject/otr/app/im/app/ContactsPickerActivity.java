@@ -298,6 +298,8 @@ public class ContactsPickerActivity extends ActionBarActivity  {
 
             holder.mContainer = view.findViewById(R.id.message_container);
 
+            holder.mMediaThumb = (ImageView)view.findViewById(R.id.media_thumbnail);
+
             view.setTag(holder);
 
            return view;
