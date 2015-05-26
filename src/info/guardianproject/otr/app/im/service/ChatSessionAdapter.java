@@ -335,11 +335,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         msg.setFrom(mConnection.getLoginUser().getAddress());
         msg.setType(Imps.MessageType.OUTGOING);
 
-        mChatSession.sendMessageAsync(msg);
+        int newType = mChatSession.sendMessageAsync(msg);
 
         long now = System.currentTimeMillis();
-        //if (!isGroupChatSession())
-        insertMessageInDb(null, text, now, msg.getType(), 0, msg.getID());
+        
+        insertMessageInDb(null, text, now, newType, 0, msg.getID());
     }
 
     public boolean offerData(String offerId, String url, String type) {
@@ -403,12 +403,11 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             msg.setID(id);
             msg.setType(Imps.MessageType.OUTGOING);
 
-            mChatSession.sendMessageAsync(msg);
-
-            updateMessageInDb(id, msg.getType(), System.currentTimeMillis());
+            int newType = mChatSession.sendMessageAsync(msg);
+            updateMessageInDb(id, newType, System.currentTimeMillis());
 
         }
-        //c.commitUpdates();
+        
         c.close();
     }
 
@@ -816,6 +815,12 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             }
             mRemoteListeners.finishBroadcast();
             mDataHandler.onOtrStatusChanged(status);
+            
+            if (status == SessionStatus.ENCRYPTED)
+            {
+                sendPostponedMessages ();
+            }
+            
         }
 
         @Override

@@ -299,11 +299,11 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         return plain;
     }
 
-    public void transformSending(Message message) {
-        transformSending(message, false, null);
+    public boolean transformSending(Message message) {
+        return transformSending(message, false, null);
     }
 
-    public void transformSending(Message message, boolean isResponse, byte[] data) {
+    public boolean transformSending(Message message, boolean isResponse, byte[] data) {
         String localUserId = message.getFrom().getAddress();
         String remoteUserId = message.getTo().getAddress();
         String body = message.getBody();
@@ -317,13 +317,18 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
                 // Message will be resent by caller when session is encrypted.
                 startSession(sessionId);
                 OtrDebugLogger.log("auto-start OTR on data send request");
-                return;
+                return false;
             }
             OtrDebugLogger.log("session status: " + sessionStatus);
 
             try {
                 OtrPolicy sessionPolicy = getSessionPolicy(sessionId);
 
+                if (sessionStatus == SessionStatus.PLAINTEXT && sessionPolicy.getRequireEncryption())
+                {
+                    startSession(sessionId);
+                    return false;
+                }
                 if (sessionStatus != SessionStatus.PLAINTEXT || sessionPolicy.getRequireEncryption()) {
                     body = mOtrEngine.transformSending(sessionId, body, isResponse, data);
                     message.setTo(mOtrEngineHost.appendSessionResource(sessionId, message.getTo()));
@@ -339,6 +344,8 @@ public class OtrChatManager implements OtrEngineListener, OtrSmEngineHost {
         }
 
         message.setBody(body);
+        
+        return true;
     }
 
     @Override

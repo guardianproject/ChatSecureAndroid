@@ -144,10 +144,23 @@ public class ChatSession {
         }
 
         mHistoryMessages.add(message);
-        cm.transformSending(message);
-        mManager.sendMessageAsync(this, message);
-
+        boolean canSend = cm.transformSending(message);
+        
+        if (canSend)
+        {
+            mManager.sendMessageAsync(this, message);
+        }
+        else
+        {
+            //can't be sent due to OTR state
+            message.setType(Imps.MessageType.POSTPONED);
+            
+        }
+        
         return message.getType();
+
+        
+        
     }
 
     /**
