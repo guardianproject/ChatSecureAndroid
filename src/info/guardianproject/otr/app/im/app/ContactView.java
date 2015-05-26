@@ -229,14 +229,17 @@ public class ContactView extends FrameLayout {
                     }
                     else
                     {
-                       // avatar = new RoundedAvatarDrawable(BitmapFactory.decodeResource(getResources(),
-                         //       R.drawable.avatar_unknown));
-                        
+                        String letterString = null;
+                                
+                        if (nickname.length() > 0)
+                            letterString = nickname.substring(0,1).toUpperCase();
+                        else
+                            letterString = "?"; //the unknown name!
+                         
                         int color = getAvatarBorder(presence);
                         int padding = 24;
-                        LetterAvatar lavatar = new LetterAvatar(getContext(), color, nickname.substring(0,1).toUpperCase(), padding);
+                        LetterAvatar lavatar = new LetterAvatar(getContext(), color, letterString, padding);
                         
-                      //  setAvatarBorder(presence,avatar);
                         holder.mAvatar.setImageDrawable(lavatar);
 
                     }
