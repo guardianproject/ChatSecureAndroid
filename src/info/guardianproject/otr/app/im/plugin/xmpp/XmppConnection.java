@@ -2674,23 +2674,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         if (state == LOGGED_IN)
         {
+            //update and send new presence packet out
             mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
             sendPresencePacket();  
-            refreshSessionPresence();
+            
+            //request presence of remote contact for all existing sessions 
+            for (ChatSessionAdapter session : mSessionManager.getAdapter().getActiveChatSessions())
+            {
+                requestPresenceRefresh(session.getAddress());
+            }
+
             mChatGroupManager.reconnectAll();
         }
     }    
     
-    private void refreshSessionPresence ()
-    {
-        
-        for (ChatSessionAdapter session : mSessionManager.getAdapter().getActiveChatSessions())
-        {
-            requestPresenceRefresh(session.getAddress());
-        }
-        
-    }
-
     public void debug(String tag, String msg) {
         //  if (Log.isLoggable(TAG, Log.DEBUG)) {
         if (Debug.DEBUG_ENABLED) {
