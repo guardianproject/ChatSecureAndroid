@@ -30,7 +30,7 @@ public class Message implements Parcelable {
     private Address mTo;
     private String mBody;
     private Date mDate;
-    private int mType;
+    private int mType;    
 
     /**
      * @param msg

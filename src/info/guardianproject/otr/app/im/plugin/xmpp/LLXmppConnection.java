@@ -602,15 +602,18 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     private final class XmppChatSessionManager extends ChatSessionManager {
         @Override
         public void sendMessageAsync(ChatSession session, Message message) {
-            org.jivesoftware.smack.packet.Message msg = new org.jivesoftware.smack.packet.Message(
+            org.jivesoftware.smack.packet.Message msgXmpp = new org.jivesoftware.smack.packet.Message(
                     message.getTo().getAddress(), org.jivesoftware.smack.packet.Message.Type.chat);
-            msg.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
-            msg.setBody(message.getBody());
-         //   msg.setPacketID(message.getID());
+            
+            msgXmpp.addExtension(new DeliveryReceipts.DeliveryReceiptRequest());
+            msgXmpp.setBody(message.getBody());
 
-            debug(TAG, "sending packet ID " + msg.getPacketID());
-            message.setID(msg.getPacketID());
-            sendPacket(msg);
+            if (message.getID() != null)
+                msgXmpp.setPacketID(message.getID());
+            else
+                message.setID(msgXmpp.getPacketID());
+            
+            sendPacket(msgXmpp);
         }
 
         ChatSession findSession(String address) {

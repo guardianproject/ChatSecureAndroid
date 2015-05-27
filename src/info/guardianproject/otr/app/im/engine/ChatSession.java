@@ -114,8 +114,8 @@ public class ChatSession {
         SessionID sId = cm.getSessionId(message.getFrom().getAddress(),mParticipant.getAddress().getAddress());
         SessionStatus otrStatus = cm.getSessionStatus(sId);
 
-      //  message.setTo(mParticipant.getAddress());
-
+        message.setTo(new XmppAddress(sId.getRemoteUserId()));
+        
         if (otrStatus == SessionStatus.ENCRYPTED)
         {
             boolean verified = cm.getKeyManager().isVerified(sId);
@@ -129,18 +129,19 @@ public class ChatSession {
                 message.setType(Imps.MessageType.OUTGOING_ENCRYPTED);
             }
 
-            message.setTo(new XmppAddress(sId.getRemoteUserId()));
+            
         }
         else if (otrStatus == SessionStatus.FINISHED)
         {
-
-            onSendMessageError(message, new ImErrorInfo(ImErrorInfo.INVALID_SESSION_CONTEXT,"error - session finished"));
-            return -1;
+            message.setType(Imps.MessageType.POSTPONED);
+          //  onSendMessageError(message, new ImErrorInfo(ImErrorInfo.INVALID_SESSION_CONTEXT,"error - session finished"));
+            return message.getType();
         }
         else
         {
             //not encrypted, send to all
-            message.setTo(new XmppAddress(XmppAddress.stripResource(sId.getRemoteUserId())));
+            //message.setTo(new XmppAddress(XmppAddress.stripResource(sId.getRemoteUserId())));        
+            message.setType(Imps.MessageType.OUTGOING);
         }
 
         mHistoryMessages.add(message);
