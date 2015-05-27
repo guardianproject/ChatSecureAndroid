@@ -3,17 +3,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Environment;
-import android.preference.PreferenceManager;
-import android.text.TextUtils;
-import android.util.Log;
-
 import info.guardianproject.iocipher.File;
 import info.guardianproject.iocipher.FileInputStream;
 import info.guardianproject.iocipher.FileOutputStream;
@@ -24,9 +13,21 @@ import info.guardianproject.util.LogCleaner;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Environment;
+import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Log;
 
 /**
  * Copyright (C) 2014 Guardian Project.  All rights reserved.
@@ -236,6 +237,25 @@ public class ChatFileStore {
         list("/");
         return vfsUri(targetPath);
     }
+    
+    /**
+     * Copy device content into vfs.
+     * All imported content is stored under /SESSION_NAME/
+     * The original full path is retained to facilitate browsing
+     * The session content can be deleted when the session is over
+     * @param sourcePath
+     * @return vfs uri
+     * @throws IOException
+     */
+    public static Uri importContent(String sessionId, String fileName, InputStream sourceStream) throws IOException {
+        list("/");
+        String targetPath = "/" + sessionId + "/upload/" + fileName;
+        targetPath = createUniqueFilename(targetPath);
+        copyToVfs( sourceStream, targetPath );
+        list("/");
+        return vfsUri(targetPath);
+    }
+
 
     /**
      * Resize an image to an efficient size for sending via OTRDATA, then copy
@@ -247,57 +267,56 @@ public class ChatFileStore {
      * @return vfs uri
      * @throws IOException
      */
-    public static Uri resizeAndImportImage(String sessionId, String imagePath, String mimeType)
+    public static Uri resizeAndImportImage(Context context, String sessionId, Uri uri, String mimeType)
             throws IOException {
+        String imagePath = uri.getPath();
         String targetPath = "/" + sessionId + "/upload/" + imagePath;
         targetPath = createUniqueFilename(targetPath);
 
         int defaultImageWidth = 600;
         //load lower-res bitmap
-        Bitmap bmp = getThumbnailFile(Uri.fromFile(new File(imagePath)), defaultImageWidth);
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-
+        Bitmap bmp = getThumbnailFile(context, uri, defaultImageWidth);
+        
+        File file = new File(targetPath);
+        FileOutputStream out = new FileOutputStream(file);
+        
         if (imagePath.endsWith(".png") || mimeType.contains("png")) //preserve alpha channel
-            bmp.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, out);
         else
-            bmp.compress(Bitmap.CompressFormat.JPEG, 90, stream);
+            bmp.compress(Bitmap.CompressFormat.JPEG, 90, out);
 
-        byte[] byteArray = stream.toByteArray();
-        bmp.recycle();
-        copyToVfs(byteArray, targetPath);
+        out.flush();
+        out.close();        
+        bmp.recycle();        
 
         return vfsUri(targetPath);
     }
 
-    public static Bitmap getThumbnailFile(Uri uri, int thumbnailSize) {
+    public static Bitmap getThumbnailFile(Context context, Uri uri, int thumbnailSize) throws IOException {
 
-        java.io.File image = new java.io.File(uri.getPath());
-
-        if (!image.exists())
-        {
-            image = new info.guardianproject.iocipher.File(uri.getPath());
-            if (!image.exists())
-                return null;
-        }
-
+        InputStream is = context.getContentResolver().openInputStream(uri);
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
-
-
-        BitmapFactory.decodeFile(image.getPath(), options);
+        
+        BitmapFactory.decodeStream(is, null, options);
+        
         if ((options.outWidth == -1) || (options.outHeight == -1))
             return null;
 
         int originalSize = (options.outHeight > options.outWidth) ? options.outHeight
                 : options.outWidth;
 
+        is.close();
+        is = context.getContentResolver().openInputStream(uri);
+        
         BitmapFactory.Options opts = new BitmapFactory.Options();
         opts.inSampleSize = originalSize / thumbnailSize;
 
-        Bitmap scaledBitmap = BitmapFactory.decodeFile(image.getPath(), opts);
+        Bitmap scaledBitmap = BitmapFactory.decodeStream(is, null, opts);
 
+        is.close();
         return scaledBitmap;
     }
 
@@ -334,6 +353,18 @@ public class ChatFileStore {
         fos.close();
         fis.close();
     }
+    
+    public static void copyToVfs(InputStream sourceIS, String targetPath) throws IOException {
+        // create the target directories tree
+        mkdirs( targetPath );
+        // copy
+        FileOutputStream fos = new FileOutputStream(new File(targetPath), false);
+
+        IOUtils.copyLarge(sourceIS, fos);
+
+        fos.close();
+        sourceIS.close();
+    }
 
     /**
      * Write a {@link byte[]} into an IOCipher File
@@ -348,6 +379,7 @@ public class ChatFileStore {
         out.write(buf);
         out.close();
     }
+    
 
     public static void copyToExternal(String sourcePath, java.io.File targetPath) throws IOException {
         // copy
@@ -398,9 +430,16 @@ public class ChatFileStore {
 
     private static String formatUnique(String filename, int counter) {
         int lastDot = filename.lastIndexOf(".");
-        String name = filename.substring(0,lastDot);
-        String ext = filename.substring(lastDot);
-        return name + "(" + counter + ")" + ext;
+        if (lastDot != -1)
+        {
+            String name = filename.substring(0,lastDot);
+            String ext = filename.substring(lastDot);
+            return name + "-" + counter + "." + ext;
+        }
+        else
+        {
+            return filename + counter;
+        }
     }
 
     public static String getDownloadFilename(String sessionId, String filenameFromUrl) {

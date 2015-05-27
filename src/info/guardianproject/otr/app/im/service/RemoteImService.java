@@ -312,24 +312,6 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
         startForeground(notifyId, mNotifyBuilder.build());
     }
 
-    private void updateNotification ()
-    {
-        String message = getString(R.string.app_unlocked);
-        
-        if (!isNetworkAvailable())
-        {
-            message = getString(R.string.error_suspended_connection);
-        }
-        
-        mNotifyBuilder.setContentText(message);
-        // Because the ID remains unchanged, the existing notification is
-        // updated.
-        mNotifyManager.notify(
-                notifyId,
-                mNotifyBuilder.build());
-
-    }
-    
     public void sendHeartbeat() {
         Debug.onHeartbeat();
         try {
@@ -733,7 +715,31 @@ public class RemoteImService extends Service implements OtrEngineListener, ImSer
             for (ImConnectionAdapter conn : mConnections.values())
                 conn.networkTypeChanged();
 
-            updateNotification ();
+            //update the notification
+            if (mNotifyBuilder != null)
+            {
+                String message = "";
+                
+                if (!isNetworkAvailable())
+                {
+                    message = getString(R.string.error_suspended_connection);
+                    mNotifyBuilder.setSmallIcon(R.drawable.notify_chatsecure_offline);
+                }
+                else
+                {
+                    message = getString(R.string.app_unlocked);
+                    mNotifyBuilder.setSmallIcon(R.drawable.notify_chatsecure);
+                }
+                
+                mNotifyBuilder.setContentText(message);
+                // Because the ID remains unchanged, the existing notification is
+                // updated.
+                mNotifyManager.notify(
+                        notifyId,
+                        mNotifyBuilder.build());
+
+            }
+            
               
         }
 

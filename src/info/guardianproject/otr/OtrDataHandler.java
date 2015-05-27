@@ -513,7 +513,10 @@ public class OtrDataHandler implements DataHandler {
 
     @Override
     public void offerData(String id, Address us, String localUri, Map<String, String> headers) throws IOException {
+        
         // TODO stash localUri and intended recipient
+        
+        
         long length = new File(localUri).length();
         if (length > MAX_TRANSFER_LENGTH) {
             throw new IOException("Length too large: " + length);
@@ -523,6 +526,7 @@ public class OtrDataHandler implements DataHandler {
         headers.put("File-Length", String.valueOf(length));
 
         try {
+            
             FileInputStream is = new FileInputStream(localUri);
             headers.put("File-Hash-SHA1", sha1sum(is));
             is.close();

@@ -276,6 +276,8 @@ public class ContactListFilterView extends LinearLayout {
 
             holder.mContainer = view.findViewById(R.id.message_container);
 
+            holder.mMediaThumb = (ImageView)view.findViewById(R.id.media_thumbnail);
+            
             view.setTag(holder);
 
            return view;

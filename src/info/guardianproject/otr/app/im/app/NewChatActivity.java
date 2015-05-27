@@ -1187,18 +1187,18 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         return list.size() > 0;
     }
 
-    private void handleSendDelete( Uri contentUri, String mimeType, boolean delete, boolean resizeImage) {
+    private void handleSendDelete( Uri contentUri, boolean delete, boolean resizeImage) {
         try {
             // import
             FileInfo info = SystemServices.getFileInfoFromURI(this, contentUri);
             String sessionId = getCurrentSessionId();
             Uri vfsUri;
             if (resizeImage)
-                vfsUri = ChatFileStore.resizeAndImportImage(sessionId, info.path, mimeType);
+                vfsUri = ChatFileStore.resizeAndImportImage(this, sessionId, contentUri, info.type);
             else
                 vfsUri = ChatFileStore.importContent(sessionId, info.path);
             // send
-            boolean sent = handleSend(vfsUri, (mimeType==null) ? info.type : mimeType);
+            boolean sent = handleSend(vfsUri, info.type);
             if (!sent) {
                 // not deleting if not sent
                 return;
@@ -1212,7 +1212,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         } catch (Exception e) {
           //  Toast.makeText(this, "Error sending file", Toast.LENGTH_LONG).show(); // TODO i18n
-           // e.printStackTrace();
+            Log.e(ImApp.LOG_TAG,"error sending file",e);
         }
     }
 
@@ -1238,7 +1238,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }
                 boolean deleteAudioFile = (requestCode == REQUEST_SEND_AUDIO);
                 boolean resizeImage = requestCode == REQUEST_SEND_IMAGE; //resize if is an image, not shared as "file"
-                handleSendDelete(uri, null, deleteAudioFile, resizeImage);
+                handleSendDelete(uri, deleteAudioFile, resizeImage);
             }
             else if (requestCode == REQUEST_TAKE_PICTURE)
             {
@@ -1253,7 +1253,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                                 handler.post( new Runnable() {
                                     @Override
                                     public void run() {
-                                        handleSendDelete(mLastPhoto, "image/*", true, true);
+                                        handleSendDelete(mLastPhoto, true, true);
                                     }
                                 });
                             }
@@ -1396,6 +1396,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         try {
             FileInfo info = SystemServices.getFileInfoFromURI(this, uri);
 
+            if (mimeType != null)
+                info.type = mimeType;
+            
             if (info != null && info.path != null && ChatFileStore.exists(info.path))
             {
                 IChatSession session = getCurrentChatSession();
@@ -2001,6 +2004,10 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                             // We have a session, but it's not in the cursor yet
                             mRequestedChatId = session.getId();
                             session.reInit();
+                        }
+                        else
+                        {
+                            mRequestedChatId = -1;//we showed the chat, so set this to -1;
                         }
                         
                         if (message != null)

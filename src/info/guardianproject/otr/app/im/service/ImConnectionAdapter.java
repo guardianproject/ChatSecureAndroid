@@ -170,6 +170,9 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     }
 
+   
+    
+    
     private void loadSavedPresence ()
     {
         ContentResolver cr =  mService.getContentResolver();
@@ -452,6 +455,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 //                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
 
                 loadSavedPresence();
+                
 
             } else if (state == ImConnection.DISCONNECTED) {
                 clearSessionCookie(cr);

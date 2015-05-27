@@ -3,6 +3,14 @@
  */
 package info.guardianproject.util;
 
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.app.ChatFileStore;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.List;
+
 import android.app.Activity;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -14,14 +22,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
-
-import info.guardianproject.otr.app.im.R;
-import info.guardianproject.otr.app.im.app.ChatFileStore;
-
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.List;
+import android.webkit.MimeTypeMap;
 
 /**
  *
@@ -102,21 +103,47 @@ public class SystemServices {
         public String path;
         public String type;
     }
+    
+    public final static String MIME_TYPE_JPEG = "image/jpeg";
+    public final static String MIME_TYPE_PNG = "image/png";
+    
+    public static String getMimeType(String url)
+    {
+        String type = null;
+        String extension = MimeTypeMap.getFileExtensionFromUrl(url);
+        if (extension != null) {
+            MimeTypeMap mime = MimeTypeMap.getSingleton();
+            type = mime.getMimeTypeFromExtension(extension);            
+        }
+        
+        if (type == null)
+            if (url.endsWith("jpg"))
+                return MIME_TYPE_JPEG;        
+            else if (url.endsWith("jpg"))
+                return MIME_TYPE_PNG;
+        
+        return type;
+    }
 
     public static FileInfo getFileInfoFromURI(Context aContext, Uri uri) throws IllegalArgumentException {
         FileInfo info = new FileInfo();
+        info.path = uri.toString();
+        
         if (ChatFileStore.isVfsUri(uri)) {
             info.path = uri.getPath();
+            info.type = getMimeType(uri.toString());
             return info;
         }
         if (uri.getScheme() != null && uri.getScheme().equals("file")) {
             info.path = uri.getPath();
+            info.type = getMimeType(uri.toString());
             return info;
         }
 
         if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
             // Work around URI escaping brokenness
             info.path = uri.toString().replaceFirst("content://org.openintents.filemanager", "");
+            info.type = getMimeType(uri.toString());
             return info;
         }
 
@@ -171,6 +198,9 @@ public class SystemServices {
 
         if (cursor != null)
             cursor.close();
+
+        if (info.type == null)
+            info.type = getMimeType(info.path);
 
         return info;
     }

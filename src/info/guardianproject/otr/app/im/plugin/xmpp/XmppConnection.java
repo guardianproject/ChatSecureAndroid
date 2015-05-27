@@ -23,6 +23,7 @@ import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.plugin.xmpp.auth.GTalkOAuth2;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.provider.ImpsErrorInfo;
+import info.guardianproject.otr.app.im.service.ChatSessionAdapter;
 import info.guardianproject.util.DNSUtil;
 import info.guardianproject.util.Debug;
 
@@ -1276,15 +1277,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
                 }
 
-                DeliveryReceipts.DeliveryReceipt dr = (DeliveryReceipts.DeliveryReceipt) smackMessage
+                DeliveryReceipts.DeliveryReceipt drIncoming = (DeliveryReceipts.DeliveryReceipt) smackMessage
                         .getExtension("received", DeliveryReceipts.NAMESPACE);
 
-                if (dr != null) {
+                if (drIncoming != null) {
 
-                    debug(TAG, "got delivery receipt for " + dr.getId());
+                    debug(TAG, "got delivery receipt for " + drIncoming.getId());
                     boolean groupMessage = smackMessage.getType() == org.jivesoftware.smack.packet.Message.Type.groupchat;
                     ChatSession session = findOrCreateSession(address, groupMessage);
-                    session.onMessageReceipt(dr.getId());
+                    session.onMessageReceipt(drIncoming.getId());
                     
                 }
 
@@ -1722,11 +1723,12 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             msgXmpp.setBody(message.getBody());
 
-            sendPacket(msgXmpp);
+            if (message.getID() != null)
+                msgXmpp.setPacketID(message.getID());
+            else
+                message.setID(msgXmpp.getPacketID());
             
-            //set message ID value on internal message
-            message.setID(msgXmpp.getPacketID());
-
+            sendPacket(msgXmpp);            
 
         }
 
@@ -2520,12 +2522,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         execute(new Runnable() {
             @Override
             public void run() {
-
-                debug(TAG, "network type changed");
-                mNeedReconnect = false;
-                setState(LOGGING_IN, null);
-                reconnect();
-
+                if (mState == SUSPENDED || mState == SUSPENDING)
+                {
+                    debug(TAG, "network type changed");
+                    mNeedReconnect = false;
+                    setState(LOGGING_IN, null);
+                    reconnect();
+                }
             }
         });
 
@@ -2671,12 +2674,20 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
         if (state == LOGGED_IN)
         {
+            //update and send new presence packet out
             mUserPresence = new Presence(Presence.AVAILABLE, "", Presence.CLIENT_TYPE_MOBILE);
-            sendPresencePacket();            
+            sendPresencePacket();  
+            
+            //request presence of remote contact for all existing sessions 
+            for (ChatSessionAdapter session : mSessionManager.getAdapter().getActiveChatSessions())
+            {
+                requestPresenceRefresh(session.getAddress());
+            }
+
             mChatGroupManager.reconnectAll();
         }
     }    
-
+    
     public void debug(String tag, String msg) {
         //  if (Log.isLoggable(TAG, Log.DEBUG)) {
         if (Debug.DEBUG_ENABLED) {

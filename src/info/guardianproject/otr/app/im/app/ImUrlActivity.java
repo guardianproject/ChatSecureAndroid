@@ -16,24 +16,6 @@
  */
 package info.guardianproject.otr.app.im.app;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.os.RemoteException;
-import android.provider.MediaStore;
-import android.provider.MediaStore.MediaColumns;
-import android.text.TextUtils;
-import android.util.Log;
-import android.widget.Toast;
-
 import info.guardianproject.otr.OtrDataHandler;
 import info.guardianproject.otr.app.im.IChatSession;
 import info.guardianproject.otr.app.im.IChatSessionManager;
@@ -46,6 +28,8 @@ import info.guardianproject.util.LogCleaner;
 import info.guardianproject.util.SystemServices;
 import info.guardianproject.util.SystemServices.FileInfo;
 
+import java.io.File;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Locale;
@@ -53,6 +37,21 @@ import java.util.Set;
 import java.util.UUID;
 
 import net.java.otr4j.session.SessionStatus;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.RemoteException;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
 
 public class ImUrlActivity extends Activity {
     private static final String TAG = "ImUrlActivity";
@@ -70,7 +69,7 @@ public class ImUrlActivity extends Activity {
     private IImConnection mConn;
     private IChatSessionManager mChatSessionManager;
 
-    private String mSendUrl;
+    private Uri mSendUri;
     private String mSendType;
     private String mSendText;
 
@@ -571,53 +570,33 @@ public class ImUrlActivity extends Activity {
 
     };
 
-    public String getRealPathFromURI(Uri contentUri, String type) {
-
-        String[] proj = { MediaColumns.DATA };
-
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        String path = cursor.getString(column_index);
-        cursor.close();
-        return path;
-    }
-
     void openOtrInBand(final Uri data, final String type) {
 
-        String localUrl = null;
-
-        try
+        mSendType = getContentResolver().getType(data);
+        
+        if (mSendType != null ) {
+            
+            mSendUri = data;
+            startContactPicker();
+            return;
+        }
+        else  if (data.toString().startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND))
         {
-            localUrl = getRealPathFromURI(data, type);
+             String localUrl = data.toString().replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, "");
+             FileInfo info = null;
+             if (TextUtils.equals(data.getAuthority(), "com.android.contacts")) {
+                 info = SystemServices.getContactAsVCardFile(this, data);
+             } else {
+                 info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, data);
+             }
+             if (info != null && !TextUtils.isEmpty(info.path)) {
+                 mSendUri = Uri.fromFile(new File(info.path));
+                 mSendType = type != null ? type : info.type;
+                 startContactPicker();
+                 return;
+             }
         }
-        catch (Exception e)
-        {
-            LogCleaner.warn(ImApp.LOG_TAG, "unable to get path from URI");
-        }
-
-        if (localUrl == null)
-            localUrl = data.toString();
-
-        if (localUrl != null ) {
-
-            if (localUrl.startsWith(OtrDataHandler.URI_PREFIX_OTR_IN_BAND))
-                localUrl = localUrl.replaceFirst(OtrDataHandler.URI_PREFIX_OTR_IN_BAND, "");
-
-            FileInfo info = null;
-            if (TextUtils.equals(data.getAuthority(), "com.android.contacts")) {
-                info = SystemServices.getContactAsVCardFile(this, data);
-            } else {
-                info = SystemServices.getFileInfoFromURI(ImUrlActivity.this, data);
-            }
-
-            if (info != null && !TextUtils.isEmpty(info.path)) {
-                mSendUrl = info.path;
-                mSendType = type != null ? type : info.type;
-                startContactPicker();
-                return;
-            }
-        }
+        
         Toast.makeText(this, R.string.unsupported_incoming_data, Toast.LENGTH_LONG).show();
         finish(); // make sure not to show this Activity's blank white screen
     }
@@ -663,7 +642,7 @@ public class ImUrlActivity extends Activity {
 
             if (mSendText != null)
                 session.sendMessage(mSendText);
-            else if (mSendUrl != null && session.getOtrChatSession() != null)
+            else if (mSendUri != null && session.getOtrChatSession() != null)
             {
 
                 if (session.getOtrChatSession().getChatStatus() != SessionStatus.ENCRYPTED.ordinal())
@@ -675,19 +654,31 @@ public class ImUrlActivity extends Activity {
                 {
                     try {
 
+                            
                             String offerId = UUID.randomUUID().toString();
-                            Log.i(TAG, "mSendUrl " +mSendUrl);
+                          //  Log.i(TAG, "mSendUrl " +mSendUrl);
                             Uri vfsUri = null;
-                            if (ChatFileStore.isVfsUri(mSendUrl))
-                                vfsUri = Uri.parse(mSendUrl);
+                            
+                            if (ChatFileStore.isVfsUri(mSendUri))
+                                vfsUri = mSendUri;
                             else
-                                vfsUri = ChatFileStore.importContent(session.getId() + "", mSendUrl);
+                            {
+                                InputStream is = getContentResolver().openInputStream(mSendUri);
+                                String fileName = mSendUri.getLastPathSegment();
+                                FileInfo importInfo = SystemServices.getFileInfoFromURI(this, mSendUri);
+
+                                if (importInfo.type != null && importInfo.type.startsWith("image"))
+                                    vfsUri = ChatFileStore.resizeAndImportImage(this, session.getId() + "", mSendUri, importInfo.type);
+                                else
+                                    vfsUri = ChatFileStore.importContent(session.getId() + "", fileName, is);
+
+                            }
+                            
                             FileInfo info = SystemServices.getFileInfoFromURI(this, vfsUri);
                             session.offerData(offerId, info.path, mSendType );
 
-
                             Imps.insertMessageInDb(
-                                    getContentResolver(), false, session.getId(), true, null, mSendUrl.toString(),
+                                    getContentResolver(), false, session.getId(), true, null, vfsUri.toString(),
                                     System.currentTimeMillis(), Imps.MessageType.OUTGOING_ENCRYPTED, // TODO show verified status
                                     0, offerId, mSendType);
 

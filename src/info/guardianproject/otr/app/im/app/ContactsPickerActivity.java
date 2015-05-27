@@ -64,7 +64,7 @@ public class ContactsPickerActivity extends ActionBarActivity  {
     private MyLoaderCallbacks mLoaderCallbacks;
 
     private ContactListListener mListener = null;
-    private final static Uri mUri = Imps.Contacts.CONTENT_URI_CONTACTS_BY;
+    private Uri mUri = Imps.Contacts.CONTENT_URI_CONTACTS_BY;
 
     private Handler mHandler = new Handler();
 
@@ -93,6 +93,9 @@ public class ContactsPickerActivity extends ActionBarActivity  {
         ((ImApp)getApplication()).setAppTheme(this);
         
         setContentView(R.layout.contacts_picker_activity);
+        
+        if (getIntent().getData() != null)
+            mUri = getIntent().getData();
 
         mListView = (ListView)findViewById(R.id.contactsList);
 
@@ -294,6 +297,8 @@ public class ContactsPickerActivity extends ActionBarActivity  {
             holder.mStatusIcon = (ImageView)view.findViewById(R.id.statusIcon);
 
             holder.mContainer = view.findViewById(R.id.message_container);
+
+            holder.mMediaThumb = (ImageView)view.findViewById(R.id.media_thumbnail);
 
             view.setTag(holder);
 
