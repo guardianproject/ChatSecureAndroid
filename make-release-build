@@ -61,14 +61,7 @@ fi
 ./update-ant-build.sh
 faketime -f "$TIMESTAMP" ant release
 
-apk=$projectroot/bin/$projectname-v$versionName.apk
-
-# mark APK with actual build info, instead of version in manifest
-if [ $versionName != $describe ]; then
-    debugapk=$projectroot/bin/$projectname-$describe.apk
-    mv $apk $debugapk
-    apk=$debugapk
-fi
+apk=$projectroot/bin/$projectname-v$describe.apk
 
 if which gpg > /dev/null; then
     if [ -z "`gpg --list-secret-keys`" ]; then
