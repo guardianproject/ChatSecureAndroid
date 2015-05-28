@@ -21,6 +21,7 @@
 		<!-- General: Names -->
 		<string name="app_name">ChatSecure</string>
 		<string name="im_label">ChatSecure</string>
+		<string name="app_description">ChatSecure is a free, unlimited, private messaging app that based on open standards.  Unlike other apps that keep you stuck in their walled garden, ChatSecure is fully interoperable with other clients that support OTR and XMPP, such as Adium, Jitsi, and more.  You can connect using your DuckDuckGo and Google accounts, create new accounts on public XMPP servers (including via Tor), or even connect to your own server for extra security.</string>
 		
 		<!-- General: Permissions -->
 		<string name="ro_perm_label">read instant messages</string>

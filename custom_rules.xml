@@ -17,9 +17,9 @@
                  collapseAttributes="true"/>
     <!--  see ${sdk.dir}/tools/ant/build.xml -set-release-mode -->
     <property name="out.packaged.file"
-              location="${out.absolute.dir}/${ant.project.name}-${git.describe}-unsigned.apk" />
+              location="${out.absolute.dir}/${ant.project.name}-v${git.describe}-unsigned.apk" />
     <property name="out.final.file"
-              location="${out.absolute.dir}/${ant.project.name}-${git.describe}.apk" />
+              location="${out.absolute.dir}/${ant.project.name}-v${git.describe}.apk" />
   </target>
 
   <target name="-set-release-mode"

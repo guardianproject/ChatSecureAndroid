@@ -57,6 +57,7 @@
         android:allowBackup="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/im_label"
+        android:description="@string/app_description"
         android:theme="@style/AppTheme" >
         <activity android:name=".app.WelcomeActivity" >
             <intent-filter>
