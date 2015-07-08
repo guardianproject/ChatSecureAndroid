@@ -6,10 +6,4 @@
     <item>Len ak sa požaduje</item>
     <item>Zakázať / Nikdy</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>force</item>
-    <item>auto</item>
-    <item>requested</item>
-    <item>disabled</item>
-  </string-array>
 </resources>

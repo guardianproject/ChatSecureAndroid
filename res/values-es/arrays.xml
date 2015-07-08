@@ -6,10 +6,4 @@
     <item>Solo si se solicita</item>
     <item>Nunca</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>forzar</item>
-    <item>automático</item>
-    <item>solicitado</item>
-    <item>inhabilitado</item>
-  </string-array>
 </resources>

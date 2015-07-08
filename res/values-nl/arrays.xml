@@ -6,10 +6,4 @@
     <item>Op verzoek</item>
     <item>Uitgeschakeld / nooit</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>forceer</item>
-    <item>automatisch</item>
-    <item>op verzoek</item>
-    <item>uitgeschakeld</item>
-  </string-array>
 </resources>

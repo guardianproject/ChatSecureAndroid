@@ -6,10 +6,4 @@
     <item>Như đã yêu cầu</item>
     <item>Tắt / Không bao giờ</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>bắt buộc</item>
-    <item>tự động</item>
-    <item>yêu cầu</item>
-    <item>tắt</item>
-  </string-array>
 </resources>

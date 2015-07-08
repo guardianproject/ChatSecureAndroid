@@ -6,10 +6,4 @@
     <item>Como Solicitado</item>
     <item>Desativado / Nunca</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>forçar</item>
-    <item>auto</item>
-    <item>solicitado</item>
-    <item>desativado</item>
-  </string-array>
 </resources>

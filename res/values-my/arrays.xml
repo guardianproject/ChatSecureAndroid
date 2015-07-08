@@ -6,10 +6,4 @@
     <item>တောင်းဆိုထားသည့်အတိုင်း</item>
     <item>ပိတ်ထားသော / မည့်သည့်အခါမျှ</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>အတင်းအကျပ်</item>
-    <item>အလိုအလျောက်</item>
-    <item>တောင်းဆိုထားသော</item>
-    <item>ပိတ်ထားသော</item>
-  </string-array>
 </resources>

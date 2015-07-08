@@ -571,4 +571,9 @@
   <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">مخزن مفاتيح التعمية مشوَّه. الرجاء إعادة تثبيت شات سيكيور أو \'إفراغ البيانات\' لهذا التطبيق</string>
   <string name="you_received_an_unreadable_encrypted_message">وصلتك رسالة مشفرة غير قابلة للقراءة</string>
   <string name="i_could_not_decrypt_the_message_you_sent">لم أتمكن من فك تشفير الرسالة التي أرسلتها</string>
+  
+   <string name="otr_options_force">افرض/ إطلب</string>
+    <string name="otr_options_auto">محاولة تلقائيا</string>
+    <string name="otr_options_attempt">بناءَ على الطلب</string>
+     <string name="otr_options_disabled">تعطيل / أبدا</string>
 </resources>

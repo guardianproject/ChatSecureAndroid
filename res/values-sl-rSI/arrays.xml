@@ -6,10 +6,4 @@
     <item>Če je zahtevano</item>
     <item>Onemogočeno / Nikoli</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>zahtevaj</item>
-    <item>samodejno</item>
-    <item>zahtevano</item>
-    <item>onemogočeno</item>
-  </string-array>
 </resources>

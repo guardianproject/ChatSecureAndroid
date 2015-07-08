@@ -6,10 +6,4 @@
     <item>依照要求</item>
     <item>停用 /從不</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>強制</item>
-    <item>自動</item>
-    <item>已要求</item>
-    <item>停用</item>
-  </string-array>
 </resources>

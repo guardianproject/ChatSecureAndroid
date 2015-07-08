@@ -6,18 +6,4 @@
     <item>Se richiesta</item>
     <item>Disabilitata / Mai</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>forzato</item>
-    <item>auto</item>
-    <item>richiesto</item>
-    <item>disabilitato</item>
-  </string-array>
-  <string-array name="account_domains">
-    <item>dukgo.com</item>
-    <item>jabber.calyxinstitute.org</item>
-    <item>xmpp.jp</item>
-    <item>jabberpl.org</item>
-    <item>neko.im</item>
-    <item>bam.yt</item>
-  </string-array>
 </resources>

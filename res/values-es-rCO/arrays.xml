@@ -6,10 +6,4 @@
     <item>Si se exige</item>
     <item>Deshabilitado / Nunca</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>forzar</item>
-    <item>auto</item>
-    <item>exigido</item>
-    <item>deshabilitado</item>
-  </string-array>
 </resources>

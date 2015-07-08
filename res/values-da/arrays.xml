@@ -6,10 +6,4 @@
     <item>Efter forespørgsel</item>
     <item>Deaktiveret / aldrig</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>altid</item>
-    <item>forsøg</item>
-    <item>forespørg</item>
-    <item>deaktiv</item>
-  </string-array>
 </resources>

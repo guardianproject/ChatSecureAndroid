@@ -6,10 +6,4 @@
     <item>Sesuai Permintaan</item>
     <item>Non Aktif / Tidak Pernah</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>harus</item>
-    <item>auto</item>
-    <item>diminta</item>
-    <item>non aktif</item>
-  </string-array>
 </resources>

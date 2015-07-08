@@ -6,10 +6,4 @@
     <item>Έπειτα απο αίτηση</item>
     <item>Απενεργοποιημένο / Ποτέ</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>εξαναγκασμός</item>
-    <item>αυτόματα</item>
-    <item>κατά ζήτηση</item>
-    <item>απενεργοποιημένο</item>
-  </string-array>
 </resources>

@@ -6,18 +6,4 @@
     <item>要求されたときだけ</item>
     <item>無効にする／絶対に有効にしない</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>強制</item>
-    <item>自動</item>
-    <item>要求</item>
-    <item>無効</item>
-  </string-array>
-  <string-array name="account_domains">
-    <item>dukgo.com</item>
-    <item>jabber.calyxinstitute.org</item>
-    <item>xmpp.jp</item>
-    <item>jabberpl.org</item>
-    <item>neko.im</item>
-    <item>bam.yt</item>
-  </string-array>
 </resources>

@@ -6,10 +6,4 @@
     <item>Sur demande</item>
     <item>Désactivé / Jamais</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>forcer</item>
-    <item>auto</item>
-    <item>sur demande</item>
-    <item>desactiver</item>
-  </string-array>
 </resources>

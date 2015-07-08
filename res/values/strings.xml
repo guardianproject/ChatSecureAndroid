@@ -725,5 +725,11 @@
 		<string name="i_could_not_decrypt_the_message_you_sent">I could not decrypt the message you sent</string>
 		
 		<string name="swipe_hint">&lt; swipe left and right for more options &gt;</string>
+		
+		<string name="otr_options_force">Always Require</string>
+        <string name="otr_options_auto">Automatically Attempt</string>
+        <string name="otr_options_attempt">As Requested</string>
+        <string name="otr_options_disabled">Disabled</string>
+        
 	</resources>
 

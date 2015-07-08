@@ -6,18 +6,4 @@
     <item>За запитом</item>
     <item>Вимкнено / Ніколи</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>примусово</item>
-    <item>автоматично</item>
-    <item>запитувати</item>
-    <item>вимкнено</item>
-  </string-array>
-  <string-array name="account_domains">
-    <item>dukgo.com</item>
-    <item>jabber.calyxinstitute.org</item>
-    <item>xmpp.jp</item>
-    <item>jabberpl.org</item>
-    <item>neko.im</item>
-    <item>bam.yt</item>
-  </string-array>
 </resources>

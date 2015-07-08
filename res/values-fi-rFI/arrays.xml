@@ -6,10 +6,4 @@
     <item>Kuten pyydetty</item>
     <item>Pois päältä / Ei koskaan</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>pakota</item>
-    <item>auto</item>
-    <item>pyydetty</item>
-    <item>pois päältä</item>
-  </string-array>
 </resources>

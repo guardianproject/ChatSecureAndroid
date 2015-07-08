@@ -2,10 +2,10 @@
 <resources>
 
     <string-array name="otr_options">
-        <item>Force / Require</item>
-        <item>Automatically Attempt</item>
-        <item>As Requested</item>
-        <item>Disabled / Never</item>
+        <item>@string/otr_options_force</item>
+        <item>@string/otr_options_auto</item>
+        <item>@string/otr_options_attempt</item>
+        <item>@string/otr_options_disabled</item>
     </string-array>
     <string-array name="otr_options_values">
         <item>force</item>
@@ -15,11 +15,11 @@
     </string-array>
     <string-array name="account_domains">
         <item>dukgo.com</item>
+        <item>otr.im</item>
         <item>jabber.calyxinstitute.org</item>
         <item>xmpp.jp</item>
         <item>jabberpl.org</item>
-        <item>neko.im</item>
-        <item>bam.yt</item>
+        <item>neko.im</item>        
     </string-array>
 
 </resources>

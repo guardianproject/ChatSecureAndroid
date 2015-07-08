@@ -6,10 +6,4 @@
     <item>Som forespurt</item>
     <item>Deaktivert / Aldri</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>tvinge</item>
-    <item>automatisk</item>
-    <item>på forespørsel</item>
-    <item>deaktivert</item>
-  </string-array>
 </resources>
