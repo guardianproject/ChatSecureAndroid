@@ -8,9 +8,3 @@ host = https://www.transifex.com
 source_file = res/values/strings.xml
 source_lang = en
 
-[chatsecureandroid.arraysxml]
-file_filter = res/values-<lang>/arrays.xml
-host = https://www.transifex.com
-source_file = res/values/arrays.xml
-source_lang = en
-
