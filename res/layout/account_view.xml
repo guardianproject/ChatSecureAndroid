@@ -23,17 +23,6 @@
     android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight"
     >
-<!-- 
-    <ImageView
-        android:id="@+id/providerIcon"
-        android:layout_gravity="center_vertical"
-        android:scaleType="fitXY"
-        android:paddingLeft="5dip"
-        android:paddingRight="2dip"
-        android:layout_width="39dip"
-        android:layout_height="32dip"/>
- -->
- 
         
     <LinearLayout
         android:id="@+id/underBubble"
