@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.jivesoftware.smackx.muc.MultiUserChat;
+
 import android.os.RemoteCallbackList;
 import android.os.RemoteException;
 import android.util.Log;
@@ -106,6 +108,13 @@ public class ChatSessionManagerAdapter extends
         return getChatSessionAdapter(session, isNewSession);
     }
 
+    public String getDefaultMultiUserChatServer ()
+    {
+        ChatGroupManager groupMan = mConnection.getAdaptee().getChatGroupManager();
+
+        return groupMan.getDefaultMultiUserChatServer();
+    }
+    
     public IChatSession createMultiUserChatSession(String roomAddress, String nickname, boolean isNewChat)
     {
 

@@ -513,6 +513,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
             
             RoomInfo roomInfo = null;
 
+            if (chatRoomJid.indexOf("@")==-1)
+            {
+                //let's add a host to that!
+
+                Collection<String> servers = MultiUserChat.getServiceNames(mConnection);
+                chatRoomJid += '@' + servers.iterator().next();
+                
+            }
+            
             Address address = new XmppAddress (chatRoomJid);
 
             try
@@ -548,7 +557,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                     {
                         // Create the room
                         muc.create(nickname);
-                        
+
                     }
                     catch (XMPPException iae)
                     {
@@ -659,6 +668,30 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 }
             }
         }
+
+        public String getDefaultMultiUserChatServer ()
+        {
+            try
+            {
+                if (mConnection == null)
+                    return null;
+                
+                Collection<String> servers = MultiUserChat.getServiceNames(mConnection);
+                
+                if (servers == null || servers.isEmpty())
+                    return null;
+                else
+                    return servers.iterator().next();
+            }
+            catch (XMPPException e)
+            {
+                Log.e(ImApp.LOG_TAG,"error finding MUC",e);
+                
+            }
+            
+            return null;
+        }
+    
 
         @Override
         public void joinChatGroupAsync(Address address) {

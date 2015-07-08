@@ -53,6 +53,7 @@ import net.java.otr4j.OtrPolicy;
 import net.java.otr4j.session.SessionStatus;
 
 import org.ironrabbit.type.CustomTypefaceManager;
+import org.jivesoftware.smackx.muc.MultiUserChat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -2158,23 +2159,22 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
 
 
-
+    View mDialogGroup = null;
+    
     private void showGroupChatDialog ()
     {
 
      // This example shows how to add a custom layout to an AlertDialog
         LayoutInflater factory = LayoutInflater.from(this);
 
-        final View dialogGroup = factory.inflate(R.layout.alert_dialog_group_chat, null);
-        TextView tvServer = (TextView) dialogGroup.findViewById(R.id.chat_server);
-       // tvServer.setText(ImApp.DEFAULT_GROUPCHAT_SERVER);// need to make this a list
-
-        final Spinner listAccounts = (Spinner) dialogGroup.findViewById(R.id.choose_list);
+        mDialogGroup = factory.inflate(R.layout.alert_dialog_group_chat, null);
+        
+        final Spinner listAccounts = (Spinner) mDialogGroup.findViewById(R.id.choose_list);
         setupAccountSpinner(listAccounts);
         
         new AlertDialog.Builder(this)
             .setTitle(R.string.create_or_join_group_chat)
-            .setView(dialogGroup)
+            .setView(mDialogGroup)
             .setPositiveButton(R.string.connect, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int whichButton) {
@@ -2185,13 +2185,13 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     String chatServer = null;
                     String nickname = null;
 
-                    TextView tv = (TextView)dialogGroup.findViewById(R.id.chat_room);
+                    TextView tv = (TextView)mDialogGroup.findViewById(R.id.chat_room);
                     chatRoom = tv.getText().toString();
 
-                    tv = (TextView) dialogGroup.findViewById(R.id.chat_server);
+                    tv = (TextView) mDialogGroup.findViewById(R.id.chat_server);
                     chatServer = tv.getText().toString();
 
-                    tv = (TextView) dialogGroup.findViewById(R.id.nickname);
+                    tv = (TextView) mDialogGroup.findViewById(R.id.nickname);
                     nickname = tv.getText().toString();
 
                     try
@@ -2256,6 +2256,29 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                     mLastProviderId = cursorProviders.getLong(PROVIDER_ID_COLUMN);
                     mLastAccountId = cursorProviders.getLong(ACTIVE_ACCOUNT_ID_COLUMN);
+                    
+                    mHandler.post(new Runnable()
+                    {
+                        
+                        public void run ()
+                        {
+                            TextView tvServer = (TextView) mDialogGroup.findViewById(R.id.chat_server);
+                    
+                            IChatSessionManager manager;
+                            try {
+                                IImConnection conn = mApp.getConnection(mLastProviderId);
+                                manager = conn.getChatSessionManager();
+                                String server = manager.getDefaultMultiUserChatServer();
+                                if (server != null)
+                                    tvServer.setText(server);
+                            } catch (RemoteException e) {
+                                // TODO Auto-generated catch block
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+                    
                  }
 
                 @Override
@@ -2305,6 +2328,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     IChatSession session = manager.getChatSession(roomAddress);
                     if (session == null) {
                         session = manager.createMultiUserChatSession(roomAddress, nickname, true);
+                        
                         if (session != null)
                         {
                             mRequestedChatId = session.getId();

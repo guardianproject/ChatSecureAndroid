@@ -299,4 +299,11 @@ public abstract class ChatGroupManager {
     protected void notifyGroupMemberError(ChatGroup group, ImErrorInfo error) {
         group.notifyGroupMemberError(error);
     }
+    
+    /**
+     * ask the server what the default host is for MUC
+     * @return
+     */
+    public abstract String getDefaultMultiUserChatServer ();
+    
 }
