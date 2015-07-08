@@ -332,26 +332,6 @@ public class ProviderListItem extends LinearLayout {
             else
                 mProviderName.setTextColor(Color.LTGRAY);
 
-            /**
-            if (mSignInSwitch != null && (!mUserChanged))
-            {
-                mSignInSwitch.setOnCheckedChangeListener(null);
-                mSignInSwitch.setChecked(switchOn);
-                mSignInSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                        if (isChecked)
-                            mSignInManager.signIn(mAccountId);
-                        else
-                            mSignInManager.signOut(mAccountId);
-
-                        mUserChanged = true;
-                    }
-
-                });
-            }*/
 
             if (mLoginName != null)
             {
