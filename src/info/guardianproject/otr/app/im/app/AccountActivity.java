@@ -125,8 +125,6 @@ public class AccountActivity extends ActionBarActivity {
     int mPort = 0;
     private String mOriginalUserAccount = "";
 
-    private final static int DEFAULT_PORT = 5222;
-
     IOtrChatSession mOtrChatSession;
     private SignInHelper mSignInHelper;
 
@@ -292,6 +290,9 @@ public class AccountActivity extends ActionBarActivity {
                 mRememberPass.setChecked(!cursor.isNull(ACCOUNT_PASSWORD_COLUMN));
                 mUseTor.setChecked(settings.getUseTor());
                 mBtnQrDisplay.setVisibility(View.VISIBLE);
+                
+                mPort = settings.getPort();
+                
             } finally {
                 settings.close();
                 cursor.close();
@@ -690,42 +691,11 @@ public class AccountActivity extends ActionBarActivity {
         String[] splitAt = userField.trim().split("@");
         mUserName = splitAt[0].toLowerCase(Locale.ENGLISH).replaceAll(USERNAME_VALIDATOR, "");
         mDomain = "";
-        mPort = 0;
+        
 
         if (splitAt.length > 1) {
             mDomain = splitAt[1].toLowerCase(Locale.ENGLISH);
-            String[] splitColon = mDomain.split(":");
-            mDomain = splitColon[0].toLowerCase(Locale.ENGLISH);
-            if (splitColon.length > 1) {
-                try {
-                    mPort = Integer.parseInt(splitColon[1]);
-                } catch (NumberFormatException e) {
-                    // TODO move these strings to strings.xml
-                    isGood = false;
-                    Toast.makeText(
-                            AccountActivity.this,
-                            "The port value '" + splitColon[1]
-                                    + "' after the : could not be parsed as a number!",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
         }
-
-        //its okay if domain is null;
-
-//        if (mDomain == null) {
-  //          isGood = false;
-            //Toast.makeText(AccountActivity.this,
-            //	R.string.account_wizard_no_domain_warning,
-            //	Toast.LENGTH_LONG).show();
-    //    }
-        /*//removing requirement of a . in the domain
-        else if (mDomain.indexOf(".") == -1) {
-            isGood = false;
-            //	Toast.makeText(AccountActivity.this,
-            //		R.string.account_wizard_no_root_domain_warning,
-            //	Toast.LENGTH_LONG).show();
-        }*/
 
         return isGood;
     }
@@ -754,7 +724,7 @@ public class AccountActivity extends ActionBarActivity {
         settings.setRequireTls(true);
         settings.setTlsCertVerify(true);
         settings.setAllowPlainAuth(false);
-        settings.setPort(DEFAULT_PORT);
+        settings.setPort(port);
 
         if (domain.equals("gmail.com")) {
             // Google only supports a certain configuration for XMPP:
