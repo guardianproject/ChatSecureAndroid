@@ -2226,8 +2226,9 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 {
                     group.removeEntry(entry);
                     entry = mRoster.getEntry(address);
+                    
                     // Remove from Roster if this is the last group
-                    if (entry != null && entry.getGroups().size() <= 1)
+                    if (entry != null && entry.getGroups() != null && entry.getGroups().size() <= 1)
                         mRoster.removeEntry(entry);
 
                 }
