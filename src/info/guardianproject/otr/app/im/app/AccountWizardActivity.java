@@ -204,12 +204,11 @@ public class AccountWizardActivity extends ThemeableActivity {
     {
         int i = 0;
         int accountProviders = 0;
-        List<String> listProviders = helper.getProviderNames();
-
+        
         mGoogleAccounts = AccountManager.get(this).getAccountsByType(GTalkOAuth2.TYPE_GOOGLE_ACCT);
 
         if (mGoogleAccounts.length > 0) {
-            accountProviders = listProviders.size() + 3; //potentialProviders + google + create account + burner
+            accountProviders = 5; //potentialProviders + google + create account + burner
 
             mAccountList = new String[accountProviders][3];
 
@@ -218,7 +217,7 @@ public class AccountWizardActivity extends ThemeableActivity {
             mAccountList[i][2] = GOOGLE_ACCOUNT;
             i++;
         } else {
-            accountProviders = listProviders.size() + 2; //potentialProviders + create account + burner
+            accountProviders = 4;//listProviders.size() + 2; //potentialProviders + create account + burner
 
             mAccountList = new String[accountProviders][3];
         }
