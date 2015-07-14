@@ -14,13 +14,14 @@ import java.util.regex.Pattern;
 
 public class LinkifyHelper {
 
+    private static Pattern bitcoin = Pattern.compile("bitcoin:[1-9a-km-zA-HJ-NP-Z]{27,34}(\\?[a-zA-Z0-9$\\-_.+!*'(),%:;@&=]*)?");
     private static Pattern geo = Pattern.compile("geo:[-0-9.]+,[-0-9.]+[^ \t\n\"\':]*");
-    private static Pattern market = Pattern.compile("market:[^ \t\n\"\':,]+");
-    private static Pattern openpgp4fpr = Pattern.compile("openpgp4fpr:[A-Za-z0-9]+");
-    private static Pattern xmpp = Pattern.compile("xmpp:[^ \t\n\"\':,]+");
+    private static Pattern market = Pattern.compile("market://[^ \t\n\"\':,<>]+");
+    private static Pattern openpgp4fpr = Pattern.compile("openpgp4fpr:[A-Za-z0-9]{8,40}");
+    private static Pattern xmpp = Pattern.compile("xmpp:[^ \t\n\"\':,<>]+");
     private static Pattern twitterHandle = Pattern.compile("@([A-Za-z0-9_-]+)");
     private static Pattern hashtag = Pattern.compile("#([A-Za-z0-9_-]+)");
-    private static Pattern bridge = Pattern.compile("bridge:[^ \t\n\"\':,]+");
+    private static Pattern bridge = Pattern.compile("bridge:[^ \t\n\"\':,<>]+");
 
     static TransformFilter returnMatchFilter = new TransformFilter() {
         @Override
