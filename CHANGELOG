@@ -1,6 +1,71 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+14.2.0 / 2015-07-13 / 67615753e0f87e09fa0aa3df1f6f8e0fc347c825
+
+6761575 Merge pull request #695 from eighthave/master
+0fed76e improve regexps for linkifying and add bitcoin: for payments
+1f4bb8e too many views in the account wizard
+b587ef6 this is now 14.2.0
+9af9115 add support for auto lookup of proper MUC conference server host for user
+167432b remove bam.yt
+dca3aab fixes #4679 making sure user set port is always used
+f2a33aa fixes #4652 makes sure there are no NPE
+47781b4 don't pull arrays from tx anymore, as we don't need it
+b3dddb5 otr_options_values should not be localized as they are keys all strings for arrays moved to strings.xml
+c2b2ef0 Merge pull request #693 from n8fr8/v14.2-more-bug-fixes
+7a31686 Merge branch 'v14.2-more-bug-fixes' of github.com:n8fr8/Gibberbot into v14.2-more-bug-fixes
+b32639e remove switch support
+e51728f cleanup account view layout
+334cc5b Merge pull request #684 from eighthave/master
+d1e9bdc Merge pull request #683 from n8fr8/master
+58abae2 make-release-build: use version from `git describe` in original name format
+f31b57e include app description in the app manifest
+d47ef09 fixes #677 on github: update asmack to address "sessionSupported" bug https://github.com/guardianproject/ChatSecureAndroid/is
+d72d79b fixes #677 on github: update asmack to address "sessionSupported" bug https://github.com/guardianproject/ChatSecureAndroid/is
+9f42ad9 Merge pull request #682 from n8fr8/v14.2-more-bug-fixes
+0920091 simplify the refreshSessionPresence code by merging into login logic
+c08ff61 merge updateNotification() into networkStateChange for simplicity
+5484f43 final fixes to message postpone/re-send logic
+75100c2 Merge pull request #681 from eighthave/some-small-fixes
+ea91042 partial fix #2147 if OTR is set to require/force then don't send messages without OTR Also attempts to set messages to POSTPO
+3df88f3 use java.security.SecureRandom to be sure
+f5ce7fb Fix SMP for non-ASCII chars.
+2ae6b02 fixes #5132 handles cases where there is no display name for some reason
+93c4de0 feature: add support for image preview in conversation view
+acb9bec fixes bug #2146 messages sent while offline stay in right place! previously, the sent time was being reset to -1 for offline/
+ac1ae6f fixes #3256 removes debug code that caused crash
+084f51e add new base art images
+66f4918 multiple fixes to import from content:// URIs and image resizing Apps like CameraV share images and video direclty using cont
+214e2ab reduce the size of the thumbnail cache
+860d769 make it easy to get active sessions
+467f628 only reconnect if suspended and then refresh presence of all open sessions
+9ac0b37 fix NPE if notifyBuilder is not yet instanced
+3121196 add new offline/disconnected icon
+26e4974 update manifest types supported for picker
+1b9aacd initial fixes to handle content:// URI files shared into ChatSecure
+a7c72d9 Merge pull request #678 from n8fr8/bug-fix-network-state
+767cb2a update notificaiton with proper intent
+448a7b2 simplify, clean-up handling of network connectivity state and improve notifications
+a8d8cf4 Merge pull request #676 from n8fr8/dev-14.2
+250a689 make the message view properly load form a stream instead of just a file object
+326fefe remove use of ugly background
+635f0ca remove ugly background
+790b164 update layout of avatars to make them slightly bigger 48dp
+6fc9001 make round avatars a little bigger with a smaller border
+fa01457 begin handling low memory states better
+c5bf709 only load the full roster once (don't reload it on reconnect) this saves bandwidth, battery and memory
+d696c98 never disconnect unless the user explicitly tells us to (always retry!)
+9027951 reduce memory usage in half by reducing avatars in half!
+55c5a4d resize images for sharing
+4ac1c90 Merge pull request #652 from eighthave/release-build-tweaks
+b858857 do not include BUILD.MF in debug APK, it breaks signature verification
+aa36a32 make versionName match the signed release git tag
+46444e1 include build metadata in release APK to help reproducibility
+ce48ce2 use `git describe` to name APK file
+575c684 make-release-build: include 'v' in release APK name, following convention
+0407072 remove references to non-existant Activites
+
 14.1.1-RC-5 / 2015-03-09 / abea2282eacc1975738bd643efa9e1e972eda149
 83a06fe fix presence and add contact handling logic to smooth new user experience
 
