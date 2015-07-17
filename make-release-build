@@ -37,9 +37,6 @@ projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' res/values/strings.xml`
 
 # standardize timezone to reduce build differences
 export TZ=UTC
-# run the clock at 5% speed, ant requires a moving clock
-TIMESTAMP=`printf '@%(%Y-%m-%d %H:%M:%S)T x0.05' \
-    $(git log -n1 --format=format:%at)`
 
 git reset --hard
 git clean -fdx
@@ -59,7 +56,7 @@ else
 fi
 
 ./update-ant-build.sh
-faketime -f "$TIMESTAMP" ant release
+ant release
 
 apk=$projectroot/bin/$projectname-v$describe.apk
 
