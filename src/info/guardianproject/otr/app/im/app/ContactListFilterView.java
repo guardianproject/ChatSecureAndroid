@@ -366,11 +366,14 @@ public class ContactListFilterView extends LinearLayout {
         DialogInterface.OnClickListener confirmListener = new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 try {
-                    IContactListManager manager = conn.getContactListManager();
-                    int res = manager.removeContact(address);
-                    if (res != ImErrorInfo.NO_ERROR) {
-                        mHandler.showAlert(R.string.error,
-                                ErrorResUtils.getErrorRes(getResources(), res, address));
+                    if (conn != null)
+                    {
+                        IContactListManager manager = conn.getContactListManager();
+                        int res = manager.removeContact(address);
+                        if (res != ImErrorInfo.NO_ERROR) {
+                            mHandler.showAlert(R.string.error,
+                                    ErrorResUtils.getErrorRes(getResources(), res, address));
+                        }
                     }
                 } catch (RemoteException e) {
 
