@@ -307,7 +307,7 @@ public class AccountWizardActivity extends ThemeableActivity {
     public void showSetupAccountForm (String providerType, String username, String token, boolean createAccount, String formTitle, boolean hideTor)
     {
         long providerId = helper.createAdditionalProvider(providerType);//xmpp
-        mApp.resetProviderSettings(); //clear cached provider list
+    //    mApp.resetProviderSettings(); //clear cached provider list
 
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_INSERT);
