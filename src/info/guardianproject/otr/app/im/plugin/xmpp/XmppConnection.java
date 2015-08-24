@@ -683,7 +683,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
                 else
                     return servers.iterator().next();
             }
-            catch (XMPPException e)
+            catch (Exception e)
             {
                 Log.e(ImApp.LOG_TAG,"error finding MUC",e);
                 

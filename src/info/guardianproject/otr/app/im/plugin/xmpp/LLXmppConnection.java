@@ -552,9 +552,17 @@ public class LLXmppConnection extends ImConnection implements CallbackHandler {
     // Force immediate logout
     @Override
     public void logout() {
-        if (mService != null) {
-            mService.close();
-            mService = null;
+        try
+        {
+            if (mService != null) {
+                mService.close();
+                mService = null;
+            }
+        }
+        catch (Exception e)
+        {
+            debug(TAG, "error logging out");
+            
         }
     }
 

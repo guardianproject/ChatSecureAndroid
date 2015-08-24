@@ -376,6 +376,7 @@ public class ImApp extends Application {
         if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             locale = new Locale(lang);
             config.locale = locale;
+            Locale.setDefault(locale);
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
 
@@ -395,6 +396,7 @@ public class ImApp extends Application {
             config.setLocale(locale);
         else
             config.locale = locale;
+        Locale.setDefault(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
         /* Set the preference after setting the locale in case something goes
@@ -578,9 +580,10 @@ public class ImApp extends Application {
     }
 
     /** Used to reset the provider settings if a reload is required. */
+    /*
     public void resetProviderSettings() {
         mProviders = null;
-    }
+    }*/
 
     // For testing
     public void setImProviderSettings(HashMap<Long, ProviderDef> providers) {

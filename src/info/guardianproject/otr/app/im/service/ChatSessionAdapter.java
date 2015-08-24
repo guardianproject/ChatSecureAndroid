@@ -393,22 +393,20 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
             return;
         }
 
+        ArrayList<String> messages = new ArrayList<String>();
+        
         while (c.moveToNext()) {
-            String id = c.getString(2);
             String body = c.getString(1);
-            
-            info.guardianproject.otr.app.im.engine.Message msg = new info.guardianproject.otr.app.im.engine.Message(body);
-            // TODO OTRCHAT move setFrom() to ChatSession.sendMessageAsync()
-            msg.setFrom(mConnection.getLoginUser().getAddress());
-            msg.setID(id);
-            msg.setType(Imps.MessageType.OUTGOING);
-
-            int newType = mChatSession.sendMessageAsync(msg);
-            updateMessageInDb(id, newType, System.currentTimeMillis());
-
+            messages.add(body);
         }
         
         c.close();
+        
+        removeMessageInDb(Imps.MessageType.POSTPONED);
+        
+        for (String body : messages)
+            sendMessage(body);               
+        
     }
 
     public void registerChatListener(IChatListener listener) {
@@ -636,6 +634,8 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
 
     int updateMessageInDb(String id, int type, long time) {
 
+        int result = -1;
+        
         Uri.Builder builder = Imps.Messages.OTR_MESSAGES_CONTENT_URI_BY_PACKET_ID.buildUpon();
         builder.appendPath(id);
 
@@ -645,7 +645,19 @@ public class ChatSessionAdapter extends info.guardianproject.otr.app.im.IChatSes
         if (time != -1)
             values.put(Imps.Messages.DATE, time);
         
-        return mContentResolver.update(builder.build(), values, null, null);
+        result = mContentResolver.update(builder.build(), values, null, null);
+        
+        if (result == 0)
+        {
+            builder = Imps.Messages.CONTENT_URI_MESSAGES_BY_PACKET_ID.buildUpon();
+            builder.appendPath(id);
+            
+            result = mContentResolver.update(builder.build(), values, null, null);
+        }
+        
+        
+        return result;
+        
     }
 
 

@@ -148,12 +148,20 @@ public class OtrChatSessionAdapter extends Stub {
 
     @Override
     public String getLocalUserId() throws RemoteException {
-        return getSessionID ().getLocalUserId();
+        SessionID sid = getSessionID ();
+        if (sid != null)
+            return sid.getLocalUserId();
+        else
+            return null;
     }
 
     @Override
     public String getRemoteUserId() throws RemoteException {
-        return getSessionID ().getRemoteUserId();
+        SessionID sid = getSessionID ();
+        if (sid != null)
+            return sid.getRemoteUserId();
+        else
+            return null;
     }
 
 }
