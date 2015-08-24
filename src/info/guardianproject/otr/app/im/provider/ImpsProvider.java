@@ -137,7 +137,8 @@ public class ImpsProvider extends ContentProvider {
     protected static final int MATCH_OTR_MESSAGES_BY_ACCOUNT = 60;
     protected static final int MATCH_OTR_MESSAGE = 61;
     protected static final int MATCH_OTR_MESSAGES_BY_PACKET_ID = 62;
-
+    protected static final int MATCH_MESSAGES_BY_PACKET_ID = 63;
+    
     protected static final int MATCH_GROUP_MEMBERS = 65;
     protected static final int MATCH_GROUP_MEMBERS_BY_GROUP = 66;
     protected static final int MATCH_AVATARS = 70;
@@ -1058,7 +1059,8 @@ public class ImpsProvider extends ContentProvider {
         mUrlMatcher.addURI(authority, "messagesByProvider/#", MATCH_MESSAGES_BY_PROVIDER);
         mUrlMatcher.addURI(authority, "messagesByAccount/#", MATCH_MESSAGES_BY_ACCOUNT);
         mUrlMatcher.addURI(authority, "messages/#", MATCH_MESSAGE);
-
+        mUrlMatcher.addURI(authority, "messagesByPacketId/*", MATCH_MESSAGES_BY_PACKET_ID);
+        
         mUrlMatcher.addURI(authority, "otrMessages", MATCH_OTR_MESSAGES);
         mUrlMatcher.addURI(authority, "otrMessagesByAcctAndContact/#/*",
                 MATCH_OTR_MESSAGES_BY_CONTACT);
@@ -3589,12 +3591,22 @@ public class ImpsProvider extends ContentProvider {
 
         case MATCH_OTR_MESSAGES_BY_PACKET_ID:
             packetId = decodeURLSegment(url.getPathSegments().get(1));
-            tableToChange = TABLE_MESSAGES; // FIXME these should be going to memory but they do not
+            tableToChange = TABLE_IN_MEMORY_MESSAGES; // FIXME these should be going to memory but they do not
             appendWhere(whereClause, Imps.Messages.PACKET_ID, "=", packetId);
             notifyMessagesContentUri = true;
 
             // Try updating OTR message
             count += db.update(TABLE_IN_MEMORY_MESSAGES, values, whereClause.toString(), whereArgs);
+            break;
+            
+        case MATCH_MESSAGES_BY_PACKET_ID:
+            packetId = decodeURLSegment(url.getPathSegments().get(1));
+            tableToChange = TABLE_MESSAGES; // FIXME these should be going to memory but they do not
+            appendWhere(whereClause, Imps.Messages.PACKET_ID, "=", packetId);
+            notifyMessagesContentUri = true;
+
+            // Try updating OTR message
+            count += db.update(TABLE_MESSAGES, values, whereClause.toString(), whereArgs);
             break;
 
         case MATCH_OTR_MESSAGE:

@@ -930,6 +930,10 @@ public class Imps {
         /** The content:// style URL for messages by thread id */
         public static final Uri CONTENT_URI_MESSAGES_BY_THREAD_ID = Uri
                 .parse("content://info.guardianproject.otr.app.im.provider.Imps/messagesByThreadId");
+        
+        /** The content:// style URL for messages by thread id */
+        public static final Uri CONTENT_URI_MESSAGES_BY_PACKET_ID = Uri
+                .parse("content://info.guardianproject.otr.app.im.provider.Imps/messagesByPacketId");
 
         /** The content:// style URL for messages by account and contact */
         public static final Uri CONTENT_URI_MESSAGES_BY_ACCOUNT_AND_CONTACT = Uri
