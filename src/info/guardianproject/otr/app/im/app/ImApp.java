@@ -376,6 +376,7 @@ public class ImApp extends Application {
         if (!"".equals(lang) && !config.locale.getLanguage().equals(lang)) {
             locale = new Locale(lang);
             config.locale = locale;
+            Locale.setDefault(locale);
             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         }
 
@@ -395,6 +396,7 @@ public class ImApp extends Application {
             config.setLocale(locale);
         else
             config.locale = locale;
+        Locale.setDefault(locale);
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
 
         /* Set the preference after setting the locale in case something goes
