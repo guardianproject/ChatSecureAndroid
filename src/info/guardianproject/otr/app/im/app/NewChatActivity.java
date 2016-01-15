@@ -1300,19 +1300,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     resultIntent);
 
             if (scanResult != null) {
-                String xmppUri = scanResult.getContents();
-                String result = null;
-                if (xmppUri.startsWith("xmpp"))
-                    result = XmppUriHelper.getOtrFingerprint(xmppUri);
-
-                if (getCurrentChatView()!=null && result != null)
-                    getCurrentChatView().verifyScannedFingerprint(result);
-                else
-                {
-                    //add new contact?
+                String scannedString = scanResult.getContents();
+                if (scannedString.startsWith("xmpp")) {
+                    String result = XmppUriHelper.getOtrFingerprint(scannedString);
+                    if (getCurrentChatView()!=null && result != null)
+                        getCurrentChatView().verifyScannedFingerprint(result);
+                } else {
+                    OtrAndroidKeyManagerImpl.handleKeyScanResult(scannedString, this);
                 }
-
-
             }
         }
     }
