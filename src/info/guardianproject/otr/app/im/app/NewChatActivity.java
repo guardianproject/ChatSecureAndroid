@@ -1014,14 +1014,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private void importKeyStore ()
     {
-        boolean doKeyStoreImport = OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
-
-    }
-
-    private void exportKeyStore ()
-    {
-        //boolean doKeyStoreExport = OtrAndroidKeyManagerImpl.getInstance(this).doKeyStoreExport(password);
-
+        OtrAndroidKeyManagerImpl.checkForKeyImport(getIntent(), this);
     }
 
     private void endCurrentChatPrompt( final String sessionId ) {

@@ -848,17 +848,15 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         return store.export(password, otrKeystoreAES);
     }
-    public static boolean checkForKeyImport (Intent intent, Activity activity)
+    public static void checkForKeyImport (Intent intent, Activity activity)
     {
-        boolean doKeyStoreImport = false;
-
         // if otr_keystore.ofcaes is in the SDCard root, import it
         File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
                 "otr_keystore.ofcaes");
         if (otrKeystoreAES.exists()) {
             //Log.i(TAG, "found " + otrKeystoreAES + "to import");
-            doKeyStoreImport = true;
             importOtrKeyStore(otrKeystoreAES, activity);
+            return;
         }
         else if (intent != null && intent.getData() != null)
         {
@@ -870,19 +868,11 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
                 path = uriData.toString().replace("file://", "");
 
                 File file = new File(path);
-
-                doKeyStoreImport = true;
-
                 importOtrKeyStore(file, activity);
+                return;
             }
         }
-        else
-        {
-            Toast.makeText(activity, R.string.otr_keysync_warning_message, Toast.LENGTH_LONG).show();
-
-        }
-
-        return doKeyStoreImport;
+        Toast.makeText(activity, R.string.otr_keysync_warning_message, Toast.LENGTH_LONG).show();
     }
 
 
