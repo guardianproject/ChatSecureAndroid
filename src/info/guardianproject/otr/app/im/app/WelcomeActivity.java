@@ -61,6 +61,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
     private boolean mDoSignIn = true;
 
+    private ProgressDialog dialog;
+
     static final String[] PROVIDER_PROJECTION = { Imps.Provider._ID, Imps.Provider.NAME,
                                                  Imps.Provider.FULLNAME, Imps.Provider.CATEGORY,
                                                  Imps.Provider.ACTIVE_ACCOUNT_ID,
@@ -218,6 +220,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
 
         if (mCacheWord != null)
             mCacheWord.disconnect();
+
+        if (dialog != null)
+            dialog.dismiss();
     }
 
     @Override
@@ -444,9 +449,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
             e.printStackTrace();
         }
            new AsyncTask<String, Void, String>() {
-
-            private ProgressDialog dialog;
-
 
             @Override
             protected void onPreExecute() {
