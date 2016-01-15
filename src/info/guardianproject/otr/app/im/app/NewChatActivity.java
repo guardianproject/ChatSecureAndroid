@@ -982,6 +982,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
                 case R.id.menu_exit:
                     WelcomeActivity.shutdownAndLock(NewChatActivity.this);
+                    ExitActivity.exitAndRemoveFromRecentApps(NewChatActivity.this);
                     return true;
 
                 case R.id.menu_add_contact:
