@@ -206,7 +206,7 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> no hi és</string>
   <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> està ocupat/da</string>
   <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> no està connectat/da</string>
-  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> S\'ha unit</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> s\'ha unit</string>
   <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> ha marxat</string>
   <string name="menu_send_image">Envia la fotografia</string>
   <string name="menu_send_file">Envia el fitxer</string>
@@ -288,6 +288,7 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="pref_in_memory_db_summary">Només desa els missatges a la memòria, no a l\'emmagatzematge flash, per evitar que puguin accedir-hi. (Pot causar pèrdua de missatges)</string>
   <string name="pref_background_title">Imatge de fons</string>
   <string name="pref_background_summary">Defineix el camí (\"/sdcard/foo.jpg\") a una imatge de fons per l\'aplicació</string>
+  <!--Prompt user to resolve missing External Storage media store-->
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Altres afinaments</string>
   <string name="start_on_boot">Comença ChatSecure automàticament</string>
@@ -355,8 +356,6 @@ La aplicació dóna suport a qualsevol servei de xat que empri els protocols Jab
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">No s\'ha importat el magatzem de claus OTR. Verifiqueu que el fitxer existeix i que és al lloc i en el format adient</string>
   <string name="msg_sent_failed">No s\'ha pogut enviar el missatge</string>
   <string name="account_settings_title">Paràmetres del compte</string>
-
-  <string name="warning_alpha">ADVERTÈNCIA: aquesta és una versió primerenca del ChatSecure i pot ser que contingui errors o forats de seguretat.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grups</string>
   <string name="_open_conversations">conversa(es) oberta(es)</string>

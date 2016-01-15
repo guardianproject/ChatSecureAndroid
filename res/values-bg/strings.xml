@@ -266,6 +266,9 @@ OTR протоколът е съвместим с други приложени�
   <string name="empty_contact_list">Не са намерени контакти.
 
 Чукни, за да поканиш.</string>
+  <string name="subscription_prompt">Добави<xliff:g id="USER">%1$s</xliff:g>?</string>
+  <string name="approve_subscription">Да</string>
+  <string name="decline_subscription">Не</string>
   <string name="approve_subscription_error">Неуспешен опит да потвърдиш познанство с <xliff:g id="user">%1$s</xliff:g>. Моля, опитай отново по-късно.</string>
   <string name="decline_subscription_error">Неуспешен опит да откажеш познанство с <xliff:g id="user">%1$s</xliff:g>. Моля, опитай отново по-късно.</string>
   <!--Security: OTR-->
@@ -339,6 +342,14 @@ OTR протоколът е съвместим с други приложени�
   <string name="button_yes_accept_all">Да, Приеми Всички</string>
   <string name="pref_delete_unsecured_media_title">Изтрий неподсигурения файл</string>
   <string name="pref_delete_unsecured_media_summary">След споделяне на снимка или файл, автоматично го изтрий от оригиналното, неподсигурено място на диска</string>
+  <string name="pref_store_media_on_external_storage_title">Запази файла на SD карта</string>
+  <string name="pref_store_media_on_external_storage_summary">Файлове от час сесията се пазят в криптиран контейнер, който може да бъде съхраняван на вътрешната памет или SD карта.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Липсва SD карта</string>
+  <string name="external_storage_missing_message">Чат транскрипциите се пазят на SD карта, но такава не е намерена. Моля, вкарайте SD карта, или изтрийте съществуващите чат транскрипции и рестартирайте ChatSecure.</string>
+  <string name="media_store_file_missing_title">Липсва SD карта за съхранение на файлове</string>
+  <string name="media_store_file_missing_message">Чат транскрипциите се пазят на SD карта, но файлът не е намерен на текущата SD карта. Моля, вкарайте правилната SD карта, или изтрийте съществуващите чат транскрипции и рестартирайте ChatSecure.</string>
+  <string name="delete_chat_log">Изтрий чат транскрипциите</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Други Настройки</string>
   <string name="start_on_boot">Старирай ChatSecure Автоматично</string>
@@ -459,8 +470,6 @@ OTR протоколът е съвместим с други приложени�
   <string name="error_welcome_database">Голям проблем: Неуспешно отключванеи зареждане на базата данни. Моля, преинсталирайте програмата или изтрийте информацията.</string>
   <string name="error_no_app_to_handle_url">Не е намерено инсталирано приложение, което да може да изпозлва тази препратки!</string>
   <string name="account_settings_title">Account Settings</string>
-
-  <string name="warning_alpha">ВНИМАНИЕ: Тази стара версия на ChatSecure може да има бъгове или да не сигурна.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Групи</string>
   <string name="_open_conversations">текущи дискусии</string>

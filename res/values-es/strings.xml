@@ -18,6 +18,7 @@
   <string name="no">Cancelar</string>
   <string name="btn_next">Siguiente</string>
   <string name="btn_back">Atrás</string>
+  <string name="connect">Conectar</string>
   <!--Views-->
   <!--Views: Setup-->
   <string name="landing_page_title">Seleccionar una cuenta</string>
@@ -231,6 +232,7 @@
   <string name="pref_in_memory_db_summary">No almacenar los mensajes en flash para evitar que puedan ser recuperados. (Advertencia: esto puede provocar la pérdida de mensajes)</string>
   <string name="pref_background_title">Imagen de fondo</string>
   <string name="pref_background_summary">Establecer una ruta para la imagen de fondo de la aplicación</string>
+  <!--Prompt user to resolve missing External Storage media store-->
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Otros ajustes</string>
   <string name="start_on_boot">Conectar al inicio</string>
@@ -311,8 +313,6 @@
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> está desconectado. Los mensajes enviados se entregarán cuando <xliff:g id="USER_1">%1$s</xliff:g> vuelva a conectarse.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> no figura en tu lista de contactos.</string>
   <string name="account_settings_title">Configuración de la cuenta</string>
-
-  <string name="warning_alpha">ADVERTENCIA: Esta es una versión anticipada de ChatSecure que puede contener vulnerabilidades de seguridad o errores.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupos</string>
   <string name="_open_conversations">conversaciones abiertas</string>
