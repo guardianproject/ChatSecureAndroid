@@ -404,7 +404,7 @@ Klikkaa kutsuaksesi.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Kyseiselle tiedostotyypille ei ole katseluohjelmaa</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Aloita turvallinen keskustelu ennen koodien skannaamista</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-avainnippua ei tuotu; Vahvista, että tiedosto on olemassa, oikeassa muodossa ja oikeassa sijainnissa.</string>
-  <string name="otr_keysync_warning_message">Kopioi \'otr_keystore.ofcaes\' tiedosto työpöydän OtrFileConverter-työkalusta laitteesi muistin juureen.</string>
+  <string name="otr_keysync_warning_message">Kopioi \'otr_keystore.ofcaes\' tiedosto työpöydän KeySync-työkalusta laitteesi muistin juureen.</string>
   <string name="msg_sent_failed">Viestiä ei voitu lähettää.</string>
   <string name="disconnected_warning">Viestit lähetetään kun yhteys palautuu</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> on offline. Viestit toimitetaan, kun <xliff:g id="user">%1$s</xliff:g> tulee takaisin linjalle.</string>

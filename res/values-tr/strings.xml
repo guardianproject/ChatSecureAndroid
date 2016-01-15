@@ -427,7 +427,7 @@ Davet etmek için buraya basın.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Bu dosya türü için hiçbir görüntüleyici bulunmuyor</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Lütfen kodlarını taramadan önce güvenli bir konuşma başlat</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR anahtar demeti aktarılmadı; lütfen dosyanın var olduğunu, doğru formatta ve klasörde olduğunu kontrol edin</string>
-  <string name="otr_keysync_warning_message">Lütfen \'otr_keystore.ofcaes\' dosyasını masaüstü OtrFileConverter aracından cihazınızın kök dizinine kopyalayın </string>
+  <string name="otr_keysync_warning_message">Lütfen \'otr_keystore.ofcaes\' dosyasını masaüstü KeySync aracından cihazınızın kök dizinine kopyalayın </string>
   <string name="msg_sent_failed">Bu ileti gönderilemedi.</string>
   <string name="disconnected_warning">Yeniden bağlantı kurulduğunda iletiler gönderilecek</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> çevrimdışı. Gönderdiğiniz iletiler <xliff:g id="USER_1">%1$s</xliff:g> çevrimiçi olduğunda teslim edilecek.</string>

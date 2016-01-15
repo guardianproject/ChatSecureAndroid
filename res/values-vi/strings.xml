@@ -394,7 +394,7 @@ Chạm vào để mời kết nối.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Không tồn tại chương trình có thể đọc định dạng file này</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Hãy bắt đầu mã hóa đoạn hội thoại trước khi scan mã</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTP vẫn chưa được nhập vào; Vui lòng kiểm tra tập tin có thẻ được tồn tại trong hệ thống ở một định dạng và địa điểm khác</string>
-  <string name="otr_keysync_warning_message">Xin vui lòng sao chép tập tin \'otr_keystore.ofcaes\' từ desktop OtrFileConverter tool đến thư mục gốc trong thẻ nhớ của bạn</string>
+  <string name="otr_keysync_warning_message">Xin vui lòng sao chép tập tin \'otr_keystore.ofcaes\' từ desktop KeySync tool đến thư mục gốc trong thẻ nhớ của bạn</string>
   <string name="msg_sent_failed">Không thể gửi được tin nhắn này.</string>
   <string name="disconnected_warning">Các tin nhắn sẽ được gửi khi được kết nối lại</string>
   <string name="contact_offline_warning"><xliff id="user">%1$s</xliff> hiện đang offline. Phần nội dung chat mà bạn gửi đi sẽ được <xliff id="user">%1$s</xliff> đọc khi online trở lại.</string>

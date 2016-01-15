@@ -447,7 +447,7 @@ Für die Anmeldung wird eine Datenverbindung (inklusive Hintergrunddaten) benöt
   <string name="there_is_no_viewer_available_for_this_file_format">Für dieses Dateiformat ist kein Betrachter vorhanden</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Bitte ein sicheres Gespräch starten, bevor Sie Codes einlesen</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Der OTR-Schlüsselbund wurde nicht importiert. Bitte prüfen Sie die Korrektheit der Datei auf Format und Ort</string>
-  <string name="otr_keysync_warning_message">Bitte die Datei »otr_keystore.ofcaes« von der Desktop-Software »OtrFileConverter« in das Stammverzeichnis des Gerätespeichers kopieren</string>
+  <string name="otr_keysync_warning_message">Bitte die Datei »otr_keystore.ofcaes« von der Desktop-Software »KeySync« in das Stammverzeichnis des Gerätespeichers kopieren</string>
   <string name="msg_sent_failed">Die Nachricht konnte nicht gesendet werden.</string>
   <string name="disconnected_warning">Nachrichten werden nach Wiederherstellung der Verbindung gesendet.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> ist getrennt. Von Ihnen gesendete Nachrichten werden zugestellt sobald <xliff:g id="user">%1$s</xliff:g> verbunden ist.</string>

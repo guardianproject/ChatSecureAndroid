@@ -441,7 +441,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">沒有可查看此檔案格式的應用</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">掃描條碼前，請先啟動一個安全對話。</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR金鑰圈尚未匯入; 請確認這個檔案已存放在正確的格式和位置</string>
-  <string name="otr_keysync_warning_message">請從OtrFileConverter tool 複製一份名為「otr_keystore.ofcaes」的檔案到儲存裝置的根目錄</string>
+  <string name="otr_keysync_warning_message">請從KeySync tool 複製一份名為「otr_keystore.ofcaes」的檔案到儲存裝置的根目錄</string>
   <string name="msg_sent_failed">訊息無法傳送。</string>
   <string name="disconnected_warning">訊息重新連線時將會再度被傳送</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> 顯示離線。您的訊息將在 <xliff:g id="USER_1">%1$s</xliff:g> 登入時傳送。</string>

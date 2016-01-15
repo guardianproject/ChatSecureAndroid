@@ -521,7 +521,7 @@
 		<string name="there_is_no_viewer_available_for_this_file_format">There is no viewer available for this file format</string>
 		<string name="please_start_a_secure_conversation_before_scanning_codes">Please start a secure conversation before scanning codes</string>
 		<string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Please check the file exists in the proper format and location</string>
-		<string name="otr_keysync_warning_message">Please copy the \'otr_keystore.ofcaes\' file from the desktop OtrFileConverter tool to the root directory of your device storage</string>
+		<string name="otr_keysync_warning_message">Please copy the \'otr_keystore.ofcaes\' file from the desktop KeySync tool to the root directory of your device storage</string>
 		<string name="msg_sent_failed">This message could not be sent.</string>
 		<string name="disconnected_warning">You are disconnected. Messages will be sent when you reconnect.</string>
 		<string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> is offline. Messages you send will be delivered when <xliff:g id="user">%1$s</xliff:g> comes online.</string>

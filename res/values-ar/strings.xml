@@ -454,7 +454,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">لا يوجد عارض لهذا الصنف من الملفات</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">يُرجى بدأ محادثة آمنة قبل مسح الرموز</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">لم تُستورَد محفظة مفاتيح OTR. تأكد من أن الملف بالصيغة أو المكان الصحيحين</string>
-  <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  OtrFileConverter إلى مجلد جذر جهاز تخزينك</string>
+  <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  KeySync إلى مجلد جذر جهاز تخزينك</string>
   <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
   <string name="disconnected_warning">لا يوجد اتصال حالياً. ستُرسَل الرسائل عند إعادة الاتصال.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>

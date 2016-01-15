@@ -440,7 +440,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">Il n\'y a aucun visualiseur disponible pour ce format de fichier</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Veuillez démarrer une conversation sécurisée avant de balayer des codes</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Le trousseau OTR n\'a pas été importé ; veuillez vérifier que le fichier existe bien au format et à l\'endroit appropriés</string>
-  <string name="otr_keysync_warning_message">Veuillez copier le fichier « otr_keystore.ofcases » de l\'outil OtrFileConverter de votre ordinateur de bureau dans le répertoire racine du stockage de votre appareil. </string>
+  <string name="otr_keysync_warning_message">Veuillez copier le fichier « otr_keystore.ofcases » de l\'outil KeySync de votre ordinateur de bureau dans le répertoire racine du stockage de votre appareil. </string>
   <string name="msg_sent_failed">Impossible d\'envoyer ce message.</string>
   <string name="disconnected_warning">Vous êtes déconnecté. Les messages seront transmis après votre reconnexion.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> est hors ligne. Les messages que vous envoyez seront livrés quand <xliff:g id="user">%1$s</xliff:g> sera en ligne.</string>

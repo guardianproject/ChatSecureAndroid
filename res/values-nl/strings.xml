@@ -443,7 +443,7 @@ ChatSecure zal waarschijnlijk crashen. Gebruik in de plaats a.u.b. het \"Log all
   <string name="there_is_no_viewer_available_for_this_file_format">Er is geen viewer beschikbaar voor dit bestandsformaat</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Gelieve een beveiligde conversatie te beginnen alvorens codes te scannen</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-sleutelopslag niet geïmporteerd. Controleer of het bestand bestaat en in het juiste formaat en op de juiste plek is.</string>
-  <string name="otr_keysync_warning_message">Kopieer a.u.b. het \'otr_keystore.ofcaes\' bestand van de desktop OtrFileConverter tool naar de root directory van je opslagruimte.</string>
+  <string name="otr_keysync_warning_message">Kopieer a.u.b. het \'otr_keystore.ofcaes\' bestand van de desktop KeySync tool naar de root directory van je opslagruimte.</string>
   <string name="msg_sent_failed">Dit bericht kan niet worden verzonden.</string>
   <string name="disconnected_warning">Berichten zullen na herverbinding verstuurd worden.</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> is offline. Berichten die u verzendt, worden afgeleverd wanneer <xliff:g id="USER_1">%1$s</xliff:g> online komt.</string>

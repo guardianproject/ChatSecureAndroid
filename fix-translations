@@ -18,3 +18,6 @@ sed -i \
     -e 's,&gt;%1$s&lt;/xliff&gt;,>%1$s</xliff>,g' \
     -e 's,&lt;xliff,<xliff,g' \
     res/values*/strings.xml
+
+# OtrFileConverter is called KeySync for a long time
+sed -i 's,OtrFileConverter,KeySync,g' res/values*/strings.xml

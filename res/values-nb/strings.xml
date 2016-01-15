@@ -459,7 +459,7 @@ Trykk for å invitere.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Det er inget tilknyttet program tilgjengelig for lesing av dette filformatet</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Vennligst start en sikker sludderinstans før du skanner koder</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-nøkkelring ble ikke importert; Vennligst sjekk at filen har riktig format og plassering</string>
-  <string name="otr_keysync_warning_message">Vennligst kopier \'otr_keystore.ofcaes\' -filen med skrivebordsverktøyet OtrFileConverter til rotmappen av din enhets lagringsmedie</string>
+  <string name="otr_keysync_warning_message">Vennligst kopier \'otr_keystore.ofcaes\' -filen med skrivebordsverktøyet KeySync til rotmappen av din enhets lagringsmedie</string>
   <string name="msg_sent_failed">Kunne ikke sende meldingen.</string>
   <string name="disconnected_warning">Meldinger vil bli sendt når forbindelsen gjenopprettes</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> er frakoblet. Meldinger du sender vil bli levert når <xliff:g id="USER_1">%1$s</xliff:g> kobler til.</string>

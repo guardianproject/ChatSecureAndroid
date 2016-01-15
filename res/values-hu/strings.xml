@@ -440,7 +440,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">Nincs nézegető ehhez a fájlformátumhoz</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Kérem indíts egy biztonságos beszélgetést, mielőtt kódot olvasol be</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR kulcskarika nincs importálva; Kérem ellenőrizd, hogy a fájl létezik megfelelő kiterjesztésben és helyen</string>
-  <string name="otr_keysync_warning_message">Kérem másold az \'otr_keystore.ofcaes\' fájlt az számítógép OtrFileConverter eszközből a készülék főkönyvtárába.</string>
+  <string name="otr_keysync_warning_message">Kérem másold az \'otr_keystore.ofcaes\' fájlt az számítógép KeySync eszközből a készülék főkönyvtárába.</string>
   <string name="msg_sent_failed">Ezt az üzenetet nem lehet elküldeni.</string>
   <string name="disconnected_warning">Le vagy csatlakozva. Az üzenetek akkor lesznek elküldve, amikor újrakapcsolódsz.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> nem elérhető. Az elküldött üzenetek kézbesítve lesznek, amikor <xliff:g id="user">%1$s</xliff:g> elérhető lesz.</string>

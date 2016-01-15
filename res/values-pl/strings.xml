@@ -446,7 +446,7 @@ Kliknij aby zaprosić.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Nie ma odpowiedniego programu dla tego typu formatu pliku</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Proszę rozpocznij bezpieczną rozmowę przed skanowaniem kodów</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Zbiór Kluczy OTR nie został zaimportowany; Proszę sprawdzić, czy plik istnieje w właściwym formacie i lokalizacji</string>
-  <string name="otr_keysync_warning_message">Prosimy o skopiowanie pliku \'otr_keystore.ofcaes\' z pulpitu narzędzia OtrFileConverter do głównego katalogu na Twoim dysku.</string>
+  <string name="otr_keysync_warning_message">Prosimy o skopiowanie pliku \'otr_keystore.ofcaes\' z pulpitu narzędzia KeySync do głównego katalogu na Twoim dysku.</string>
   <string name="msg_sent_failed">Nie można wysłać wiadomości.</string>
   <string name="disconnected_warning">Wiadomości będą wysłane przy ponowym połączeniu.</string>
   <string name="contact_offline_warning">Użytkownik <xliff:g id="USER_0">%1$s</xliff:g> jest offline. Wysyłane wiadomości zostaną dostarczone, gdy <xliff:g id="USER_1">%1$s</xliff:g> będzie znowu online.</string>

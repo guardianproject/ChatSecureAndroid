@@ -441,7 +441,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="there_is_no_viewer_available_for_this_file_format">No hay ningún visor disponible para este formato de fichero</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Por favor inicie una conversación segura antes de escanear códigos</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">El anillo de claves de OTR no se ha importado. Por favor, compruebe que el archivo existe y tiene el formato apropiado</string>
-  <string name="otr_keysync_warning_message">Por favor copie el archivo \'otr_keystore.ofcaes\' desde el escritorio de la herramienta OtrFileConverter al directorio raíz de su dispositivo de almacenamiento</string>
+  <string name="otr_keysync_warning_message">Por favor copie el archivo \'otr_keystore.ofcaes\' desde el escritorio de la herramienta KeySync al directorio raíz de su dispositivo de almacenamiento</string>
   <string name="msg_sent_failed">No se ha podido enviar el mensaje.</string>
   <string name="disconnected_warning">Está desconectado. Los mensajes se reenviarán al volver a conectarse.</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> está desconectado. Los mensajes enviados se entregarán cuando <xliff:g id="USER_1">%1$s</xliff:g> vuelva a conectarse.</string>

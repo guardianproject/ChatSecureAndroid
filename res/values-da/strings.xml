@@ -410,7 +410,7 @@ Rør skærm for at invitere.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Der er ingen fremviser tilgængelig for dette filformat</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Start venligst en sikker samtale inden du scanner koder</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-nøglering ike importeret; kontroller at filen eksisterer på den korrekte sti og i det korrekte format</string>
-  <string name="otr_keysync_warning_message">Kopier filen \'otr_keystore.ofcaes\' fra computerværktøjet OtrFileConverter til rod-mappen af din enheds lager</string>
+  <string name="otr_keysync_warning_message">Kopier filen \'otr_keystore.ofcaes\' fra computerværktøjet KeySync til rod-mappen af din enheds lager</string>
   <string name="msg_sent_failed">Beskeden kunne ikke sendes.</string>
   <string name="disconnected_warning">Beskeder afsendes ved genetablering af forbindelse</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> er offline. Dine sendte beskeder sendes, når <xliff:g id="USER_1">%1$s</xliff:g> er online igen.</string>

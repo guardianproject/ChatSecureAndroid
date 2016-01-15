@@ -393,7 +393,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">Для программы для  открытия этого типа файлов.</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Пожалуйста, начните безопасное общение, перед сканирование кодов.</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-ключи не импортированы. Проверьте наличие файла.</string>
-  <string name="otr_keysync_warning_message">Скопируйте файл \'otr_keystore.ofcaes\' от настольного инструмента OtrFileConverter в корневую директорию вашего устройства хранения</string>
+  <string name="otr_keysync_warning_message">Скопируйте файл \'otr_keystore.ofcaes\' от настольного инструмента KeySync в корневую директорию вашего устройства хранения</string>
   <string name="msg_sent_failed">Не удалось отправить сообщение.</string>
   <string name="disconnected_warning">Сообщение будет отправлено после подключения</string>
   <string name="contact_offline_warning">Пользователь <xliff:g id="USER_0">%1$s</xliff:g> не в сети. Отправленные сообщения будут доставлены, когда пользователь <xliff:g id="USER_1">%1$s</xliff:g> выйдет в сеть.</string>
