@@ -23,23 +23,24 @@
   <string name="setup">Kur</string>
   <!--Views-->
   <string name="lock_screen_open">Aç</string>
-  <string name="title_activity_lock_screen">ChatSecure kilitlendi</string>
-  <string name="lock_screen_create_passphrase">Parola oluştur</string>
-  <string name="lock_screen_confirm_passphrase">Parola Onayla</string>
+  <string name="title_activity_lock_screen">ChatSecure Kilitlendi</string>
+  <string name="lock_screen_create_passphrase">Parola Oluştur</string>
+  <string name="lock_screen_confirm_passphrase">Parolayı Onayla</string>
   <string name="lock_screen_passphrase_hint">Parola</string>
   <string name="lock_screen_passphrase_not_set_enter">Yeni Parola</string>
-  <string name="lock_screen_passphrase_not_set_confirm">Yeni Parola Onayla</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Yeni Parolayı Onayla</string>
   <string name="lock_screen_passphrases_not_matching">Parola uyumlu değil, lütfen yeniden deneyin</string>
-  <string name="lock_screen_skip">Tembelin tekiyim (Ne Parolası!)</string>
-  <string name="app_passphrase_view_password_question">Lütfen Parola Girin</string>
+  <string name="lock_screen_skip">Atla &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Bilgi İstemi</string>
+  <string name="app_passphrase_view_password_question">Lütfen Parolayı Girin</string>
   <string name="password_please">Parola lütfen…</string>
   <string name="passphrase">Parola</string>
   <string name="passphrase_again">Parola (tekrar)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Hesap seç</string>
   <string name="choose_account_title">Hesap seç</string>
-  <string name="conversations">Bağlantı numarası</string>
-  <string name="add_account"><xliff:g id="ACCOUNT">%1$s</xliff:g> hesabını ekle</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account"><xliff:g id="account">%1$s</xliff:g> hesabını ekle</string>
   <string name="menu_about">Hakkında</string>
   <string name="menu_sign_out_all">Hepsinden çıkış yap</string>
   <string name="signout_all_confirm_message">Tüm servislerden çıkış yapmak istiyor musunuz?</string>
@@ -47,7 +48,7 @@
   <string name="signed_out_prompt_with_error"><xliff:g id="account">%1$s</xliff:g> oturumunuz <xliff:g id="reason">%2$s</xliff:g> nedeniyle kapatıldı.</string>
   <string name="welcome_first">ChatSecure\'ü ilk kez mi kullanıyorsunuz?</string>
   <string name="welcome_skip">Başlamak için sabırsızlanıyor musunuz?</string>
-  <string name="welcome_about">Başlayın</string>
+  <string name="welcome_about">Başlarken</string>
   <string name="welcome_account">Hesap Kurulumu</string>
   <string name="setup_passphrase_title">Parola Ayarlama</string>
   <string name="setup_passphrase">Lütfen başlamadan önce ChatSecure bilgilerinizi izinsiz girişlerden korumak için güvenli bir parola oluşturun.</string>
@@ -62,7 +63,7 @@
   <string name="pass_err_lower">Parolanız hiç küçük harf barındırmıyor.</string>
   <string name="pass_err_num">Parolanız hiç sayı barındırmıyor.</string>
   <!--Views: About: Welcome-->
-  <string name="about_welcome_title">ChatSecure hakkında</string>
+  <string name="about_welcome_title">ChatSecure Hakkında</string>
   <string name="about_welcome">ChatSecure başkalarının görüşmelerinizi dinlemesini engelleyen bir mobil anlık mesajlaşma uygulamasıdır. Bu uygulama Jabber veya XMPP protokolünü kullanan tüm sohbet servisleri ile uyumludur; örneğin Google GTalk veya Jabber.org</string>
   <!--Views: About: OTR-->
   <string name="about_otr_title">Nasıl güvenli?</string>
@@ -72,12 +73,12 @@
   <string name="about_security">ChatSecure\'ün sohbet şifreleme özelliği ancak diğer taraf da uyumlu bir uygulama veya yazılım kullandığında geçerlidir; yani bağlantılarınızın mobil iletişimde ChatSecure, masaüstü bilgisayarlarında ise Adium veya Pidgin kullandıklarına emin olun. ChatSecure\'ün sohbetlerinizi hangi durumlarda ve nasıl şifreleyeceğini ayarlamak için Hesap Ayarları menüsünü kullanabilirsiniz. Hadi başlayın!</string>
   <!--Views: Account list-->
   <string name="menu_new_account">Yeni Hesap</string>
-  <string name="menu_add_account">Hesap ekle</string>
-  <string name="menu_edit_account">Hesabı düzenle</string>
-  <string name="menu_remove_account">Hesabı sil</string>
+  <string name="menu_add_account">Hesap Ekle</string>
+  <string name="menu_edit_account">Hesabı Düzenle</string>
+  <string name="menu_remove_account">Hesabı Kaldır</string>
   <string name="menu_use_existing_account">Mevcut Hesap</string>
   <!--Views: Setup: Account-->
-  <string name="label_username">Kullanıcı adı:</string>
+  <string name="label_username">Kullanıcı@Sunucu</string>
   <string name="label_password">Parola:</string>
   <string name="remember_password">Parolamı hatırla.</string>
   <string name="keep_me_signed_in">Oturumumu otomatik olarak aç.</string>
@@ -86,14 +87,14 @@
   <string name="check_save_password">Güvenliğiniz için, eğer telefonunuz kaybolur veya çalınırsa, bilgisayarınızdan web sayfasına gidip parolanızı değiştirin.</string>
   <string name="check_auto_sign_in">Bu seçenek, bu uygulamayı her açtığınızda oturumunuzu otomatik olarak açar. Bu seçeneği devre dışı bırakmak için oturumu kapatın ve ardından \\"Oturumumu otomatik olarak aç\\" onay kutusunun işaretini kaldırın.</string>
   <string name="use_tor">Tor kullanarak bağlan (Orbot uygulamasını yeniden başlatmanız gerekir)</string>
-  <string name="account_setup_example_email_address">kullanıcı@alanadı.com</string>
-  <string name="account_setup_new_username">Yeni kullanıcı adı</string>
-  <string name="account_setup_service_provider">Servis sağlayıcı (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_example_email_address">kullanıcı@alanadı</string>
+  <string name="account_setup_new_username">yeni kullanıcı adı</string>
+  <string name="account_setup_service_provider">servis sağlayıcı (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">parola</string>
-  <string name="account_setup_password_confirm">Parolayı onayla</string>
+  <string name="account_setup_password_confirm">parolayı onayla</string>
   <string name="account_setup_advanced_button">Gelişmiş Hesap Ayarları</string>
-  <string name="account_select_type">Hesap Türü</string>
-  <string name="btn_create_new_account">Hesabı kaydet</string>
+  <string name="account_select_type">Hesap Kurulumu</string>
+  <string name="btn_create_new_account">Hesabı Kaydet</string>
   <string name="account_setup_pers_sub">Süreklilik</string>
   <string name="account_setup_pers_pw_title">Parolayı Hatırla</string>
   <string name="account_setup_pers_pw_on">Parola önbelleğe alındı</string>
@@ -101,9 +102,9 @@
   <string name="account_setup_pers_auto_title">Otomatik Giriş Yap</string>
   <string name="account_setup_pers_auto_on">ChatSecure başlatıldığında bağlan</string>
   <string name="account_setup_pers_auto_off">ChatSecure başlatıldığında bağlanma</string>
-  <string name="account_setup_pers_now_title">Şimdi giriş yap</string>
+  <string name="account_setup_pers_now_title">Şimdi Giriş Yap</string>
   <string name="account_setup_pers_now_on">Hesap kurulumuna göre bağlan</string>
-  <string name="account_setup_pers_now_off">Hesap kurulumuna göre bağlan</string>
+  <string name="account_setup_pers_now_off">Hesap kurulumuna göre bağlanma</string>
   <string name="account_setup_personal_sub">Kişisel (isteğe bağlı)</string>
   <string name="account_setup_personal_alias_title">Hesap Adı (isminiz)</string>
   <string name="account_setup_personal_alias_sub">Hesabınız nasıl görünüyor</string>
@@ -125,11 +126,11 @@
   <string name="account_wizard_host_body">Lütfen jabber/xmpp sohbet sunucu adresini ve portunu girin veya düzenleyin (varsayılan 5222).</string>
   <string name="account_wizard_ready_body">ChatSecure ayarlarınız yapıldı, şimdi servise bağlanıp güvenli ve gizli sohbet edebilirsiniz!</string>
   <string name="_via_orbot">Orbot (Tor)</string>
-  <string name="select_domain_new_account">Alan adı seçin</string>
+  <string name="select_domain_new_account">Sohbet servisi alan adı</string>
   <string name="registering_new_account_">Yeni hesap kaydediliyor…</string>
   <string name="signing_in_to">ChatSecure açılıyor…</string>
   <string name="menu_cancel_signin">Oturum açmayı iptal et</string>
-  <string name="signing_in_wait">Oturum açılıyor…</string>
+  <string name="signing_in_wait">Oturum açılıyor\u2026</string>
   <string name="signing_out_wait">Oturum kapatılıyor\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">SRV sorgulaması yap</string>
@@ -230,9 +231,11 @@ Eklemek için basın!</string>
   <string name="delete">Sil</string>
   <string name="keep_files">Dosyaları Tut</string>
   <string name="delete_chat_session_secured_storage">Sohbet Oturumunu Güvenli Depolamadan Sil?</string>
+  <string name="all_files_will_be_deleted">Tüm oturumların yükleme ve indirme dosyaları kalıcı olarak silinecektir. Uyarı: Bu işlem geri alınamaz!</string>
   <string name="delete_original">Orjinali Sil?</string>
   <string name="keep">Sakla</string>
   <string name="export">Dışarı aktar</string>
+  <string name="export_media">Medya Dosyası Dışa Aktarılsın Mı?</string>
   <string name="end_chat_title">Sohbet sonlandırılsın mı?</string>
   <string name="end_chat_and_delete">Sohbeti Bitir ve Dosyaları Sil</string>
   <!--Views: Chat: Group-->
@@ -249,6 +252,9 @@ Eklemek için basın!</string>
   <string name="empty_contact_list">Hiçbir kişi bulunamadı.
 
 Davet etmek için buraya basın.</string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> eklensin mi?</string>
+  <string name="approve_subscription">Evet</string>
+  <string name="decline_subscription">Hayır</string>
   <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik onaylanamıyor. Lütfen daha sonra tekrar deneyin.</string>
   <string name="decline_subscription_error"><xliff:g id="USER">%1$s</xliff:g> kullanıcısından gelen abonelik reddedilemiyor. Lütfen daha sonra tekrar deneyin.</string>
   <!--Security: OTR-->
@@ -318,6 +324,8 @@ Davet etmek için buraya basın.</string>
   <string name="pref_show_grid_summary">Bağlantı listesini avatar ızgarası olarak göster</string>
   <string name="button_yes_accept_all">Evet, Hepsi Kabul Et</string>
   <string name="pref_delete_unsecured_media_title">Güvensiz Medyaları Sil</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="delete_chat_log">Sohbet Kayıtlarını Sil</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Diğer Ayarlar</string>
   <string name="start_on_boot">CharSecure\'ü otomatik olarak başlat</string>
@@ -349,7 +357,10 @@ Davet etmek için buraya basın.</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">\'%1$s\' kullanıcısı için yeni bir sohbet hesabı oluşturulsun mu?</string>
   <string name="dialog_cert_title">Serfitica Bilgisi</string>
   <string name="dialog_cert_subject">Serfitika:</string>
+  <string name="dialog_cert_issuer">Yayınlayan: </string>
   <string name="dialog_cert_fingerprint">SHA1 Parmak İzi:</string>
+  <string name="dialog_cert_issue_date">Yayınlanma:</string>
+  <string name="dialog_cert_expires">Sona Erme:</string>
   <string name="dialog_connect_chatroom_title">Sohbet Odasına Katıl?</string>
   <string name="dialog_settings_choose_background_title">Arkaplan Seç</string>
   <string name="dialog_settings_choose_background_picker">Resiö Seç</string>
@@ -357,7 +368,6 @@ Davet etmek için buraya basın.</string>
   <string name="newMessages_label">Yeni <xliff:g id="PROVIDER">%1$s</xliff:g> iletileri</string>
   <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> okunmamış sohbet</string>
   <string name="subscription_notify_text"><xliff:g id="user">%s</xliff:g> kullanıcısından yeni arkadaş davetiyesi</string>
-  <string name="file_notify_text"><xliff:g id="filename">%1$s</xliff:g> kullanıcısından yeni dosya <xliff:g id="user">%2$s</xliff:g></string>
   <string name="notify_groupchat_label">Grup sohbeti davetiyeleri</string>
   <string name="group_chat_invite_notify_text"><xliff:g id="user">%s</xliff:g> kullanıcısından gelen yeni grup sohbeti daveti</string>
   <string name="new_messages_notify">Gelen yeni ileti(ler)</string>
@@ -417,7 +427,7 @@ Davet etmek için buraya basın.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Bu dosya türü için hiçbir görüntüleyici bulunmuyor</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Lütfen kodlarını taramadan önce güvenli bir konuşma başlat</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR anahtar demeti aktarılmadı; lütfen dosyanın var olduğunu, doğru formatta ve klasörde olduğunu kontrol edin</string>
-  <string name="otr_keysync_warning_message">Lütfen \'otr_keystore.ofcaes\' dosyasını masaüstü OtrFileConverter aracından cihazınızın kök dizinine kopyalayın </string>
+  <string name="otr_keysync_warning_message">Lütfen \'otr_keystore.ofcaes\' dosyasını masaüstü KeySync aracından cihazınızın kök dizinine kopyalayın </string>
   <string name="msg_sent_failed">Bu ileti gönderilemedi.</string>
   <string name="disconnected_warning">Yeniden bağlantı kurulduğunda iletiler gönderilecek</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> çevrimdışı. Gönderdiğiniz iletiler <xliff:g id="USER_1">%1$s</xliff:g> çevrimiçi olduğunda teslim edilecek.</string>
@@ -426,8 +436,6 @@ Davet etmek için buraya basın.</string>
   <string name="error_account_settings_port">Port numarası bir sayı olmalıdır</string>
   <string name="error_chat_file_transfer_title">Aktarım Hatası</string>
   <string name="account_settings_title">Hesap Ayarları</string>
-
-  <string name="warning_alpha">DİKKAT: ChatSecure\'ün bu eski sürümü güvenlik açıkları barındırıyor olabilir.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Gruplar</string>
   <string name="_open_conversations">Görüşme(ler)i aç</string>

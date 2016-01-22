@@ -1,141 +1,197 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--General: Names-->
-  <string name="app_name">ConversaSegura</string>
-  <string name="im_label">ConversaSegura</string>
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
   <!--General: Permissions-->
-  <string name="ro_perm_label">ler mensagens instantâneas</string>
-  <string name="ro_perm_desc">
-Permite que aplicativos leiam dados do provedor de mensagens instantâneas</string>
-  <string name="wo_perm_label">escrever mensagens instantâneas</string>
-  <string name="wo_perm_desc">
-Permite que aplicativos enviem dados para o provedor de mensagens instantâneas</string>
-  <string name="perm_label">iniciar serviço de mensagem instantânea</string>
-  <string name="perm_desc">Permite que o aplicativo inicie o serviço de mensagem instantânea por meio da internet.</string>
+  <string name="ro_perm_label">lê mensagens instantâneas</string>
+  <string name="ro_perm_desc">Permite que as aplicações leiam os dados do provedor de conteúdo de Mensagem Instantânea</string>
+  <string name="wo_perm_label">escreve mensagens instantâneas</string>
+  <string name="wo_perm_desc">Permite que as aplicações gravem dados para o provedor de conteúdo de Mensagem Instantânea</string>
+  <string name="perm_label">inicia o serviço de Mensagem Instantânea</string>
+  <string name="perm_desc">Permite que as aplicações iniciem o serviço de Mensagem Instantânea via Internet.</string>
   <!--General: Actions-->
   <string name="confirm">Confirmar</string>
-  <string name="ok">OK</string>
+  <string name="ok">ACEITAR</string>
   <string name="cancel">Cancelar</string>
-  <string name="yes">OK</string>
+  <string name="yes">ACEITAR</string>
   <string name="no">Cancelar</string>
-  <string name="btn_next">Próximo</string>
+  <string name="btn_next">Seguinte</string>
   <string name="btn_back">Voltar</string>
+  <string name="connect">Conetar</string>
+  <string name="play">Reproduzir</string>
+  <string name="setup">Configurar</string>
   <!--Views-->
+  <string name="lock_screen_open">Abrir</string>
+  <string name="title_activity_lock_screen">ChatSecure Bloqueada</string>
+  <string name="lock_screen_create_passphrase">Definir Senha</string>
+  <string name="lock_screen_confirm_passphrase">Contrassenha</string>
+  <string name="lock_screen_passphrase_hint">Senha</string>
+  <string name="lock_screen_passphrase_not_set_enter">Pode opcionalmente definir uma senha mestra para a ChatSecure poder prevenir o acesso aos seus contactos e mensagens sem uma senha:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Confirmar Nova Senha</string>
+  <string name="lock_screen_passphrases_not_matching">As senhas não correspondem, por favor, tente de novo</string>
+  <string name="lock_screen_skip">Ignorar &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Janela de Informação</string>
+  <string name="app_passphrase_view_password_question">Por favor, Insira Senha</string>
+  <string name="password_please">Por favor, senha…</string>
+  <string name="passphrase">Chave-mestra</string>
+  <string name="passphrase_again">Chave-mestra (novamente)</string>
   <!--Views: Setup-->
-  <string name="landing_page_title">Escolha uma conta</string>
+  <string name="landing_page_title">Selecione uma conta</string>
   <string name="choose_account_title">Selecione uma conta</string>
   <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
   <string name="add_account">Adicionar conta <xliff:g id="ACCOUNT">%1$s</xliff:g></string>
   <string name="menu_about">Sobre</string>
-  <string name="menu_sign_out_all">Sair de todas as contas</string>
-  <string name="signout_all_confirm_message">Você quer sair de todos os serviços?</string>
-  <string name="signed_out_prompt">Você saiu da conta <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
-  <string name="welcome_first">Primeira vez que utiliza ConversaSegura?</string>
-  <string name="welcome_skip">Mal pode esperar para começar?</string>
-  <string name="welcome_about">Início</string>
-  <string name="welcome_account">Configuração de Conta</string>
-  <string name="setup_passphrase_title">Configurar frase-chave</string>
-  <string name="setup_passphrase">Antes de começar por favor escolha uma frase-chave segura para proteger a sua informação no ConversaSegura de acesos indesejáveis.</string>
-  <string name="setup_passphrase_label1">Frase-chave:</string>
-  <string name="setup_passphrase_label2">Frase-chave (de novo):</string>
+  <string name="menu_sign_out_all">Terminar sessão de todas as contas</string>
+  <string name="signout_all_confirm_message">Deseja terminar a sessão de todos os serviços?</string>
+  <string name="signed_out_prompt">A sua sessão da conta <xliff:g id="ACCOUNT">%1$s</xliff:g>.foi terminada</string>
+  <string name="signed_out_prompt_with_error">A sua sessão da conta <xliff:g id="account">%1$s</xliff:g> foi terminada porque <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">É a primeira vez que utiliza ChatSecure?</string>
+  <string name="welcome_skip">Não consegue esperar para começar?</string>
+  <string name="welcome_about">Iniciação</string>
+  <string name="welcome_account">Configuração da Conta</string>
+  <string name="setup_passphrase_title">Configurar Chave-mestra</string>
+  <string name="setup_passphrase">Antes de começar, por favor, escolha uma chave mestra segura para proteger os seus dados na ChatSecure de acessos indesejáveis.</string>
+  <string name="setup_passphrase_label1">Chave-mestra:</string>
+  <string name="setup_passphrase_label2">Chave-mestra (novamente):</string>
+  <string name="rekey_message">Insira uma *nova* chave-mestra. Esta deverá conter pelo menos uma letra Maiúscula, uma letra Minúscula e um número, e ter mais de 6 carateres.</string>
+  <string name="do_rekey">A encriptar as suas notas existentes com a nova chave-mestra (paciência…)</string>
+  <string name="enter_pass">Insira a sua chave-mestra:</string>
+  <string name="new_pass">Bem-vindo! Insira uma chave-mestra forte para proteger as suas notas. Esta deve ter pelo menos uma letra maiúscula, uma letra minúscula e um número, e conter mais de 6 carateres.</string>
+  <string name="pass_err_length">A sua chave-mestra era inferior a 6 carateres</string>
+  <string name="pass_err_upper">A sua chave-mestra não continha qualquer letra maiúscula</string>
+  <string name="pass_err_lower">A sua chave-mestra não continha qualquer letra minúscula</string>
+  <string name="pass_err_num">A sua chave-mestra não continha qualuer número</string>
   <!--Views: About: Welcome-->
-  <string name="about_welcome_title">Sobre ConversaSegura</string>
-  <string name="about_welcome">ConversaSegura é uma aplicação móvel de mensagens instantâneas que providencia recursos extra de segurança que impede os outros de bisbilhotar as suas conversas e comunicações.
-
-A aplicação suporta qualquer serviço de chat que uso o Jabber ou XMPP protocolo, tal como o Google GTalk ou Jabber.org,</string>
+  <string name="about_welcome_title">Sobre ChatSecure</string>
+  <string name="about_welcome">ChatSecure é uma app de mensagem instantânea móvel que proporciona funções de segurança extra que impede que os outros  metam o nariz nas suas conversações e comunicações.\n\nA app suporta qualquer serviço de conversação que use o protocolo Jabber ou XMPP, tal como, Google GTalk ou Jabber.org,</string>
   <!--Views: About: OTR-->
-  <string name="about_otr_title">Como pode ser seguro?</string>
+  <string name="about_otr_title">Como é que esta é segura?</string>
   <!--Views: About: Security-->
-  <string name="about_security_title">As minhas conversas estão seguras?</string>
+  <string name="about_security_title">As minhas conversações são seguras?</string>
   <!--Views: Account list-->
   <string name="menu_new_account">Nova Conta</string>
-  <string name="menu_add_account">Adicionar conta</string>
-  <string name="menu_edit_account">Editar conta</string>
-  <string name="menu_remove_account">Remover conta</string>
+  <string name="menu_add_account">Adicionar Conta</string>
+  <string name="menu_edit_account">Editar Conta</string>
+  <string name="menu_remove_account">Remover Conta</string>
+  <string name="menu_use_existing_account">Conta Existente</string>
   <!--Views: Setup: Account-->
-  <string name="label_username">Nome de usuário:</string>
+  <string name="label_username">Utilizador@Hospedeiro</string>
   <string name="label_password">Senha:</string>
-  <string name="remember_password">Lembrar minha senha.</string>
-  <string name="keep_me_signed_in">Fazer login automaticamente.</string>
-  <string name="sign_up">Ainda não tem uma conta?</string>
-  <string name="sign_in">Fazer login</string>
-  <string name="check_save_password">Para a sua segurança, se o seu telefone for perdido ou roubado, vá até o site em seu computador e mude sua senha</string>
-  <string name="check_auto_sign_in">Esta opção faz login automaticamente sempre que você abrir este aplicativo. Para desativá-la, saia e desmarque a caixa de seleção \\"Fazer login automaticamente\\".</string>
-  <string name="use_tor">Conectar via Tor (Necessita do app Orbot)</string>
-  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="remember_password">Lembrar a minha senha.</string>
+  <string name="keep_me_signed_in">Iniciar a minha sessão automaticamente.</string>
+  <string name="sign_up">Ainda não possui uma conta?</string>
+  <string name="sign_in">Iniciar Sessão</string>
+  <string name="check_save_password">Para a sua segurança, se o seu dispositivo for perdido ou roubado, vá até ao sítio da Web no seu computador e altere a sua senha.</string>
+  <string name="check_auto_sign_in">Esta opção inicia a sua sessão automaticamente sempre que abrir esta aplicação. Para desativar esta opção, termine a sessão, e desmarque a caixa de seleção \\"Iniciar a minha sessão automaticamente\\".</string>
+  <string name="use_tor">Conetar via Tor (Requer a app Orbot)</string>
+  <string name="account_setup_example_email_address">utilizador@domínio</string>
+  <string name="account_setup_new_username">novo nome de utilizador</string>
+  <string name="account_setup_service_provider">provedor de serviço (dukgo.com, jabber.ccc.de)</string>
   <string name="account_setup_password">senha</string>
-  <string name="account_setup_advanced_button">Definições Avançadas de Conta</string>
-  <string name="account_select_type">Tipo de Conta</string>
-  <string name="account_setup_pers_sub">Persistente</string>
-  <string name="account_setup_pers_pw_title">Memorize Senha</string>
-  <string name="account_setup_pers_pw_on">Senha armazenada</string>
-  <string name="account_setup_pers_pw_off">Senha não armazenada</string>
-  <string name="account_setup_pers_auto_title">Sign In automático</string>
-  <string name="account_setup_pers_now_title">Inicie Sessão Agora</string>
+  <string name="account_setup_password_confirm">contrassenha</string>
+  <string name="account_setup_advanced_button">Definições de Conta Avançadas</string>
+  <string name="account_select_type">Configurar Conta</string>
+  <string name="btn_create_new_account">Registar Conta</string>
+  <string name="account_setup_pers_sub">Persistência</string>
+  <string name="account_setup_pers_pw_title">Lembrar Senha</string>
+  <string name="account_setup_pers_pw_on">Senha colocada em cache</string>
+  <string name="account_setup_pers_pw_off">A senha não foi colocada na cache</string>
+  <string name="account_setup_pers_auto_title">Iniciar Sessão Automaticamente</string>
+  <string name="account_setup_pers_auto_on">Conetar à ChatSecure no arranque</string>
+  <string name="account_setup_pers_auto_off">Não conetar à ChatSecure no arranque</string>
+  <string name="account_setup_pers_now_title">Iniciar Sessão Agora</string>
+  <string name="account_setup_pers_now_on">Conete seguindo a configuração da conta</string>
+  <string name="account_setup_pers_now_off">Não conete seguindo a configuração da conta</string>
   <string name="account_setup_personal_sub">Pessoal (opcional)</string>
-  <string name="account_setup_personal_alias_title">Pseudónimo (o seu nome)</string>
-  <string name="account_setup_personal_alias_sub">Como a tua conta aparece online</string>
+  <string name="account_setup_personal_alias_title">Pseudónimo da Conta (o seu nome)</string>
+  <string name="account_setup_personal_alias_sub">Como a sua conta aparece on-line</string>
   <string name="account_setup_personal_profile_title">Perfil</string>
-  <string name="account_setup_personal_profile_sub">Um pequeno resumo acerca de ti</string>
-  <string name="account_setup_advanced_enc_force">Forçar encriptação / recusar texto</string>
-  <string name="account_setup_advanced_enc_auto">Quando possível, encriptar a conversa automaticamente</string>
-  <string name="account_setup_advanced_enc_req">Encripta conversas como solicitado</string>
-  <string name="account_setup_advanced_enc_off">Desactivar encriptação de conversa </string>
-  <string name="account_setup_signin_a">A validar credencias…</string>
-  <string name="account_setup_signin_b">A gerar chave…</string>
-  <string name="account_setup_signin_c">A ligar…</string>
+  <string name="account_setup_personal_profile_sub">Um pequeno resumo sobre si</string>
+  <string name="account_setup_advanced_enc_force">Forçar encriptação / recusar texto simples</string>
+  <string name="account_setup_advanced_enc_auto">Quando possível, encriptar automaticamente as conversas</string>
+  <string name="account_setup_advanced_enc_req">Encriptar as conversas como solicitado</string>
+  <string name="account_setup_advanced_enc_off">Desativar a encriptação da conversa </string>
+  <string name="account_setup_signin_a">A validar as credenciais…</string>
+  <string name="account_setup_signin_b">A gerar a chave…</string>
+  <string name="account_setup_signin_c">A iniciar a sessão…</string>
   <string name="account_wizard_setup_title">Assistente de Conta</string>
-  <string name="account_wizard_account_title">A sua ID da Conta</string>
-  <string name="account_wizard_host_title">Configure o Servidor</string>
-  <string name="account_wizard_ready_title">Está Preparado?</string>
-  <string name="account_wizard_account_body">Por favor introduza o seu ID da conta (utilizador@domínio):</string>
-  <string name="signing_in_to">obtendo ConversaSegura…</string>
-  <string name="menu_cancel_signin">Cancelar login</string>
-  <string name="signing_in_wait">Fazendo login…</string>
+  <string name="account_wizard_account_title">A sua Id. da Conta</string>
+  <string name="account_wizard_host_title">Configurar Servidor</string>
+  <string name="account_wizard_ready_title">Está preparado?</string>
+  <string name="account_wizard_setup_body">Insira a sua Id. da conta para configurar a ChatSecure para o seu serviço de conversação XMPP. Este parece-se com um endeço de correio eletrónico:</string>
+  <string name="account_wizard_account_body">Por favor, insira a seu Id. da conta (utilizador@nome do domínio):</string>
+  <string name="account_wizard_host_body">Por favor, insira ou edite o nome do hospedeiro do seu servidor de conversação jabber/xmpp e o números da porta (5222 é a predefinida).</string>
+  <string name="account_wizard_ready_body">ChatSecure foi configurada, e agora é hora de conetar ao seu serviço, e começar a conversar com segurança e privadamente!</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Domínio do serviço de conversação</string>
+  <string name="registering_new_account_">A registar a conta nova…</string>
+  <string name="signing_in_to">a continuar…</string>
+  <string name="menu_cancel_signin">Cancelar início da sessão</string>
+  <string name="signing_in_wait">A iniciar a sessãon\u2026</string>
+  <string name="signing_out_wait">A terminar a sessão\u2026</string>
   <!--Views: Settings: Account-->
-  <string name="verify_that_the_certificate_is_trusted">Verifica que o certificado é de confiança</string>
+  <string name="verify_that_the_certificate_is_trusted">Verifique se o certificado é de confiança</string>
+  <string name="tls_verification">Verificação TLS</string>
+  <string name="require_tls_ssl_connection">Requer Conexão TLS</string>
+  <string name="transport_encryption">Encriptação de Transporte</string>
+  <string name="how_encrypted_chats_are_started">como é que as conversas encripatadas são iniciadas</string>
+  <string name="the_server_to_connect_to_if_needed">O servidor para se conetar, se necessário</string>
+  <string name="connect_server">Conetar Servidor</string>
+  <string name="tcp_port_for_xmpp_server">Porta TCP para o Servidor XMPP</string>
+  <string name="server_port">Porta do Servidor</string>
+  <string name="xmpp_resource">Recurso XMPP</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">para distinguir esta conexão dos outros clientes que também iniciaram a sessão</string>
+  <string name="xmpp_resource_prio_title">Prioridade de Recurso XMPP</string>
+  <string name="xmpp_resource_prio_summary">As mensagens para clientes com múltiplos recursos ativos serão enviadas para o recurso com a prioridade mais elevada</string>
   <!--Views: Contact list-->
-  <string name="title_chats">Conversas</string>
-  <string name="buddy_list_title">Lista de Contatos - <xliff:g id="username">%1$s</xliff:g></string>
-  <string name="menu_add_contact">Adicionar contato</string>
-  <string name="menu_remove_contact">Excluir contato</string>
-  <string name="menu_block_contact">Bloquear contato</string>
+  <string name="title_chats">Conversações</string>
+  <string name="no_messages">Sem conversações.\n\nToque aqui para iniciar uma!</string>
+  <string name="empty_account_message">Não tem\ncontas configuradas.\n\nToque aqui para adicionar uma!</string>
+  <string name="buddy_list_title">Lista de Contactos - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Adicionar Contacto</string>
+  <string name="menu_remove_contact">Apagar Contacto</string>
+  <string name="menu_block_contact">Bloquear Contacto</string>
+  <string name="menu_contact_nickname">Apelido do Contacto</string>
   <string name="menu_view_blocked">Bloqueado</string>
-  <string name="confirm_delete_contact">O contato \"<xliff:g id="USER">%1$s</xliff:g>\" será excluído.</string>
-  <string name="confirm_block_contact">O contato \"<xliff:g id="USER">%1$s</xliff:g>\" será bloqueado.</string>
-  <string name="confirm_unblock_contact">O contato \"<xliff:g id="USER">%1$s</xliff:g>\" será desbloqueado.</string>
+  <string name="nickname">Apelido</string>
+  <string name="confirm_delete_contact">O contacto \"<xliff:g id="USER">%1$s</xliff:g>\" irá ser apagado.</string>
+  <string name="confirm_block_contact">O contacto \"<xliff:g id="USER">%1$s</xliff:g>\" irá ser bloqueado.</string>
+  <string name="confirm_unblock_contact">O contacto \"<xliff:g id="USER">%1$s</xliff:g>\" irá ser desbloqueado.</string>
   <string name="add_contact_success">Contato \"<xliff:g id="USER">%1$s</xliff:g>\" adicionado.</string>
-  <string name="delete_contact_success">Contato \"<xliff:g id="USER">%1$s</xliff:g>\" excluído.</string>
+  <string name="delete_contact_success">Contacto \"<xliff:g id="USER">%1$s</xliff:g>\" apagado.</string>
   <string name="block_contact_success">Contato \"<xliff:g id="USER">%1$s</xliff:g>\" bloqueado.</string>
   <string name="unblock_contact_success">Contato \"<xliff:g id="USER">%1$s</xliff:g>\" desbloqueado.</string>
-  <string name="menu_new_chat">Novo Chat</string>
-  <string name="menu_search_contacts">Pesquisar Contatos</string>
-  <string name="menu_start_chat">Iniciar bate-papo</string>
+  <string name="menu_new_chat">Nova Conversa</string>
+  <string name="menu_search_contacts">Procurar Contactos</string>
+  <string name="menu_show_grid">Mostrar Grelha</string>
+  <string name="menu_start_chat">Iniciar conversa</string>
   <string name="menu_view_profile">Ver Perfil</string>
-  <string name="ongoing_conversation">Bate-papos em andamento (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
+  <string name="menu_verify">Verificar Contacto</string>
+  <string name="ongoing_conversation">Conversas em curso (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
   <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> on-line</string>
   <string name="subscriptions">Convites de amigos</string>
   <string name="unknown_contact">(\"<i>\"Desconhecido\"</i>\")</string>
   <string name="empty_contact_group">Vazio</string>
-  <string name="empty_conversation_group">Sem conversas</string>
+  <string name="empty_conversation_group">Sem conversações abertas\n\nToque para inciar a conversa!</string>
   <string name="search_label">Contacto</string>
-  <string name="search_button_text">
-</string>
-  <string name="empty_chat_list">Nenhum bate-papo ativo.</string>
-  <string name="add_contact_title">Adicionar contato</string>
-  <string name="input_contact_label">O endereço de e-mail da pessoa que você deseja convidar:</string>
-  <string name="choose_list_label">Escolha uma lista:</string>
-  <string name="invite_instruction">Digite um nome para adicionar a partir de Contatos.</string>
-  <string name="invite_label">Enviar convite</string>
-  <string name="contact_profile_title">Perfil do contato</string>
-  <string name="label_status">Status:</string>
+  <string name="search_hint">digite o nome de um contacto para conversar</string>
+  <string name="search_button_text">Avançar</string>
+  <string name="empty_chat_list">Sem conversas ativas.</string>
+  <string name="add_contact_title">Adicionar contacto</string>
+  <string name="input_contact_label">Nome de utilizador ou JabberID da pessoa para adicionar:</string>
+  <string name="choose_list_label">Conta para adicionar a:</string>
+  <string name="invite_instruction">Digite um nome para adicionar a partir dos Contactos.</string>
+  <string name="invite_label">Enviar Convite</string>
+  <string name="contact_profile_title">Perfil do Contacto</string>
+  <string name="label_status">Estado::</string>
   <string name="label_client_type">Tipo de cliente:</string>
   <string name="client_type_computer">Computador</string>
-  <string name="client_type_mobile">Celular</string>
-  <string name="blocked_list_title">Contatos bloqueados - <xliff:g id="USER">%1$s</xliff:g></string>
-  <string name="no_blocked_contact">Nenhum contato bloqueado.</string>
+  <string name="client_type_mobile">Dispositivo Móvel</string>
+  <string name="blocked_list_title">Contactos bloqueados - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Sem contactos bloqueados.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Bate-papo com <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="chat_with">Converse com <xliff:g id="USER">%1$s</xliff:g></string>
   <string name="me">Eu</string>
   <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g> está on-line</string>
   <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g> está ausente</string>
@@ -143,62 +199,130 @@ A aplicação suporta qualquer serviço de chat que uso o Jabber ou XMPP protoco
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> está off-line</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> entrou</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> saiu</string>
+  <string name="menu_send_image">Enviar Fotografia</string>
+  <string name="menu_send_file">Enviar Ficheiro</string>
+  <string name="menu_send_audio">Enviar Áudio</string>
+  <string name="menu_take_picture">Tirar Fotografia</string>
+  <string name="file_transfer">Transferência de Ficheiro</string>
+  <string name="transfer_complete">Transferência Concluída</string>
+  <string name="transfer_in_progress">Transferência em progresso</string>
+  <string name="accept_transfer_">Aceitar transferência?</string>
+  <string name="wants_to_send_you_the_file">pretende enviar-lhe o ficheiro</string>
+  <string name="no_connection_for_sending">Sem ligação disponível para enviar a sua partilha!</string>
   <string name="send">Enviar</string>
   <string name="compose_hint">Envia uma mensagem.</string>
-  <string name="menu_end_conversation">Encerrar bate-papo</string>
-  <string name="menu_clear_chat">Limpar Chat</string>
+  <string name="compose_hint_secure">Envie uma mensagem segura</string>
+  <string name="menu_resend">Reenviar</string>
+  <string name="menu_end_conversation">Terminar conversação</string>
+  <string name="menu_clear_chat">Limpar conversação</string>
   <string name="menu_insert_smiley">Inserir smiley</string>
-  <string name="menu_switch_chats">Alternar bate-papos</string>
+  <string name="menu_switch_chats">Alternar conversações</string>
   <string name="menu_plus">Menu+</string>
   <string name="select_link_title">Selecionar link</string>
+  <string name="delete">Apagar</string>
+  <string name="keep_files">Manter Ficheiros</string>
+  <string name="delete_chat_session_secured_storage">Apagar armazenamento seguro da sessão da conversação?</string>
+  <string name="all_files_will_be_deleted">Todas as sessões e os ficheiros enviados serão apagados para sempre. Aviso: esta operação não pode ser anulada!</string>
+  <string name="delete_original">Apagar original?</string>
+  <string name="keep">Manter</string>
+  <string name="export">Exportar</string>
+  <string name="export_media">Exportar o ficheiro de multimédia?</string>
+  <string name="export_media_file_to">Este ficheiro de multimédia será exportado para %1$s</string>
+  <string name="end_chat_title">Terminar conversação?</string>
+  <string name="end_chat_and_delete">Terminar Conversa e Apagar Ficheiros</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> convidou você para entrar em um bate-papo em grupo.</string>
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> convidou-o para se juntar a uma conversa em grupo.</string>
   <string name="invitation_sent_prompt">O convite foi enviado para <xliff:g id="USER">%1$s</xliff:g>.</string>
   <string name="accept_invitation">Aceitar</string>
   <string name="decline_invitation">Recusar</string>
+  <string name="menu_new_group_chat">Conversa em Grupo</string>
+  <string name="create_or_join_group_chat">Criar ou Aderir a Um Conversa em Grupo</string>
+  <string name="connecting_to_group_chat_">A conetar a uma conversa em grupo…</string>
   <string name="menu_invite_contact">Convidar…</string>
   <string name="contacts_picker_title">Selecione os contatos para enviar convite</string>
   <string name="contact_filter_hint">Digite para encontrar o contato</string>
   <string name="empty_contact_list">Contactos não encontrados.
 
 Clique para convidar.</string>
+  <string name="subscription_prompt">Adicionar <xliff:g id="USER">%1$s</xliff:g>?</string>
+  <string name="approve_subscription">Sim</string>
+  <string name="decline_subscription">Não</string>
   <string name="approve_subscription_error">Não é possível aprovar a inscrição de <xliff:g id="USER">%1$s</xliff:g>. Tente novamente mais tarde.</string>
   <string name="decline_subscription_error">Não é possível recusar a inscrição de <xliff:g id="USER">%1$s</xliff:g>. Tente novamente mais tarde.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Iniciar Criptografia</string>
   <string name="menu_otr_stop">Interromper Criptografia</string>
-  <string name="starting_otr_chat">A iniciar conversa encriptada…</string>
-  <string name="stopping_otr_chat">A para conversa encriptada… </string>
+  <string name="starting_otr_chat">A iniciar a sessão da conversa encriptada…</string>
+  <string name="stopping_otr_chat">A parar a sessão da conversa encriptada… </string>
+  <string name="label_fingerprint_remote">Assinatura Digital de Segurança</string>
+  <string name="label_fingerprint_local">Assinatura Digital de Segurança</string>
   <string name="menu_sign_in">Iniciar Sessão</string>
   <string name="menu_gen_key">Regenerar Chave</string>
   <string name="otr_session_status_plaintext">Encriptação desligada</string>
   <string name="otr_session_status_encrypted">Encriptação ligada (Clique para verificar)</string>
-  <string name="otr_session_status_finished">O seu contacto acabou a conversa encriptada.</string>
+  <string name="otr_session_status_finished">O seu contacto terminou a conversa encriptada.</string>
   <string name="otr_session_status_verified">Encriptada e verificada!</string>
+  <string name="otr_gen_key">A gerar o novo par de chave OTR…</string>
   <!--Security: OTR: Keyring-->
+  <string name="menu_import_keys">Ativar Sincronização de Chave</string>
   <!--Security: OTR: Verification-->
   <string name="menu_scan">Digitalizar QR</string>
   <string name="menu_fingerprint">Seu Fingerprint</string>
   <string name="menu_verify_fingerprint">Manual</string>
   <string name="menu_verify_secret">Questão</string>
+  <string name="their_fingerprint_verified_">Assinatura Digital de Segurança (Verificada)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Tem a certeza que deseja confirmar esta assinatura digital?</string>
+  <string name="verify_key_">Verificar assinatura digital?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">A assinatura digital remota foi verificada!</string>
+  <string name="fingerprint_for_you">Assinatura digital para si</string>
+  <string name="fingerprint_for_">Assinatura digital para</string>
+  <string name="install_barcode_scanner_title">Instalar o digitalizador de código de barras?</string>
+  <string name="install_barcode_scanner_message">Esta aplicação requer Digitalizador de Código de Barras. Deseja instalá-lo?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Autenticação</string>
   <string name="smp_question_summary">Insira uma questão para o seu contacto e a resposta que você espera de retorno, de forma a poder verificar a sua identidade.</string>
   <string name="smp_question_hint">a pergunta a colocar</string>
   <string name="qmp_answer_hint">a resposta esperada</string>
+  <string name="remote_verified_us">O seu contacto autenticou-o com sucesso. Agora autentique o seu contacto, efetuando a sua própria pergunta.</string>
+  <string name="otr_qa_title">OTR e Verificação</string>
+  <string name="chat_encryption_title">Encriptação da Conversa</string>
   <string name="otr_qa_send">Enviar</string>
   <string name="otr_qa_cancel">Cancelar</string>
   <!--Views: VoIP-->
+  <string name="menu_voip_title">Chamada Segura</string>
+  <string name="pref_sip_account_title">Voz Segura</string>
   <!--Views: Settings: General-->
-  <string name="account_setup_title">Configurações de Conta</string>
+  <string name="account_setup_title">Configurar Conta</string>
   <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Segurança e Privacidade</string>
   <string name="encryption_and_anonymity_title">Criptografia e Anonimato</string>
   <string name="menu_view_encrypt_chat">Criptografia Ligada/Desligada</string>
+  <string name="pref_cacheword_timeout_title">Tempo da Senha Expirado</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Hiperligações clicáveis no Tor</string>
+  <string name="pref_linkify_on_tor_summary">Para as contas que utilizam Tor, torne as hiperligações clicáveis nas conversas (AVISO, possivelmente uma fuga de privacidade!)</string>
+  <string name="pref_group_looknfeel_title">Interface do Utilizador</string>
   <string name="menu_locale">Língua</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Línguas</string>
+  <string name="use_system_default">Usar predefinição do sistema</string>
+  <string name="pref_theme_dark">Usar Tema Escuro</string>
+  <string name="pref_theme_dark_summary">Alterar o tema da app para escuro</string>
+  <string name="pref_background_title">Imagem de Fundo</string>
+  <string name="pref_show_grid">Mostrar Grelha do Contacto</string>
+  <string name="pref_show_grid_summary">Exibir a lista de contacto como grelha de avatar</string>
+  <string name="button_yes_accept_all">Sim, Aceitar Tudo</string>
+  <string name="pref_delete_unsecured_media_title">Apagar Multimédia Insegura</string>
+  <string name="pref_store_media_on_external_storage_title">Guardar Multimédia no Armazenamento Externo</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Armazenamento Externo em Falta</string>
+  <string name="media_store_file_missing_title">Armazenamento de Multimédia da Conversação Em Falta</string>
+  <string name="delete_chat_log">Apagar Registo da Conversação</string>
   <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Outros Ajustes</string>
+  <string name="start_on_boot">Iniciar Automaticamente a ChatSecure</string>
+  <string name="start_on_boot_summary">Iniciar sempre e iniciar a sessão automaticamente nas contas em que já foram iniciadas a sessão</string>
   <string name="hide_offline_contacts">Ocultar contatos off-line</string>
+  <string name="foreground_service_title">Usar prioridade de primeiro plano</string>
   <!--Actions: Settings: General: Notifications-->
   <string name="notification_group_title">Configurações de notificação</string>
   <string name="notification_enabled_title">Notificações de mensagens instantâneas</string>
@@ -209,17 +333,40 @@ Clique para convidar.</string>
   <string name="notification_sound_summary">Também reproduzir o toque ao chegar uma mensagem instantânea</string>
   <string name="notification_ringtone_title">Seleccione ConversaSegura toque personalizado. </string>
   <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Ativar Registos de Depuração</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">Os dados de segundo plano estão desativados</string>
-  <string name="bg_data_prompt_message">O <xliff:g id="PROVIDER">%1$s</xliff:g> precisa de dados de segundo plano para ser ativado.</string>
+  <string name="bg_data_prompt_message">É necessário a ligação de dados da rede (incluindo os dados em segundo plano) para que a app inicie a sessão.</string>
   <string name="bg_data_prompt_ok">Ativar</string>
   <string name="bg_data_prompt_cancel">Sair</string>
+  <string name="signout_kill_confirm_message">Deseja terminar a sessão em todos os serviços E terminar todos os processos (saída forçada)?</string>
+  <string name="prompt_create_new_account_">Criar nova conta?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Criar uma nova conta de conversação para o nome de utilizador \'%1$s\'?</string>
+  <string name="dialog_cert_title">Informação do Certificado</string>
+  <string name="dialog_cert_subject">Certificado:</string>
+  <string name="dialog_cert_issuer">Publicado por:</string>
+  <string name="dialog_cert_fingerprint">Asssinatura Digital SHA1</string>
+  <string name="dialog_cert_issue_date">Emitida:</string>
+  <string name="dialog_cert_expires">Expira:</string>
+  <string name="dialog_connect_chatroom_title">Juntar-se à Sala de Conversação?</string>
+  <string name="dialog_connect_chatroom_message">Uma app externa está a tentar conetá-lo para uma sala de discussão. Permitir? </string>
+  <string name="dialog_settings_choose_background_title">Escolher Fundo</string>
+  <string name="dialog_settings_choose_background_body">Deseja selecionar uma imagem de fundo da Galeria?</string>
+  <string name="dialog_settings_choose_background_picker">Selecionar Imagem</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Novas mensagens do <xliff:g id="PROVIDER">%1$s</xliff:g></string>
-  <string name="notify_groupchat_label">Convite para bate-papo em grupo</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> conversas não lidas</string>
+  <string name="subscription_notify_text">Novo convite de amizade de <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Novo ficheiro <xliff:g id="filename">%1$s</xliff:g> de <xliff:g id="user">%2$s</xliff:g></string>
+  <string name="notify_groupchat_label">Convite para conversa em grupo</string>
+  <string name="group_chat_invite_notify_text">Novo convite de conversação em grupo de <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Nova mensagem(s) de</string>
+  <string name="starting_the_chatsecure_service_">A iniciar o serviço de Conversa Segura…</string>
+  <string name="app_unlocked">Ativar e Desbloquear</string>
+  <string name="toast_chat_copied_to_clipboard">mensagem copiada para a área de transferência</string>
   <!--Alerts: Exceptions-->
   <string name="error">Atenção</string>
+  <string name="error_prefix">Erro: </string>
   <string name="general_error">Código do erro <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">Não é possível fazer login no serviço <xliff:g id="SERVICE">%1$s</xliff:g>. Tente novamente mais tarde."\n"(Detalhe: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">A lista não foi adicionada.</string>
@@ -234,6 +381,7 @@ Clique para convidar.</string>
   <string name="contact_blocked">O contato \"<xliff:g id="USER">%1$s</xliff:g>\" foi bloqueado.</string>
   <string name="contact_not_loaded">Aguarde enquanto a sua lista de contatos carrega.</string>
   <string name="network_error">Ocorreu um erro de rede.</string>
+  <string name="wifi_not_connected_error">É necessário a Rede Sem Fios para esta ligação</string>
   <string name="service_not_support">O servidor não suporta este recurso.</string>
   <string name="invalid_password">A senha digitada não é válida.</string>
   <string name="internal_server_error">O servidor encontrou um erro.</string>
@@ -250,15 +398,41 @@ Clique para convidar.</string>
   <string name="already_logged_in">você já fez login a partir de outro cliente.</string>
   <string name="msisdn_error">Desculpe, não é possível ler o número de telefone do seu cartão SIM. Entre em contato com a sua operadora para obter ajuda.</string>
   <string name="not_signed_in">No momento você não está conectado.</string>
+  <string name="error_suspended_connection">A rede está desligada</string>
+  <string name="error_reestablish_connection">ChatSecure está a tentar reastabelecer a conexão</string>
+  <string name="account_wizard_no_domain_warning">Não inseriu uma parte do @hostname.com para a sua Id. da conta. Tente novamente!</string>
   <string name="signin_password_prompt">Insira a sua senha:</string>
+  <string name="warning_weak_crypto">AVISO: Este serviço usa um certificado com criptografia WEAK. Por favor, peça ao administrador para o atualizar.</string>
+  <string name="unable_to_create_or_join_group_chat">Não é possível criar ou aderir ao grupo de conversação</string>
+  <string name="sorry_we_cannot_share_that_file_type">Desculpe, nós não podemos compartilhar esse tipo de ficheiro</string>
+  <string name="err_otr_share_no_encryption">Deve ativar a encriptação para compartilhar ficheiros</string>
+  <string name="please_enable_chat_encryption_to_share_files">Por favor, ative a encriptação para compartilhar ficheiros</string>
+  <string name="unsupported_incoming_data">OS dados a receber não são suportados, não é possível compartilhar!</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Não existe um visualizador para este formato de ficheiro</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Por favor, inicie uma conversação segura antes de digitalizar os códigos</string>
   <string name="msg_sent_failed">Não foi possível enviar a mensagem.</string>
   <string name="disconnected_warning">Mensagens serão enviadas na reconexão.</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> está off-line. As mensagens enviadas serão entregues quando <xliff:g id="USER_1">%1$s</xliff:g> estiver on-line.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> não está na sua lista de contatos.</string>
+  <string name="error_account_password_mismatch">As suas senhas não correspondem</string>
+  <string name="error_account_settings_priority">Prioridade deve ser um número entre [0 .. 127]</string>
+  <string name="error_account_settings_port">O número da porta deve ser um número</string>
+  <string name="error_chat_file_transfer_title">Erro de Transferência</string>
+  <string name="error_chat_file_transfer_body">Não é possível ler o ficheiro para o armazenamento</string>
+  <string name="error_no_app_to_handle_url">Não tem nenhuma app instalada para lidar com esta hiperligação!</string>
   <string name="account_settings_title">Definições da Conta</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupos</string>
+  <string name="_open_conversations">conversações abertas</string>
+  <string name="menu_exit">Encerrar e Bloquear</string>
+  <string name="menu_panic">Pánico</string>
+  <string name="buddies">Amigos</string>
+  <string name="contacts">Contactos</string>
+  <string name="mtm_accept_cert">Aceitar certificado do servidor?</string>
+  <string name="menu_sidebar_qr">Exibir A Sua Assinatura Digital</string>
+  <string name="loading">a carregar…</string>
   <!--Other-->
+  <string name="about_link">Sobre a ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">Lista de Contatos</string>
   <string name="menu_settings">Configurações</string>
@@ -267,6 +441,9 @@ Clique para convidar.</string>
   <string name="menu_view_contact_list">Lista de contatos</string>
   <!--Other: Provider-->
   <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Área Local (Bonjour/ZeroConf)</string>
+  <string name="google_account">Conta Google</string>
+  <string name="default_service_provider">dukgo.com</string>
   <!--Other: Development Strings [Do not localize!]-->
   <!--Other: Presence States-->
   <string name="presence_available">On-line</string>
@@ -334,5 +511,31 @@ Clique para convidar.</string>
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Conta Existente</string>
+  <string name="account_existing_full">Conetar à minha conta existente num servidor Jabber / XMPP específico.</string>
+  <string name="i_want_to_chat_using_my_google_account">Conta Google</string>
+  <string name="account_google_full">Converse com os outros utilizadores da Google, usando a sua conta Google existente.</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Conversa em Rede e Rede Sem Fios</string>
+  <string name="account_wifi_full">Converse com os outros na mesma rede Sem Fios local ou rede - não é necessário a Internet ou servidor!</string>
+  <string name="account_wifi_button">Ativar Conversa na Rede Sem Fios</string>
   <string name="i_need_a_new_account">Nova Conta</string>
+  <string name="account_new_full">Registe uma conta nova e gratuita num serviço a partir da nossa lista incorporada, ou qualquer uma à sua escolha.</string>
+  <string name="account_new_button">Criar Nova conta</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Identidade Secreta!</string>
+  <string name="account_burner_full">Crie uma conta de conversação \"burner\" anónima, descartável com um único toque (requer Orbot: Tor para Android)</string>
+  <string name="account_burner_button">Gerar Identidade</string>
+  <string name="this_is_a_group_chat">Isto é uma conversa em grupo</string>
+  <string name="_resent_">[reenviar] </string>
+  <string name="resent">[reenviar] </string>
+  <string name="unable_to_securely_share_this_file">Não é possível ciopartilhar este ficheiro com segurança</string>
+  <string name="install_orbot_">Instalar Orbot?</string>
+  <string name="you_must_have_orbot">Deve instalar a Orbot e ativar o tráfego do proxy através do mesmo. Deseja instalá-la?</string>
+  <string name="always">Sempre</string>
+  <string name="start_orbot_">Iniciar Orbot?</string>
+  <string name="muc_dialog_nickname">apelido para usar na sala</string>
+  <string name="muc_dialog_room">nome da sala a criar ou a aderir\"</string>
+  <string name="muc_dialog_server">servidor do grupo de conversação (conference.foo.com)</string>
+  <string name="you_received_an_unreadable_encrypted_message">Recebeu uma mensagem encriptada ilegível</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Não foi possível descodificar a mensagem que enviou</string>
+  <string name="swipe_hint">&lt; deslize para a esquerda e direita para mais opções &gt;</string>
 </resources>

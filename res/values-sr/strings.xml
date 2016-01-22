@@ -250,7 +250,7 @@
   <string name="contacts_picker_title">Изаберите контакт(е) за позивање</string>
   <string name="contact_filter_hint">Додирните да нађете контакт</string>
   <string name="empty_contact_list">Нема контаката.\n\nДодирните да позовете.</string>
-  <string name="subscription_prompt">Да додам контакт?</string>
+  <string name="subscription_prompt">Да додам <xliff:g id="USER">%1$s</xliff:g>?</string>
   <string name="approve_subscription">Да</string>
   <string name="decline_subscription">Не</string>
   <string name="approve_subscription_error">Не могу да одобрим претплату од <xliff:g id="user">%1$s</xliff:g>. Покушајте поново касније.</string>
@@ -326,6 +326,14 @@
   <string name="button_yes_accept_all">Да, прихвати све</string>
   <string name="pref_delete_unsecured_media_title">Обриши небезбедни медиј</string>
   <string name="pref_delete_unsecured_media_summary">Након дељења слике или фајла, аутоматски их обриши са изворног, небезбедног складишта након увоза</string>
+  <string name="pref_store_media_on_external_storage_title">Уписуј медије на спољашње складиште</string>
+  <string name="pref_store_media_on_external_storage_summary">Медијални фајлови из сесија ћаскања се складиште у шифровани контејнер који може бити складиштен на унутрашње или спољашње складиште.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Нема спољашњег складишта</string>
+  <string name="external_storage_missing_message">Ваши дневници ћаскања су уписани на СД картицу, али нема СД картице. Уметните исправну СД картицу, или обришите постојећи дневник ћаскања и поново покрените Сигурно ћаскање.</string>
+  <string name="media_store_file_missing_title">Нема складишта за мултимедију ћаскања</string>
+  <string name="media_store_file_missing_message">Ваши дневници ћаскања су уписани на СД картицу, али фајл недостаје са текуће СД картице. Уметните исправну СД картицу, или обришите постојећи дневник ћаскања и поново покрените Сигурно ћаскање.</string>
+  <string name="delete_chat_log">Обриши дневник ћаскања</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Остала подешавања</string>
   <string name="start_on_boot">Покрени Сигурно ћаскање аутоматски</string>
@@ -432,7 +440,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">Нема доступног прегледача за овај формат фајлова</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Почните сигурну преписку пре очитавања кодова</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">ОТР привезак кључева није увезен; Проверите да ли је фајл исправног формата и на правом месту</string>
-  <string name="otr_keysync_warning_message">Копирајте фајл „otr_keystore.ofcaes“ са радне површи OtrFileConverter алатке у корени директоријум складишта вашег уређаја</string>
+  <string name="otr_keysync_warning_message">Копирајте фајл „otr_keystore.ofcaes“ са радне површи KeySync алатке у корени директоријум складишта вашег уређаја</string>
   <string name="msg_sent_failed">Порука није могла бити послата.</string>
   <string name="disconnected_warning">Нисте повезани. Поруке ће бити послате када се поново повежете.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> је ван везе. Поруке које пошаљете ће бити испоручене кад <xliff:g id="user">%1$s</xliff:g> буде на вези.</string>
@@ -445,8 +453,6 @@
   <string name="error_welcome_database">Кобна грешка: Не могу да откључам или учитам базу података апликације. Инсталирајте поново апликацију или очистите податке.</string>
   <string name="error_no_app_to_handle_url">Нема апликације за руковање том везом!</string>
   <string name="account_settings_title">Поставке налога</string>
-
-  <string name="warning_alpha">УПОЗОРЕЊЕ: Ово је рано издање Сигурних порука које може да има сигурносне пропусте или грешке.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Групе</string>
   <string name="_open_conversations"> отворених преписки</string>

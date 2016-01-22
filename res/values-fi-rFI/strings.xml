@@ -21,6 +21,8 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="btn_next">Seuraava</string>
   <string name="btn_back">Takaisin</string>
   <string name="connect">Liity</string>
+  <string name="play">Toista</string>
+  <string name="setup">Asetus</string>
   <!--Views-->
   <string name="lock_screen_open">Avaa</string>
   <string name="title_activity_lock_screen">ChatSecure lukittu</string>
@@ -31,7 +33,11 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="lock_screen_passphrase_not_set_confirm">Vahvista uusi salasana</string>
   <string name="lock_screen_passphrases_not_matching">Salasanat eivät täsmänneet, yritä uudelleen</string>
   <string name="lock_screen_skip">Olen laiska (Ei salasanaa)</string>
+  <string name="app_passphrase_view_title_dialog">Tietokysely</string>
   <string name="app_passphrase_view_password_question">Syötä salasanasi, kiitos</string>
+  <string name="password_please">Salasana kiitos…</string>
+  <string name="passphrase">Tunnuslause</string>
+  <string name="passphrase_again">Tunnuslause (uudelleen)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Valitse tili</string>
   <string name="choose_account_title">Valitse tili</string>
@@ -88,13 +94,17 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="account_setup_advanced_button">Kehittyneet tiliasetukset</string>
   <string name="account_select_type">Tilin luominen</string>
   <string name="btn_create_new_account">Rekisteröi tili</string>
+  <string name="account_setup_pers_sub">Sinnikkyys</string>
   <string name="account_setup_pers_pw_title">Muista salasana</string>
+  <string name="account_setup_pers_pw_on">Salasana välimuistissa</string>
+  <string name="account_setup_pers_pw_off">Salasana ei välimuistissa</string>
   <string name="account_setup_pers_auto_title">Kirjaudu sisään automaattisesti</string>
   <string name="account_setup_pers_auto_on">Yhdistä heti ChatSecuren käynnistyessä</string>
   <string name="account_setup_pers_auto_off">Älä yhdistä heti ChatSecuren käynnistyessä</string>
   <string name="account_setup_pers_now_title">Kirjaudu sisään nyt</string>
   <string name="account_setup_pers_now_on">Yhdistä seuraavat tiliasetukset</string>
   <string name="account_setup_pers_now_off">Älä yhdistä seuraavia tiliasetuksia</string>
+  <string name="account_setup_personal_sub">Henkilökohtainen (valinnainen)</string>
   <string name="account_setup_personal_alias_title">Tilin alias (nimesi)</string>
   <string name="account_setup_personal_alias_sub">Kuinka tilisi näkyy onlinena</string>
   <string name="account_setup_personal_profile_title">Profiili</string>
@@ -123,23 +133,36 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="signing_out_wait">Kirjautuu ulos\u2026</string>
   <!--Views: Settings: Account-->
   <string name="do_srv_lookup">Tee SRV-haku</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Käytä DNS:ää löytääksesi todellisen XMPP-palvelimen toimialueen nimestä</string>
   <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Salli käyttäjänimen ja salasanan lähettäminen paljaana tekstinä, kun salaamaton yhteys on käytössä</string>
+  <string name="allow_plain_text_auth">Salli pelkällä tekstillä tunnistautuminen</string>
+  <string name="verify_that_the_certificate_is_trusted">Varmista, että sertifikaatti on luotettu</string>
+  <string name="tls_verification">TSL-vahvistus</string>
+  <string name="require_tls_ssl_connection">Vaadi TLS-yhteyttä</string>
+  <string name="transport_encryption">Liikenteen salaus</string>
+  <string name="how_encrypted_chats_are_started">miten salatut keskustelut aloitetaan</string>
+  <string name="the_server_to_connect_to_if_needed">Palvelin, johon yhdistetään tarpeen tullen</string>
+  <string name="connect_server">Yhdistä palvelimeen</string>
+  <string name="tcp_port_for_xmpp_server">XMPP-palvelimen TCP-portti</string>
   <string name="server_port">Palvelimen portti</string>
+  <string name="xmpp_resource">XMPP-resurssi</string>
   <string name="xmpp_resource_prio_title">XMPP-resurssin prioriteetti</string>
   <!--Views: Contact list-->
+  <string name="title_chats">Keskustelut</string>
   <string name="buddy_list_title">Kontaktilista - <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_add_contact">Lisää yhteystieto</string>
   <string name="menu_remove_contact">Poista yhteystieto</string>
   <string name="menu_block_contact">Estä yhteystieto</string>
   <string name="menu_contact_nickname">Kontaktin lempinimi</string>
   <string name="menu_view_blocked">Estetty</string>
-  <string name="confirm_delete_contact">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" poistetaan.</string>
-  <string name="confirm_block_contact">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" estetään.</string>
-  <string name="confirm_unblock_contact">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" poistetaan estolistalta.</string>
-  <string name="add_contact_success">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" lisätty.</string>
-  <string name="delete_contact_success">Yhteystieto "<xliff:g id="user">%1$s</xliff:g>" poistettu.</string>
-  <string name="block_contact_success">Contact "<xliff:g id="user">%1$s</xliff:g>" estetty.</string>
-  <string name="unblock_contact_success">Contact "<xliff:g id="user">%1$s</xliff:g>" poistettu estolistalta.</string>
+  <string name="nickname">Lempinimi</string>
+  <string name="confirm_delete_contact">Yhteystieto \"<xliff:g id="user">%1$s</xliff:g>\" poistetaan.</string>
+  <string name="confirm_block_contact">Yhteystieto \"<xliff:g id="user">%1$s</xliff:g>\" estetään.</string>
+  <string name="confirm_unblock_contact">Yhteystieto \"<xliff:g id="user">%1$s</xliff:g>\" poistetaan estolistalta.</string>
+  <string name="add_contact_success">Yhteystieto \"<xliff:g id="user">%1$s</xliff:g>\" lisätty.</string>
+  <string name="delete_contact_success">Yhteystieto \"<xliff:g id="user">%1$s</xliff:g>\" poistettu.</string>
+  <string name="block_contact_success">Contact \"<xliff:g id="user">%1$s</xliff:g>\" estetty.</string>
+  <string name="unblock_contact_success">Contact \"<xliff:g id="user">%1$s</xliff:g>\" poistettu estolistalta.</string>
   <string name="menu_new_chat">Uusi keskustelu</string>
   <string name="menu_search_contacts">Etsi yhteystietoja</string>
   <string name="menu_show_grid">Näytä ruudukko</string>
@@ -153,6 +176,7 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="empty_contact_group">Tyhjä</string>
   <string name="empty_conversation_group">Ei keskusteluita</string>
   <string name="search_label">Yhteystieto</string>
+  <string name="search_button_text">Siirry</string>
   <string name="empty_chat_list">Ei aktiivisia keskusteluita</string>
   <string name="add_contact_title">Lisää yhteystieto</string>
   <string name="input_contact_label">Kutsuttavan henkilön sähköpostiosoite:</string>
@@ -185,6 +209,7 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="accept_transfer_">Hyväksy tiedostonsiirto?</string>
   <string name="wants_to_send_you_the_file">haluaa lähettää sinulle tiedoston</string>
   <string name="send">Lähetä</string>
+  <string name="compose_hint">Lähetä viesti</string>
   <string name="compose_hint_secure">Lähetä turvallinen viesti</string>
   <string name="menu_resend">Lähetä uudelleen</string>
   <string name="menu_end_conversation">Lopeta keskustelu</string>
@@ -196,7 +221,9 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="delete">Poista</string>
   <string name="keep_files">Säilytä tiedostot</string>
   <string name="delete_original">Poistetaanko alkuperäinen?</string>
+  <string name="keep">Pidä</string>
   <string name="export">Vie</string>
+  <string name="export_media">Vie mediatiedosto?</string>
   <string name="end_chat_title">Lopetetaanko keskustelu?</string>
   <string name="end_chat_and_delete">Lopeta keskustelu ja poista tiedostot</string>
   <!--Views: Chat: Group-->
@@ -213,6 +240,9 @@ Sallii tietojen kirjoittamisen pikaviestisovelluksiin.</string>
   <string name="empty_contact_list">Kontakteja ei löytynyt.
 
 Klikkaa kutsuaksesi.</string>
+  <string name="subscription_prompt">Lisää <xliff:g id="USER">%1$s</xliff:g>?</string>
+  <string name="approve_subscription">Kyllä</string>
+  <string name="decline_subscription">Ei</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Aloita salaaminen</string>
   <string name="menu_otr_stop">Lopeta salaaminen</string>
@@ -221,6 +251,10 @@ Klikkaa kutsuaksesi.</string>
   <string name="label_fingerprint_remote">Turvasormenjälki</string>
   <string name="label_fingerprint_local">Turvasormenjälki</string>
   <string name="menu_sign_in">Kirjaudu sisään</string>
+  <string name="menu_gen_key">Uudista avain</string>
+  <string name="otr_session_status_plaintext">Salaus pois käytöstä</string>
+  <string name="otr_session_status_encrypted">Salaus päällä (Napauta vahvistaaksesi)</string>
+  <string name="otr_session_status_verified">Salattu ja vahvistettu!</string>
   <!--Security: OTR: Keyring-->
   <string name="detected_Otr_keystore_import">OTR-avaintalletuksen tuonti havaittu. Haluatko skannata QR-salasanan nyt?</string>
   <string name="menu_import_keys">Aktivoi KeySync</string>
@@ -228,16 +262,24 @@ Klikkaa kutsuaksesi.</string>
   <!--Security: OTR: Verification-->
   <string name="menu_scan">Lue QR-koodi</string>
   <string name="menu_fingerprint">Oma sormenjälkesi</string>
+  <string name="menu_verify_fingerprint">Ohje</string>
+  <string name="menu_verify_secret">Kysymys</string>
   <string name="their_fingerprint_verified_">Sormenjälkitunnistus (Vahvistettu)</string>
   <string name="are_you_sure_you_want_to_confirm_this_key_">Oletko varma, että haluat vahvistaa tämän sormenjäljen?</string>
   <string name="verify_key_">Vahvista sormenjälki?</string>
   <string name="the_remote_key_fingerprint_has_been_verified_">Etäsormenjälki on vahvistettu!</string>
   <string name="fingerprint_for_you">Sormenjälkesi</string>
   <string name="fingerprint_for_">Sormenjälki käyttäjälle</string>
+  <string name="install_barcode_scanner_title">Asenna viivakoodinlukija?</string>
   <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Todennus</string>
+  <string name="smp_question_hint">kysyttävä kysymys</string>
+  <string name="qmp_answer_hint">odotettu vastaus</string>
+  <string name="chat_encryption_title">Keskustelun salaus</string>
   <string name="otr_qa_send">Lähetä</string>
   <string name="otr_qa_cancel">Peruuta</string>
   <!--Views: VoIP-->
+  <string name="menu_voip_title">Turvallinen puhelu</string>
   <string name="pref_sip_account_title">Turvallinen ääni</string>
   <string name="pref_sip_account_summary">Anna OStel.co tai muun turvallisen SIP-palvelutilin tiedot puheluintegrointia varten</string>
   <!--Views: Settings: General-->
@@ -252,6 +294,7 @@ Klikkaa kutsuaksesi.</string>
   <string name="pref_group_looknfeel_title">Käyttöliittymä</string>
   <string name="menu_locale">Kieli</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Kielet</string>
+  <string name="use_system_default">Käytä järjestelmän oletusta</string>
   <string name="pref_theme_dark">Käytä tummaa teemaa</string>
   <string name="pref_theme_dark_summary">Vaihda ohjelman teema tummaksi</string>
   <string name="pref_background_title">Taustakuva</string>
@@ -259,6 +302,9 @@ Klikkaa kutsuaksesi.</string>
   <string name="pref_show_grid">Näytä kontaktiruudukko</string>
   <string name="pref_show_grid_summary">Näytä kontaktilista kuvaruudukkona</string>
   <string name="button_yes_accept_all">Kyllä, hyväksy kaikki</string>
+  <string name="pref_delete_unsecured_media_title">Poista turvaton media</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="delete_chat_log">Poista keskusteluloki</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Muita hienosäätöjä</string>
   <string name="start_on_boot">Käynnistä ChatSecure automaattisesti</string>
@@ -322,8 +368,8 @@ Klikkaa kutsuaksesi.</string>
   <string name="service_error">Palveluvirhe!</string>
   <string name="load_contact_list_failed">Kontaktilistaa ei ladattu.</string>
   <string name="cant_connect_to_server">Palvelimeen ei voitu yhdistää. Tarkista yhteytesi.</string>
-  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" on jo kontaktilistallasi.</string>
-  <string name="contact_blocked">"<xliff:g id="user">%1$s</xliff:g>" on estetty.</string>
+  <string name="contact_already_exist">\"<xliff:g id="user">%1$s</xliff:g>\" on jo kontaktilistallasi.</string>
+  <string name="contact_blocked">\"<xliff:g id="user">%1$s</xliff:g>\" on estetty.</string>
   <string name="contact_not_loaded">Odota, kontaktilistaasi ladataan.</string>
   <string name="network_error">Verkkovirhe.</string>
   <string name="wifi_not_connected_error">WiFi-yhteyttä vaaditaan tähän.</string>
@@ -345,6 +391,7 @@ Klikkaa kutsuaksesi.</string>
   <string name="not_signed_in">Et ole kirjautunut sisään tällä hetkellä.</string>
   <string name="account_setup_error_validating">ChatSecure kohtasi virheen varmistaessaan käyttäjänimeäsi tai salasanaasi. Tarkista ne ja yritä uudelleen.</string>
   <string name="account_setup_error_keypair">ChatSecure kohtasi virheen luodessaan avainparia.</string>
+  <string name="error_suspended_connection">Verkkoyhteyttä ei ole</string>
   <string name="account_wizard_no_domain_warning">Et syöttänyt @isäntänimi.com-osaa tunnuksestasi. Yritä uudelleen!</string>
   <string name="account_wizard_no_root_domain_warning">Palvelimesi isäntänimi ei sisältänyt .com, .net tai vastaavaa päätettä. Yritä uudelleen!</string>
   <string name="signin_password_prompt">Syötä salasanasi:</string>
@@ -357,13 +404,14 @@ Klikkaa kutsuaksesi.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Kyseiselle tiedostotyypille ei ole katseluohjelmaa</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Aloita turvallinen keskustelu ennen koodien skannaamista</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-avainnippua ei tuotu; Vahvista, että tiedosto on olemassa, oikeassa muodossa ja oikeassa sijainnissa.</string>
-  <string name="otr_keysync_warning_message">Kopioi \'otr_keystore.ofcaes\' tiedosto työpöydän OtrFileConverter-työkalusta laitteesi muistin juureen.</string>
+  <string name="otr_keysync_warning_message">Kopioi \'otr_keystore.ofcaes\' tiedosto työpöydän KeySync-työkalusta laitteesi muistin juureen.</string>
   <string name="msg_sent_failed">Viestiä ei voitu lähettää.</string>
   <string name="disconnected_warning">Viestit lähetetään kun yhteys palautuu</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> on offline. Viestit toimitetaan, kun <xliff:g id="user">%1$s</xliff:g> tulee takaisin linjalle.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ei ole kontaktilistallasi.</string>
   <string name="error_account_password_mismatch">Salasanasi eivät täsmää</string>
   <string name="error_account_settings_port">Porttinumeron täytyy olla luku</string>
+  <string name="error_chat_file_transfer_title">Siirtovirhe</string>
   <string name="account_settings_title">Tiliasetukset</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Ryhmät</string>
@@ -462,6 +510,9 @@ Klikkaa kutsuaksesi.</string>
   <string name="i_need_a_new_account">Uusi tili</string>
   <string name="account_new_full">Rekisteröi uusi, ilmainen tili palveluun meidän valmiilta listalta, tai muuhun valitsemaasi palveluun.</string>
   <string name="account_new_button">Luo uusi tili</string>
+  <string name="this_is_a_group_chat">Tämä on ryhmäkeskustelu</string>
+  <string name="_resent_">[lähetetty uudelleen] </string>
+  <string name="resent">[lähetetty uudelleen] </string>
   <string name="install_orbot_">Asennetaanko Orbot?</string>
   <string name="always">Aina</string>
   <string name="start_orbot_">Käynnistetäänkö Orbot?</string>

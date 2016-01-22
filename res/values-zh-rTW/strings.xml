@@ -1,15 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--General: Names-->
-  <string name="app_name">純淨會晤</string>
-  <string name="im_label">安全聊天</string>
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
   <!--General: Permissions-->
   <string name="ro_perm_label">讀取即時訊息</string>
   <string name="ro_perm_desc">允許應用程式讀取即時通訊商提供的資料</string>
-  <string name="wo_perm_label">立即寫入訊息</string>
+  <string name="wo_perm_label">撰寫即時訊息</string>
   <string name="wo_perm_desc">允許應用程式讀取即時通訊商提供的資料</string>
   <string name="perm_label">開始即時訊息服務</string>
-  <string name="perm_desc">允許應用程式透過網際網路啟動即時訊息服務</string>
+  <string name="perm_desc">允許應用程式透過 intent 啟動即時訊息服務</string>
   <!--General: Actions-->
   <string name="confirm">確認</string>
   <string name="ok">確定</string>
@@ -19,51 +19,72 @@
   <string name="btn_next">下一個</string>
   <string name="btn_back">返回</string>
   <string name="connect">連線</string>
+  <string name="play">播放</string>
+  <string name="setup">設定</string>
   <!--Views-->
   <string name="lock_screen_open">開啟</string>
-  <string name="title_activity_lock_screen">鎖定安全聊天</string>
+  <string name="title_activity_lock_screen">鎖定 ChatSecure</string>
+  <string name="lock_screen_create_passphrase">設定密碼</string>
+  <string name="lock_screen_confirm_passphrase">確認密碼</string>
+  <string name="lock_screen_passphrase_hint">密碼</string>
+  <string name="lock_screen_passphrase_not_set_enter">你可以設定一個主密碼來防止其他人存取你的聯絡人和訊息:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">確認新密碼</string>
+  <string name="lock_screen_passphrases_not_matching">密碼並不一致, 請再試一次</string>
+  <string name="lock_screen_skip">跳過 </string>
+  <string name="app_passphrase_view_title_dialog">訊息提示</string>
+  <string name="app_passphrase_view_password_question">請輸入密碼</string>
+  <string name="password_please">請輸入密碼…</string>
+  <string name="passphrase">Passphrase</string>
+  <string name="passphrase_again">Passphrase (再一次)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">選取帳戶</string>
   <string name="choose_account_title">選取帳戶</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
   <string name="add_account">新增 <xliff:g id="ACCOUNT">%1$s</xliff:g> 帳戶</string>
   <string name="menu_about">關於</string>
   <string name="menu_sign_out_all">全部登出</string>
   <string name="signout_all_confirm_message">你真的要登出所有服務?</string>
   <string name="signed_out_prompt">您已登出 <xliff:g id="ACCOUNT">%1$s</xliff:g>。</string>
-  <string name="welcome_first">第一次使用純淨會晤?</string>
-  <string name="welcome_skip">等不及開始?</string>
+  <string name="signed_out_prompt_with_error">你已登出 <xliff:g id="account">%1$s</xliff:g> 。原因： <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">第一次使用 ChatSecure?</string>
+  <string name="welcome_skip">等不及開始啦?</string>
   <string name="welcome_about">開始嚕</string>
   <string name="welcome_account">帳戶設定</string>
-  <string name="setup_passphrase_title">通關密語設定</string>
-  <string name="setup_passphrase">再你啟用前請選擇一個安全金鑰以便保護你的聊天安全防止資料竊取</string>
-  <string name="setup_passphrase_label1">通關密語:</string>
-  <string name="setup_passphrase_label2">通關密語(再打一次):</string>
-  <string name="enter_pass">打入你的密碼</string>
-  <string name="new_pass">歡迎! 打入一個卡強的金鑰以便保障你的節點. 它必須包含至少一個英文大、小寫與其他數字起碼超過6個字元.</string>
-  <string name="pass_err_length">你的密碼字數不夠長</string>
-  <string name="pass_err_upper">你的密碼不含任何大寫字母</string>
-  <string name="pass_err_lower">你的密碼不含任何小寫字母</string>
-  <string name="pass_err_num">你的密碼是空白的</string>
+  <string name="setup_passphrase_title">Passphrase 設定</string>
+  <string name="setup_passphrase">啟用前，請你選擇一個安全的 passphrase 來保護你的 ChatSecure 以防止資料被竊取</string>
+  <string name="setup_passphrase_label1">passphrase:</string>
+  <string name="setup_passphrase_label2">passphrase (再打一次):</string>
+  <string name="rekey_message">輸入一個**新的** passphrase. 必須包含至少一個大寫, 一個小寫和一個數字, 並且大於 6 字元.</string>
+  <string name="do_rekey">正使用新的 passphrase 來加密已存在的訊息 (要耐心啊…)</string>
+  <string name="enter_pass">輸入你的密碼</string>
+  <string name="new_pass">歡迎 ! 輸入一個強一點的 passphrase 以保護你的訊息。它必須包含至少一個英文大寫, 一個小寫與一個數字, 並且起碼超過6個字元.</string>
+  <string name="pass_err_length">你的 passphrase 字數不夠長</string>
+  <string name="pass_err_upper">你的 passphrase 不含任何大寫字母</string>
+  <string name="pass_err_lower">你的 passphrase 不含任何小寫字母</string>
+  <string name="pass_err_num">你的 passphrase 是空白的</string>
   <!--Views: About: Welcome-->
-  <string name="about_welcome_title">關於純淨會晤</string>
+  <string name="about_welcome_title">關於 ChatSecure</string>
+  <string name="about_welcome">ChatSecure 是一套行動裝置聊天軟體, 經由預防別人窺探你的交談來提供額外安全性.\n\n本軟體支援任何用 jabber 或 XMPP 協定的服務, 如 Google GTalk 或 Jabber.org.</string>
   <!--Views: About: OTR-->
-  <string name="about_otr_title">它是多安全?</string>
+  <string name="about_otr_title">它有多安全?</string>
+  <string name="about_otr">\'Off-the-Record Messaging (OTR)\' 是一種安全的系統, 用以模仿真實世界的私人交談，達到保護個人隱私. 包含加密、認證、可否認性和傳輸保密. \n\nOTR 協定相容於桌上型電腦客戶端, 如 Adium 或 Pidgin.</string>
   <!--Views: About: Security-->
   <string name="about_security_title">我的聊天安全嗎?</string>
+  <string name="about_security">ChatSecure 的聊天加密功能只在對方使用相容的 app 或程式時生效, 所以你必須確保連絡人在行動裝置使用 ChatSecure 和桌上型電腦使用 Adium 或 Pidgin。你可以從帳號設定中微調 ChatSecure 在交談時如何加密你的會話。 \n\n讓我們開始吧!</string>
   <!--Views: Account list-->
   <string name="menu_new_account">新帳戶</string>
-  <string name="menu_add_account">編輯帳戶</string>
+  <string name="menu_add_account">新增帳戶</string>
   <string name="menu_edit_account">編輯帳戶</string>
   <string name="menu_remove_account">移除帳戶</string>
+  <string name="menu_use_existing_account">已存在帳戶</string>
   <!--Views: Setup: Account-->
-  <string name="label_username">使用者名稱：</string>
+  <string name="label_username">使用者名稱： (User@Host)</string>
   <string name="label_password">密碼：</string>
   <string name="remember_password">記住我的密碼。</string>
   <string name="keep_me_signed_in">自動登入</string>
   <string name="sign_up">您有帳戶嗎？</string>
   <string name="sign_in">登入</string>
-  <string name="check_save_password">為了安全起見, 一旦你的手機遺失或被偷, 請用電腦連上這網站修改你的密碼。
-</string>
+  <string name="check_save_password">為了安全起見, 一旦你的手機遺失或被偷, 請用電腦連上這網站修改你的密碼。</string>
   <string name="check_auto_sign_in">此選項可讓您開啟應用程式時自動登入。如要停用，請登出並清除 [自動登入] 核取方塊。</string>
   <string name="use_tor">透過 Tor 連線(需用Orbot app)</string>
   <string name="account_setup_example_email_address">user@domain.com</string>
@@ -72,15 +93,15 @@
   <string name="account_setup_password">密碼</string>
   <string name="account_setup_password_confirm">密碼再確認</string>
   <string name="account_setup_advanced_button">進階帳戶設定</string>
-  <string name="account_select_type">帳戶型態</string>
+  <string name="account_select_type">帳戶設定</string>
   <string name="btn_create_new_account">註冊帳戶</string>
   <string name="account_setup_pers_sub">堅持</string>
   <string name="account_setup_pers_pw_title">記住密碼</string>
   <string name="account_setup_pers_pw_on">密碼已快取</string>
-  <string name="account_setup_pers_pw_off">密碼不快取</string>
+  <string name="account_setup_pers_pw_off">密碼未快取</string>
   <string name="account_setup_pers_auto_title">自動登入</string>
-  <string name="account_setup_pers_auto_on">啟用純淨會晤就開啟連線</string>
-  <string name="account_setup_pers_auto_off">啟用純淨會晤不開啟連線</string>
+  <string name="account_setup_pers_auto_on">啟用 ChatSecure 時開啟連線</string>
+  <string name="account_setup_pers_auto_off">啟用 ChatSecure 時不開啟連線</string>
   <string name="account_setup_pers_now_title">馬上登入</string>
   <string name="account_setup_pers_now_on">採用下列帳戶設定連線</string>
   <string name="account_setup_pers_now_off">不採用下列帳戶設定連線</string>
@@ -100,35 +121,46 @@
   <string name="account_wizard_account_title">識別帳戶</string>
   <string name="account_wizard_host_title">設定伺服器</string>
   <string name="account_wizard_ready_title">準備好了嗎?</string>
+  <string name="account_wizard_setup_body">輸入你的帳戶以設定 ChatSecure 使用你的 XMPP 服務。他長得和 email 很像 : </string>
   <string name="account_wizard_account_body">請打入你的帳戶ID (user@hostname):</string>
   <string name="account_wizard_host_body">請打入你或編輯 jabber/xmpp聊天伺服器的主機名稱跟埠號 (5222是預設值).</string>
-  <string name="_via_orbot">匿名二代洋蔥路由(Tor)</string>
+  <string name="account_wizard_ready_body">ChatSecure 設定完成, 現在你可以連線到你的服務, 並且開始安全地, 安心地和私密地交談 ! </string>
+  <string name="_via_orbot">Orbot (Tor)</string>
   <string name="select_domain_new_account">選取網域</string>
+  <string name="registering_new_account_">註冊新帳號…</string>
   <string name="signing_in_to">安全聊天進行中</string>
   <string name="menu_cancel_signin">取消登入</string>
   <string name="signing_in_wait">登入中…</string>
+  <string name="signing_out_wait">登出</string>
   <!--Views: Settings: Account-->
-  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">啟用DNS服務以便從網域名稱找到真正的XMPP伺服器</string>
-  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">當採用未加密傳輸時允許使用者帳戶跟密碼以純文字傳送</string>
+  <string name="do_srv_lookup">進行 SRV 查冊</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">啟用 DNS 服務以便從網域名稱找到真正的 XMPP 伺服器</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">當採用未加密傳輸時，允許使用者以純文字傳送帳戶名稱跟密碼</string>
   <string name="allow_plain_text_auth">允許純文字驗證</string>
   <string name="verify_that_the_certificate_is_trusted">確定驗證證書可被信任</string>
   <string name="tls_verification">TLS驗證書</string>
-  <string name="require_tls_ssl_connection">必需用TLS連線</string>
+  <string name="require_tls_ssl_connection">必須用TLS連線</string>
   <string name="transport_encryption">傳輸加密</string>
   <string name="how_encrypted_chats_are_started">加密聊天啟用方式</string>
   <string name="the_server_to_connect_to_if_needed">有必要的話,伺服器要連線到哪</string>
   <string name="connect_server">連線伺服器</string>
-  <string name="tcp_port_for_xmpp_server">XMPP伺服器採用的TCP埠號</string>
+  <string name="tcp_port_for_xmpp_server">XMPP伺服器採用的 TCP 埠號</string>
   <string name="server_port">伺服器埠號</string>
-  <string name="xmpp_resource">XMPP資源</string>
-  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">要識別這個連線雙方都要同時登入</string>
-  <string name="xmpp_resource_prio_title">XMPP資源優先權</string>
+  <string name="xmpp_resource">XMPP 資源</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">要區分這個連線與其他已登入的客戶端</string>
+  <string name="xmpp_resource_prio_title">XMPP 資源優先權</string>
+  <string name="xmpp_resource_prio_summary">送到客戶端的訊息若有多數個有效資源, 將會傳送到最高優先權那個</string>
   <!--Views: Contact list-->
   <string name="title_chats">對話</string>
+  <string name="no_messages">沒有對話. \n\n輕敲這裡開始!</string>
+  <string name="empty_account_message">沒有設定好的帳戶.\n\n輕敲這裡新增!</string>
+  <string name="buddy_list_title">聯絡簿 - <xliff:g id="username">%1$s</xliff:g></string>
   <string name="menu_add_contact">新增聯絡人</string>
   <string name="menu_remove_contact">刪除聯絡人</string>
   <string name="menu_block_contact">封鎖聯絡人</string>
+  <string name="menu_contact_nickname">聯絡人匿稱</string>
   <string name="menu_view_blocked">封鎖</string>
+  <string name="nickname">匿稱</string>
   <string name="confirm_delete_contact">刪除「<xliff:g id="USER">%1$s</xliff:g>」？</string>
   <string name="confirm_block_contact">封鎖「<xliff:g id="USER">%1$s</xliff:g>」。</string>
   <string name="confirm_unblock_contact">「<xliff:g id="USER">%1$s</xliff:g>」會被解除封鎖。</string>
@@ -138,10 +170,13 @@
   <string name="unblock_contact_success">「<xliff:g id="USER">%1$s</xliff:g>」已解除封鎖。</string>
   <string name="menu_new_chat">新聊天</string>
   <string name="menu_search_contacts">搜尋聯絡人</string>
+  <string name="menu_show_grid">顯示方格</string>
   <string name="menu_start_chat">開始即時通訊</string>
+  <string name="menu_view_profile">顯示個人檔案</string>
+  <string name="menu_verify">查證聯絡人</string>
   <string name="ongoing_conversation">進行中的即時通訊 (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
   <string name="online_count">線上人數 <xliff:g id="NUMBER">%1$d</xliff:g></string>
-  <string name="subscriptions">邀請好友</string>
+  <string name="subscriptions">來自好友的邀請</string>
   <string name="unknown_contact">(\"<i>\" 未知的 \"</i>\")</string>
   <string name="empty_contact_group">沒有聯絡人</string>
   <string name="empty_conversation_group">沒有對話</string>
@@ -150,8 +185,8 @@
   <string name="search_button_text">進行</string>
   <string name="empty_chat_list">沒有進行中的即時通訊</string>
   <string name="add_contact_title">新增聯絡人</string>
-  <string name="input_contact_label">您要邀請的對象電子郵件地址：</string>
-  <string name="choose_list_label">選擇一個清單：</string>
+  <string name="input_contact_label">您要邀請對象的帳號：</string>
+  <string name="choose_list_label">帳號加到：</string>
   <string name="invite_instruction">輸入聯絡人姓名。</string>
   <string name="invite_label">傳送邀請</string>
   <string name="contact_profile_title">聯絡人檔案</string>
@@ -170,14 +205,39 @@
   <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g> 顯示離線</string>
   <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g> 已加入</string>
   <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g> 已離開</string>
+  <string name="menu_send_image">傳送照片</string>
+  <string name="menu_send_file">傳送檔案</string>
+  <string name="menu_send_audio">傳送聲音</string>
+  <string name="menu_take_picture">傳送圖片</string>
+  <string name="file_transfer">檔案傳輸</string>
+  <string name="transfer_complete">傳送完成</string>
+  <string name="transfer_in_progress">正在傳送中</string>
+  <string name="accept_transfer_">是否接受傳檔?</string>
+  <string name="wants_to_send_you_the_file">想要傳送檔案給你</string>
+  <string name="no_connection_for_sending">沒有可用的連線來傳送資料!</string>
   <string name="send">傳送</string>
-  <string name="menu_resend">從新傳送</string>
+  <string name="compose_hint">傳送訊息</string>
+  <string name="compose_hint_secure">傳送安全的訊息</string>
+  <string name="menu_resend">重新傳送</string>
   <string name="menu_end_conversation">結束即時通訊</string>
   <string name="menu_clear_chat">聊天清除</string>
   <string name="menu_insert_smiley">插入笑臉表情</string>
   <string name="menu_switch_chats">切換即時通訊</string>
   <string name="menu_plus">[Menu] +</string>
   <string name="select_link_title">選取連結</string>
+  <string name="delete">刪除</string>
+  <string name="keep_files">保留檔案</string>
+  <string name="delete_chat_session_secured_storage">要刪除此對話進程的保險箱嗎？</string>
+  <string name="all_files_will_be_deleted">此進程已上載及下載的檔案將被永久刪除—注意：是永久的喔！</string>
+  <string name="delete_original">要刪除原始版本？</string>
+  <string name="this_file_will_be_copied">傳送之前，此檔案將被複製到保險箱。你想刪除設備上未有加密的原始檔案嗎？</string>
+  <string name="keep">保留</string>
+  <string name="export">匯出</string>
+  <string name="export_media">匯出媒體檔案?</string>
+  <string name="export_media_file_to">媒體檔案將會匯出到 %1$s</string>
+  <string name="end_chat_title">結束聊天?</string>
+  <string name="end_chat_summary">此進程保險箱內的所有物件將被刪除。長按縮圖以匯出檔案。</string>
+  <string name="end_chat_and_delete">結束聊天並刪除檔案</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>邀請您加入群組即時通訊。</string>
   <string name="invitation_sent_prompt">已傳送邀請給 <xliff:g id="USER">%1$s</xliff:g>。</string>
@@ -185,9 +245,14 @@
   <string name="decline_invitation">拒絕</string>
   <string name="menu_new_group_chat">群組聊天</string>
   <string name="create_or_join_group_chat">建立或加入群組聊天室</string>
+  <string name="connecting_to_group_chat_">連線到群組聊天室…</string>
   <string name="menu_invite_contact">邀請…</string>
   <string name="contacts_picker_title">選取要邀請的聯絡人</string>
   <string name="contact_filter_hint">輸入關鍵字尋找聯絡人</string>
+  <string name="empty_contact_list">沒有聯絡人.\n\n輕敲這裡來邀請.</string>
+  <string name="subscription_prompt">要加入 <xliff:g id="USER">%1$s</xliff:g> 嗎?</string>
+  <string name="approve_subscription">是</string>
+  <string name="decline_subscription">否</string>
   <string name="approve_subscription_error">訂閱 <xliff:g id="USER">%1$s</xliff:g> 資訊失敗。請稍後再試一次。</string>
   <string name="decline_subscription_error">拒絕訂閱 <xliff:g id="USER">%1$s</xliff:g> 資訊失敗。請稍後再試一次。</string>
   <!--Security: OTR-->
@@ -195,22 +260,40 @@
   <string name="menu_otr_stop">加密停止</string>
   <string name="starting_otr_chat">加密聊天會談啟動中</string>
   <string name="stopping_otr_chat">停用加密聊天會談</string>
+  <string name="label_fingerprint_remote">可靠的指紋</string>
+  <string name="label_fingerprint_local">可靠的指紋</string>
   <string name="menu_sign_in">登入</string>
-  <string name="menu_gen_key">註冊Key</string>
+  <string name="menu_gen_key">重新產生 Key</string>
   <string name="otr_session_status_plaintext">加密關閉</string>
   <string name="otr_session_status_encrypted">加密啟用(點擊驗證)</string>
+  <string name="otr_session_status_finished">對方停止了加密通訊.</string>
   <string name="otr_session_status_verified">已加密和驗證</string>
   <string name="otr_gen_key">產生新的一次性OTR字串</string>
   <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">我們發現了一個可供匯入的密鑰庫。你要掃描QR code 密碼嗎？</string>
+  <string name="menu_import_keys">啟動 KeySync</string>
   <string name="successfully_imported_otr_keyring">成功匯入OTR金鑰圈</string>
   <!--Security: OTR: Verification-->
+  <string name="menu_scan">掃描 QRcode</string>
   <string name="menu_fingerprint">你的指紋辨識碼</string>
+  <string name="menu_verify_fingerprint">使用手冊</string>
+  <string name="menu_verify_secret">問題</string>
+  <string name="their_fingerprint_verified_">安全的指紋 (已驗證)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">你確定要確認這個指紋?</string>
+  <string name="verify_key_">是否查證指紋?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">遠端指紋已經查證!</string>
+  <string name="fingerprint_for_you">給你的指紋</string>
+  <string name="fingerprint_for_">指紋：</string>
+  <string name="install_barcode_scanner_title">要安裝條碼掃描器嗎？</string>
+  <string name="install_barcode_scanner_message">此app需要條碼掃描器。你要安裝它嗎？</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">認證</string>
   <string name="smp_question_summary">為了要驗證對方身分, 打入一個要問聯絡人的問題, 跟對方回答你預想好的正確的回應</string>
   <string name="smp_question_hint">要問的問題</string>
   <string name="qmp_answer_hint">預期中的回答</string>
   <string name="remote_verified_us">你的聯絡人已經成功驗證了你. 現在換你問問題驗證你的聯絡人.</string>
+  <string name="otr_qa_title">OTR 問答驗證</string>
+  <string name="chat_encryption_title">對話加密</string>
   <string name="otr_qa_send">傳送</string>
   <string name="otr_qa_cancel">取消</string>
   <!--Views: VoIP-->
@@ -224,22 +307,41 @@
   <string name="encryption_and_anonymity_title">加密且匿名</string>
   <string name="menu_view_encrypt_chat">加密開/關</string>
   <string name="pref_cacheword_timeout_title">密碼過期</string>
+  <string name="pref_cacheword_timeout_summary">app 應維持解鎖狀態的時間</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">可進入的 Tor 連結</string>
+  <string name="pref_linkify_on_tor_summary">令使用 Tor 的帳戶可以按下對話中的連結 (***警告***這可能會有安全漏洞！)</string>
   <string name="pref_group_looknfeel_title">使用者介面</string>
   <string name="menu_locale">語言</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">語言</string>
-  <string name="pref_theme_dark">採用較暗的桌面主題</string>
+  <string name="use_system_default">使用系統預設</string>
+  <string name="pref_theme_dark">採用暗色主題</string>
+  <string name="pref_theme_dark_summary">轉換到暗色主題</string>
   <string name="pref_in_memory_db_title">訊息僅儲存在記憶體中</string>
   <string name="pref_in_memory_db_summary">只允許儲存訊息在記憶體中而非隨身儲存設備, 以防止訊息被解壓縮.(有可能會漏失訊息)</string>
   <string name="pref_background_title">背景底圖</string>
   <string name="pref_background_summary">把這路徑 (\"/sdcard/foo.jpg\") 設定到這支App的背景影像桌布</string>
+  <string name="pref_show_grid">顯示方格</string>
+  <string name="pref_show_grid_summary">以人像方格顯示聯絡人</string>
+  <string name="button_yes_accept_all">是，全部接受</string>
+  <string name="pref_delete_unsecured_media_title">清除未加密的檔案</string>
+  <string name="pref_delete_unsecured_media_summary">分享圖片或檔案並匯入後，自動刪除原始、不安全的版本。</string>
+  <string name="pref_store_media_on_external_storage_title">在外置 SD 儲存檔案</string>
+  <string name="pref_store_media_on_external_storage_summary">對話進程的檔案會被儲存在保險箱內，並可選擇存至內置或外置 SD。</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">沒有外置 SD</string>
+  <string name="external_storage_missing_message">你已設定儲存對話紀錄到 SD 卡，但 SD 卡並不存在。請插入正確的 SD 卡，或者刪除已存在對話紀錄並重啟 ChatSecure 。</string>
+  <string name="media_store_file_missing_title">儲存對話多媒體檔的裝置不存在</string>
+  <string name="media_store_file_missing_message">你已設定儲存對話紀錄到 SD 卡，但現有 SD 卡沒有該對話檔案。請插入正確的 SD 卡，或者刪除已存在對話紀錄並重啟 ChatSecure 。</string>
+  <string name="delete_chat_log">刪除對話紀錄</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">其它微調</string>
+  <string name="start_on_boot">自動開啟 ChatSecure</string>
   <string name="start_on_boot_summary">總是自動啟用上一次登入的帳戶</string>
   <string name="hide_offline_contacts">隱藏離線聯絡人</string>
   <string name="foreground_service_title">採用前台優先</string>
-  <string name="foreground_service_summary">為了減少 Android從新啟動連線服務. 將會在提醒區內放置對話提醒</string>
-  <string name="heartbeat_interval_title">互動間閣</string>
+  <string name="foreground_service_summary">減少 Android 從新啟動連線服務的機會。將會在提醒區內放置對話提醒。</string>
+  <string name="heartbeat_interval_title">互動間隔</string>
   <string name="heartbeat_interval_summary">採用較高的數值(以分鐘算計)以便省電. 但較高的數值可能會讓提供者認為你沒在用而關閉連線</string>
   <!--Actions: Settings: General: Notifications-->
   <string name="notification_group_title">通知設定</string>
@@ -249,19 +351,43 @@
   <string name="notification_vibrate_summary">收到即時訊息時振動提醒</string>
   <string name="notification_sound_title">音效</string>
   <string name="notification_sound_summary">收到即時訊息時播放鈴聲</string>
+  <string name="notification_ringtone_title">選取自定鈴聲</string>
   <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">啟動除錯紀錄</string>
+  <string name="pref_debug_summary">輸出除錯紀錄到 stdout / logcat</string>
   <!--Alerts: Dialogs-->
   <string name="bg_data_prompt_title">已停用背景資料</string>
-  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g> 需要啟用背景資料。</string>
+  <string name="bg_data_prompt_message">app 需要啟用網絡資料連線 (包括背景資料) 來登入。</string>
   <string name="bg_data_prompt_ok">啟用</string>
   <string name="bg_data_prompt_cancel">結束</string>
-  <string name="signout_kill_confirm_message">你真的要登出所有服務並且刪除任何執行緒(強制離開)?</string>
+  <string name="signout_kill_confirm_message">你真的要登出所有服務並且刪除任何執行緒 (強制離開)?</string>
+  <string name="prompt_create_new_account_">要註冊新帳戶嗎？</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">要為用戶 \'%1$s\' 註冊新帳戶嗎?</string>
+  <string name="dialog_cert_title">憑證資訊</string>
+  <string name="dialog_cert_subject">憑證 : </string>
+  <string name="dialog_cert_issuer">發佈自 : </string>
+  <string name="dialog_cert_fingerprint">SHA1 辦識碼 : </string>
+  <string name="dialog_cert_issue_date">發佈時間 : </string>
+  <string name="dialog_cert_expires">過期時間 : </string>
+  <string name="dialog_connect_chatroom_title">要加入聊天室嗎？</string>
+  <string name="dialog_connect_chatroom_message">有第三方應用嘗試連結你至一個聊天室。要允許嗎？</string>
+  <string name="dialog_settings_choose_background_title">選擇背景</string>
+  <string name="dialog_settings_choose_background_body">你想從圖庫選擇背景圖案嗎？</string>
+  <string name="dialog_settings_choose_background_picker">選取圖片</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">來自 <xliff:g id="PROVIDER">%1$s</xliff:g> 的新訊息</string>
+  <string name="num_unread_chats">有 <xliff:g id="number">%1$d</xliff:g> 個未讀對話</string>
+  <string name="subscription_notify_text">來自<xliff:g id="user">%s</xliff:g>的邀請</string>
+  <string name="file_notify_text">來自 <xliff:g id="user">%2$s</xliff:g> 的新檔案 : <xliff:g id="filename">%1$s</xliff:g> </string>
   <string name="notify_groupchat_label">群組即時通訊邀請</string>
+  <string name="group_chat_invite_notify_text">來自 <xliff:g id="user">%s</xliff:g> 的群組對話邀請</string>
   <string name="new_messages_notify">新訊息來自</string>
+  <string name="starting_the_chatsecure_service_">啟動 ChatSecure 服務中…</string>
+  <string name="app_unlocked">已啟動及解鎖</string>
+  <string name="toast_chat_copied_to_clipboard">信息已複製到剪貼簿</string>
   <!--Alerts: Exceptions-->
   <string name="error">注意</string>
+  <string name="error_prefix">錯誤：</string>
   <string name="general_error">錯誤代碼 <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">無法登入 <xliff:g id="SERVICE">%1$s</xliff:g> 服務。請稍候再試一次。"\n" (詳細內容：<xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">清單未增加</string>
@@ -293,24 +419,53 @@
   <string name="already_logged_in">您已在其他用戶端登入。</string>
   <string name="msisdn_error">很抱歉，無法從 SIM 卡讀取電話號碼。請向您的電信業者尋求協助。</string>
   <string name="not_signed_in">您尚未登入。</string>
-  <string name="account_setup_error_validating">當驗證你的使用者名稱和密碼時,純淨會晤遭逢一個錯誤-請檢查並且重試一次.</string>
+  <string name="account_setup_error_validating">ChatSecure 驗證你的使用者名稱和密碼時遭逢一個錯誤-請檢查並且重試一次.</string>
+  <string name="account_setup_error_keypair">ChatSecure 在產生識別碼字串的時候遭逢一個錯誤。</string>
+  <string name="account_setup_error_server">ChatSecure 連接伺服器的時候遭逢一個錯誤。請檢查你的設定並重試。</string>
+  <string name="account_setup_error_connectivity">ChatSecure 連接伺服器的時候遭逢一個錯誤。請檢查你的網絡並重試。</string>
+  <string name="error_suspended_connection">未有連接網絡</string>
+  <string name="error_reestablish_connection">ChatSecure 正嘗試重新連線</string>
   <string name="account_wizard_no_domain_warning">你尚未打入你帳戶採用的主機名稱的任何部分.再試一次!</string>
   <string name="account_wizard_no_root_domain_warning">你的伺服器主機名稱尚缺.com, .net之類的尾碼. 再試一次!</string>
   <string name="signin_password_prompt">打入你的密碼</string>
   <string name="warning_tor_connect">因為你使用 Tor匿名路由, 所以你必須按下XMPP \'Connect Server\' 主機名稱以便直接進入進階使用者帳戶設定
 </string>
+  <string name="warning_weak_crypto">***警告*** 此服務使用不安全的加密方式。請通知管理員進行升級。</string>
+  <string name="warning_pinned_cert_mismatch">已提供的憑證與本 app 的並不一致 : </string>
   <string name="unable_to_create_or_join_group_chat">無法建立或加入聊天</string>
-  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR金鑰圈尚未匯入; 請檢查這個檔案已存放在正確的格式和位置</string>
+  <string name="sorry_we_cannot_share_that_file_type">抱歉，我們未能分享此檔案類型</string>
+  <string name="err_otr_share_no_encryption">你必須啟用加密以傳送檔案。</string>
+  <string name="please_enable_chat_encryption_to_share_files">請啟用對話加密以傳送檔案</string>
+  <string name="unsupported_incoming_data">未能支持並分享傳入的資訊！</string>
+  <string name="swipe_alert">ChatSecure 偵察到一個停止工作的要求，並很可能因此崩潰。請使用帳戶列表菜單中的「全部登出」。</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">沒有可查看此檔案格式的應用</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">掃描條碼前，請先啟動一個安全對話。</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR金鑰圈尚未匯入; 請確認這個檔案已存放在正確的格式和位置</string>
+  <string name="otr_keysync_warning_message">請從KeySync tool 複製一份名為「otr_keystore.ofcaes」的檔案到儲存裝置的根目錄</string>
   <string name="msg_sent_failed">訊息無法傳送。</string>
   <string name="disconnected_warning">訊息重新連線時將會再度被傳送</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> 顯示離線。您的訊息將在 <xliff:g id="USER_1">%1$s</xliff:g> 登入時傳送。</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>不在您的聯絡人清單。</string>
+  <string name="error_account_password_mismatch">你的密碼並不一致</string>
+  <string name="error_account_settings_priority">優先次序必須是 0 至 27 的整數</string>
+  <string name="error_account_settings_port">埠號必須是整數</string>
+  <string name="error_chat_file_transfer_title">傳輸錯誤</string>
+  <string name="error_chat_file_transfer_body">無法輸出檔案至儲存裝置</string>
+  <string name="error_welcome_database">嚴重錯誤 : 無法解鎖或載入應用的資料庫。請重新安裝應用或清除應用資料。</string>
+  <string name="error_no_app_to_handle_url">沒有能處理該連結的應用！</string>
   <string name="account_settings_title">帳戶設定</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">群組</string>
   <string name="_open_conversations">開啟會談</string>
   <string name="menu_exit">離開</string>
+  <string name="menu_panic">恐慌</string>
+  <string name="buddies">伙伴</string>
+  <string name="contacts">聯絡人</string>
+  <string name="mtm_accept_cert">要接受伺服器憑證嗎？</string>
+  <string name="menu_sidebar_qr">顯示你的辦識碼</string>
+  <string name="loading">載入中…</string>
   <!--Other-->
+  <string name="about_link">關於 ChatSecure : \nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
   <string name="menu_contact_list">聯絡人清單</string>
   <string name="menu_settings">設定</string>
@@ -319,7 +474,8 @@
   <string name="menu_view_contact_list">聯絡人清單</string>
   <!--Other: Provider-->
   <string name="provider_full_name_xmpp">Jabber (XMPP)協定</string>
-  <string name="google_account">Google帳戶</string>
+  <string name="provider_full_name_llxmpp">內部區域 (Bonjour/ZeroConf)</string>
+  <string name="google_account">Google 帳戶</string>
   <string name="default_service_provider">dukgo.com</string>
   <!--Other: Development Strings [Do not localize!]-->
   <!--Other: Presence States-->
@@ -369,5 +525,52 @@
     <item>開懷大笑</item>
     <item>疑惑</item>
   </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_have_an_existing_xmpp_account">已存在帳戶</string>
+  <string name="account_existing_full">連接至我在Jabber / XMPP 伺服器的已存在帳戶</string>
+  <string name="i_want_to_chat_using_my_google_account">Google 帳戶</string>
+  <string name="account_google_full">使用你已存在的 Google 帳戶與其他 Google 用家對話</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Wi-Fi 網絡對話</string>
+  <string name="account_wifi_full">與同在本地 Wi-Fi 網絡的用家對話—這不需要任何互聯網或伺服器！</string>
+  <string name="account_wifi_button">啟用 Wi-Fi 對話</string>
   <string name="i_need_a_new_account">新帳戶</string>
+  <string name="account_new_full">在列表上的服務註冊一個免費帳戶。當然，你也可以手動輸入不在列表中的服務。</string>
+  <string name="account_new_button">註冊新帳戶</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">秘密身份！</string>
+  <string name="account_burner_full">輕輕一敲，製造一個即棄的匿名帳戶 (需要 Orbot: Tor for Android)</string>
+  <string name="account_burner_button">生成身份</string>
+  <string name="this_is_a_group_chat">這是一個群組對話</string>
+  <string name="_resent_">[resent]</string>
+  <string name="resent">[resent]</string>
+  <string name="unable_to_securely_share_this_file">無法安全分享此檔案</string>
+  <string name="install_orbot_">要安裝 Orbot 嗎？</string>
+  <string name="you_must_have_orbot">你必須安裝並啟動 Orbot 來通過它傳輸資料。你想安裝它嗎？</string>
+  <string name="always">常駐</string>
+  <string name="start_orbot_">要啟動 Orbot 嗎？</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Orbot 好像未啟動啊。你想喚醒它然後連至 Tor 網絡嗎？</string>
+  <string name="muc_dialog_nickname">要在聊天室內使用的匿稱</string>
+  <string name="muc_dialog_room">要新增或加入的聊天室</string>
+  <string name="muc_dialog_server">群組對話伺服器 (例：conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">你的密鑰庫已損壞。請重新安裝 ChatSecure 或者清除應用資料</string>
+  <string name="you_received_an_unreadable_encrypted_message">你收到了一份無法解讀的加密訊息</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">我無法解密你發出的訊息</string>
+  <string name="swipe_hint">&lt; 滑左或滑右以發現更多選項 &gt;</string>
 </resources>

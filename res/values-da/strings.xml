@@ -32,6 +32,10 @@ Tillader applikationer at skrive data til IM-indholdsleverandøren.</string>
   <string name="lock_screen_passphrase_not_set_confirm">Bekræft ny adgangskode</string>
   <string name="lock_screen_passphrases_not_matching">Adgangskoder var ikke identiske, prøv igen </string>
   <string name="lock_screen_skip">Jeg er så doven (ingen adgangskode!)</string>
+  <string name="app_passphrase_view_password_question">Indtast din adgangskode</string>
+  <string name="password_please">Adgangskode …</string>
+  <string name="passphrase">Løsen</string>
+  <string name="passphrase_again">Løsen (igen)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Vælg en konto</string>
   <string name="choose_account_title">Vælg en konto</string>
@@ -78,6 +82,7 @@ Lad os så komme i gang!</string>
   <string name="menu_add_account">Tilføj konto</string>
   <string name="menu_edit_account">Rediger konto</string>
   <string name="menu_remove_account">Fjern konto</string>
+  <string name="menu_use_existing_account">Eksisterende konto</string>
   <!--Views: Setup: Account-->
   <string name="label_username">Bruger@Server:</string>
   <string name="label_password">Adgangskode:</string>
@@ -149,7 +154,7 @@ Lad os så komme i gang!</string>
   <string name="server_port">Server-port</string>
   <string name="xmpp_resource">XMPP-ressource</string>
   <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">for at adskille denne forbindelse fra andre klienter der også er logget ind</string>
-  <string name="xmpp_resource_prio_title">XMPP ressourceprioritet</string>
+  <string name="xmpp_resource_prio_title">XMPP-ressourceprioritet</string>
   <string name="xmpp_resource_prio_summary">Beskeder til klienter med flere aktive ressourcer vil blive afleveret til ressourcen med højeste prioritet</string>
   <!--Views: Contact list-->
   <string name="title_chats">Samtaler</string>
@@ -166,6 +171,7 @@ Tryk her for at tilføje!</string>
   <string name="menu_block_contact">Bloker kontakt</string>
   <string name="menu_contact_nickname">Kontakt kaldenavn</string>
   <string name="menu_view_blocked">Blokeret</string>
+  <string name="nickname">Øgenavn</string>
   <string name="confirm_delete_contact">Kontakten \"<xliff:g id="user">%1$s</xliff:g>\" slettes.</string>
   <string name="confirm_block_contact">Kontakten "<xliff:g id="user">%1$s</xliff:g>" blokeres.</string>
   <string name="confirm_unblock_contact">Blokeringen af kontakten "<xliff:g id="user">%1$s</xliff:g>" ophæves.</string>
@@ -173,11 +179,11 @@ Tryk her for at tilføje!</string>
   <string name="delete_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er slettet.</string>
   <string name="block_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er blokeret.</string>
   <string name="unblock_contact_success">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er ikke længere blokeret.</string>
-  <string name="menu_new_chat">Ny Chat</string>
-  <string name="menu_search_contacts">Søg i Kontakter</string>
-  <string name="menu_show_grid">Vis tern</string>
+  <string name="menu_new_chat">Ny chat</string>
+  <string name="menu_search_contacts">Søg i kontakter</string>
+  <string name="menu_show_grid">Vis gitter</string>
   <string name="menu_start_chat">Start chat</string>
-  <string name="menu_view_profile">Vis Profil</string>
+  <string name="menu_view_profile">Vis profil</string>
   <string name="menu_verify">Bekræft nøgle</string>
   <string name="ongoing_conversation">Igangværende chats (<xliff:g id="NUMBER">%1$d</xliff:g>)</string>
   <string name="online_count"><xliff:g id="NUMBER">%1$d</xliff:g> er online</string>
@@ -190,8 +196,8 @@ Tryk her for at tilføje!</string>
   <string name="search_button_text">Udfør</string>
   <string name="empty_chat_list">Der er ingen aktive chats.</string>
   <string name="add_contact_title">Tilføj kontakt</string>
-  <string name="input_contact_label">E-mail-adresse på den person, du ønsker at invitere:</string>
-  <string name="choose_list_label">Vælg en liste:</string>
+  <string name="input_contact_label">Brugernavn eller Jabber-id på den person, du ønsker at invitere:</string>
+  <string name="choose_list_label">Konto som kontakten skal tilføjes til:</string>
   <string name="invite_instruction">Indtast et navn for at tilføje fra Kontakter.</string>
   <string name="invite_label">Send invitation</string>
   <string name="contact_profile_title">Kontaktens profil</string>
@@ -224,11 +230,13 @@ Tryk her for at tilføje!</string>
   <string name="compose_hint_secure">Send sikker besked</string>
   <string name="menu_resend">Gensend</string>
   <string name="menu_end_conversation">Afslut chat</string>
-  <string name="menu_clear_chat">Ryd Chat</string>
+  <string name="menu_clear_chat">Ryd chat</string>
   <string name="menu_insert_smiley">Indsæt smiley</string>
   <string name="menu_switch_chats">Skift til chat</string>
   <string name="menu_plus">Menu+</string>
   <string name="select_link_title">Vælg link</string>
+  <string name="delete">Slet</string>
+  <string name="keep_files">Behold filer</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> har inviteret dig til at deltage i en gruppechat.</string>
   <string name="invitation_sent_prompt">Invitationen er sendt til <xliff:g id="USER">%1$s</xliff:g>.</string>
@@ -307,6 +315,7 @@ Rør skærm for at invitere.</string>
   <string name="pref_show_grid">Vis kontakt-tern</string>
   <string name="pref_show_grid_summary">Vis kontaktliste som profilbilledgitter </string>
   <string name="button_yes_accept_all">Ja, accepter alle</string>
+  <!--Prompt user to resolve missing External Storage media store-->
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Anden fintuning</string>
   <string name="start_on_boot">Start ChatSecure automatiskt</string>
@@ -336,6 +345,12 @@ Rør skærm for at invitere.</string>
   <string name="signout_kill_confirm_message">Vil du logge ud af alle services OG afslutte alle kørende processer (hård afslutning)?</string>
   <string name="prompt_create_new_account_">Opret ny konto?</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Opret en ny chat-konto for brugernavn \'%1$s\'?</string>
+  <string name="dialog_cert_title">Certifikatinformation</string>
+  <string name="dialog_cert_subject">Certifikat:</string>
+  <string name="dialog_cert_issuer">Udstedt af:</string>
+  <string name="dialog_cert_fingerprint">SHA1-fingeraftryk:</string>
+  <string name="dialog_cert_issue_date">Udstedt:</string>
+  <string name="dialog_cert_expires">Udløber:</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Nye <xliff:g id="PROVIDER">%1$s</xliff:g>-beskeder</string>
   <string name="notify_groupchat_label">Gruppechatinvitation</string>
@@ -344,13 +359,14 @@ Rør skærm for at invitere.</string>
   <string name="app_unlocked">Aktiveret &amp; låst op</string>
   <!--Alerts: Exceptions-->
   <string name="error">Bemærk</string>
+  <string name="error_prefix">Fejl:</string>
   <string name="general_error">Fejlkode <xliff:g id="CODE">%1$d</xliff:g></string>
   <string name="login_service_failed">Der kunne ikke logges ind på tjenesten <xliff:g id="SERVICE">%1$s</xliff:g>. Prøv igen senere."\n"(Detalje: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
   <string name="add_list_failed">Listen blev ikke tilføjet.</string>
   <string name="block_contact_failed">Kontakten blev ikke blokeret.</string>
   <string name="unblock_contact_failed">Blokeringen af kontakten blev ikke ophævet.</string>
   <string name="select_contact">Vælg en kontakt først.</string>
-  <string name="disconnected">\"Afbrudt!\"\n</string>
+  <string name="disconnected">Forbindelse afbrudt!\n</string>
   <string name="service_error">Servicefejl!</string>
   <string name="load_contact_list_failed">Listen over kontakter blev ikke indlæst.</string>
   <string name="cant_connect_to_server">Der kan ikke oprettes forbindelse til serveren. Kontroller din forbindelse.</string>
@@ -358,7 +374,7 @@ Rør skærm for at invitere.</string>
   <string name="contact_blocked">Kontakten \"<xliff:g id="USER">%1$s</xliff:g>\" er blevet blokeret.</string>
   <string name="contact_not_loaded">Vent, mens din liste over kontakter indlæses.</string>
   <string name="network_error">Der opstod en netværksfejl.</string>
-  <string name="wifi_not_connected_error">WiFI er nødvendig for denne forbindelse.</string>
+  <string name="wifi_not_connected_error">WiFi er nødvendig for denne forbindelse.</string>
   <string name="service_not_support">Serveren understøtter ikke denne funktionalitet.</string>
   <string name="invalid_password">Den adgangskode, du indtastede, er ikke gyldig.</string>
   <string name="internal_server_error">Serveren registrerede en fejl.</string>
@@ -385,6 +401,7 @@ Rør skærm for at invitere.</string>
   <string name="account_wizard_no_root_domain_warning">Dit servernavn har ikke et .com, .net eller lignende efter sig. Prøv venligst igen!</string>
   <string name="signin_password_prompt">Skriv din adgangskode:</string>
   <string name="warning_tor_connect">Siden du anvender Tor, skal du angive XMPP \'Forbindelses-server\' direkte i avancerede kontoindstillinger</string>
+  <string name="warning_weak_crypto">ADVARSEL: Denne tjeneste benytter sig af et certifikat med SVAG underliggende kryptografi. Bed venligst administratoren om at opgradere den.</string>
   <string name="unable_to_create_or_join_group_chat">Kunne ikke oprette eller deltage i gruppesamtale</string>
   <string name="sorry_we_cannot_share_that_file_type">Beklager, vi kan ikke dele filer af denne type</string>
   <string name="err_otr_share_no_encryption">Du skal aktivere kryptering for at dele filer</string>
@@ -393,14 +410,14 @@ Rør skærm for at invitere.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Der er ingen fremviser tilgængelig for dette filformat</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Start venligst en sikker samtale inden du scanner koder</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-nøglering ike importeret; kontroller at filen eksisterer på den korrekte sti og i det korrekte format</string>
-  <string name="otr_keysync_warning_message">Kopier filen \'otr_keystore.ofcaes\' fra computerværktøjet OtrFileConverter til rod-mappen af din enheds lager</string>
+  <string name="otr_keysync_warning_message">Kopier filen \'otr_keystore.ofcaes\' fra computerværktøjet KeySync til rod-mappen af din enheds lager</string>
   <string name="msg_sent_failed">Beskeden kunne ikke sendes.</string>
   <string name="disconnected_warning">Beskeder afsendes ved genetablering af forbindelse</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> er offline. Dine sendte beskeder sendes, når <xliff:g id="USER_1">%1$s</xliff:g> er online igen.</string>
   <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g> er ikke på din liste over kontakter.</string>
+  <string name="error_account_password_mismatch">Adgangskoderne stemmer ikke overens</string>
+  <string name="error_account_settings_priority">Prioritet skal være et tal mellem 0 og 127</string>
   <string name="account_settings_title">Account Settings</string>
-
-  <string name="warning_alpha">ADVARSEL: Dette er en tidlig udgave af ChatSecure som kan indeholde sikkerhedshuller eller andre fejl.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>
   <string name="_open_conversations">åbne samtaler</string>
@@ -489,5 +506,9 @@ Rør skærm for at invitere.</string>
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
+  <string name="i_have_an_existing_xmpp_account">Eksisterende konto</string>
+  <string name="account_existing_full">Forbind til en eksisterende konto på en specifik Jabber/XMPP-server.</string>
+  <string name="i_want_to_chat_using_my_google_account">Google-konto</string>
+  <string name="account_google_full">Snak med andre Google-brugere ved hjælp af en eksisterende Google-konto.</string>
   <string name="i_need_a_new_account">Ny kont</string>
 </resources>

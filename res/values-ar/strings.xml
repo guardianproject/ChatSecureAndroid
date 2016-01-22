@@ -162,7 +162,7 @@
   <string name="empty_account_message">لا توجد لديك حسابات تم ضبطها.\n
 \n
 اضغط هنا لإضافة حساب!</string>
-  <string name="buddy_list_title">جهات الاتصال- &lt;xliff id="username"&gt;%1$s&lt;/xliff&gt;</string>
+  <string name="buddy_list_title">جهات الاتصال- <xliff id="username">%1$s</xliff></string>
   <string name="menu_add_contact">إضافة اسم</string>
   <string name="menu_remove_contact">حذف الاتصال</string>
   <string name="menu_block_contact">حجب الاتصال</string>
@@ -223,6 +223,7 @@
   <string name="transfer_in_progress">جاري النقل</string>
   <string name="accept_transfer_">قبول النقل؟</string>
   <string name="wants_to_send_you_the_file">يريد أن يرسل لك الملف</string>
+  <string name="no_connection_for_sending">الاتصال غير متاح لإرسال مشاركتك !</string>
   <string name="send">إرسال</string>
   <string name="compose_hint">أرسل رسالة</string>
   <string name="compose_hint_secure">أرسل رسالة آمنة</string>
@@ -262,6 +263,7 @@
   <string name="empty_contact_list">لم يتم العثور على جهة الاتصال.
 \n\n
 اضغط للاضافة.</string>
+  <string name="subscription_prompt">إضافة <xliff:g id="USER">%1$s</xliff:g> ؟</string>
   <string name="approve_subscription">نعم</string>
   <string name="decline_subscription">لا</string>
   <string name="approve_subscription_error">فشلت محاولة تأكيد الاشتراك من <xliff:g id="user">%1$s</xliff:g> . حاول مرة أخرى.</string>
@@ -320,6 +322,8 @@
   <string name="pref_cacheword_timeout_title">انتهاء المدة المؤقتة لحفظ كلمة السر</string>
   <string name="pref_cacheword_timeout_summary">المدة التي يبقى بها تشفير البرنامح مفتوحاً.</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">الوصلات القابلة للنقر عبر Tor</string>
+  <string name="pref_linkify_on_tor_summary">جعل الوصلات في المحادثات قابلة للنقر إذا كنت تستخدم حسابات عبر Tor (تحذير ! قد يكون هناك تسريب للخصوصية !)</string>
   <string name="pref_group_looknfeel_title">واجهة المستخدم</string>
   <string name="menu_locale">اللغة</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">اللغات</string>
@@ -335,6 +339,14 @@
   <string name="button_yes_accept_all">نعم، اقبل الكل</string>
   <string name="pref_delete_unsecured_media_title">حذف الملفات الغير آمنة</string>
   <string name="pref_delete_unsecured_media_summary">حذف الملف الأساسي تلقائياً من المخزن غير الآمن بعد استراده وتصديره</string>
+  <string name="pref_store_media_on_external_storage_title">تخزين الوسائط في التخزين الخارجي</string>
+  <string name="pref_store_media_on_external_storage_summary">يمكن تخزين ملفات وسائط جلسات المحادثات في حاوية معماة داخل وسيلة تخزين داخلية أو خارجية.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">التخزين الخارجي غير موجود</string>
+  <string name="external_storage_missing_message">إن سجلات المحادثات تخزَّن داخل بطاقة SD، لكن لا وجود لهذه البطاقة. يُرجى إدخال بطاقة SD الصحيحة، أو حذف سجل المحادثة الحالي ثم إعادة تشغيل ChatSecure.</string>
+  <string name="media_store_file_missing_title">مستودع وسائط المحادثات غير موجود</string>
+  <string name="media_store_file_missing_message">إن سجلات المحادثات تخزَّن داخل بطاقة SD، لكن لا وجود للملف في هذه البطاقة. يُرجى إدخال بطاقة SD الصحيحة، أو حذف سجل المحادثة الحالي ثم إعادة تشغيل ChatSecure.</string>
+  <string name="delete_chat_log">حذف سجل المحادثة</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">تعديلات أخرى </string>
   <string name="start_on_boot">إبدأ شات سيكيور (ChatSecure) تلقائياً</string>
@@ -437,11 +449,12 @@
   <string name="sorry_we_cannot_share_that_file_type">عذرا، لا يمكن مشاركة هذا النوع من الملفات</string>
   <string name="err_otr_share_no_encryption">يجب عليك تفعيل التشفير للتمكن من مشاركة الملفات</string>
   <string name="please_enable_chat_encryption_to_share_files">رجاءً، فعِّل تشفير المحادثات للتمكن من مشاركة الملفات</string>
+  <string name="unsupported_incoming_data">البيانات الواردة غير مدعومة، لا يمكن مشاركتها !</string>
   <string name="swipe_alert">كشف ChatSecure أنه تم محاولة إزالة عمليته. من المحتمل جداً أن ChatSecure سيتوقف عن العمل. يُرجى استخدام تسجيل خروج الكل من قائمة الحسابات بدلاً عن ذلك.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">لا يوجد عارض لهذا الصنف من الملفات</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">يُرجى بدأ محادثة آمنة قبل مسح الرموز</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">لم تُستورَد محفظة مفاتيح OTR. تأكد من أن الملف بالصيغة أو المكان الصحيحين</string>
-  <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  OtrFileConverter إلى مجلد جذر جهاز تخزينك</string>
+  <string name="otr_keysync_warning_message">يرجى نسخ ملف \'otr_keystore.ofcaes\' من سطح مكتب أداة  KeySync إلى مجلد جذر جهاز تخزينك</string>
   <string name="msg_sent_failed">لا يمكن إرسال هذه الرسالة.</string>
   <string name="disconnected_warning">لا يوجد اتصال حالياً. ستُرسَل الرسائل عند إعادة الاتصال.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> غير متصل. أي رسائل ترسلها ستصل إلى <xliff:g id="user">%1$s</xliff:g> عندما يقوم بالاتصال.</string>
@@ -452,9 +465,8 @@
   <string name="error_chat_file_transfer_title">خطأ في النقل</string>
   <string name="error_chat_file_transfer_body">لا يمكن قراءة مخزن الملفات</string>
   <string name="error_welcome_database">خطأ كبير: لا يمكن فتح أو تحميل قاعدة بيانات التطبيق. الرجاء إعادة تثبيت التطبيق أو محو البيانات.</string>
+  <string name="error_no_app_to_handle_url">لا وجود لتطبيق يدعم هذه الوصلة !</string>
   <string name="account_settings_title">إعدادات الحساب</string>
-
-  <string name="warning_alpha">تحذير: هذه نسخة تجريبية من شات سيكيور (ChatSecure) وقد تحتوي على بعض الأخطاء أو الثغرات الأمنية.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">المجموعات</string>
   <string name="_open_conversations">المحادثة (أوالمحادثات) المفتوحة</string>
@@ -548,6 +560,7 @@
   <string name="i_have_an_existing_xmpp_account">حساب حالي</string>
   <string name="account_existing_full">الاتصال بحسابي الموجود على خادم Jabber\XMPP محدد.</string>
   <string name="i_want_to_chat_using_my_google_account">حساب جوجل </string>
+  <string name="account_google_full">تواصل مع مستخدمي جوجل الآخرين باستخدام حسابك في جوجل.</string>
   <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">الدردشة عبر شبكة WiFi.</string>
   <string name="account_wifi_full">دردش عبر شبكة WiFi دون الحاجة إلى خدمة الأنترنت أو خادم!</string>
   <string name="account_wifi_button">تفعيل الدردشة عبر WiFi</string>
@@ -562,6 +575,7 @@
   <string name="resent">[أُعيد إرسالِه]</string>
   <string name="unable_to_securely_share_this_file">لا يمكن مشاركة هذا الملف بطريقة آمنة</string>
   <string name="install_orbot_">تثبيت Orbot؟</string>
+  <string name="you_must_have_orbot">يجب أن يكون Orbot مثبتا ومشغلا لتوكيل المرور عبره. هل تريد تثبيته ؟</string>
   <string name="always">دائماً</string>
   <string name="start_orbot_">إبدأ Orbot؟</string>
   <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">لا يبدو أن Orbot مشغَّل. هل تريد تشغيلِه والاتصال بشبكة Tor؟</string>
@@ -571,9 +585,5 @@
   <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">مخزن مفاتيح التعمية مشوَّه. الرجاء إعادة تثبيت شات سيكيور أو \'إفراغ البيانات\' لهذا التطبيق</string>
   <string name="you_received_an_unreadable_encrypted_message">وصلتك رسالة مشفرة غير قابلة للقراءة</string>
   <string name="i_could_not_decrypt_the_message_you_sent">لم أتمكن من فك تشفير الرسالة التي أرسلتها</string>
-  
-   <string name="otr_options_force">افرض/ إطلب</string>
-    <string name="otr_options_auto">محاولة تلقائيا</string>
-    <string name="otr_options_attempt">بناءَ على الطلب</string>
-     <string name="otr_options_disabled">تعطيل / أبدا</string>
+  <string name="swipe_hint">&lt; امسح يمنة ويسرة للمزيد من الخيارات &gt;</string>
 </resources>

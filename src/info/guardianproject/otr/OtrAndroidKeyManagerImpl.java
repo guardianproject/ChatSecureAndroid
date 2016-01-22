@@ -49,6 +49,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -57,6 +58,7 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements OtrKeyManager {
+    public static final String TAG = "OtrAndroidKeyManagerImpl";
 
     private SimplePropertiesStore store;
 
@@ -848,17 +850,15 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
         return store.export(password, otrKeystoreAES);
     }
-    public static boolean checkForKeyImport (Intent intent, Activity activity)
+    public static void checkForKeyImport (Intent intent, Activity activity)
     {
-        boolean doKeyStoreImport = false;
-
         // if otr_keystore.ofcaes is in the SDCard root, import it
         File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
                 "otr_keystore.ofcaes");
         if (otrKeystoreAES.exists()) {
             //Log.i(TAG, "found " + otrKeystoreAES + "to import");
-            doKeyStoreImport = true;
             importOtrKeyStore(otrKeystoreAES, activity);
+            return;
         }
         else if (intent != null && intent.getData() != null)
         {
@@ -870,19 +870,11 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
                 path = uriData.toString().replace("file://", "");
 
                 File file = new File(path);
-
-                doKeyStoreImport = true;
-
                 importOtrKeyStore(file, activity);
+                return;
             }
         }
-        else
-        {
-            Toast.makeText(activity, R.string.otr_keysync_warning_message, Toast.LENGTH_LONG).show();
-
-        }
-
-        return doKeyStoreImport;
+        Toast.makeText(activity, R.string.otr_keysync_warning_message, Toast.LENGTH_LONG).show();
     }
 
 
@@ -936,59 +928,33 @@ public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements Otr
 
     }
 
-    public static boolean handleKeyScanResult (int requestCode, int resultCode, Intent data, Activity activity)
-    {
-        IntentResult scanResult =
-                IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+    public static void handleKeyScanResult (String otrKeyPassword, Activity activity) {
 
-        if  (scanResult != null)
-        {
-
-            String otrKeyPassword = scanResult.getContents();
-
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
-
-            String otrKeyStorePath = prefs.getString("keystoreimport", null);
-
-            Log.d("OTR","got password: " + otrKeyPassword + " for path: " + otrKeyStorePath);
-
-            if (otrKeyPassword != null && otrKeyStorePath != null)
-            {
-
-                otrKeyPassword = otrKeyPassword.replace("\n","").replace("\r", ""); //remove any padding, newlines, etc
-
-                try
-                {
-                    File otrKeystoreAES = new File(otrKeyStorePath);
-                    if (otrKeystoreAES.exists()) {
-                        try {
-
-                            IOtrKeyManager keyMan = ((ImApp)activity.getApplication()).getRemoteImService().getOtrKeyManager();
-
-                            return keyMan.importOtrKeyStoreWithPassword(otrKeystoreAES.getCanonicalPath(), otrKeyPassword);
-
-                        } catch (Exception e) {
-
-                            OtrDebugLogger.log("error getting keyman",e);
-                            return false;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Toast.makeText(activity, "unable to open keystore for import", Toast.LENGTH_LONG).show();
-                    return false;
-                }
-            }
-            else
-            {
-                Log.d("OTR","no key store path saved");
-                return false;
-            }
-
+        if (TextUtils.isEmpty(otrKeyPassword)) {
+            Toast.makeText(activity, "Scanned password is empty!", Toast.LENGTH_LONG).show();
+            return;
         }
 
-        return false;
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        File otrKeyStoreFile = new File(prefs.getString("keystoreimport", "/sdcard/otr_keystore.ofcaes"));
+        if (!otrKeyStoreFile.exists()) {
+            Toast.makeText(activity, otrKeyStoreFile + " does not exist!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //remove any padding, newlines, etc
+        otrKeyPassword = otrKeyPassword.replace("\n","").replace("\r", "").replace(" ", "");
+        try {
+            IOtrKeyManager keyMan = ((ImApp)activity.getApplication()).getRemoteImService().getOtrKeyManager();
+            if (keyMan.importOtrKeyStoreWithPassword(otrKeyStoreFile.getCanonicalPath(), otrKeyPassword)) {
+                Toast.makeText(activity, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (Exception e) {
+            Toast.makeText(activity, "Exception on keystore import", Toast.LENGTH_LONG).show();
+            OtrDebugLogger.log("error getting keyman",e);
+        }
+        Toast.makeText(activity, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
     }
 
 

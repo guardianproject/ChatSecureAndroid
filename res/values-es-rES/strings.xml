@@ -162,13 +162,13 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="menu_contact_nickname">Alias (nickname) de contacto</string>
   <string name="menu_view_blocked">Bloqueados</string>
   <string name="nickname">Apodo</string>
-  <string name="confirm_delete_contact">El contacto "<xliff:g id="USER">%1$s</xliff:g>" se eliminará.</string>
-  <string name="confirm_block_contact">El contacto "<xliff:g id="USER">%1$s</xliff:g>" se bloqueará.</string>
-  <string name="confirm_unblock_contact">El contacto "<xliff:g id="USER">%1$s</xliff:g>" se desbloqueará.</string>
-  <string name="add_contact_success">Contacto "<xliff:g id="USER">%1$s</xliff:g>" añadido.</string>
-  <string name="delete_contact_success">Contacto "<xliff:g id="USER">%1$s</xliff:g>" eliminado.</string>
-  <string name="block_contact_success">Contacto "<xliff:g id="USER">%1$s</xliff:g>" bloqueado.</string>
-  <string name="unblock_contact_success">Contacto "<xliff:g id="USER">%1$s</xliff:g>" desbloqueado</string>
+  <string name="confirm_delete_contact">El contacto \"<xliff:g id="USER">%1$s</xliff:g>\" se eliminará.</string>
+  <string name="confirm_block_contact">El contacto \"<xliff:g id="USER">%1$s</xliff:g>\" se bloqueará.</string>
+  <string name="confirm_unblock_contact">El contacto \"<xliff:g id="USER">%1$s</xliff:g>\" se desbloqueará.</string>
+  <string name="add_contact_success">Contacto \"<xliff:g id="USER">%1$s</xliff:g>\" añadido.</string>
+  <string name="delete_contact_success">Contacto \"<xliff:g id="USER">%1$s</xliff:g>\" eliminado.</string>
+  <string name="block_contact_success">Contacto \"<xliff:g id="USER">%1$s</xliff:g>\" bloqueado.</string>
+  <string name="unblock_contact_success">Contacto \"<xliff:g id="USER">%1$s</xliff:g>\" desbloqueado</string>
   <string name="menu_new_chat">Nueva conversación</string>
   <string name="menu_search_contacts">Buscar Contactos</string>
   <string name="menu_show_grid">Mostrar malla</string>
@@ -327,6 +327,14 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="button_yes_accept_all">Sí, aceptar todo</string>
   <string name="pref_delete_unsecured_media_title">Borrar audiovisuales no asegurados</string>
   <string name="pref_delete_unsecured_media_summary">Después de compartir una foto o fichero, borrarlo automáticamente del almacenamiento no asegurado original depués de importarlo</string>
+  <string name="pref_store_media_on_external_storage_title">Almacenar ficheros de medios en almacenamiento externo</string>
+  <string name="pref_store_media_on_external_storage_summary">Los ficheros de medios (audiovisuales) de sesiones de chat se almacenan en un contenedor cifrado que puede guardarse en un almacenamiento interno o externo.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Almacenamiento externo ausente</string>
+  <string name="external_storage_missing_message">Sus registros (logs) de chat se almacenan en una tarjeta SD, pero no hay ninguna tarjeta SD presente. Por favor inserte la tarjeta SD correcta, o borre el log de chat existente y vuelva a iniciar ChatSecure.</string>
+  <string name="media_store_file_missing_title">El almacenamiento de ficheros de medios del chat está ausente</string>
+  <string name="media_store_file_missing_message">Sus registros (logs) se almacenan en la tarjeta SD, pero el fichero está ausente de la actual tarjeta SD. Por favor inserte la tarjeta SD correcta, o borre el log de chat existente y vuelva a iniciar ChatSecure.</string>
+  <string name="delete_chat_log">Borrar log de chat</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Otros ajustes</string>
   <string name="start_on_boot">Arrancar ChatSecure automáticamente</string>
@@ -392,7 +400,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="load_contact_list_failed">No se ha podido cargar la lista de contactos.</string>
   <string name="cant_connect_to_server">No se puede establecer conexión con el servidor. Comprueba la conexión.</string>
   <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g> ya figura en su lista de contactos.</string>
-  <string name="contact_blocked">El contacto "<xliff:g id="USER">%1$s</xliff:g>" ha sido bloqueado.</string>
+  <string name="contact_blocked">El contacto \"<xliff:g id="USER">%1$s</xliff:g>\" ha sido bloqueado.</string>
   <string name="contact_not_loaded">Por favor, espera mientras se carga la lista de contactos.</string>
   <string name="network_error">Se ha producido un error de red.</string>
   <string name="wifi_not_connected_error">Se necesita una conexión WiFi.</string>
@@ -433,7 +441,7 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="there_is_no_viewer_available_for_this_file_format">No hay ningún visor disponible para este formato de fichero</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Por favor inicie una conversación segura antes de escanear códigos</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">El anillo de claves de OTR no se ha importado. Por favor, compruebe que el archivo existe y tiene el formato apropiado</string>
-  <string name="otr_keysync_warning_message">Por favor copie el archivo \'otr_keystore.ofcaes\' desde el escritorio de la herramienta OtrFileConverter al directorio raíz de su dispositivo de almacenamiento</string>
+  <string name="otr_keysync_warning_message">Por favor copie el archivo \'otr_keystore.ofcaes\' desde el escritorio de la herramienta KeySync al directorio raíz de su dispositivo de almacenamiento</string>
   <string name="msg_sent_failed">No se ha podido enviar el mensaje.</string>
   <string name="disconnected_warning">Está desconectado. Los mensajes se reenviarán al volver a conectarse.</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> está desconectado. Los mensajes enviados se entregarán cuando <xliff:g id="USER_1">%1$s</xliff:g> vuelva a conectarse.</string>
@@ -446,8 +454,6 @@ cuentas configuradas.\n\n¡Pulse aquí para añadir una!</string>
   <string name="error_welcome_database">Error importante: No se pudo desbloquear o cargar la base de datos de la aplicación. Por favor reinstale la aplicación o borre los datos.</string>
   <string name="error_no_app_to_handle_url">¡No hay ninguna aplicación instalada que pueda manejar ese enlace!</string>
   <string name="account_settings_title">Configuración de la cuenta</string>
-
-  <string name="warning_alpha">Advertencia: Esta es una primera versión de ChatSecure y puede que aun contenga fallos de seguridad y errores.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupos</string>
   <string name="_open_conversations">conversaciones abiertas</string>

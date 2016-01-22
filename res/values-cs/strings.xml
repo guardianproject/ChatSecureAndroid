@@ -252,6 +252,9 @@
   <string name="empty_contact_list">Žádné kontakty nenalezeny
 
 Klikněte pro pozvání.</string>
+  <string name="subscription_prompt">Přidat <xliff:g id="USER">%1$s</xliff:g>?</string>
+  <string name="approve_subscription">Ano</string>
+  <string name="decline_subscription">Ne</string>
   <string name="approve_subscription_error">Přihlášení k odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nepodařilo schválit. Zkuste to prosím znovu později.</string>
   <string name="decline_subscription_error">Odmítnutí odběru uživatele <xliff:g id="USER">%1$s</xliff:g> se nezdařilo. Zkuste to prosím znovu později.</string>
   <!--Security: OTR-->
@@ -308,6 +311,8 @@ Klikněte pro pozvání.</string>
   <string name="pref_cacheword_timeout_title">Časový limit hesla</string>
   <string name="pref_cacheword_timeout_summary">Čas kdy šifrování aplikace mělo být odemčeno</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Klikací odkazy na Tor</string>
+  <string name="pref_linkify_on_tor_summary">Pro účty používající Tor, umožnit rozkliknutí odkazu v chatu (VAROVÁNÍ, je tu možnost úniku soukromí!)</string>
   <string name="pref_group_looknfeel_title">Uživatelské rozhraní</string>
   <string name="menu_locale">Jazyk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Jazyky</string>
@@ -323,6 +328,14 @@ Klikněte pro pozvání.</string>
   <string name="button_yes_accept_all">Ano, příjmout vše</string>
   <string name="pref_delete_unsecured_media_title">Smazat nezabezpečené média</string>
   <string name="pref_delete_unsecured_media_summary">Po nasdílení fotek a souboru, automaticky smazat originál z nezabezpečeného úložiště.</string>
+  <string name="pref_store_media_on_external_storage_title">Ukládat média na externím úložišti</string>
+  <string name="pref_store_media_on_external_storage_summary">Multimediální soubory z relací konverzace jsou uloženy v šifrované kontejneru, který lze uložit na interní nebo externí úložiště.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Chybí externí úložiště </string>
+  <string name="external_storage_missing_message">Záznamy vašich chatů jsou uloženy na SD kartě, ale žádná SD karta není k dispozici. Prosím vložte správnou SD kartu, nebo odstraňte existující záznamy chatu a spusťte ChatSecure znovu.</string>
+  <string name="media_store_file_missing_title">Chybí úložiště chatovacích médií</string>
+  <string name="media_store_file_missing_message">Záznamy vašich chatů jsou uloženy na SD kartě, ale na aktuální SD kartě chybí. Prosím vložte správnou SD kartu, nebo odstraňte existující záznamy chatu a spusťte ChatSecure znovu.</string>
+  <string name="delete_chat_log">Smazat záznam chatu </string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Ostatní nastavení</string>
   <string name="start_on_boot">Spusit ChatSecure automaticky</string>
@@ -430,7 +443,7 @@ Klikněte pro pozvání.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Pro tento formát souborů není k dispozici žádný prohlížeč</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Prosím začnětě zabezpečenou konverzaci před skenováním kódů</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR klíčenka není importována; Zkontrolujte zda-li soubor existuje ve správném formátu a umístění</string>
-  <string name="otr_keysync_warning_message">Prosím, zkopírujte soubor \'otr_keystore.ofcaes\' z počítače OtrFileConverter nástroje do kořenového adresáře vašeho paměťovém zařízení</string>
+  <string name="otr_keysync_warning_message">Prosím, zkopírujte soubor \'otr_keystore.ofcaes\' z počítače KeySync nástroje do kořenového adresáře vašeho paměťovém zařízení</string>
   <string name="msg_sent_failed">Zprávu nelze odeslat.</string>
   <string name="disconnected_warning">Zprávy budou odeslány při opětovném připojení</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> je offline. Odeslané zprávy budou doručeny, jakmile se <xliff:g id="USER_1">%1$s</xliff:g> přihlásí online.</string>
@@ -441,9 +454,8 @@ Klikněte pro pozvání.</string>
   <string name="error_chat_file_transfer_title">Chyba přenosu</string>
   <string name="error_chat_file_transfer_body">Soubor nelze na úložišti přečíst</string>
   <string name="error_welcome_database">Kritická chyba: Nelze odemknout nebo načíst databázy aplikace. Nainstalujte prosím znovu aplikaci nebo vyčistěte data.</string>
+  <string name="error_no_app_to_handle_url">Žádná aplikace která dokáže zpracovat tento odkaz není nainstalována!</string>
   <string name="account_settings_title">Nastavení účtu</string>
-
-  <string name="warning_alpha">Varování: Toto je předčasně vypuštěné ChatSecure které ještě může obsahovat bezpečnostní díry nebo chyby.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Skupiny</string>
   <string name="_open_conversations">otevřít konverzaci(e)</string>

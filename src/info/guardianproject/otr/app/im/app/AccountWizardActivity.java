@@ -48,6 +48,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.viewpagerindicator.PageIndicator;
 
 import info.guardianproject.onionkit.ui.OrbotHelper;
@@ -382,26 +383,11 @@ public class AccountWizardActivity extends ThemeableActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == IntentIntegrator.REQUEST_CODE) {
-          boolean keyStoreImported = false;
-
-            try {
-
-                keyStoreImported = OtrAndroidKeyManagerImpl.handleKeyScanResult(requestCode, resultCode, data, this);
-
-            } catch (Exception e) {
-                OtrDebugLogger.log("error importing keystore",e);
+            IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode,
+                    data);
+            if (scanResult != null) {
+                OtrAndroidKeyManagerImpl.handleKeyScanResult(scanResult.getContents(), this);
             }
-
-            if (keyStoreImported)
-            {
-                Toast.makeText(this, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
-            }
-            else
-            {
-                Toast.makeText(this, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
-
-            }
-
         }
         else if (requestCode == REQUEST_CREATE_ACCOUNT)
         {

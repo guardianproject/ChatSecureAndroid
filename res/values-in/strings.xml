@@ -391,7 +391,7 @@ Sentuh untuk mengundang.</string>
   <string name="please_enable_chat_encryption_to_share_files">Silahkan akifkan enkripsi percakapan untuk berbagi file</string>
   <string name="swipe_alert">ChatSecure mendeteksi sebuah permintaan untuk melepas task. ChatSecure cenderung akan crash. Disarankan menggunakan menu Sign out semua dari layar daftar akun.</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR keyring not imported; Silahkan cek jika file ada di lokasi dan format yang tepat</string>
-  <string name="otr_keysync_warning_message">Silahkan salin file \'otr_keystore.ofcaes\' dari desktop dengan alat OtrFileConverter ke root directory penyimpanan</string>
+  <string name="otr_keysync_warning_message">Silahkan salin file \'otr_keystore.ofcaes\' dari desktop dengan alat KeySync ke root directory penyimpanan</string>
   <string name="msg_sent_failed">Pesan ini tidak dapat dikirim.</string>
   <string name="disconnected_warning">Pesan akan dikirim ketika terhubung kembali</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> sedang offline. Pesan yang anda kirim akan diserahkan ketika <xliff:g id="user">%1$s</xliff:g> sudah online.</string>

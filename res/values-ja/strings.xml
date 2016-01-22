@@ -188,7 +188,7 @@
   <string name="search_button_text">移動</string>
   <string name="empty_chat_list">アクティブなチャットはありません。</string>
   <string name="add_contact_title">連絡先を追加</string>
-  <string name="input_contact_label">招待する人のメールアドレス:</string>
+  <string name="input_contact_label">追加するユーザー名またはJabberID:</string>
   <string name="choose_list_label">リストを選択:</string>
   <string name="invite_instruction">連絡先から追加する名前を入力してください。</string>
   <string name="invite_label">招待状を送る</string>
@@ -253,7 +253,7 @@
   <string name="contacts_picker_title">招待する連絡先を選択してください</string>
   <string name="contact_filter_hint">入力して、連絡先を検索</string>
   <string name="empty_contact_list">連絡先が見つかりません。\n\n招待するにはタップしてください。</string>
-  <string name="subscription_prompt">連絡先を追加?</string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> を追加しますか?</string>
   <string name="approve_subscription">はい</string>
   <string name="decline_subscription">いいえ</string>
   <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g>さんからの登録依頼を承認できませんでした。しばらくしてからもう一度試してください。</string>
@@ -329,6 +329,14 @@
   <string name="button_yes_accept_all">はい、すべて承認</string>
   <string name="pref_delete_unsecured_media_title">安全でないメディアを削除</string>
   <string name="pref_delete_unsecured_media_summary">写真やファイルを共有した後、インポート後、元の、安全でないストレージから自動的に削除します</string>
+  <string name="pref_store_media_on_external_storage_title">外部ストレージにメディアを保存</string>
+  <string name="pref_store_media_on_external_storage_summary">チャットセッションのメディアファイルは、暗号化されたコンテナに格納して、内部または外部のストレージに保存できます。</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">外部ストレージが見つかりません</string>
+  <string name="external_storage_missing_message">チャットログはSDカードに保存されましたが、SDカードが存在しません。正しいSDカードを挿入するか、既存のチャットログを削除してもう一度ChatSecureを起動してください。</string>
+  <string name="media_store_file_missing_title">格納したチャットメディアが見つかりません</string>
+  <string name="media_store_file_missing_message">チャットログはSDカードに保存されましたが、ファイルが現在のSDカードで見つかりません。正しいSDカードを挿入するか、既存のチャットログを削除してもう一度ChatSecureを起動してください。</string>
+  <string name="delete_chat_log">チャットログを削除</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">その他のチューニング</string>
   <string name="start_on_boot">ChatSecure を自動的に開始する</string>
@@ -373,7 +381,7 @@
   <string name="newMessages_label">新しい<xliff:g id="PROVIDER">%1$s</xliff:g>メッセージが届きました</string>
   <string name="num_unread_chats"><xliff:g id="NUMBER">%1$d</xliff:g> 未読のチャット</string>
   <string name="subscription_notify_text"><xliff:g id="user">%s</xliff:g> から新しい友達の招待</string>
-  <string name="file_notify_text">新しいファイル <xliff:g id="FILENAME">%s</xliff:g> <xliff:g id="USER">%s</xliff:g> から</string>
+  <string name="file_notify_text"><xliff:g id="user">%2$s</xliff:g> から、新しいファイル <xliff:g id="filename">%1$s</xliff:g></string>
   <string name="notify_groupchat_label">グループチャットの招待</string>
   <string name="group_chat_invite_notify_text"><xliff:g id="USER">%s</xliff:g> から新しいグループチャットの招待</string>
   <string name="new_messages_notify">新しいメッセージ。送信者</string>
@@ -435,7 +443,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">このファイル形式に使用可能なビューアーがありません</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">コードをスキャンする前に、安全な会話を開始してください</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR キーリングがインポートされていません; ファイルが適切な形式で、適切な場所に存在することを確認してください</string>
-  <string name="otr_keysync_warning_message">デスクトップ OtrFileConverter ツールから、お使いのデバイスのストレージのルートディレクトリに、\'otr_keystore.ofcaes\' ファイルをコピーしてください</string>
+  <string name="otr_keysync_warning_message">デスクトップ KeySync ツールから、お使いのデバイスのストレージのルートディレクトリに、\'otr_keystore.ofcaes\' ファイルをコピーしてください</string>
   <string name="msg_sent_failed">メッセージを送信できませんでした。</string>
   <string name="disconnected_warning">切断されています。再接続時にメッセージが送信されます。</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>さんはオフラインです。<xliff:g id="USER_1">%1$s</xliff:g>さんがオンラインになったら、メッセージを送信します。</string>
@@ -448,8 +456,6 @@
   <string name="error_welcome_database">メジャーエラー: ロック解除やアプリのデータベースをロードすることができません。アプリを再インストールするかデータをクリアデータしてください。</string>
   <string name="error_no_app_to_handle_url">リンクを処理するアプリがインストールされていません!</string>
   <string name="account_settings_title">アカウント設定</string>
-
-  <string name="warning_alpha">警告: これはChatSecureの早期リリースです。まだセキュリティホールやバグを含んでいる可能性があります。</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">グループ</string>
   <string name="_open_conversations">会話を開く</string>

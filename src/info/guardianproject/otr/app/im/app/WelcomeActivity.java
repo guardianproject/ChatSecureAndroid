@@ -525,9 +525,9 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
         boolean internalDbFileUsabe = internalDbFile.isFile() && internalDbFile.canWrite();
 
         boolean externalDbFileUsable = false;
-        File externalDbFile = new File(ChatFileStore.getExternalDbFilePath(this));
         java.io.File externalFilesDir = getExternalFilesDir(null);
         if (externalFilesDir != null) {
+            File externalDbFile = new File(ChatFileStore.getExternalDbFilePath(this));
             externalDbFileUsable = externalDbFile.isFile() && externalDbFile.canWrite();
         }
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);

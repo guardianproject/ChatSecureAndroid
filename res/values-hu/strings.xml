@@ -5,18 +5,57 @@
   <string name="im_label">ChatSecure</string>
   <!--General: Permissions-->
   <string name="ro_perm_label">azonnali üzenetek olvasása</string>
+  <string name="ro_perm_desc">Engedélyezze az alkalmazásoknak, hogy adatot olvassanak az IM tartalomszolgáltatótól.</string>
   <string name="wo_perm_label">azonnali üzenetek írása</string>
+  <string name="wo_perm_desc">Engedélyezze az alkalmazásoknak, hogy adatot írjanak az IM tartalomszolgáltatónak.</string>
+  <string name="perm_label">IM szolgáltatás indítása</string>
+  <string name="perm_desc">Engedélyezze az alkalmazásoknak, hogy szükség esetén IM szolgáltatást indítsanak.</string>
   <!--General: Actions-->
-  <string name="ok">Ok</string>
-  <string name="cancel">Mégsem</string>
-  <string name="yes">Ok</string>
-  <string name="no">Mégsem</string>
+  <string name="confirm">Megerősít</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Mégse</string>
+  <string name="yes">OK</string>
+  <string name="no">Mégse</string>
+  <string name="btn_next">Következő</string>
+  <string name="btn_back">Vissza</string>
+  <string name="connect">Csatlakozás</string>
+  <string name="play">Lejátszás</string>
+  <string name="setup">Telepítés</string>
   <!--Views-->
+  <string name="lock_screen_open">Megnyitás</string>
+  <string name="title_activity_lock_screen">ChatSecure Zárolva</string>
+  <string name="lock_screen_create_passphrase">Jelszó Beállítása</string>
+  <string name="lock_screen_confirm_passphrase">Jelszó Megerősítése</string>
+  <string name="lock_screen_passphrase_hint">Jelszó</string>
+  <string name="lock_screen_passphrase_not_set_enter">Lehetőséged van mesterjelszót beállítani, ami nélkül a ChatSecure nem tud hozzáférni a kapcsolataidhoz és az üzeneteidhez:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Új Jelszó Megerősítése</string>
+  <string name="lock_screen_passphrases_not_matching">A jelszó nem egyezik, próbáld újra</string>
+  <string name="lock_screen_skip">Kihagyás &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Felugró Ablak</string>
+  <string name="app_passphrase_view_password_question">Kérem adj meg egy jelszót</string>
+  <string name="password_please">Jelszót kérem…</string>
+  <string name="passphrase">Jelmondat</string>
+  <string name="passphrase_again">Jelmondat (újra)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Felhasználói fiók kiválasztása</string>
   <string name="choose_account_title">Felhasználói fiók kiválasztása</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Fiók <xliff:g id="account">%1$s</xliff:g> hozzáadása</string>
   <string name="menu_about">Rólunk</string>
+  <string name="menu_sign_out_all">Kijelentkezés mindenből</string>
+  <string name="signout_all_confirm_message">Minden szolgáltatásból ki akarsz jelentkezni?</string>
+  <string name="signed_out_prompt">Ki vagy jelentkezve ebből: <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Ki vagy jelentkezve ebből: <xliff:g id="account">%1$s</xliff:g>, mert <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">Először használod a ChatSecure-t?</string>
+  <string name="welcome_skip">Alig várod, hogy elkezdd?</string>
+  <string name="welcome_about">Kezdés</string>
+  <string name="welcome_account">Fiók Beállítása</string>
+  <string name="setup_passphrase_title">Jelmondat Beállítása</string>
+  <string name="setup_passphrase">Mielőtt elkezdenéd, kérlek válassz egy biztonságos jelmondatot, hogy megvédd a ChatSecure adataidat az illetéktelen hozzáféréstől.</string>
+  <string name="setup_passphrase_label1">Jelmondat:</string>
+  <string name="setup_passphrase_label2">Jelmondat (újra):</string>
   <string name="rekey_message">Adj meg egy új jelszót! A jelszónak tartalmaznia kell legalább egy nagy-, egy kisbetűt, és egy számjegyet, valamint legalább hat karakter hosszúnak kell lennie.</string>
+  <string name="do_rekey">Meglévő jegyzeteid titkosítása az új jelmondattal (türelem…)</string>
   <string name="enter_pass">Jelszó megadása:</string>
   <string name="new_pass">Üdvözlünk! Adj meg egy nehezen megfejthető jelszót a jegyzeteid titkosításához! A jelszónak tartalmaznia kell legalább egy nagy-, egy kisbetűt, és egy számjegyet, valamint legalább hat karakter hosszúnak kell lennie.</string>
   <string name="pass_err_length">Az álatlad megadott jelszó nem elég hosszú</string>
@@ -24,49 +63,513 @@
   <string name="pass_err_lower">Az általad megadott jelszó nem tartalmaz kisbetűt</string>
   <string name="pass_err_num">Az általad megadott jelszó nem tartalmaz számjegyet</string>
   <!--Views: About: Welcome-->
+  <string name="about_welcome_title">A ChatSecure-ról</string>
+  <string name="about_welcome">A ChatSecure egy mobil azonnali üzenetküldő alkalmazás, ami extra biztonságot nyújt az ellen, hogy mások kémkedni tudjanak a beszélgetéseidről.\n\nAz alkalmazás támogat minden chat szolgáltatást, ami a Jabber vagy XMPP protokollt használja, mint a Google GTalk vagy a Jabber.org.</string>
   <!--Views: About: OTR-->
+  <string name="about_otr_title">Hogyan biztonságos?</string>
+  <string name="about_otr">Az \'Off-the-Record Üzenetváltás\' egy biztonságos rendszer, ami arra lett tervezve, hogy engedélyezze az adatvédelmet úgy, hogy lemásolja a való élet privát beszélgetéseinek jellemzőit, beleértve a Titkosítást, Hitelesítést, Megtagadhatóságot és a Továbbítási biztonságot.\n\nAz OTR-protokoll kompatibilis a számítógépes chat kliensekkel, mint az Adium vagy a Pidgin.</string>
   <!--Views: About: Security-->
+  <string name="about_security_title">Biztonságosak a Chatjeim?</string>
+  <string name="about_security">A ChatSecure chat titkosítás funkciója csak akkor működik, ha olyan személlyel váltasz üzenetet, aki kompatibilis alkalmazást vagy programot használ, szóval győződj meg róla, hogy a kapcsolataid a ChatSecure-t használják mobilon és az Adium-ot vagy Pidgin-t használják számítógépen. A Fiókbeállításokban finomhangolhatod, hogy hogyan és mikor titkosítsa a ChatSecure a chatjeidet.\n\nKezdjük!</string>
   <!--Views: Account list-->
+  <string name="menu_new_account">Új Fiók</string>
+  <string name="menu_add_account">Fiók Hozzáadása</string>
+  <string name="menu_edit_account">Fiók Szerkesztése</string>
+  <string name="menu_remove_account">Fiók Eltávolítása</string>
+  <string name="menu_use_existing_account">Létező Fiók</string>
   <!--Views: Setup: Account-->
+  <string name="label_username">Felhasználó@Kiszolgáló</string>
   <string name="label_password">Jelszó:</string>
+  <string name="remember_password">Jelszó megjegyzése.</string>
+  <string name="keep_me_signed_in">Automatikus bejelentkezés.</string>
+  <string name="sign_up">Nincs fiókod?</string>
+  <string name="sign_in">Bejelentkezés</string>
+  <string name="check_save_password">A biztonságod érdekében, ha a telefonod elveszik vagy ellopják, lépj be a weboldalra számítógépen, és változtasd meg a jelszavad.</string>
+  <string name="check_auto_sign_in">Ez az opció automatikusan bejelentkeztet, amikor megnyitod az alkalmazást. A letiltáshoz jelentkezz ki és töröld az \"Automatikus bejelentkezés\" megjelölést.</string>
+  <string name="use_tor">Csatlakozás Tor-ral (Orbot alkalmazás szükséges)</string>
+  <string name="account_setup_example_email_address">felhasználó@domain</string>
+  <string name="account_setup_new_username">új felhasználónév</string>
+  <string name="account_setup_service_provider">szolgáltató (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">jelszó</string>
+  <string name="account_setup_password_confirm">jelszó megerősítése</string>
+  <string name="account_setup_advanced_button">Haladó Fiókbeállítások</string>
+  <string name="account_select_type">Fiók Beállítása</string>
+  <string name="btn_create_new_account">Fiók Regisztrálása</string>
+  <string name="account_setup_pers_sub">Perzisztencia</string>
+  <string name="account_setup_pers_pw_title">Jelszó Megjegyzése</string>
+  <string name="account_setup_pers_pw_on">Jelszó tárolva</string>
+  <string name="account_setup_pers_pw_off">Jelszó nincs tárolva</string>
+  <string name="account_setup_pers_auto_title">Automatikus Bejelentkezés</string>
+  <string name="account_setup_pers_auto_on">Csatlakozás a ChatSecure-hoz indításkor</string>
+  <string name="account_setup_pers_auto_off">Ne csatlakozzon a ChatSecure-hoz indításhoz</string>
+  <string name="account_setup_pers_now_title">Bejelentkezés Most</string>
+  <string name="account_setup_pers_now_on">Kapcsolódás a következő fiók beállításához</string>
+  <string name="account_setup_pers_now_off">Ne kapcsolódjon a következő fiók beállításához</string>
+  <string name="account_setup_personal_sub">Személyes (választható)</string>
+  <string name="account_setup_personal_alias_title">Fiók Álnév (a te neved)</string>
+  <string name="account_setup_personal_alias_sub">Hogyan jelenjen meg az elérhető fiókod</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Rövid szöveg magadról</string>
+  <string name="account_setup_advanced_enc_force">Erőltetett titkosítás / sima szöveg visszautasítás</string>
+  <string name="account_setup_advanced_enc_auto">Chat automatikus titkosítása, ha lehetséges</string>
+  <string name="account_setup_advanced_enc_req">Titkosított chat kérése</string>
+  <string name="account_setup_advanced_enc_off">Chat titkosítás kikapcsolása</string>
+  <string name="account_setup_signin_a">Követelmények érvényesítése…</string>
+  <string name="account_setup_signin_b">Kulcspár generálása…</string>
+  <string name="account_setup_signin_c">Bejelentkezés…</string>
+  <string name="account_wizard_setup_title">Fiók Varázsló</string>
+  <string name="account_wizard_account_title">Fiókazonosító</string>
+  <string name="account_wizard_host_title">Szerver Beállítása</string>
+  <string name="account_wizard_ready_title">Készen Állsz?</string>
+  <string name="account_wizard_setup_body">Add meg a fiókazonosítódat, hogy a ChatSecure-t beállítsd az XMPP chat szolgáltatásához.  Úgy néz ki mint egy email cím:</string>
+  <string name="account_wizard_account_body">Kérem add meg a Fiókazonosítódat (felhasználó@kiszolgáló):</string>
+  <string name="account_wizard_host_body">Kérem add meg, vagy szerkeszd a jabber/xmpp chat szerver kiszolgálójának nevét és port számát (5222 az alapértelmezett)</string>
+  <string name="account_wizard_ready_body">A ChatSecure beállítva, itt az idő, hogy csatlakozz a szolgáltatásához, és biztonságosan és titkosítva chatelj!</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Chat szolgáltatás domain</string>
+  <string name="registering_new_account_">Új fiók regisztrálása…</string>
+  <string name="signing_in_to">Haladás…</string>
+  <string name="menu_cancel_signin">Bejelentkezés megszakítása</string>
+  <string name="signing_in_wait">Bejelentkezés\u2026</string>
+  <string name="signing_out_wait">Kijelentkezés\u2026</string>
   <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">SRV Lookup</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">DNS SRV használata, hogy megtalálja a jelenlegi XMPP szervert a domain névből</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Engedélyezi a felhasználónév és jelszó elküldését sima szövegként, amikor titkosítatlan forgalmat használ</string>
+  <string name="allow_plain_text_auth">Sima Szöveg Hitelesítésének Engedélyezése</string>
+  <string name="verify_that_the_certificate_is_trusted">Megerősítés, hogy a tanúsítvány megbízható</string>
+  <string name="tls_verification">TLS ellenőrzés</string>
+  <string name="require_tls_ssl_connection">Megkövetelt TLS Kapcsolat</string>
+  <string name="transport_encryption">Forgalom Titkosítás</string>
+  <string name="how_encrypted_chats_are_started">hogyan kezdődtek a titkosított chatek</string>
+  <string name="the_server_to_connect_to_if_needed">A szerver, amihez kapcsolódik, ha szükséges</string>
+  <string name="connect_server">Szerver Csatlakoztatás</string>
+  <string name="tcp_port_for_xmpp_server">TCP Port az XMPP Szerverhez</string>
+  <string name="server_port">Szerver Port</string>
+  <string name="xmpp_resource">XMPP Forrás</string>
+  <string name="to_distinguish_this_connection_from_other_clients_that_are_also_logged_in">megkülönböztetni ezt a kapcsolatot a többi klienstől, amin be vannak jelentkezve</string>
+  <string name="xmpp_resource_prio_title">XMPP Forrás Prioritás</string>
+  <string name="xmpp_resource_prio_summary">Több aktív forrással rendelkező kliensek üzenetei a legmagasabb prioritású forrásnak lesznek elküldve</string>
   <!--Views: Contact list-->
+  <string name="title_chats">Beszélgetések</string>
+  <string name="no_messages">Nincsenek beszélgetések.\n\nÉrintsd meg itt a kezdéshez!</string>
+  <string name="empty_account_message">Nincsenek\nfiókjaid beállítva.\n\nÉrintsd meg itt a hozzáadáshoz!</string>
+  <string name="buddy_list_title">Kapcsolat Lista - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Kapcsolat Hozzáadása</string>
+  <string name="menu_remove_contact">Kapcsolat Törlése</string>
+  <string name="menu_block_contact">Kapcsolat Blokkolása</string>
+  <string name="menu_contact_nickname">Kapcsolat nicknév</string>
+  <string name="menu_view_blocked">Blokkolva</string>
+  <string name="nickname">Nicknév</string>
+  <string name="confirm_delete_contact">A kapcsolat "<xliff:g id="user">%1$s</xliff:g>" törölve lesz.</string>
+  <string name="confirm_block_contact">A kapcsolat "<xliff:g id="user">%1$s</xliff:g>" blokkolva lesz.</string>
+  <string name="confirm_unblock_contact">A kapcsolat "<xliff:g id="user">%1$s</xliff:g>" fel lesz oldva.</string>
+  <string name="add_contact_success">Kapcsolat "<xliff:g id="user">%1$s</xliff:g>" hozzáadva.</string>
+  <string name="delete_contact_success">Kapcsolat "<xliff:g id="user">%1$s</xliff:g>" törölve.</string>
+  <string name="block_contact_success">Kapcsolat "<xliff:g id="user">%1$s</xliff:g>" blokkolva.</string>
+  <string name="unblock_contact_success">Kapcsolat "<xliff:g id="user">%1$s</xliff:g>" feloldva.</string>
+  <string name="menu_new_chat">Új Chat</string>
+  <string name="menu_search_contacts">Kapcsolatok Keresése</string>
+  <string name="menu_show_grid">Rács Megjelenítése</string>
+  <string name="menu_start_chat">Chat indítása</string>
+  <string name="menu_view_profile">Profil Megtekintése</string>
+  <string name="menu_verify">Kapcsolat Megerősítése</string>
+  <string name="ongoing_conversation">Folyamatban lévő chatek (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> online</string>
+  <string name="subscriptions">Ismerős meghívások</string>
+  <string name="unknown_contact">(<i>Ismeretlen</i>) </string>
   <string name="empty_contact_group">Üres</string>
+  <string name="empty_conversation_group">Nincsenek beszélgetések megnyitva\n\nÉrintsd meg chatelés kezdéséhez!</string>
+  <string name="search_label">Kapcsolat</string>
+  <string name="search_hint">írd be a kapcsolat nevét a chateléshez</string>
+  <string name="search_button_text">Indít</string>
+  <string name="empty_chat_list">Nincsenek aktív chatek.</string>
+  <string name="add_contact_title">Kapcsolat hozzáadása</string>
+  <string name="input_contact_label">Hozzáadni kívánt személy felhasználóneve vagy JabberID-je:</string>
+  <string name="choose_list_label">Hozzáadni kívánt fiók:</string>
+  <string name="invite_instruction">Írj be egy nevet a Kapcsolatokból történő hozzáadáshoz.</string>
+  <string name="invite_label">Meghívó Küldése</string>
+  <string name="contact_profile_title">Kapcsolat profilja</string>
+  <string name="label_status">Státusz:</string>
+  <string name="label_client_type">Kliens típusa:</string>
+  <string name="client_type_computer">Számítógép</string>
+  <string name="client_type_mobile">Mobil</string>
+  <string name="blocked_list_title">Blokkolt kapcsolatok - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Nincsenek blokkolt kapcsolatok.</string>
   <!--Views: Chat: Single-->
+  <string name="chat_with">Chatelés vele: <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="me">Én</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> elérhető</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> távol van</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> elfoglalt</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> nem elérhető</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> csatlakozott</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> elhagyta a beszélgetést</string>
+  <string name="menu_send_image">Fotó Küldése</string>
   <string name="menu_send_file">Fájl küldése</string>
+  <string name="menu_send_audio">Hang Küldése</string>
+  <string name="menu_take_picture">Kép Készítése</string>
+  <string name="file_transfer">Fájl Küldése</string>
+  <string name="transfer_complete">Elküldve</string>
+  <string name="transfer_in_progress">Küldés folyamatban</string>
+  <string name="accept_transfer_">Küldés fogadása?</string>
+  <string name="wants_to_send_you_the_file">fájlt akar küldeni</string>
+  <string name="no_connection_for_sending">Nincs elérhető kapcsolat a megosztásod elküldéséhez!</string>
   <string name="send">Küldés</string>
+  <string name="compose_hint">Üzenet küldése</string>
+  <string name="compose_hint_secure">Biztonságos üzenet küldése</string>
+  <string name="menu_resend">Újraküldés</string>
   <string name="menu_end_conversation">Üzenetváltás befejezése</string>
+  <string name="menu_clear_chat">Chat törlése</string>
+  <string name="menu_insert_smiley">Smiley beszúrása</string>
+  <string name="menu_switch_chats">Chatek Váltása</string>
   <string name="menu_plus">Menü+</string>
+  <string name="select_link_title">Link választása</string>
+  <string name="delete">Törlés</string>
+  <string name="keep_files">Fájlok Megtartása</string>
+  <string name="delete_chat_session_secured_storage">Chat Folyamat Törlése A Biztonságos Tárhelyről?</string>
+  <string name="all_files_will_be_deleted">Minden folyamat fel- és letöltött fájlja véglegesen törölve lesz. Vigyázat: a folyamat nem vonható vissza!</string>
+  <string name="delete_original">Eredeti Törlése?</string>
+  <string name="this_file_will_be_copied">Ez a fájl át lesz másolva a biztonságos tárhelyre, mielőtt elküldöd. Szeretnéd törölni az eredeti fájlt az eszköz titkosítatlan tárhelyéről?</string>
+  <string name="keep">Megtart</string>
+  <string name="export">Exportálás</string>
+  <string name="export_media">Média Fájl Exportálása?</string>
+  <string name="export_media_file_to">Ez a média fájl exportálva lett ide: %1$s</string>
+  <string name="end_chat_title">Chat befejezése?</string>
+  <string name="end_chat_summary">Ebből a folyamatból minden biztonságos médiaelem törölve lesz. Médiaelem exportálásához tartsd hosszan az ujjad az ikonon.</string>
+  <string name="end_chat_and_delete">Chat Befejezése és Fájlok Törlése</string>
   <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> meghívott egy csoportos chatbe.</string>
+  <string name="invitation_sent_prompt"> Meghívó elküldve neki: <xliff:g id="user">%1$s</xliff:g>.</string>
+  <string name="accept_invitation">Elfogad</string>
+  <string name="decline_invitation">Elutasít</string>
+  <string name="menu_new_group_chat">Csoportos Chat</string>
+  <string name="create_or_join_group_chat">Létrehoz vagy Csatlakozik Csoportos Chathez</string>
+  <string name="connecting_to_group_chat_">Kapcsolódás csoportos chathez…</string>
+  <string name="menu_invite_contact">Meghívás\u2026</string>
+  <string name="contacts_picker_title">Meghívandó fiók(ok) kiválasztása</string>
+  <string name="contact_filter_hint">Gépelj kapcsolat kereséséhez</string>
+  <string name="empty_contact_list">Nem talált kapcsolat.\n\nÉrintés a meghíváshoz.</string>
+  <string name="subscription_prompt">Hozzáadod <xliff:g id="USER">%1$s</xliff:g>?</string>
+  <string name="approve_subscription">Igen</string>
+  <string name="decline_subscription">Nem</string>
+  <string name="approve_subscription_error">Nem lehet jóváhagyni a feliratkozást tőle: <xliff:g id="user">%1$s</xliff:g>. Kérem próbáld később.</string>
+  <string name="decline_subscription_error">Nem lehet megtagadni a feliratkozást tőle: <xliff:g id="user">%1$s</xliff:g>. Kérem próbáld később.</string>
   <!--Security: OTR-->
+  <string name="menu_otr_start">Titkosítás Indítása</string>
+  <string name="menu_otr_stop">Titkosítás Megállítása</string>
+  <string name="starting_otr_chat">Titkosított chat folyamat indítása…</string>
+  <string name="stopping_otr_chat">Titkosított chat folyamat megállítása…</string>
+  <string name="label_fingerprint_remote">Biztonságos Ujjlenyomat</string>
+  <string name="label_fingerprint_local">Biztonságos Ujjlenyomat</string>
+  <string name="menu_sign_in">Bejelentkezés</string>
+  <string name="menu_gen_key">Kulcs Újragenerálás</string>
+  <string name="otr_session_status_plaintext">Titkosítás kikapcsolva</string>
+  <string name="otr_session_status_encrypted">Titkosítás bekapcsolva (Érintsd meg a megerősítéshez)</string>
+  <string name="otr_session_status_finished">A kapcsolatod befejezte a titkosított chatet.</string>
+  <string name="otr_session_status_verified">Titkosítva és megerősítve!</string>
+  <string name="otr_gen_key">Új OTR kulcspár generálása…</string>
   <!--Security: OTR: Keyring-->
+  <string name="detected_Otr_keystore_import">OTR kulcstartó érzékelve importálásra. Szeretnéd beolvasni a QR jelszót most?</string>
+  <string name="menu_import_keys">KeySync Aktiválása</string>
+  <string name="successfully_imported_otr_keyring">Sikeresen importált OTR kulcskarika</string>
   <!--Security: OTR: Verification-->
+  <string name="menu_scan">QR beolvasás</string>
+  <string name="menu_fingerprint">A Te Ujjlenyomatod</string>
+  <string name="menu_verify_fingerprint">Kézi</string>
+  <string name="menu_verify_secret">Kérdés</string>
+  <string name="their_fingerprint_verified_">Biztonságos Ujjlenyomat (Megerősítve)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Biztos vagy benne, hogy megerősíted ezt az ujjlenyomatot?</string>
+  <string name="verify_key_">Ujjlenyomat Megerősítése?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">A távoli ujjlenyomat megerősítve!</string>
+  <string name="fingerprint_for_you">Ujjlenyomat neked</string>
+  <string name="fingerprint_for_">Ujjlenyomat neki:</string>
+  <string name="install_barcode_scanner_title">Barcode Scanner Telepítése?</string>
+  <string name="install_barcode_scanner_message">Az alkalmazásnak szüksége van a Barcode Scannerre. Telepíted most?</string>
   <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Azonosítás</string>
+  <string name="smp_question_summary">Írj be egy kérdést, ami el lesz küldve a kapcsolatnak, és a választ, amit vár tőlük, ezzel megerősíthetik, hogy valóban azok, akiknek állítják magukat.</string>
+  <string name="smp_question_hint">a feltett kérdés</string>
+  <string name="qmp_answer_hint">a várt válasz</string>
+  <string name="remote_verified_us">A kapcsolatod sikeresen hitelesített téged. Most rajtad a sor, hogy hitelesítsd őt egy saját kérdéssel.</string>
+  <string name="otr_qa_title">OTR K&amp;V megerősítés</string>
+  <string name="chat_encryption_title">Chat Titkosítás</string>
   <string name="otr_qa_send">Küldés</string>
-  <string name="otr_qa_cancel">Mégsem</string>
+  <string name="otr_qa_cancel">Mégse</string>
   <!--Views: VoIP-->
+  <string name="menu_voip_title">Biztonságos Hívás</string>
+  <string name="pref_sip_account_title">Biztonságos Hang</string>
+  <string name="pref_sip_account_summary">Add meg az OStel.co vagy másik biztonságos SIP szolgáltatás fiókodat a hívás integráláshoz</string>
   <!--Views: Settings: General-->
+  <string name="account_setup_title">Fiók Beállítása</string>
   <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Biztonság és Adatvédelem</string>
+  <string name="encryption_and_anonymity_title">Titkosítás és Anonimitás</string>
+  <string name="menu_view_encrypt_chat">Titkosítás Be/Ki</string>
+  <string name="pref_cacheword_timeout_title">Jelszó lejárati idő</string>
+  <string name="pref_cacheword_timeout_summary">Az az idő, amíg az alkalmazás titkosítás feloldott állapotot jelez</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Kattintható linkek Tor-ban</string>
+  <string name="pref_linkify_on_tor_summary">A fiókoknak, amik Tor-t használnak, engedélyezze a linkek kattinthatóságát a chatben (VIGYÁZAT, lehetséges adatszivárgás!)</string>
+  <string name="pref_group_looknfeel_title">Felhasználói Felület</string>
+  <string name="menu_locale">Nyelv</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Nyelvek</string>
+  <string name="use_system_default">Alapértelmezett nyelv</string>
+  <string name="pref_theme_dark">Sötét Téma Használata</string>
+  <string name="pref_theme_dark_summary">Alkalmazás témájának cseréje sötétre</string>
+  <string name="pref_in_memory_db_title">Üzenet Tárolása Csak A Memóriában</string>
+  <string name="pref_in_memory_db_summary">Üzenetek tárolása csak a memóriában, nem a tárhelyen, hogy megvédje az üzeneteket a kibontástól. (Üzenetvesztést eredményezhet)</string>
+  <string name="pref_background_title">Háttérkép</string>
+  <string name="pref_background_summary">(\"/sdcard/foo.jpg\") útvonal beállítása az alkalmazás háttérképéhez</string>
+  <string name="pref_show_grid">Kapcsolati Rács Megjelenítése</string>
+  <string name="pref_show_grid_summary">Kapcsolatlista megjelenítése avatar rácsként</string>
+  <string name="button_yes_accept_all">Igen, Mindet Elfogadom</string>
+  <string name="pref_delete_unsecured_media_title">Nem Biztonságos Média Törlése</string>
+  <string name="pref_delete_unsecured_media_summary">Fotó vagy fájl megosztása után automatikusan törölje az eredetit a nem biztonságos tárhelyről miután importálta</string>
+  <string name="pref_store_media_on_external_storage_title">Média Tárolása Memóriakártyán</string>
+  <string name="pref_store_media_on_external_storage_summary">Médiafájlok a chat folyamatokból tárolva vannak egy biztonságos konténerben, amiket tárolni lehet a belső vagy a külső tárhelyen</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Memóriakártya Hiányzik</string>
+  <string name="external_storage_missing_message">A chat naplók tárolva vannak az SD kártyán, de jelenleg nincs SD kártya. Kérem helyezd be a megfelelő SD kártyát, vagy töröld a létező chat naplót és indítsd újra a ChatSecure-t.</string>
+  <string name="media_store_file_missing_title">Chat Média Tároló Hiányzik</string>
+  <string name="media_store_file_missing_message">A chat naplók SD kártyán vannak tárolva, de a fájl hiányzik a jelenlegi SD kártyáról. Kérem helyezd be a megfelelő SD kártyát, vagy töröld a meglévő chat naplót és indítsd újra a ChatSecure-t.</string>
+  <string name="delete_chat_log">Chat Napló Törlése</string>
   <!--Actions: Settings: General: Other Tuning-->
+  <string name="pref_group_tuning_title">Egyéb Finomhangolás</string>
+  <string name="start_on_boot">ChatSecure Indítása Automatikusan</string>
+  <string name="start_on_boot_summary">Mindig indítsa és automatikusan jelentkezzen be az előzőleg naplózott fiókba</string>
+  <string name="hide_offline_contacts">Nem elérhető kapcsolatok elrejtése</string>
+  <string name="foreground_service_title">Előtér prioritás használata</string>
+  <string name="foreground_service_summary">Csökkentse az esélyét annak, hogy az Android újraindítsa a kapcsolati szolgáltatást. Ez elhelyez egy értesítést az értesítési sávban.</string>
+  <string name="heartbeat_interval_title">Életjel ciklus</string>
+  <string name="heartbeat_interval_summary">Magasabb érték használata (percekben) energiatakarékosság miatt. Magasabb értéknél a szolgáltató megszakíthatja a kapcsolatot az inaktivitás miatt.</string>
   <!--Actions: Settings: General: Notifications-->
   <string name="notification_group_title">Értesítések beállítása</string>
+  <string name="notification_enabled_title">IM értesítések</string>
+  <string name="notification_enabled_summary">Értesítési sáv jelzés, amikor IM érkezik</string>
   <string name="notification_vibrate_title">Rezgés</string>
+  <string name="notification_vibrate_summary">Rezegjen is IM érkezésénél</string>
+  <string name="notification_sound_title">Hang</string>
+  <string name="notification_sound_summary">Hangjelzés is IM érkezésénél</string>
+  <string name="notification_ringtone_title">Egyéni Csengőhang Kiválasztása</string>
   <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Hibakeresési Napló Engedélyezése</string>
+  <string name="pref_debug_summary">Kimeneti alkalmazásnapló adat a standard kimenetre / logcat hibakereséshez</string>
   <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Mobiladatok letiltva</string>
+  <string name="bg_data_prompt_message">A hálózati adatkapcsolat (adatcsere a háttérben is) szükséges az alkalmazásnak a bejelentkezéshez.</string>
   <string name="bg_data_prompt_ok">Engedélyez</string>
   <string name="bg_data_prompt_cancel">Kilépés</string>
+  <string name="signout_kill_confirm_message">Ki szeretnél jelentkezni az összes szolgáltatásból ÉS kilőni a folyamatokat (kényszerbezárás)?</string>
+  <string name="prompt_create_new_account_">Új fiók létrehozása?</string>
+  <string name="allow_s_to_create_a_new_chat_account_for_s_">Új chat fiók létrehozása a felhasználónévhez \'%1$s\'?</string>
+  <string name="dialog_cert_title">Tanúsítvány Info</string>
+  <string name="dialog_cert_subject">Tanúsítvány:</string>
+  <string name="dialog_cert_issuer">Kiadva általa:</string>
+  <string name="dialog_cert_fingerprint">SHA1 Ujjlenyomat: </string>
+  <string name="dialog_cert_issue_date">Kiadva:</string>
+  <string name="dialog_cert_expires">Lejár:</string>
+  <string name="dialog_connect_chatroom_title">Csatlakozás Chat Szobához?</string>
+  <string name="dialog_connect_chatroom_message">Egy külső alkalmazás megpróbál csatlakoztatni egy chatszobába. Engedélyezed?</string>
+  <string name="dialog_settings_choose_background_title">Háttér Választása</string>
+  <string name="dialog_settings_choose_background_body">Akar háttérképet választani a Galériából?</string>
+  <string name="dialog_settings_choose_background_picker">Kép Választása</string>
   <!--Alerts: Notifications-->
+  <string name="newMessages_label">Új <xliff:g id="provider">%1$s</xliff:g> üzenetek</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> olvasatlan üzenet</string>
+  <string name="subscription_notify_text">Új meghívás ismerőstől: <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Új fájl <xliff:g id="filename">%1$s</xliff:g> tőle: <xliff:g id="user">%2$s</xliff:g></string>
+  <string name="notify_groupchat_label">Csoportos chat meghívás</string>
+  <string name="group_chat_invite_notify_text">Új csoportos chat meghívás tőle: <xliff:g id="user">%s</xliff:g></string>
+  <string name="new_messages_notify">Új üzenet(ek) tőle:</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure szolgáltatás indítása…</string>
+  <string name="app_unlocked">Aktiválva &amp; feloldva</string>
+  <string name="toast_chat_copied_to_clipboard">üzenet másolva a vágólapra</string>
   <!--Alerts: Exceptions-->
+  <string name="error">Figyelem</string>
+  <string name="error_prefix">Hiba:</string>
+  <string name="general_error">Hibakód <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="login_service_failed">Nem lehet bejelentkezni a  <xliff:g id="service">%1$s</xliff:g> szolgáltatásba. Kérem próbáld később.\n(Detail: <xliff:g id="description">%2$s</xliff:g>)</string>
+  <string name="add_list_failed">A lista nincs hozzáadva.</string>
+  <string name="block_contact_failed">Kapcsolat nincs blokkolva.</string>
+  <string name="unblock_contact_failed">Kapcsolat nincs feloldva.</string>
+  <string name="select_contact">Kérem először válassz egy kapcsolatot.</string>
+  <string name="disconnected">Lecsatlakozva!\n</string>
+  <string name="service_error">Szolgáltatás hiba!</string>
+  <string name="load_contact_list_failed">A kapcsolatlista nem töltődött be.</string>
+  <string name="cant_connect_to_server">Nem lehet csatlakozni a szerverhez. Kérem ellenőrizd a kapcsolatot.</string>
+  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" már létezik a Kapcsolatlistádban.</string>
+  <string name="contact_blocked">Kapcsolat "<xliff:g id="user">%1$s</xliff:g>" blokkolva.</string>
+  <string name="contact_not_loaded">Kérem várj, amíg a Kapcsolatlista betöltődik.</string>
+  <string name="network_error">Hálózati hiba történt.</string>
+  <string name="wifi_not_connected_error">WiFi szükséges ehhez a kapcsolathoz.</string>
+  <string name="service_not_support">A szerver nem támogatja ezt a funkciót.</string>
+  <string name="invalid_password">A megadott jelszó nem megfelelő.</string>
+  <string name="internal_server_error">A szerver hibába ütközött.</string>
+  <string name="not_implemented">A szerver nem támogatja ezt a funkciót.</string>
+  <string name="service_unavaiable">A szerver jelenleg nem elérhető.</string>
+  <string name="timeout">Időtúllépés történt a szerveren.</string>
+  <string name="version_not_supported">A szerver nem támogatja a jelenlegi verziót.</string>
+  <string name="message_queue_full">Az üzenetsor megtelt.</string>
+  <string name="domain_not_supported">A szerver nem támogatja a továbbítást a domainhez.</string>
+  <string name="unknown_user">A megadott felhasználónév nem felismerhető.</string>
+  <string name="recipient_blocked_the_user">Sajnáljuk, a felhasználó által blokkolva van.</string>
+  <string name="session_expired">A folyamat lejárt, kérem jelentkezz be újra.</string>
+  <string name="forced_logout">be vagy jelentkezve egy másik kliensen.</string>
+  <string name="already_logged_in">be vagy jelentkezve egy másik kliensben.</string>
+  <string name="msisdn_error">Sajnáljuk, a telefonszámot nem lehet beolvasni a SIM kártyáról. A segítségért kérem vedd fel a kapcsolatot a szolgáltatóddal.</string>
+  <string name="not_signed_in">Jelenleg nincs bejelentkezve.</string>
+  <string name="account_setup_error_validating">A ChatSecure hibába ütközött, amikor érvényesítette a felhasználóneved vagy jelszavad - kérem ellenőrizd őket és próbáld újra.</string>
+  <string name="account_setup_error_keypair">A ChatSecure hibába ütközött, amikor generálta a kulcspárokat.</string>
+  <string name="account_setup_error_server">A ChatSecure hibába ütközött, amikor megpróbált csatlakozni a chat szerverhez - kérem ellenőrizd a beállításokat, majd próbáld újra.</string>
+  <string name="account_setup_error_connectivity">A ChatSecure hibába ütközött, amikor megpróbált csatlakozni - kérem ellenőrizd duplán a hálózati kapcsolatot, majd próbáld újra.</string>
+  <string name="error_suspended_connection">Hálózat nem elérhető</string>
+  <string name="error_reestablish_connection">A ChatSecure megpróbálja újrastabilizálni a kapcsolatot</string>
+  <string name="account_wizard_no_domain_warning">Nem adtál meg @kiszolgáló.com részt a Fiókazonosítóhoz. Próbáld újra!</string>
+  <string name="account_wizard_no_root_domain_warning">A szerver neve nem tartalmaz .com, .net vagy hasonló függeléket. Próbáld újra!</string>
+  <string name="signin_password_prompt">Jelszó megadása:</string>
+  <string name="warning_tor_connect">Mióta Tor-t használsz, azóta az XMPP \'Connect Server\' kiszolgálót közvetlenül a Haladó Fiókbeállításokban kell megadni.</string>
+  <string name="warning_weak_crypto">VIGYÁZAT: Ez a szolgáltatás gyenge kriptográfiával ellátott tanúsítványt használ. Kérem értesítsd a rendszergazdát a fejlesztésről.</string>
+  <string name="warning_pinned_cert_mismatch">A Közölt Tanúsítvány Nem Egyezik A Letűzött Tanúsítvánnyal:</string>
+  <string name="unable_to_create_or_join_group_chat">Nem lehet létrehozni vagy csatlakozni csoportos chathez</string>
+  <string name="sorry_we_cannot_share_that_file_type">Sajnos nem tudjuk megosztani ezt a fájltípust</string>
+  <string name="err_otr_share_no_encryption">Engedélyezned kell a titkosítást a fájlok megosztásához</string>
+  <string name="please_enable_chat_encryption_to_share_files">Kérem engedélyezd a chat titkosítást a fájlmegosztáshoz</string>
+  <string name="unsupported_incoming_data">Nem támogatott beérkező adat, nem lehet megosztani!</string>
+  <string name="swipe_alert">A ChatSecure érzékelte, hogy egy kérés el szeretné távolítani a folyamatot. A ChatSecure valószínűleg összeomlik. Kérem ehelyett használd a Kijelentkezés mindenből menüt a fióklista képernyőn.</string>
+  <string name="there_is_no_viewer_available_for_this_file_format">Nincs nézegető ehhez a fájlformátumhoz</string>
+  <string name="please_start_a_secure_conversation_before_scanning_codes">Kérem indíts egy biztonságos beszélgetést, mielőtt kódot olvasol be</string>
+  <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR kulcskarika nincs importálva; Kérem ellenőrizd, hogy a fájl létezik megfelelő kiterjesztésben és helyen</string>
+  <string name="otr_keysync_warning_message">Kérem másold az \'otr_keystore.ofcaes\' fájlt az számítógép KeySync eszközből a készülék főkönyvtárába.</string>
+  <string name="msg_sent_failed">Ezt az üzenetet nem lehet elküldeni.</string>
+  <string name="disconnected_warning">Le vagy csatlakozva. Az üzenetek akkor lesznek elküldve, amikor újrakapcsolódsz.</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> nem elérhető. Az elküldött üzenetek kézbesítve lesznek, amikor <xliff:g id="user">%1$s</xliff:g> elérhető lesz.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> nincs a Kapcsolatlistában.</string>
+  <string name="error_account_password_mismatch">A jelszavaid nem egyeznek</string>
+  <string name="error_account_settings_priority">A prioritásnak [0 .. 127] közötti számnak kell lennie</string>
+  <string name="error_account_settings_port">A port számnak számnak kell lennie</string>
+  <string name="error_chat_file_transfer_title">Átviteli Hiba</string>
+  <string name="error_chat_file_transfer_body">Nem lehet a fájlt a tárhelyre írni</string>
+  <string name="error_welcome_database">Jelentős Hiba: Nem lehet feloldani vagy betölteni az alkalmazás adatbázist. Kérem telepítsd újra az alkalmazást, vagy töröld az adatokat.</string>
+  <string name="error_no_app_to_handle_url">Nincs alkalmazás telepítve, amely kezelni tudná a hivatkozást!</string>
+  <string name="account_settings_title">Fiók Beállításai</string>
   <!--added 2011/09/01-->
+  <string name="menu_view_groups">Csoportok</string>
+  <string name="_open_conversations">beszélgetés(ek) megnyitása</string>
+  <string name="menu_exit">Kikapcsolás &amp; Zárolás</string>
+  <string name="menu_panic">Pánik</string>
+  <string name="buddies">Haverok</string>
+  <string name="contacts">Kapcsolatok</string>
+  <string name="mtm_accept_cert">Elfogadod A Szerver Tanúsítványát?</string>
+  <string name="menu_sidebar_qr">Ujjlenyomat Megjelenítése</string>
+  <string name="loading">betöltés…</string>
   <!--Other-->
+  <string name="about_link">ChatSecure-ról\nhttps://guardianproject.info/apps/chatsecure/</string>
   <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Kapcsolat Lista</string>
   <string name="menu_settings">Beállítások</string>
+  <string name="menu_view_accounts">Fiókok Kezelése</string>
   <string name="menu_sign_out">Kijelentkezés</string>
+  <string name="menu_view_contact_list">Kapcsolatlista</string>
   <!--Other: Provider-->
+  <string name="provider_full_name_xmpp">Jabber (XMPP)</string>
+  <string name="provider_full_name_llxmpp">Helyi (Bonjour/ZeroConf)</string>
+  <string name="google_account">Google Fiók</string>
+  <string name="default_service_provider">dukgo.com</string>
   <!--Other: Development Strings [Do not localize!]-->
   <!--Other: Presence States-->
+  <string name="presence_available">Elérhető</string>
   <string name="presence_busy">Elfoglalt</string>
+  <string name="presence_away">Távol</string>
+  <string name="presence_idle">Tétlen</string>
+  <string name="presence_offline">Nem elérhető</string>
+  <string name="presence_invisible">Láthatatlan</string>
   <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Boldog</item>
+    <item>Szomorú</item>
+    <item>Kacsint</item>
+    <item>Kiöltött nyelv</item>
+    <item>Meglepett</item>
+    <item>Csók</item>
+    <item>Meglepett</item>
+    <item>Menő</item>
+    <item>Mérges</item>
+    <item>Fáradt</item>
+    <item>Ártatlan</item>
+    <item>Angyal</item>
+    <item>Hmmm</item>
+    <item>Sír</item>
+    <item>Lakat a száján</item>
+    <item>Nevetés</item>
+    <item>Zavart</item>
+  </string-array>
   <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Boldog</item>
+    <item>Szomorú</item>
+    <item>Kacsint</item>
+    <item>Kiöltött nyelv</item>
+    <item>Meglepett</item>
+    <item>Csók</item>
+    <item>Meglepett</item>
+    <item>Menő</item>
+    <item>Mérges</item>
+    <item>Fáradt</item>
+    <item>Ártatlan</item>
+    <item>Angyal</item>
+    <item>Hmmm</item>
+    <item>Sír</item>
+    <item>Lakat a száján</item>
+    <item>Nevetés</item>
+    <item>Zavart</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_have_an_existing_xmpp_account">Létező Fiók</string>
+  <string name="account_existing_full">Kapcsolódás a meglévő fiókomhoz egy egyéni Jabber / XMPP szerveren.</string>
+  <string name="i_want_to_chat_using_my_google_account">Google Fiók</string>
+  <string name="account_google_full">Chatelés más Google felhasználókkal meglévő Google fiók használatával.</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi Hálózat Chat</string>
+  <string name="account_wifi_full">Chatelés másokkal ugyanazon a WiFin vagy hálózaton - nincs szükség internetre vagy szerverre!</string>
+  <string name="account_wifi_button">WiFi Chat Engedélyezése</string>
+  <string name="i_need_a_new_account">Új Fiók</string>
+  <string name="account_new_full">Új, ingyenes fiók regisztrálása bármelyik szolgáltatásra a beépített listából, vagy bármely választottra.</string>
+  <string name="account_new_button">Új Fiók Létrehozása</string>
+  <string name="i_need_a_burner_one_time_throwaway_account_">Titkos Személyazonosság!</string>
+  <string name="account_burner_full">Névtelen, eldobható \"önmegsemmisítő\" chat fiók létrehozása egy egyszerű érintéssel (Orbot: Tor for Android szükséges)</string>
+  <string name="account_burner_button">Személyazonosság Generálása</string>
+  <string name="this_is_a_group_chat">Ez egy csoportos chat</string>
+  <string name="_resent_">[újraküldve] </string>
+  <string name="resent">[újraküldve] </string>
+  <string name="unable_to_securely_share_this_file">Nem lehetséges biztonságosan megosztani ezt a fájlt</string>
+  <string name="install_orbot_">Orbot Telepítése?</string>
+  <string name="you_must_have_orbot">Az Orbot-nak telepítve és aktiválva kell lennie, hogy proxy forgalom haladhasson át rajta. Szeretnéd telepíteni?</string>
+  <string name="always">Mindig</string>
+  <string name="start_orbot_">Orbot Indítása?</string>
+  <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Úgy tűnik, hogy az Orbot nem fut. Szeretnéd elindítani és csatlakozni a Tor-hoz?</string>
+  <string name="muc_dialog_nickname">szobában használt nicknév</string>
+  <string name="muc_dialog_room">szoba neve az elkészítéshez vagy csatlakozáshoz\"</string>
+  <string name="muc_dialog_server">csoport chat szerver (conference.foo.com)</string>
+  <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">A kulcstartód sérült. Kérem telepítsd újra a ChatSecure-t vagy válaszd az \'Adatok törlése\'-t az alkalmazásnál</string>
+  <string name="you_received_an_unreadable_encrypted_message">Kaptál egy olvashatatlan titkosított üzenetet</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Nem tudom feloldani az elküldött üzenetet</string>
+  <string name="swipe_hint">&lt; lapozz balra vagy jobbra a további lehetőségekhez &gt;</string>
 </resources>

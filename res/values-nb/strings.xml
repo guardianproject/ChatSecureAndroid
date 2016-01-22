@@ -23,6 +23,8 @@
   <string name="btn_next">Neste</string>
   <string name="btn_back">Tilbake</string>
   <string name="connect">Koble til</string>
+  <string name="play">Spill av</string>
+  <string name="setup">Oppsett</string>
   <!--Views-->
   <string name="lock_screen_open">Åpne</string>
   <string name="title_activity_lock_screen">ChatSecure låst</string>
@@ -35,6 +37,9 @@
   <string name="lock_screen_skip">Latmannsvariant (Inget passord!)</string>
   <string name="app_passphrase_view_title_dialog">Informasjonsforespørsel</string>
   <string name="app_passphrase_view_password_question">Skriv inn ditt passord</string>
+  <string name="password_please">Passord takk…</string>
+  <string name="passphrase">Passord.</string>
+  <string name="passphrase_again">Passord (igjen)</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Velg en konto</string>
   <string name="choose_account_title">Velg en konto</string>
@@ -44,6 +49,7 @@
   <string name="menu_sign_out_all">Logg av alle</string>
   <string name="signout_all_confirm_message">Vil du logge av alle tjenestene?</string>
   <string name="signed_out_prompt">De er blitt logget av <xliff:g id="ACCOUNT">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Du er blitt logget av <xliff:g id="account">%1$s</xliff:g> fordi <xliff:g id="reason">%2$s</xliff:g></string>
   <string name="welcome_first">Førstegangsbruker av ChatSecure?</string>
   <string name="welcome_skip">Kan du ikke vente med å starte?</string>
   <string name="welcome_about">Start</string>
@@ -169,6 +175,7 @@ Trykk her for å legge til én!</string>
   <string name="menu_block_contact">Blokker kontakt</string>
   <string name="menu_contact_nickname">Kontakt-kallenavn</string>
   <string name="menu_view_blocked">Blokkert</string>
+  <string name="nickname">Kallenavn</string>
   <string name="confirm_delete_contact">Kontakten "<xliff:g id="user">%1$s</xliff:g>" vil bli slettet.</string>
   <string name="confirm_block_contact">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli blokkert.</string>
   <string name="confirm_unblock_contact">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» vil bli avblokkert.</string>
@@ -224,6 +231,7 @@ Trykk her for å legge til én!</string>
   <string name="transfer_in_progress">Overføring på gang</string>
   <string name="accept_transfer_">Godta overføring?</string>
   <string name="wants_to_send_you_the_file">ønsker å sende deg filen</string>
+  <string name="no_connection_for_sending">Ingen tilkobling tilgjengelig for forsendelse av dine delte filer!</string>
   <string name="send">Send</string>
   <string name="compose_hint">Send en melding</string>
   <string name="compose_hint_secure">Send sikret melding</string>
@@ -236,13 +244,16 @@ Trykk her for å legge til én!</string>
   <string name="select_link_title">Velg kobling</string>
   <string name="delete">Slett</string>
   <string name="keep_files">Behold filer</string>
+  <string name="delete_chat_session_secured_storage">Slett sludreøkt fra sikret lagringsmedie?</string>
   <string name="all_files_will_be_deleted">Opplastede og nedlastede filer tilknyttet denne sesjonen vil bli slettet for godt. Advarsel: Dette kan ikke omgjøres!</string>
   <string name="delete_original">Slett original?</string>
+  <string name="this_file_will_be_copied">Denne filen vil bli kopiert til sikret lagringsmedia før den sendes. Ønsker du å slette orginalfilen fra enhetens usikrede lagringsmedia?</string>
   <string name="keep">Behold</string>
   <string name="export">Eksport</string>
   <string name="export_media">Eksporter mediafil?</string>
   <string name="export_media_file_to">Denne mediafilen vil bli flyttet til %1$s</string>
   <string name="end_chat_title">Avslutt samtale?</string>
+  <string name="end_chat_summary">Alle sikrede medieelementer fra denne økta vil bli slettet. Eksporter et medie-element ved å klikke lenge på miniatyrbilde-ikonet.</string>
   <string name="end_chat_and_delete">Avslutt samtale og slett filer</string>
   <!--Views: Chat: Group-->
   <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g> har invitert deg til en gruppesamtale.</string>
@@ -258,6 +269,7 @@ Trykk her for å legge til én!</string>
   <string name="empty_contact_list">Finner ingen kontakter.
 
 Trykk for å invitere.</string>
+  <string name="subscription_prompt">Legg til <xliff:g id="USER">%1$s</xliff:g>?</string>
   <string name="approve_subscription">Ja</string>
   <string name="decline_subscription">Nei</string>
   <string name="approve_subscription_error">Kunne ikke godta abonnement fra <xliff:g id="USER">%1$s</xliff:g>. Prøv igjen senere.</string>
@@ -283,7 +295,7 @@ Trykk for å invitere.</string>
   <!--Security: OTR: Verification-->
   <string name="menu_scan">Skann QR-kode</string>
   <string name="menu_fingerprint">Ditt Fingeravtrykk</string>
-  <string name="menu_verify_fingerprint">Manual</string>
+  <string name="menu_verify_fingerprint">Manuelt</string>
   <string name="menu_verify_secret">Spørsmål</string>
   <string name="their_fingerprint_verified_">Fingeravtrykk for sikkerhet (kontrollert)</string>
   <string name="are_you_sure_you_want_to_confirm_this_key_">Er du sikker på at du vil bekrefte dette fingeravtrykket?</string>
@@ -291,6 +303,8 @@ Trykk for å invitere.</string>
   <string name="the_remote_key_fingerprint_has_been_verified_">Eksternt fingeravtrykk har blitt bekreftet!</string>
   <string name="fingerprint_for_you">Fingeravtrykk av deg</string>
   <string name="fingerprint_for_">Fingeravtrykk for</string>
+  <string name="install_barcode_scanner_title">Installer strekkodeskanner?</string>
+  <string name="install_barcode_scanner_message">Dette programmet krever strekkodeskanner. Vil du installere det?</string>
   <!--Security: OTR: Verification: QA-->
   <string name="smp_question_title">Autentisering</string>
   <string name="smp_question_summary">Angi et spørsmål som sendes kontakten din, og svaret du forventer at de oppgir, for å verifisere at du faktisk snakker med den de gir seg ut for være.</string>
@@ -314,9 +328,12 @@ Trykk for å invitere.</string>
   <string name="pref_cacheword_timeout_title">Tidsavbrudd for passord</string>
   <string name="pref_cacheword_timeout_summary">Hvor lenge opplåsning av krypteringen skal oppgis</string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Klikkbare lenker på Tor</string>
+  <string name="pref_linkify_on_tor_summary">For kontoer som bruker Tor, gjør lenker i sludresamtaler klikkbare (ADVARSEL, potensielt personverns-brudd!)</string>
   <string name="pref_group_looknfeel_title">Brukergrensesnitt</string>
   <string name="menu_locale">Språk</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">Språk</string>
+  <string name="use_system_default">Bruk systemets forvalg</string>
   <string name="pref_theme_dark">Bruk mørkt tema</string>
   <string name="pref_theme_dark_summary">Bytt til mørkt fargetema</string>
   <string name="pref_in_memory_db_title">Kun lagre meldinger i minnet</string>
@@ -326,7 +343,16 @@ Trykk for å invitere.</string>
   <string name="pref_show_grid">Vis kontakt-rutenett</string>
   <string name="pref_show_grid_summary">Vis kontaktliste som kollasj av kontaktbilder </string>
   <string name="button_yes_accept_all">Ja, godta alle</string>
+  <string name="pref_delete_unsecured_media_title">Slett usikrede mediefiler</string>
   <string name="pref_delete_unsecured_media_summary">Etter deling av filer, det være seg photo eller annet, automatisk slett den fra original usikret lagringsplass etter import.</string>
+  <string name="pref_store_media_on_external_storage_title">Lagre mediefiler på eksternt lagringsmedium</string>
+  <string name="pref_store_media_on_external_storage_summary">Mediefiler fra sludreøkter blir lagret i en kryptert beholder som kan lagres på internt eller eksternt lagringsmedium.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Eksternt lagringsmedium mangler</string>
+  <string name="external_storage_missing_message">Dine sludrelogger lagres på et SD-kort, men det ingen SD-kort er er finne. Sett inn rett SD-kort, eller slett eksisterende sludrelogg og kjør ChatSecure på nytt.</string>
+  <string name="media_store_file_missing_title">Medialagring for sludder mangler</string>
+  <string name="media_store_file_missing_message">Dine sludrelogger lagres på et SD-kort, men filen mangler på gjeldende SD-kort. Sett inn rett SD-kort, eller slett eksisterende sludrelogg og kjør ChatSecure på nytt.</string>
+  <string name="delete_chat_log">Slett sludrelogg</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Andre justeringer</string>
   <string name="start_on_boot">Start ChatSecure automatisk</string>
@@ -363,12 +389,17 @@ Trykk for å invitere.</string>
   <string name="dialog_cert_issue_date">Utstedt:</string>
   <string name="dialog_cert_expires">Utløper:</string>
   <string name="dialog_connect_chatroom_title">Ta del i samtalerom</string>
+  <string name="dialog_connect_chatroom_message">Et eksternt program forsøker å koble deg til en sludrekanal. Tillat?</string>
   <string name="dialog_settings_choose_background_title">Velg bakgrunnsbilde</string>
   <string name="dialog_settings_choose_background_body">Vil du velge et bakgrunnsbilde fra galleriet?</string>
   <string name="dialog_settings_choose_background_picker">Velg bilde</string>
   <!--Alerts: Notifications-->
   <string name="newMessages_label">Nye <xliff:g id="PROVIDER">%1$s</xliff:g>-meldinger</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> uleste sludresamtaler</string>
+  <string name="subscription_notify_text">Ny venneinvitasjon fra <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Ny fil <xliff:g id="filename">%1$s</xliff:g> fra <xliff:g id="user">%2$s</xliff:g></string>
   <string name="notify_groupchat_label">Invitasjon til gruppesamtale</string>
+  <string name="group_chat_invite_notify_text">Ny gruppesludrings-invitasjon fra  <xliff:g id="user">%s</xliff:g></string>
   <string name="new_messages_notify">Ny melding(er) fra</string>
   <string name="starting_the_chatsecure_service_">Starter ChatSecure tjenesten…</string>
   <string name="app_unlocked">Aktivert &amp; låst opp</string>
@@ -390,7 +421,7 @@ Trykk for å invitere.</string>
   <string name="contact_blocked">Kontakten «<xliff:g id="USER">%1$s</xliff:g>» er nå blokkert.</string>
   <string name="contact_not_loaded">Vent mens kontaktlisten lastes.</string>
   <string name="network_error">Det oppsto en nettfeil.</string>
-  <string name="wifi_not_connected_error">WiFi kreves for denne tilkoblingen.</string>
+  <string name="wifi_not_connected_error">Wi-Fi kreves for denne tilkoblingen.</string>
   <string name="service_not_support">Tjeneren støtter ikke denne funksjonen.</string>
   <string name="invalid_password">Passordet er ikke gyldig.</string>
   <string name="internal_server_error">Det oppsto en feil på tjeneren.</string>
@@ -418,15 +449,17 @@ Trykk for å invitere.</string>
   <string name="signin_password_prompt">Skriv inn passordet ditt:</string>
   <string name="warning_tor_connect">Siden du bruker Tor, må du angi vertsnavnet til XMPP-\'Tilkoblingsserver\' direkte i Avanserte kontoinnstilinger</string>
   <string name="warning_weak_crypto">Advarsel: Tjenesten bruker et sertifikat med SVAK kryptografisk integritet. Be din administrator om å oppgradere.</string>
+  <string name="warning_pinned_cert_mismatch">Medfølgende sertifikat samsvarer ikke med betrodd sertifikat:</string>
   <string name="unable_to_create_or_join_group_chat">Klarte ikke å starte eller ta del i gruppesludder</string>
   <string name="sorry_we_cannot_share_that_file_type">Beklager, vi kan ikke dele den filtypen</string>
   <string name="err_otr_share_no_encryption">Du må skru på kryptering for å dele filer</string>
   <string name="please_enable_chat_encryption_to_share_files">Vennligst skru på kryptering av sludring for å dele filer</string>
+  <string name="unsupported_incoming_data">Ustøttet innkommende data, kan ikke dele!</string>
   <string name="swipe_alert">Chatsecure har registrert en forespørsel om å fjerne prosessen som kjører den. ChatSecure vil etter alt å dømme kræsje. Vennligst bruk menyvalget Logg Ut Alle fra kontolisten istedenfor.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Det er inget tilknyttet program tilgjengelig for lesing av dette filformatet</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Vennligst start en sikker sludderinstans før du skanner koder</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTR-nøkkelring ble ikke importert; Vennligst sjekk at filen har riktig format og plassering</string>
-  <string name="otr_keysync_warning_message">Vennligst kopier \'otr_keystore.ofcaes\' -filen med skrivebordsverktøyet OtrFileConverter til rotmappen av din enhets lagringsmedie</string>
+  <string name="otr_keysync_warning_message">Vennligst kopier \'otr_keystore.ofcaes\' -filen med skrivebordsverktøyet KeySync til rotmappen av din enhets lagringsmedie</string>
   <string name="msg_sent_failed">Kunne ikke sende meldingen.</string>
   <string name="disconnected_warning">Meldinger vil bli sendt når forbindelsen gjenopprettes</string>
   <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g> er frakoblet. Meldinger du sender vil bli levert når <xliff:g id="USER_1">%1$s</xliff:g> kobler til.</string>
@@ -435,10 +468,10 @@ Trykk for å invitere.</string>
   <string name="error_account_settings_priority">Prioritet må settes som et nummer fra [0 .. 127]</string>
   <string name="error_account_settings_port">Port må oppgis som nummer</string>
   <string name="error_chat_file_transfer_title">Overføringsfeil</string>
+  <string name="error_chat_file_transfer_body">Kunne ikke skrive fil til lagringsmedie</string>
   <string name="error_welcome_database">Kjempefeil: Kunne ikke låse opp eller laste inn programdatabase. Installer programmet på ny eller tøm data.</string>
+  <string name="error_no_app_to_handle_url">Har ingen programmer som kan håndtere den lenken!</string>
   <string name="account_settings_title">Kontoinnstillinger</string>
-
-  <string name="warning_alpha">ADVARSEL: Dette er en tidlig utgave av ChatSecure som fortsatt kan inneholde sikkerhetshull og feil.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Grupper</string>
   <string name="_open_conversations">åpne samtale(r)</string>
@@ -530,9 +563,14 @@ Trykk for å invitere.</string>
     <item>o_O</item>
   </string-array>
   <string name="i_have_an_existing_xmpp_account">Eksisterende konto</string>
+  <string name="account_existing_full">Koble til min eksisterende konto på en gitt Jabber/XMPP-tjener</string>
   <string name="i_want_to_chat_using_my_google_account">Google-konto</string>
-  <string name="account_wifi_button">Skru på WiFi-samtaler</string>
+  <string name="account_google_full">Sludre med andre Google-brukere med din eksisterende Google-konto.</string>
+  <string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">Wi-Fi-mesh-sludrerom</string>
+  <string name="account_wifi_full">Sludre med andre Wi-Fi eller mesh-nettverk - inget Internett eller tjener påkrevd!</string>
+  <string name="account_wifi_button">Skru på Wi-Fi-samtaler</string>
   <string name="i_need_a_new_account">Ny konto</string>
+  <string name="account_new_full">Registrer en ny, gratis konto på en tjeneste fra vår innebygde liste, eller fritt etter eget ønske.</string>
   <string name="account_new_button">Opprett ny konto</string>
   <string name="i_need_a_burner_one_time_throwaway_account_">Hemmelig identitet!</string>
   <string name="account_burner_full">Opprett en anonym engangskonto med ett enkelt tastetrykk (krever Orbot: Tor for Android)</string>
@@ -542,6 +580,7 @@ Trykk for å invitere.</string>
   <string name="resent">[gjensendt]</string>
   <string name="unable_to_securely_share_this_file">Kunne ikke dele denne filen på en sikker måte</string>
   <string name="install_orbot_">Installer Orbot?</string>
+  <string name="you_must_have_orbot">Du må ha Orbot installert og aktivert for å mellomtjene trafikk gjennom det. Vil du installere nå?</string>
   <string name="always">Alltid</string>
   <string name="start_orbot_">Start Orbot?</string>
   <string name="orbot_doesn_t_appear_to_be_running_would_you_like_to_start_it_up_and_connect_to_tor_">Det later til at Orbot ikke kjører. Vil du starte det opp og koble til Tor?</string>
@@ -550,4 +589,6 @@ Trykk for å invitere.</string>
   <string name="muc_dialog_server">tjener for gruppesamtaler (konferanse.noe.org)</string>
   <string name="your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app">Ditt nøkkelvelv er skadet. Installer ChatSecure på ny, eller \'tøm data\' i programmet</string>
   <string name="you_received_an_unreadable_encrypted_message">Du har mottat en uleselig, kryptert melding.</string>
+  <string name="i_could_not_decrypt_the_message_you_sent">Jeg kunne ikke dekryptere meldingen du sendte</string>
+  <string name="swipe_hint">&lt; sveip til venstre og høyre for flere valg &gt;</string>
 </resources>

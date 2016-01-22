@@ -395,7 +395,7 @@ Sareko datuen konektibitatea (baita atzeko planoko datuena) beharrezkoa da aplik
   <string name="there_is_no_viewer_available_for_this_file_format">Ez dago fitxategi mota honentzako aplikaziorik</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Mesedez elkarrizketa segurua hasi kodeak eskaneatzen hasi baino lehen</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Ez da OTR gako parea inportatu; egiaztatu fitxategia formatu eta kokapen egokian dagoela</string>
-  <string name="otr_keysync_warning_message">Mesedez, kopiatu OtrFileConverter ordenagailuko aplikazioak sortuta \'otr_keystore.ofcaes\' fitxategia zure gailuaren biltegiko erro karpetara.</string>
+  <string name="otr_keysync_warning_message">Mesedez, kopiatu KeySync ordenagailuko aplikazioak sortuta \'otr_keystore.ofcaes\' fitxategia zure gailuaren biltegiko erro karpetara.</string>
   <string name="msg_sent_failed">Mezu ezin izan da bidali.</string>
   <string name="disconnected_warning">Mezuak berkonektatzean bidaliko dira</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> erabiltzailea lineaz kanpo dago. Bidaltzen dituzun mezuak<xliff:g id="user">%1$s</xliff:g> konektatzen denean bidaliko zaizkio.</string>

@@ -34,12 +34,12 @@ Cho phép ứng dụng viết/thêm dữ liệu vào dịch vụ chat.</string>
   <!--Views: Setup-->
   <string name="landing_page_title">Chọn một tài khoản</string>
   <string name="choose_account_title">Chọn một tài khoản</string>
-  <string name="conversations">(&lt;xliff id="number" example="27"&gt;%1$d&lt;/xliff&gt;)</string>
-  <string name="add_account">Thêm &lt;xliff id="account"&gt;%1$s&lt;/xliff&gt; tài khoản</string>
+  <string name="conversations">(<xliff id="number" example="27">%1$d</xliff>)</string>
+  <string name="add_account">Thêm <xliff id="account">%1$s</xliff> tài khoản</string>
   <string name="menu_about">Thông tin</string>
   <string name="menu_sign_out_all">Đăng xuất toàn bộ tài khoản</string>
   <string name="signout_all_confirm_message">Bạn muốn đăng xuất ra khỏi tất cả các dịch vụ?</string>
-  <string name="signed_out_prompt">Bạn đã đăng xuất ra khỏi &lt;xliff id="account"&gt;%1$s&lt;/xliff&gt;.</string>
+  <string name="signed_out_prompt">Bạn đã đăng xuất ra khỏi <xliff id="account">%1$s</xliff>.</string>
   <string name="welcome_first">Lần đầu dùng ChatSecure?</string>
   <string name="welcome_skip">Bạn muốn bắt đầu ngay bây giờ ư?</string>
   <string name="welcome_about">Bắt đầu</string>
@@ -158,27 +158,27 @@ Hãy gõ vào đây để bắt đầu</string>
 cấu hình tài khoản nào.
 
 Hãy chạm vào đây để thêm vào!</string>
-  <string name="buddy_list_title">Danh Sách Bạn Chat -  &lt;xliff id="username"&gt;%1$s&lt;/xliff&gt;</string>
+  <string name="buddy_list_title">Danh Sách Bạn Chat -  <xliff id="username">%1$s</xliff></string>
   <string name="menu_add_contact">Thêm bạn chat</string>
   <string name="menu_remove_contact">Xóa bạn chat</string>
   <string name="menu_block_contact">Chặn bạn chat</string>
   <string name="menu_contact_nickname">Tên liên lạc</string>
   <string name="menu_view_blocked">Đã chặn</string>
-  <string name="confirm_delete_contact">Bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; sẽ bị xóa.</string>
-  <string name="confirm_block_contact">Bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; sẽ bị chặn.</string>
-  <string name="confirm_unblock_contact">Bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; sẽ không còn bị chặn.</string>
-  <string name="add_contact_success">Đã thêm &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; vào Danh Sách Bạn Chat.</string>
-  <string name="delete_contact_success">Đã xoá bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;.</string>
-  <string name="block_contact_success">Đã chặn bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;.</string>
-  <string name="unblock_contact_success">Không còn chặn bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;</string>
+  <string name="confirm_delete_contact">Bạn chat <xliff id="user">%1$s</xliff> sẽ bị xóa.</string>
+  <string name="confirm_block_contact">Bạn chat <xliff id="user">%1$s</xliff> sẽ bị chặn.</string>
+  <string name="confirm_unblock_contact">Bạn chat <xliff id="user">%1$s</xliff> sẽ không còn bị chặn.</string>
+  <string name="add_contact_success">Đã thêm <xliff id="user">%1$s</xliff> vào Danh Sách Bạn Chat.</string>
+  <string name="delete_contact_success">Đã xoá bạn chat <xliff id="user">%1$s</xliff>.</string>
+  <string name="block_contact_success">Đã chặn bạn chat <xliff id="user">%1$s</xliff>.</string>
+  <string name="unblock_contact_success">Không còn chặn bạn chat <xliff id="user">%1$s</xliff></string>
   <string name="menu_new_chat">Tạo phần chat mới</string>
   <string name="menu_search_contacts">Tìm kiếm bạn chat</string>
   <string name="menu_show_grid">Hiển thị ô lưới</string>
   <string name="menu_start_chat">Bắt đầu chat</string>
   <string name="menu_view_profile">Hồ Sơ Cá Nhân</string>
   <string name="menu_verify">Xác Nhận Khóa</string>
-  <string name="ongoing_conversation">Các phần chat đang diễn ra (&lt;xliff id="number"&gt;%1$d&lt;/xliff&gt;)</string>
-  <string name="online_count">&lt;xliff id="number"&gt;%1$d&lt;/xliff&gt; đang online</string>
+  <string name="ongoing_conversation">Các phần chat đang diễn ra (<xliff id="number">%1$d</xliff>)</string>
+  <string name="online_count"><xliff id="number">%1$d</xliff>; đang online</string>
   <string name="subscriptions">Gửi lời mời chat</string>
   <string name="unknown_contact">(<i>Không rõ</i>)</string>
   <string name="empty_contact_group">Hiện còn trống</string>
@@ -197,17 +197,17 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="label_client_type">Loại máy trạm:</string>
   <string name="client_type_computer">Máy tính PC</string>
   <string name="client_type_mobile">Di động</string>
-  <string name="blocked_list_title">Những bạn chat đã bị chặn - &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;</string>
+  <string name="blocked_list_title">Những bạn chat đã bị chặn - <xliff id="user">%1$s</xliff></string>
   <string name="no_blocked_contact">Hiện không có bạn chat nào bị chặn.</string>
   <!--Views: Chat: Single-->
-  <string name="chat_with">Chat với &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;</string>
+  <string name="chat_with">Chat với <xliff id="user">%1$s</xliff></string>
   <string name="me">Tôi</string>
-  <string name="contact_online">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đang online</string>
-  <string name="contact_away">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; hiện không rảnh</string>
-  <string name="contact_busy">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đang bận việc</string>
-  <string name="contact_offline">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; offline</string>
-  <string name="contact_joined">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã tham gia kết nối</string>
-  <string name="contact_left">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã rời khỏi phần chat</string>
+  <string name="contact_online"><xliff id="user">%1$s</xliff> đang online</string>
+  <string name="contact_away"><xliff id="user">%1$s</xliff> hiện không rảnh</string>
+  <string name="contact_busy"><xliff id="user">%1$s</xliff> đang bận việc</string>
+  <string name="contact_offline"><xliff id="user">%1$s</xliff> offline</string>
+  <string name="contact_joined"><xliff id="user">%1$s</xliff> đã tham gia kết nối</string>
+  <string name="contact_left"><xliff id="user">%1$s</xliff> đã rời khỏi phần chat</string>
   <string name="menu_send_image">Gửi hình</string>
   <string name="menu_send_file">Gửi tập tin</string>
   <string name="menu_send_audio">Gửi tập tin âm thanh</string>
@@ -229,8 +229,8 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="select_link_title">Chọn đường dẫn liên kết</string>
   <string name="delete">Xóa</string>
   <!--Views: Chat: Group-->
-  <string name="invitation_prompt">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã mời bạn tham gia vào phần chat nhóm</string>
-  <string name="invitation_sent_prompt">Thư mời kết nối đã được gửi đến &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;</string>
+  <string name="invitation_prompt"><xliff id="user">%1$s</xliff> đã mời bạn tham gia vào phần chat nhóm</string>
+  <string name="invitation_sent_prompt">Thư mời kết nối đã được gửi đến <xliff id="user">%1$s</xliff></string>
   <string name="accept_invitation">Chấp thuận</string>
   <string name="decline_invitation">Từ chối</string>
   <string name="menu_new_group_chat">Trò chuyện theo nhóm</string>
@@ -242,8 +242,8 @@ Hãy chạm vào đây để thêm vào!</string>
   <string name="empty_contact_list">Không tìm thấy liên lạc nào.
 
 Chạm vào để mời kết nối.</string>
-  <string name="approve_subscription_error">Hiện không thể đăng ký  ở &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;. Xin vui lòng thử lại sau.</string>
-  <string name="decline_subscription_error">Không thể từ chối phần đăng ký từ &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt;. Xin vui lòng thử lại sau.</string>
+  <string name="approve_subscription_error">Hiện không thể đăng ký  ở <xliff id="user">%1$s</xliff>. Xin vui lòng thử lại sau.</string>
+  <string name="decline_subscription_error">Không thể từ chối phần đăng ký từ <xliff id="user">%1$s</xliff>. Xin vui lòng thử lại sau.</string>
   <!--Security: OTR-->
   <string name="menu_otr_start">Bắt đầu mã hoá</string>
   <string name="menu_otr_stop">Ngừng mã hoá</string>
@@ -338,14 +338,14 @@ Chạm vào để mời kết nối.</string>
   <string name="prompt_create_new_account_">Tạo Tài Khoản Mới</string>
   <string name="allow_s_to_create_a_new_chat_account_for_s_">Tạo một tài khoản chat mới cho \'%1$s\'?</string>
   <!--Alerts: Notifications-->
-  <string name="newMessages_label">&lt;xliff id="provider"&gt;%1$s&lt;/xliff&gt; nội dung chat mới</string>
+  <string name="newMessages_label"><xliff id="provider">%1$s</xliff> nội dung chat mới</string>
   <string name="notify_groupchat_label">Gửi lời mời chat theo nhóm</string>
   <string name="new_messages_notify">(Các) phần chat mới từ</string>
   <string name="starting_the_chatsecure_service_">Đang bắt đầu dịch vụ ChatSecure…</string>
   <string name="app_unlocked">Đã kích hoạt&amp; mở khóa</string>
   <!--Alerts: Exceptions-->
   <string name="error">Lưu Ý</string>
-  <string name="general_error">Mã số lỗi &lt;xliff id="code"&gt;%1$d&lt;/xliff&gt;</string>
+  <string name="general_error">Mã số lỗi <xliff id="code">%1$d</xliff></string>
   <string name="add_list_failed">Không thêm vào được danh sách.</string>
   <string name="block_contact_failed">Bạn chat chưa bị chặn.</string>
   <string name="unblock_contact_failed">Bạn chat vẫn chưa được bỏ chặn.</string>
@@ -355,8 +355,8 @@ Chạm vào để mời kết nối.</string>
   <string name="service_error">Lỗi dịch vụ chat!</string>
   <string name="load_contact_list_failed">Chưa tải được danh sách bạn chat.</string>
   <string name="cant_connect_to_server">Hiện không thể kết nối đến phía máy chủ. Xin bạn hãy vui lòng kiểm tra lại kết nối của mình.</string>
-  <string name="contact_already_exist">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; hiện đã có trong Danh Sách Bạn Chat.</string>
-  <string name="contact_blocked">Bạn chat &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đã bị chặn.</string>
+  <string name="contact_already_exist"><xliff id="user">%1$s</xliff> hiện đã có trong Danh Sách Bạn Chat.</string>
+  <string name="contact_blocked">Bạn chat <xliff id="user">%1$s</xliff> đã bị chặn.</string>
   <string name="contact_not_loaded">Xin vui lòng đợi trong giây lát, chương trình đang tải Danh Sách Bạn Chat của bạn.</string>
   <string name="network_error">Xảy ra lỗi về mạng.</string>
   <string name="wifi_not_connected_error">Cần mạng WIFI để kết nối. </string>
@@ -394,11 +394,11 @@ Chạm vào để mời kết nối.</string>
   <string name="there_is_no_viewer_available_for_this_file_format">Không tồn tại chương trình có thể đọc định dạng file này</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Hãy bắt đầu mã hóa đoạn hội thoại trước khi scan mã</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">OTP vẫn chưa được nhập vào; Vui lòng kiểm tra tập tin có thẻ được tồn tại trong hệ thống ở một định dạng và địa điểm khác</string>
-  <string name="otr_keysync_warning_message">Xin vui lòng sao chép tập tin \'otr_keystore.ofcaes\' từ desktop OtrFileConverter tool đến thư mục gốc trong thẻ nhớ của bạn</string>
+  <string name="otr_keysync_warning_message">Xin vui lòng sao chép tập tin \'otr_keystore.ofcaes\' từ desktop KeySync tool đến thư mục gốc trong thẻ nhớ của bạn</string>
   <string name="msg_sent_failed">Không thể gửi được tin nhắn này.</string>
   <string name="disconnected_warning">Các tin nhắn sẽ được gửi khi được kết nối lại</string>
-  <string name="contact_offline_warning">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; hiện đang offline. Phần nội dung chat mà bạn gửi đi sẽ được &lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; đọc khi online trở lại.</string>
-  <string name="contact_not_in_list_warning">&lt;xliff id="user"&gt;%1$s&lt;/xliff&gt; không nằm trong  Danh Sách Bạn Chat của bạn.</string>
+  <string name="contact_offline_warning"><xliff id="user">%1$s</xliff> hiện đang offline. Phần nội dung chat mà bạn gửi đi sẽ được <xliff id="user">%1$s</xliff> đọc khi online trở lại.</string>
+  <string name="contact_not_in_list_warning"><xliff id="user">%1$s</xliff> không nằm trong  Danh Sách Bạn Chat của bạn.</string>
   <string name="account_settings_title">Thiết lập tài khoản</string>
 
   <string name="warning_alpha">Cảnh Báo: Đây là phiên bản cũ của ChatSecure và có thể có những lổ hỗng an ninh hoặc lỗi.</string>

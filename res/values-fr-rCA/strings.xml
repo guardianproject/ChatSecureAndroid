@@ -166,7 +166,7 @@
   <string name="confirm_unblock_contact">Le contact « <xliff:g id="user">%1$s</xliff:g> » sera débloqué.</string>
   <string name="add_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été ajouté.</string>
   <string name="delete_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été supprimé.</string>
-  <string name="block_contact_success">Le contact « xliff:g id="user"&gt;%1$s&lt;/xliff:g » a été bloqué.</string>
+  <string name="block_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été bloqué.</string>
   <string name="unblock_contact_success">Le contact « <xliff:g id="user">%1$s</xliff:g> » a été débloqué.</string>
   <string name="menu_new_chat">Nouveau clavardage</string>
   <string name="menu_search_contacts">Rechercher les contacts</string>
@@ -250,7 +250,7 @@
   <string name="contacts_picker_title">Choisir le/les contact(s) à inviter</string>
   <string name="contact_filter_hint">Saisir le nom du contact à trouver</string>
   <string name="empty_contact_list">Aucun contact trouvé.\n\Toquer pour inviter.</string>
-  <string name="subscription_prompt">Ajouter le contact?</string>
+  <string name="subscription_prompt">Ajouter <xliff:g id="USER">%1$s</xliff:g>?</string>
   <string name="approve_subscription">Oui</string>
   <string name="decline_subscription">Non</string>
   <string name="approve_subscription_error">Impossible d\'approuver l\'abonnement de <xliff:g id="user">%1$s</xliff:g>. Veuillez ressayer ultérieurement.</string>
@@ -326,6 +326,14 @@
   <string name="button_yes_accept_all">Oui, tout accepter</string>
   <string name="pref_delete_unsecured_media_title">Supprimer le fichier multimédia non sécurisé</string>
   <string name="pref_delete_unsecured_media_summary">Lors du partage d\'une photo ou d\'un fichier, le supprimer automatiquement du stockage non sécurisé original après l\'importation</string>
+  <string name="pref_store_media_on_external_storage_title">Stocker le média en externe</string>
+  <string name="pref_store_media_on_external_storage_summary">Les fichiers multimédias des sessions de clavardage sont stockés dans un conteneur chiffré qui peut être stocké en interne ou en externe.</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <string name="external_storage_missing_title">Stockage externe manquant</string>
+  <string name="external_storage_missing_message">Les journaux de clavardage sont stockés sur une carte SD, mais aucune n\'est présente. Veuillez insérer la bonne carte SD, ou supprimez le journal de clavardage existant et relancez ChatSecure.</string>
+  <string name="media_store_file_missing_title">Le stockage de médias est manquant</string>
+  <string name="media_store_file_missing_message">Les journaux de clavardage sont stockés sur la carte SD, mais le fichier est absent de la carte SD actuelle. Veuillez insérer la bonne carte SD, ou supprimez le journal de clavardage existant et relancez ChatSecure.</string>
+  <string name="delete_chat_log">Supprimer le journal de clavardage</string>
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">Autres réglages</string>
   <string name="start_on_boot">Démarrer ChatSecure automatiquement</string>
@@ -432,7 +440,7 @@
   <string name="there_is_no_viewer_available_for_this_file_format">Il n\'y a aucun visualiseur disponible pour ce format de fichier</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">Veuillez démarrer une conversation sécurisée avant de balayer des codes</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Le trousseau OTR n\'a pas été importé ; veuillez vérifier que le fichier existe bien au format et à l\'endroit appropriés</string>
-  <string name="otr_keysync_warning_message">Veuillez copier le fichier « otr_keystore.ofcases » de l\'outil OtrFileConverter de votre ordinateur de bureau dans le répertoire racine du stockage de votre appareil. </string>
+  <string name="otr_keysync_warning_message">Veuillez copier le fichier « otr_keystore.ofcases » de l\'outil KeySync de votre ordinateur de bureau dans le répertoire racine du stockage de votre appareil. </string>
   <string name="msg_sent_failed">Impossible d\'envoyer ce message.</string>
   <string name="disconnected_warning">Vous êtes déconnecté. Les messages seront transmis après votre reconnexion.</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> est hors ligne. Les messages que vous envoyez seront livrés quand <xliff:g id="user">%1$s</xliff:g> sera en ligne.</string>
@@ -445,8 +453,6 @@
   <string name="error_welcome_database">Erreur majeure : impossible de déverrouiller ou de charger la base de données de l\'appli. Veuillez réinstaller l\'appli ou effacer les données.</string>
   <string name="error_no_app_to_handle_url">Aucune appli installée pour gérer ce lien!</string>
   <string name="account_settings_title">Paramètres des comptes</string>
-
-  <string name="warning_alpha">AVERTISSEMENT : ceci est une pré-version de ChatSecure qui pourrait contenir des failles de sécurité ou des bogues.</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups">Groupes</string>
   <string name="_open_conversations">conversation(s) en cours</string>

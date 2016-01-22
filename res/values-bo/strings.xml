@@ -263,6 +263,9 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="empty_contact_list">འབྲེལ་མིང་ཅི་ཡང་རྙེད་མ་སོང་།⏎
 ⏎
 མགྲོན་འབོད་བྱེད་རྒྱུའི་འབྲེལ་མིང་དག་གདམ།</string>
+  <string name="subscription_prompt"><xliff:g id="USER">%1$s</xliff:g> ཁ་སྣོན་བྱེད་ཀྱི་ཡིན་ནམ།།</string>
+  <string name="approve_subscription">ཡིན།</string>
+  <string name="decline_subscription">མིན།</string>
   <string name="approve_subscription_error"><xliff:g id="user">%1$s</xliff:g>  ཡི་མངགས་ཆ་དེར་བཀའ་འཁྲོལ་ཐུབ་མ་སོང་། སྐུ་མཁྱེན། རྗེས་སུ་ཚོད་ལྟ་བྱེད་རོགས།</string>
   <string name="decline_subscription_error"><xliff:g id="user">%1$s</xliff:g>  ཡི་མངགས་ཆ་དེ་ཕྱིར་འཐེན་བྱེད་ཐུབ་མ་སོང་། སྐུ་མཁྱེན། རྗེས་སུ་ཚོད་ལྟ་བྱེད་རོགས།</string>
   <!--Security: OTR-->
@@ -319,6 +322,8 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="pref_cacheword_timeout_title">གསང་ཚིག་གི་དུས་ཡུན་རྫོགས། </string>
   <string name="pref_cacheword_timeout_summary">གསང་སྡོམ་ཉེར་སྤྱོད་མ་ལག་དེས་སྒོ་ཕྱེས་སོང་ལབ་དགོས་བའི་དུས་ཚོད་རེད།  </string>
   <!--Actions: Settings: General: User Interface-->
+  <string name="pref_linkify_on_tor_title">Tor ཡི་སྒང་གི་བསྣུན་ཆོག་པའི་འབྲེལ་ཐག་ཁག </string>
+  <string name="pref_linkify_on_tor_summary">Tor བེད་སྤྱོད་གཏོང་མཁན་གྱི་ཐོ་བྱང་རྣམས་ཀྱིས། གླེང་མོལ་ནང་གི་འབྲེལ་ཐག་ཁག་བསྣུན་ཆོག་པ་བཟོ་རོགས། (ཉེན་བརྡ།་སྒེར་གྱི་གསང་བ་ཕྱིར་གྱར་སྲིད།) </string>
   <string name="pref_group_looknfeel_title">བེད་སྤྱོད་གཏོང་མཁན་གྱི་མཐུད་ངོས། </string>
   <string name="menu_locale">སྐད་ཡིག</string>
   <string name="KEY_PREF_LANGUAGE_TITLE">སྐད་ཡིག་ཁག </string>
@@ -334,6 +339,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="button_yes_accept_all">རེད་། ཚང་མ་ཁས་ལེན་བྱོས།</string>
   <string name="pref_delete_unsecured_media_title">ཉེན་སྲུང་མིན་པའི་བརྒྱུད་ལམ་དེ་གསུབ། </string>
   <string name="pref_delete_unsecured_media_summary">ཡིག་ཆའམ་ཡང་ན་འདྲ་པར་ཞིག་བགོ་བའི་རྗེས་སུ། དེ་ཁོངས་ཨ་མ་ནས་རང་བཞིན་གྱིས་གསུབ་འགྲོ་གི་རེད་། </string>
+  <!--Prompt user to resolve missing External Storage media store-->
   <!--Actions: Settings: General: Other Tuning-->
   <string name="pref_group_tuning_title">ཉར་གསོག་གཞན་པ། </string>
   <string name="start_on_boot">ཉེན་སྲུང་གླེང་མོལ་དེ་རང་བཞིན་གྱིས་འགོ་ཚུགས། </string>
@@ -382,7 +388,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="newMessages_label">འཕྲིན་ཐུང་གསར་པ <xliff:g id="provider">%1$s</xliff:g> </string>
   <string name="num_unread_chats">གླེང་མོལ་མ་ཀློག་པ་ <xliff:g id="number">%1$d</xliff:g></string>
   <string name="subscription_notify_text"><xliff:g id="user">%s</xliff:g> ནས་གྲོགས་པའི་མགྲོན་འབོད་ཞིག </string>
-  <string name="file_notify_text"><xliff:g id="user">%1$s</xliff:g>ནས་  <xliff:g id="filename">%2$s</xliff:g>   ཡིག་ཆ་གསར་བ་ཞིག </string>
+  <string name="file_notify_text"><xliff:g id="user">%2$s</xliff:g> ནས་ཡིག་ཆ་གསར་པ་  <xliff:g id="filename">%1$s</xliff:g>་འདུག</string>
   <string name="notify_groupchat_label">མཉམ་འདུས་གླེང་མོལ་མགྲོན་འབོད་།</string>
   <string name="group_chat_invite_notify_text"><xliff:g id="user">%s</xliff:g>ནས་གླེང་མོལ་གྱི་ཚོམས་གསར་བའི་མགྲོན་ཤོག་ཞིག </string>
   <string name="new_messages_notify">ནས་འཕྲིན་ཐུང་(རྣམས)གསར་པ། </string>
@@ -445,7 +451,7 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="there_is_no_viewer_available_for_this_file_format">ཡིག་ཆ་འདིའི་རིགས་ལ་བལྟ་མཁན་མི་འདུག</string>
   <string name="please_start_a_secure_conversation_before_scanning_codes">ཨང་ཚབ་འཚག་སེལ་མ་བྱས་སྔོན་དུ་ཉེན་སྲུང་ཅན་གྱི་གླེང་མོལ་འགོ་འཛུགས་རོགས།</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">གསང་སྡོམ་འཕྲིན་ཐུང་གི་ལྡེ་མིག་འཁོར་ཐག་དེ་ནང་འདྲེན་བྱས་མི་འདུག  ད་ཡོད་ཡིག་ཆ་ཁག་གི་བཟོ་བཀོད་དང་གནས་གཞི་ལ་ལྟ་ཞིབ་བྱེད་རོགས།</string>
-  <string name="otr_keysync_warning_message">ཀམ་པུ་ཊར་གྱི་མདུན་ངོས་ཀྱི་ OtrFileConverter tool ནས་ཡིག་ཆ་\'otr_keystore.ofcaes དེ་ཕབ་ཞུས་བྱས་ནས་ཁྱོད་ཀྱི་ཀམ་པུ་ཊར་གྱི་ལམ་སྟོན་མཛོད་ཁང་ངོ་མ་དེའི་ནང་ཉོར།</string>
+  <string name="otr_keysync_warning_message">ཀམ་པུ་ཊར་གྱི་མདུན་ངོས་ཀྱི་ KeySync tool ནས་ཡིག་ཆ་\'otr_keystore.ofcaes དེ་ཕབ་ཞུས་བྱས་ནས་ཁྱོད་ཀྱི་ཀམ་པུ་ཊར་གྱི་ལམ་སྟོན་མཛོད་ཁང་ངོ་མ་དེའི་ནང་ཉོར།</string>
   <string name="msg_sent_failed">འཕྲིན་ཐུང་འདི་བཏང་མི་ཐུབ།</string>
   <string name="disconnected_warning">བསྐྱར་མཐུད་བྱུང་མཚམས་འཕྲིན་ཐུང་དེ་གཏོང་གི་རེད། </string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g>དྲ་ཐོག་ཏུ་མི་འདུག ཁྱེད་ནས་བཏང་བའི་འཕྲིན་ཐུང་དེ་།<xliff:g id="user">%1$s</xliff:g> དྲ་ལམ་དུ་སླེབས་པ་དང་སྐྱེལ་ཐུབ།</string>
@@ -458,8 +464,6 @@ OTR-protocol ཡིས་དྲ་ཐོག་གླེང་མོལ་ Adium 
   <string name="error_welcome_database">ནོར་འཁྲུལ་ཆེན་པོ། མཉེན་ཆས་ཀྱི་རེའུ་མིག་སྒོ་ཕྱེས་མི་ཐུབ་པའམ་ཡང་ན་དེའི་ནང་དུ་འཇུག་ཐུབ་ཀྱི་མི་འདུག  མཉེན་ཆས་དེ་བསྐྱར་དུ་ནང་འཇུག་བྱེད་པའམ་ཡང་ན་གཙང་མ་བཟོ་རོགས།</string>
   <string name="error_no_app_to_handle_url">འབྲེལ་ཐག་དེར་འགྲོ་ཐུབ་ཆེད་མཉེན་ཆས་མ་ལག་གཅིག་ཀྱང་མི་འདུག</string>
   <string name="account_settings_title">ཐོ་བྱང་སྒྲིག་བཟོ།</string>
-
-  <string name="warning_alpha">ཉེན་བརྡ། འདི་ནི་ཉེན་སྲུང་གླེང་མོལ་སྔོན་མའི་གྲས་ཤིག་ཡིན་པས། ད་དུང་ཉེན་སྲུང་གི་དཀའ་ངལ་དང་ནོར་འཁྲུལ་སོགས་ཡོད་སྲིད།</string>
   <!--added 2011/09/01-->
   <string name="menu_view_groups"> ཚན་པ་ཁག</string>
   <string name="_open_conversations">སྒོ་ཕྱེ་ཡོད་པའི་གླེང་མོལ་ཁག</string>

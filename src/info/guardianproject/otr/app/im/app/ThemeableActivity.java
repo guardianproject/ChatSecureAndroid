@@ -74,6 +74,8 @@ public class ThemeableActivity extends ActionBarActivity {
                 options.inSampleSize = 4;
 
                 Bitmap b = BitmapFactory.decodeFile(themebg, options);
+                if (b == null)
+                    return false;
 
                 float ratio = ((float)width)/((float)height);
                 int bgHeight = b.getHeight();
@@ -125,6 +127,8 @@ public class ThemeableActivity extends ActionBarActivity {
                 options.inSampleSize = 4;
 
                 Bitmap b = BitmapFactory.decodeFile(themebg, options);
+                if (b == null)
+                    return;
 
                 float ratio = ((float)width)/((float)height);
                 int bgHeight = b.getHeight();

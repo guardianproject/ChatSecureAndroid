@@ -363,7 +363,7 @@ Es necesario tener conexión a la red de datos (incluyendo datos en segundo plan
   <string name="err_otr_share_no_encryption">Debe habilitar el cifrado para compartir archivos</string>
   <string name="please_enable_chat_encryption_to_share_files">Por favor habilite el cifrado de chat para compartir archivos</string>
   <string name="otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location">Llavero OTR no importado; Por favor revise que el archivo exista en la ubicación y el formato apropiado.</string>
-  <string name="otr_keysync_warning_message">Por favor copie el archivo \'otr_keystore.ofcaes\' desde la herramienta de escritorio OtrFileConverter al directorio raíz del almacenamiento de su dispositivo</string>
+  <string name="otr_keysync_warning_message">Por favor copie el archivo \'otr_keystore.ofcaes\' desde la herramienta de escritorio KeySync al directorio raíz del almacenamiento de su dispositivo</string>
   <string name="msg_sent_failed">Este mensaje no pudo ser enviado.</string>
   <string name="disconnected_warning">Los mensajes serán enviados al recuperar la conexión</string>
   <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> está desconectado. Los mensajes que envíe serán entregados cuando <xliff:g id="user">%1$s</xliff:g> se conecte.</string>

@@ -1,7 +1,13 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
   <!--General: Permissions-->
+  <string name="ro_perm_label">Ler mensagens instantâneas</string>
+  <string name="ro_perm_desc">Permitir que aplicações leiam dados a partir do provedor de conteúdo IM.  </string>
+  <string name="wo_perm_label">escrever mensagens instantâneas</string>
+  <string name="wo_perm_desc">Permitir que aplicações escrevam dados no provedor de conteúdo IM.</string>
   <!--General: Actions-->
   <string name="ok">OK</string>
   <string name="cancel">Cancelar</string>
@@ -36,6 +42,7 @@
   <!--Actions: Settings: General: Security and Privacy-->
   <!--Actions: Settings: General: User Interface-->
   <string name="menu_locale">Idioma</string>
+  <!--Prompt user to resolve missing External Storage media store-->
   <!--Actions: Settings: General: Other Tuning-->
   <!--Actions: Settings: General: Notifications-->
   <!--Actions: Settings: General: Developer-->

@@ -66,54 +66,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:host="*" />
-                <data android:scheme="file" />
-                <data android:scheme="content" />
-                <!-- this crack smoking pattern is required to match file extensions in folders -->
-                <data android:pathPattern=".*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:host="*" />
-                <data android:scheme="file" />
-                <data android:scheme="content" />
-                <!--
-                The ultimate in crack smoking!  Some apps will only respect these file associations
-                if the mimeType is not set, and other apps will only respect them if mimeType is set
-                to */*.  Therefore we have two whole copies of the same thing, besides setting the mimeType. 
-                -->
-                <data android:mimeType="*/*" />
-                <!-- this crack smoking pattern is required to match file extensions in folders -->
-                <data android:pathPattern=".*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-                <data android:pathPattern=".*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\..*\\.ofcaes" />
-            </intent-filter>
-            <intent-filter>
                 <action android:name="android.intent.action.SENDTO" />
 
                 <category android:name="android.intent.category.DEFAULT" />
