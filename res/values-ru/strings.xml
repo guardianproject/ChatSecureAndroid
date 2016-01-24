@@ -487,5 +487,33 @@
     <item>:-D</item>
     <item>o_O</item>
   </string-array>
-  <string name="i_need_a_new_account">Новая учетная запись</string>
+ <string name="i_have_an_existing_xmpp_account">Существующий аккаунт</string>
+			<string name="account_existing_full">Соединить с моим существующим аккаунтом на Jabber / XMPP сервере.</string>
+			
+			<string name="i_want_to_chat_using_my_google_account">Google аккаунт </string>
+			<string name="account_google_full">Чат с другими пользователями Google, используя существующий Google аккаунт.</string>
+			
+			<string name="i_want_to_chat_on_my_local_wifi_network_bonjour_zeroconf_">WiFi Mesh Чат</string>
+			<string name="account_wifi_full">Чат в той же локальной WiFi или Mesh сети - без необходимости подключения к Интернету или серверу!</string>
+			<string name="account_wifi_button">Включить WiFi чат</string>
+						
+			<string name="i_need_a_new_account">Новая учетная запись</string>
+			<string name="account_new_full">Регистрация нового, бесплатного аккаунта на предложенном или своём сервере.</string>
+			<string name="account_new_button">Создать новый аккаунт</string>
+			
+			
+			<string name="i_need_a_burner_one_time_throwaway_account_">Секретная личность!</string>
+			<string name="account_burner_full">Создать анонимный, одноразовый \"горящий\"  аккаунт чата в один клик (требуется Orbot: Tor для Android)</string>
+			<string name="account_burner_button">Генерировать личность</string>
+			
+			<string name="this_is_a_group_chat">Это групповой чат</string>
+			
+			<string name="_resent_">"[resent] "</string>
+			
+			<string name="resent">"[resent] "</string>
+			
+			<string name="unable_to_securely_share_this_file">Невозможно безопасно отправить этот файл</string>
+			
+			<string name="install_orbot_">Установить Orbot?</string>
+  
 </resources>
