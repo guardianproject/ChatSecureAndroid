@@ -1,6 +1,49 @@
 Track the source commits here:
 https://github.com/guardianproject/ChatSecureAndroid/commits/master#
 
+/** 14.2.3 / 02-Feb-2016 / 37c501bce15c3f884958c2c230dce5b3acdd6668 **/
+
+95e63a9 fixes #728 and #718 by disabling unsupport cipher suites
+9b31ce3 Merge pull request #735 from uxname/patch-1
+05991a4 Added missing translation strings
+765fe92 update to version name 14.2.2 code 1422001
+940599b Merge pull request #733 from eighthave/master
+63fe37d get keysync working again!
+790f16c OtrFileConverter is called KeySync!
+86eb67b update translations: ar bg bo ca cs da el es fa fi fr hu it ja nb pt ru sr tr zh
+6415200 add new translation: mk Macedonian
+7c16015 add more translation fixes and unified into a single script
+441cddb fix NPE crash when setting background
+b13a88d stop crashing if external storage is not available
+28a8914 do not claim .ofcaes files, there is no handler hooked up
+c66fc94 if import keystore fails, always show Toast
+2c4a5ba Merge pull request #731 from eighthave/master
+13c37e7 make "Shutdown & Lock" also clear from "Recent Apps"
+9ae2dc7 after receiving panic trigger, quit and remove from history
+c8bf278 fix crash on shutdown/lock with progress dialog
+172c10b use string resource for "Chat Encryption" preference
+4792376 Merge pull request #712 from kden/github-672-negative-xmpp-set
+a2ec464 Merge pull request #730 from eighthave/master
+66bfcbe Fixed bad comparisons for 'checkGroupElem' and 'checkExpon' basic verification methods for parameters in SMP.
+758bbd7 use symlinks to provide alternate folders for Hebrew and Indonesian
+20ce719 GitHub #672 Allowing setting negative XMPP priority
+bdd8bca Merge pull request #706 from n8fr8/master
+1cd4be5 Merge branch 'master' of github.com:n8fr8/AwesomeApp
+482daca fixes github issue #699 for multiple resend of postponed messages
+1990815 ensure the locale is properly set for the app
+03f5f89 handle errors thrown lower in the stack here
+78c66f1 handle connection being null
+f6be4d9 this is not used anymore
+5606e08 no need to clear this
+c1c18fe handle possible NPE
+c21ce30 Merge branch 'master' of github.com:guardianproject/ChatSecureAndroid
+5ca08b5 Merge pull request #698 from eighthave/master
+b094091 make-release-build: disable faketime since it is problematic
+4a83e97 update changelog for v14.2
+6761575 Merge pull request #695 from eighthave/master
+0fed76e improve regexps for linkifying and add bitcoin: for payments
+1f4bb8e too many views in the account wizard
+
 14.2.0 / 2015-07-13 / 67615753e0f87e09fa0aa3df1f6f8e0fc347c825
 
 6761575 Merge pull request #695 from eighthave/master
