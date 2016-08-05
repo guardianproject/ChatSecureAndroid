@@ -21,4 +21,4 @@
 	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
 [submodule "external/bho"]
 	path = external/bho
-	url = https://code.google.com/p/bho/
+	url = https://github.com/iamironrabbit/bho
