@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Forzar</item>
+    <item>Intentar automáticamente</item>
+    <item>Solo si se solicita</item>
+    <item>Nunca</item>
+  </string-array>
+</resources>

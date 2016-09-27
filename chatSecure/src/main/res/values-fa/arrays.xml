@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>اجبارکن / الزامی</item>
+    <item>تلاش بطور خودکار</item>
+    <item>هرطور که درخواست شده</item>
+    <item>غیرفعال / هرگز</item>
+  </string-array>
+</resources>

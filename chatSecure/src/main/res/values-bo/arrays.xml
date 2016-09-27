@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>ཨུ་ཚུགས་བྱེད་པའམ་རེ་སྐུལ་ཞུ་བ།</item>
+    <item>རང་བཞིན་གྱི་འབད་བརྩོན།</item>
+    <item>རེ་སྐུལ་ཞུས་བ་ནང་བཞིན</item>
+    <item>བྱེད་དཀའ་བའམ་ཡང་ན་ནམ་ཡང་བྱེད་མི་ཐུབ་པ།</item>
+  </string-array>
+</resources>

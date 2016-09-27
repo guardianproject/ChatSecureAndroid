@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Vyžadovat / Stále</item>
+    <item>Automaticky</item>
+    <item>Jak bylo požadováno</item>
+    <item>Zakázáno / Nikdy</item>
+  </string-array>
+</resources>

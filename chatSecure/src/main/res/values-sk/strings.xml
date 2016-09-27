@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <!--General: Permissions-->
+  <string name="ro_perm_label">prečítaných správ</string>
+  <string name="ro_perm_desc">Umožňuje aplikáciám čítať dáta od poskytovateľa obsahu chatu.</string>
+  <string name="wo_perm_label">písať správy chatu</string>
+  <string name="wo_perm_desc">Umožňuje aplikáciám zapisovať dáta na poskytovateľa obsahu chatu.</string>
+  <string name="perm_label">štart IM službu</string>
+  <string name="perm_desc">Umožňuje, aby aplikácia spustiť IM služby prostredníctvom zámeru.</string>
+  <!--General: Actions-->
+  <string name="confirm">Potvrdiť</string>
+  <string name="ok">OK</string>
+  <string name="cancel">Zrušiť</string>
+  <string name="yes">OK</string>
+  <string name="no">Zrušiť</string>
+  <!--Views-->
+  <!--Views: Setup-->
+  <string name="landing_page_title">Chat - Vyberte konto</string>
+  <string name="choose_account_title">Chat - Vyberte konto</string>
+  <string name="menu_sign_out_all">Odhlásiť všetky</string>
+  <string name="signout_all_confirm_message">Chcete sa odhlásiť zo všetkých služieb?</string>
+  <string name="welcome_skip">Can\'t čakať začať?</string>
+  <string name="welcome_about">O ChatSecure</string>
+  <string name="welcome_account">Nastavenie účtu</string>
+  <string name="setup_passphrase_title">Nastavenie heslo</string>
+  <string name="setup_passphrase_label1">Passphrase:</string>
+  <string name="setup_passphrase_label2">Heslo (znovu) :</string>
+  <!--Views: About: Welcome-->
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Ako je to bezpečné?</string>
+  <string name="about_otr">\'Off - Record Messaging \'je bezpečnostný systém navrhnutý tak, aby súkromní napodobovaním vlastnosti súkromného rozhovoru v reálnom svete, vrátane šifrovania, autentifikácie, deniability a Vpred Secrecy.\n\nThe OTR-protokol je kompatibilný s desktop chat klientmi ako Adiumalebo Pidgin.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">My sa Chaty bezpečne?</string>
+  <!--Views: Account list-->
+  <string name="menu_add_account">Pridať účet</string>
+  <string name="menu_edit_account">Upraviť účet</string>
+  <string name="menu_remove_account">Odobrať účet</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">User @ host</string>
+  <string name="label_password">Heslo:</string>
+  <string name="remember_password">Pamätaj si moje heslo.</string>
+  <string name="keep_me_signed_in">Prihlasovať automaticky.</string>
+  <string name="sign_up">Nemáte účet?</string>
+  <string name="sign_in">Prihlásiť sa</string>
+  <string name="check_save_password">Pre vašu bezpečnosť, ak bol váš telefón stratený alebo ukradnutý, prejdite na webstránku a zmeňte si vaše heslo.</string>
+  <string name="check_auto_sign_in">Táto možnosť vás automaticky prihlási vždy, keď otvoríte aplikáciu. Pre zakázanie sa odhláste a odznačte pole \"Prihlasovať automaticky\".</string>
+  <string name="use_tor">Pripojenie cez Tor (vyžaduje Orbot app)</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">heslo</string>
+  <string name="account_setup_advanced_button">Pokročilé nastavenia účtu</string>
+  <string name="account_select_type">Nastavenie účtu</string>
+  <string name="account_setup_pers_sub">Perzistencia</string>
+  <string name="account_setup_pers_pw_title">Zapamätať heslo</string>
+  <string name="account_setup_pers_pw_on">Heslo medzipamäte</string>
+  <string name="account_setup_pers_pw_off">Heslo nie je medzipamäte</string>
+  <string name="account_setup_pers_auto_title">Automaticky prihlásiť</string>
+  <string name="account_setup_pers_now_title">Prihlásiť sa teraz</string>
+  <string name="account_setup_pers_now_on">Pripojte nasledujúce nastavenia účtu</string>
+  <string name="account_setup_pers_now_off">Don\'t pripojiť nasledujúce nastavenia účtu</string>
+  <string name="account_setup_personal_sub">Osobné (nepovinné)</string>
+  <string name="account_setup_personal_alias_title">Alias účet (Vaše meno)</string>
+  <string name="account_setup_personal_alias_sub">Ako vyzerá váš účet on-line</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Stručný reklama o sebe</string>
+  <string name="account_setup_advanced_enc_force">Vynútiť šifrovanie / odmietnuť holého</string>
+  <string name="account_setup_advanced_enc_auto">Pokiaľ je to možné, šifrovať chaty automaticky</string>
+  <string name="account_setup_advanced_enc_req">Šifrovať chaty ako to žiadala</string>
+  <string name="account_setup_advanced_enc_off">Zakázať chat šifrovanie</string>
+  <string name="account_setup_signin_a">Overovanie poverovacích listín …</string>
+  <string name="account_setup_signin_b">Generovanie páru kľúčov …</string>
+  <string name="account_setup_signin_c">Podpisovanie v. ..</string>
+  <string name="account_wizard_setup_title">Sprievodca účet</string>
+  <string name="account_wizard_account_title">Vaše ID účtu</string>
+  <string name="account_wizard_host_title">Konfigurácia servera</string>
+  <string name="account_wizard_ready_title">Ste pripravení?</string>
+  <string name="account_wizard_account_body">Prosím, zadajte svoje ID účtu (user @ hostname) :</string>
+  <string name="account_wizard_host_body">Prosím, zadajte alebo upravte jabber/xmpp chatu servera meno počítača a číslo portu (predvolené je 5222).</string>
+  <string name="menu_cancel_signin">Zrušiť prihlásenie</string>
+  <string name="signing_in_wait">Prihlasovanie sa\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Pri použití nešifrovaného prenosu povoliť odoslanie mena a hesla v nezabezpečenej forme</string>
+  <!--Views: Contact list-->
+  <string name="menu_add_contact">Pridať kontakt</string>
+  <string name="menu_remove_contact">Odstrániť kontakt</string>
+  <string name="menu_block_contact">Blokovať kontakt</string>
+  <string name="menu_view_blocked">Blokované</string>
+  <string name="menu_new_chat">Nový rozhovor</string>
+  <string name="menu_search_contacts">Vyhľadávanie Kontaktov</string>
+  <string name="menu_start_chat">Začať rozhovor</string>
+  <string name="subscriptions">Priateľ pozvánky</string>
+  <string name="unknown_contact">(<i>Neznámy</i>) </string>
+  <string name="empty_contact_group">Prázdny</string>
+  <string name="empty_conversation_group">Žiadne konverzácie</string>
+  <string name="search_label">Kontakt</string>
+  <string name="search_hint">zadajte meno kontaktu s ktorým chcete zahájiť komunikáciu</string>
+  <string name="search_button_text">Ísť</string>
+  <string name="empty_chat_list">Žiadne aktívne chaty.</string>
+  <string name="add_contact_title">Pridať kontakt</string>
+  <string name="input_contact_label">E-mailovú adresu osoby, ktorej chcete invite:</string>
+  <string name="choose_list_label">Vyberte list:</string>
+  <string name="invite_instruction">Zadajte názov pre pridanie z kontaktov.</string>
+  <string name="invite_label">Poslať pozvánku</string>
+  <string name="contact_profile_title">Kontakt profil</string>
+  <string name="label_status">Status:</string>
+  <string name="label_client_type">Klient type:</string>
+  <string name="client_type_computer">Počítače</string>
+  <string name="client_type_mobile">Mobilný</string>
+  <string name="no_blocked_contact">Č blokovaných kontaktov.</string>
+  <!--Views: Chat: Single-->
+  <string name="me">Mňa</string>
+  <string name="send">Poslať</string>
+  <string name="menu_end_conversation">Ukončiť rozhovor</string>
+  <string name="menu_clear_chat">Vyčistiť rozhovor</string>
+  <string name="menu_insert_smiley">Vložiť smejka</string>
+  <string name="menu_switch_chats">Switch chaty</string>
+  <string name="menu_plus">Menu + \"</string>
+  <string name="select_link_title">Vyberte odkaz</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_sent_prompt">Pozvánka bola zaslaná<xliff:g id="user">% 1 $ s</xliff:g>.</string>
+  <string name="accept_invitation">Prijať</string>
+  <string name="decline_invitation">Pokles</string>
+  <string name="menu_invite_contact">Prizvať\u2026</string>
+  <string name="contacts_picker_title">Vyberte kontakt (y) vyzvať</string>
+  <string name="contact_filter_hint">Typ nájsť kontakt</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Štart Šifrovania</string>
+  <string name="menu_otr_stop">Stop Šifrovania</string>
+  <string name="menu_sign_in">Prihlásiť sa</string>
+  <string name="menu_gen_key">Regen Key</string>
+  <string name="otr_gen_key">Generuje sa nový pár OTR kľúčov…</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_fingerprint">Váš odtlačok prsta</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_send">Poslať</string>
+  <string name="otr_qa_cancel">Zrušiť</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Nastavenie účtu</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="encryption_and_anonymity_title">Šifrovanie a anonymita</string>
+  <string name="menu_view_encrypt_chat">Šifrovať On/Off</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="menu_locale">Jazyk</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Jazyk</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="hide_offline_contacts">Skryť offline kontakty</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Nastavenie upozornenia</string>
+  <string name="notification_enabled_title">IM oznámenia</string>
+  <string name="notification_enabled_summary">Oznámi v stavovom riadku, keď príde IM</string>
+  <string name="notification_vibrate_title">Vibrovať</string>
+  <string name="notification_vibrate_summary">Tiež vibrácie pri prijatí správy IM</string>
+  <string name="notification_sound_title">Zvuk</string>
+  <string name="notification_sound_summary">Tiež hrať zvonenie pri chate dorazí</string>
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">Pozadie zdravotne dáta</string>
+  <string name="bg_data_prompt_ok">Umožniť</string>
+  <string name="bg_data_prompt_cancel">Odísť</string>
+  <!--Alerts: Notifications-->
+  <string name="notify_groupchat_label">Skupina pozvánky do chatu</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Pozor</string>
+  <string name="add_list_failed">Zoznam nebol pridaný.</string>
+  <string name="block_contact_failed">Kontakt nebol blokovaný.</string>
+  <string name="unblock_contact_failed">Kontakt nebol odblokovaný.</string>
+  <string name="select_contact">Prosím, vyberte kontakt ako prvý.</string>
+  <string name="disconnected">Odpojený! \n</string>
+  <string name="service_error">Chyba služby!</string>
+  <string name="load_contact_list_failed">Zoznam kontaktov ani načítať.</string>
+  <string name="cant_connect_to_server">Nedá sa pripojiť k serveru. Skontrolujte prosím svoje pripojenie.</string>
+  <string name="contact_not_loaded">Počkajte prosím, zoznamu kontaktov zaťaženie.</string>
+  <string name="network_error">Došlo k chybe siete.</string>
+  <string name="service_not_support">Tento server nepodporuje túto funkciu.</string>
+  <string name="invalid_password">Zadané heslo nie je platné.</string>
+  <string name="internal_server_error">Na serveri došlo k chybe.</string>
+  <string name="not_implemented">Tento server nepodporuje túto funkciu.</string>
+  <string name="service_unavaiable">Tento server je momentálne nedostupný.</string>
+  <string name="timeout">Tento server vypršal.</string>
+  <string name="version_not_supported">Tento server nepodporuje aktuálnu verziu.</string>
+  <string name="message_queue_full">Fronty správ je plná.</string>
+  <string name="domain_not_supported">Tento server nepodporuje presmerovanie do domény.</string>
+  <string name="unknown_user">Zadané používateľské meno nie je rozpoznaný.</string>
+  <string name="recipient_blocked_the_user">Ospravedlňujeme sa, ste zablokované užívateľom.</string>
+  <string name="session_expired">Relácia vypršala, prosím prihláste sa znovu.</string>
+  <string name="forced_logout">Prihlásili ste sa z iného klienta.</string>
+  <string name="already_logged_in">už ste prihlásení od iného klienta.</string>
+  <string name="msisdn_error">Ospravedlňujeme sa, telefónne číslo, nedá čítať z karty SIM. Prosím, kontaktujte svojho operátora o pomoc.</string>
+  <string name="not_signed_in">Nachádzate sa v súčasnosti nie sú prihlásení</string>
+  <string name="account_wizard_no_root_domain_warning">Server, na ktorý sa pokúšate pripojiť nemá .com, .net ani podobnú príponu. Skúste to znovu!</string>
+  <string name="signin_password_prompt">Zadajte svoje password:</string>
+  <string name="msg_sent_failed">Túto správu sa nepodarilo odoslať.</string>
+  <string name="account_settings_title">Nastavenia účtu</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Skupiny</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Zoznam kontaktov</string>
+  <string name="menu_settings">Nastavenie</string>
+  <string name="menu_view_accounts">Zoznam účtov</string>
+  <string name="menu_sign_out">Odhlásiť sa</string>
+  <string name="menu_view_contact_list">Zoznam kontaktov</string>
+  <!--Other: Provider-->
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">On-line</string>
+  <string name="presence_busy">Zaneprázdnený</string>
+  <string name="presence_away">Preč</string>
+  <string name="presence_idle">Nečinný</string>
+  <string name="presence_offline">Offline</string>
+  <string name="presence_invisible">Zobrazí offline</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Šťastný</item>
+    <item>Smutný</item>
+    <item>Žmurkanie</item>
+    <item>Vyplazený jazyk</item>
+    <item>Prekvapený</item>
+    <item>Bozkávanie</item>
+    <item>Kričí</item>
+    <item>Chladný</item>
+    <item>Peniaze ústa</item>
+    <item>Nôh v ústach</item>
+    <item>V rozpakoch</item>
+    <item>Anjel</item>
+    <item>Nerozhodný</item>
+    <item>Plač</item>
+    <item>Ústa sú zapečatená</item>
+    <item>Smavý</item>
+    <item>Zmätený</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Šťastný</item>
+    <item>Smutný</item>
+    <item>Žmurkanie</item>
+    <item>Vyplazený jazyk</item>
+    <item>Prekvapený</item>
+    <item>Bozkávanie</item>
+    <item>Kričí</item>
+    <item>Chladný</item>
+    <item>Peniaze ústa</item>
+    <item>Nôh v ústach</item>
+    <item>V rozpakoch</item>
+    <item>Anjel</item>
+    <item>Nerozhodný</item>
+    <item>Plač</item>
+    <item>Ústa sú zapečatená</item>
+    <item>Smavý</item>
+    <item>Zmätený</item>
+  </string-array>
+</resources>

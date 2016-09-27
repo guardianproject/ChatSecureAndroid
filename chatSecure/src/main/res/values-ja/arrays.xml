@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>強制／要求</item>
+    <item>自動的に試行</item>
+    <item>要求されたときだけ</item>
+    <item>無効にする／絶対に有効にしない</item>
+  </string-array>
+</resources>

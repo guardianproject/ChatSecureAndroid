@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>အတင်းအကျပ် / လိုအပ်သော</item>
+    <item>အလိုအလျောက် ကြိုးစား</item>
+    <item>တောင်းဆိုထားသည့်အတိုင်း</item>
+    <item>ပိတ်ထားသော / မည့်သည့်အခါမျှ</item>
+  </string-array>
+</resources>

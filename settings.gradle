@@ -1,0 +1,7 @@
+include ':androidPinning'
+include ':memorizingActivity'
+include ':tibetanTextLibrary'
+include ':cachewordlib'
+include ':emojilib'
+include ':viewpager'
+include ':chatSecure'

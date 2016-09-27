@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Принудительно / По требованию</item>
+    <item>Попытаться автоматически</item>
+    <item>В соответствии с запросом</item>
+    <item>Отключено / Никогда</item>
+  </string-array>
+</resources>

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <!--General: Permissions-->
+  <string name="ro_perm_label">쪽지 읽기</string>
+  <string name="ro_perm_desc">
+앱이 쪽지 컨텐트 프로바이더의 데이터를 읽기 가능하게 합니다.</string>
+  <string name="wo_perm_label">쪽지 쓰기</string>
+  <string name="wo_perm_desc">
+앱이 쪽지 컨텐트 프로바이더의 데이터를 쓰기 가능하게 합니다.</string>
+  <string name="perm_label">메신저 서비스 시작</string>
+  <string name="perm_desc">응용프로그램이 인텐트를 통해 메신저 서비스를 시작할 수 있도록 합니다.</string>
+  <!--General: Actions-->
+  <string name="confirm">확인</string>
+  <string name="ok">확인</string>
+  <string name="cancel">취소</string>
+  <string name="yes">확인</string>
+  <string name="no">취소</string>
+  <string name="btn_next">다음</string>
+  <!--Views-->
+  <!--Views: Setup-->
+  <string name="landing_page_title">채팅 - 선택 계정</string>
+  <string name="choose_account_title">채팅 - 선택 계정</string>
+  <string name="add_account"><xliff:g id="ACCOUNT">%1$s</xliff:g> 계정 추가</string>
+  <string name="menu_about">이 앱에 대하여</string>
+  <string name="menu_sign_out_all">모두 로그아웃</string>
+  <string name="signout_all_confirm_message">모든 서비스에서 로그아웃하시겠습니까?</string>
+  <string name="signed_out_prompt"><xliff:g id="ACCOUNT">%1$s</xliff:g>에서 로그아웃되었습니다.</string>
+  <string name="welcome_skip">건너뛰기</string>
+  <string name="welcome_about">소개</string>
+  <string name="welcome_account">계정 설정</string>
+  <string name="setup_passphrase_title">암호 설정</string>
+  <string name="setup_passphrase_label1">암호:</string>
+  <string name="setup_passphrase_label2">암호 (다시):</string>
+  <!--Views: About: Welcome-->
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">얼마나 안전한가요?</string>
+  <string name="about_otr">\'Off - 더 - 레코드 Messaging\'암호화, 인증, 진술 거부란 및 앞으로 Secrecy.\n\nThe OTR - 프로토콜을 포함하여 현실 세계에 사적인 대화의 특성을 흉내낸하여 개인 정보를 사용하도록 설계된 보안 시스템이다 데스크톱 클라이언트 채팅과 호환됩니다 Adium을 등또는 피진.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">채팅은 안전한가요?</string>
+  <!--Views: Account list-->
+  <string name="menu_add_account">계정 추가</string>
+  <string name="menu_edit_account">계정 수정</string>
+  <string name="menu_remove_account">계정 삭제</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">사용자 이름:</string>
+  <string name="label_password">비밀번호:</string>
+  <string name="remember_password">내 비밀번호 저장</string>
+  <string name="keep_me_signed_in">자동으로 로그인</string>
+  <string name="sign_up">계정이 없으세요?</string>
+  <string name="sign_in">로그인</string>
+  <string name="check_save_password">휴대전화를 분실하거나 도난 당하셨으면 보안을 위해 다른 컴퓨터에서 웹 사이트로 접속하시어 비밀번호를 변경해 주십시오.</string>
+  <string name="check_auto_sign_in">이 옵션을 선택하면 앱이 시작할 때마다 자동으로 로그인됩니다. 중지하시려면 로그아웃한 다음 \'자동으로 로그인\' 확인란을 선택 취소하세요.</string>
+  <string name="use_tor">토르로 연결 (Orbot 앱 필요)</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_password">암호</string>
+  <string name="account_setup_advanced_button">고급 계정 설정</string>
+  <string name="account_select_type">계정 설정</string>
+  <string name="account_setup_pers_sub">지속 설정</string>
+  <string name="account_setup_pers_pw_title">비밀번호 기억</string>
+  <string name="account_setup_pers_pw_on">비밀번호 캐시</string>
+  <string name="account_setup_pers_pw_off">비밀번호 캐시하지 않음</string>
+  <string name="account_setup_pers_auto_title">자동으로 로그인</string>
+  <string name="account_setup_pers_now_title">로그인</string>
+  <string name="account_setup_pers_now_on">다음 계정 설정으로 접속</string>
+  <string name="account_setup_pers_now_off">다음 계정 설정으로 접속하지 않음</string>
+  <string name="account_setup_personal_sub">개인 (옵션)</string>
+  <string name="account_setup_personal_alias_title">계정 별칭 (사용자 이름)</string>
+  <string name="account_setup_personal_alias_sub">계정을 온라인에서 보기</string>
+  <string name="account_setup_personal_profile_title">프로필</string>
+  <string name="account_setup_personal_profile_sub">자신에 관한 간략한 정보</string>
+  <string name="account_setup_advanced_enc_force">암호화 강제 및 일반 텍스트 거부</string>
+  <string name="account_setup_advanced_enc_auto">가능하면 자동으로 채팅 암호화하기</string>
+  <string name="account_setup_advanced_enc_req">요청하면 채팅 암호화하기</string>
+  <string name="account_setup_advanced_enc_off">채팅 암호화 안 하기</string>
+  <string name="account_setup_signin_a">신분증 확인 중···</string>
+  <string name="account_setup_signin_b">Keypair 생성 중···</string>
+  <string name="account_setup_signin_c">로그인 중···</string>
+  <string name="account_wizard_setup_title">계정 마법사</string>
+  <string name="account_wizard_account_title">계정 아이디</string>
+  <string name="account_wizard_host_title">서버 설정</string>
+  <string name="account_wizard_ready_title">준비되셨나요?</string>
+  <string name="account_wizard_account_body">계정 아이디를 입력하십시오 (예: user@hostname):</string>
+  <string name="account_wizard_host_body">Jabber/xmpp 채팅 서버 호스트 이름과 포트 번호를 입력해주십시오 (기본값 5222).</string>
+  <string name="menu_cancel_signin">로그인 취소</string>
+  <string name="signing_in_wait">로그인 중\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="server_port">서버 포트</string>
+  <!--Views: Contact list-->
+  <string name="menu_add_contact">연락처 추가</string>
+  <string name="menu_remove_contact">연락처 삭제</string>
+  <string name="menu_block_contact">연락처 차단</string>
+  <string name="menu_view_blocked">차단 목록</string>
+  <string name="confirm_delete_contact">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 삭제됩니다.</string>
+  <string name="confirm_block_contact">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단됩니다.</string>
+  <string name="confirm_unblock_contact">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단 해제됩니다.</string>
+  <string name="add_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 추가되었습니다.</string>
+  <string name="delete_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 삭제되었습니다.</string>
+  <string name="block_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단되었습니다.</string>
+  <string name="unblock_contact_success">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'이(가) 차단 해제되었습니다.</string>
+  <string name="menu_new_chat">새 채팅 창</string>
+  <string name="menu_search_contacts">주소록 검색</string>
+  <string name="menu_start_chat">채팅 시작</string>
+  <string name="ongoing_conversation">진행 중인 채팅(<xliff:g id="NUMBER">%1$d</xliff:g>개)</string>
+  <string name="online_count">온라인 접속자 <xliff:g id="NUMBER">%1$d</xliff:g>명</string>
+  <string name="subscriptions">친구 초대</string>
+  <string name="unknown_contact">(\"<i>\"알 수 없음\"</i>\")</string>
+  <string name="empty_contact_group">비어 있음</string>
+  <string name="empty_conversation_group">대화 내용 없음</string>
+  <string name="search_label">연락처</string>
+  <string name="search_hint">채팅하시려는 연락처의 이름을 넣어보세요</string>
+  <string name="search_button_text">검색</string>
+  <string name="empty_chat_list">진행 중인 채팅이 없습니다.</string>
+  <string name="add_contact_title">연락처 추가</string>
+  <string name="input_contact_label">초대할 사람의 이메일 주소:</string>
+  <string name="choose_list_label">목록 선택:</string>
+  <string name="invite_instruction">주소록에서 추가할 이름을 입력하세요.</string>
+  <string name="invite_label">초대장 보내기</string>
+  <string name="contact_profile_title">연락처 프로필</string>
+  <string name="label_status">상태:</string>
+  <string name="label_client_type">클라이언트 유형:</string>
+  <string name="client_type_computer">컴퓨터</string>
+  <string name="client_type_mobile">모바일</string>
+  <string name="blocked_list_title">차단된 주소록 - <xliff:g id="USER">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">차단된 주소가 없습니다.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with"><xliff:g id="USER">%1$s</xliff:g>님과 채팅</string>
+  <string name="me">나</string>
+  <string name="contact_online"><xliff:g id="USER">%1$s</xliff:g>님이 온라인 상태입니다.</string>
+  <string name="contact_away"><xliff:g id="USER">%1$s</xliff:g>님이 자리비움 상태입니다.</string>
+  <string name="contact_busy"><xliff:g id="USER">%1$s</xliff:g>님이 다른 용무 중입니다.</string>
+  <string name="contact_offline"><xliff:g id="USER">%1$s</xliff:g>님은 오프라인 상태입니다.</string>
+  <string name="contact_joined"><xliff:g id="USER">%1$s</xliff:g>님이 채팅에 참여했습니다.</string>
+  <string name="contact_left"><xliff:g id="USER">%1$s</xliff:g>님이 채팅에서 나갔습니다.</string>
+  <string name="send">전송</string>
+  <string name="menu_end_conversation">채팅 종료</string>
+  <string name="menu_clear_chat">채팅 로그 지우기</string>
+  <string name="menu_insert_smiley">이모티콘 삽입</string>
+  <string name="menu_switch_chats">채팅 전환</string>
+  <string name="menu_plus">Menu+</string>
+  <string name="select_link_title">링크 선택</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="USER">%1$s</xliff:g>님이 그룹 채팅에 초대하셨습니다.</string>
+  <string name="invitation_sent_prompt"><xliff:g id="USER">%1$s</xliff:g>님에게 초대장을 보냈습니다.</string>
+  <string name="accept_invitation">수락</string>
+  <string name="decline_invitation">거부</string>
+  <string name="menu_invite_contact">초대\u2026</string>
+  <string name="contacts_picker_title">초대할 연락처 선택</string>
+  <string name="contact_filter_hint">입력하여 연락처 찾기</string>
+  <string name="approve_subscription_error"><xliff:g id="USER">%1$s</xliff:g>님의 구독을 승인할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
+  <string name="decline_subscription_error"><xliff:g id="USER">%1$s</xliff:g>님의 구독을 거부할 수 없습니다. 잠시 후에 다시 시도해 주세요.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">암호화 시작</string>
+  <string name="menu_otr_stop">암호화 중단</string>
+  <string name="menu_sign_in">로그인</string>
+  <string name="menu_gen_key">키 다시 생성</string>
+  <string name="otr_gen_key">새 OTR keypair 생성하기···</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_fingerprint">내 지문</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_send">전송</string>
+  <string name="otr_qa_cancel">취소</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">계정 설정</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="encryption_and_anonymity_title">암호화 및 익명</string>
+  <string name="menu_view_encrypt_chat">암호화 On/Off</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="menu_locale">언어</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">언어</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="hide_offline_contacts">오프라인 주소록 숨기기</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">알림 설정</string>
+  <string name="notification_enabled_title">쪽지 알림</string>
+  <string name="notification_enabled_summary">쪽지가 오면 상태 표시줄에 알림</string>
+  <string name="notification_vibrate_title">진동</string>
+  <string name="notification_vibrate_summary">쪽지 오면 진동</string>
+  <string name="notification_sound_title">사운드</string>
+  <string name="notification_sound_summary">쪽지 오면 벨소리 재생</string>
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_title">백그라운드 데이터 사용 안함</string>
+  <string name="bg_data_prompt_message"><xliff:g id="PROVIDER">%1$s</xliff:g>을(를) 사용하려면 백그라운드 데이터를 사용하도록 설정해야 합니다.</string>
+  <string name="bg_data_prompt_ok">사용</string>
+  <string name="bg_data_prompt_cancel">종료</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">새 메시지 <xliff:g id="PROVIDER">%1$s</xliff:g>개</string>
+  <string name="notify_groupchat_label">그룹 채팅 초대</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">주의</string>
+  <string name="general_error">오류 코드 <xliff:g id="CODE">%1$d</xliff:g></string>
+  <string name="login_service_failed"><xliff:g id="SERVICE">%1$s</xliff:g> 서비스에 로그인할 수 없습니다. 잠시 후에 다시 시도해 주세요."\n"(세부정보: <xliff:g id="DESCRIPTION">%2$s</xliff:g>)</string>
+  <string name="add_list_failed">목록이 추가되지 않았습니다.</string>
+  <string name="block_contact_failed">연락처를 차단하지 못 했습니다.</string>
+  <string name="unblock_contact_failed">연락처를 차단 해제하지 못 했습니다.</string>
+  <string name="select_contact">먼저 연락처를 선택하세요.</string>
+  <string name="disconnected">\"연결 끊김\"
+</string>
+  <string name="service_error">서비스 오류</string>
+  <string name="load_contact_list_failed">연락처 목록을 로드하지 못했습니다.</string>
+  <string name="cant_connect_to_server">서버에 연결할 수 없습니다. 연결을 확인하세요.</string>
+  <string name="contact_already_exist"><xliff:g id="USER">%1$s</xliff:g>님이 이미 연락처 목록에 있습니다.</string>
+  <string name="contact_blocked">연락처 \'<xliff:g id="USER">%1$s</xliff:g>\'은(는) 차단되었습니다.</string>
+  <string name="contact_not_loaded">연락처 목록이 로드되는 동안 잠시 기다려 주세요.</string>
+  <string name="network_error">네트워크 오류가 발생했습니다.</string>
+  <string name="service_not_support">서버에서 이 기능을 지원하지 않습니다.</string>
+  <string name="invalid_password">입력한 비밀번호가 올바르지 않습니다.</string>
+  <string name="internal_server_error">서버에서 오류가 발생했습니다.</string>
+  <string name="not_implemented">서버에서 이 기능을 지원하지 않습니다.</string>
+  <string name="service_unavaiable">현재 서버를 사용할 수 없습니다.</string>
+  <string name="timeout">서버가 제한 시간을 초과했습니다.</string>
+  <string name="version_not_supported">서버에서 현재 버전을 지원하지 않습니다.</string>
+  <string name="message_queue_full">메시지 대기열이 가득 찼습니다.</string>
+  <string name="domain_not_supported">서버에서 도메인으로 전달하는 기능을 지원하지 않습니다.</string>
+  <string name="unknown_user">입력한 사용자 이름을 인식할 수 없습니다.</string>
+  <string name="recipient_blocked_the_user">죄송합니다. 상대방이 차단했습니다.</string>
+  <string name="session_expired">세션이 만료되었습니다. 다시 로그인하세요.</string>
+  <string name="forced_logout">다른 클라이언트에서 로그인했습니다.</string>
+  <string name="already_logged_in">이미 다른 클라이언트로부터 로그인했습니다.</string>
+  <string name="msisdn_error">죄송합니다. SIM 카드에서 전화번호를 읽을 수 없습니다. 이동통신사에 문의하세요.</string>
+  <string name="not_signed_in">현재 로그인되어 있지 않습니다.</string>
+  <string name="account_wizard_no_domain_warning">계정 이름에 @hostname.com 부분을 넣지 않으셨습니다. 다시 시도해 주십시오.</string>
+  <string name="account_wizard_no_root_domain_warning">서버 호스트 이름에 .com, .net같은 최상위 도메인을 넣지 않으셨습니다. 다시 시도해 주십시오.</string>
+  <string name="signin_password_prompt">비밀번호:</string>
+  <string name="msg_sent_failed">메시지를 보내지 못했습니다.</string>
+  <string name="contact_offline_warning"><xliff:g id="USER_0">%1$s</xliff:g>님이 오프라인 상태입니다. <xliff:g id="USER_1">%1$s</xliff:g>님이 온라인 상태가 되면 보낸 메시지가 전달됩니다.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="USER">%1$s</xliff:g>이(가) 연락처 목록에 없습니다.</string>
+  <string name="account_settings_title">계정 설정</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">그룹</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">연락처 목록</string>
+  <string name="menu_settings">설정</string>
+  <string name="menu_view_accounts">계정 목록</string>
+  <string name="menu_sign_out">로그아웃</string>
+  <string name="menu_view_contact_list">연락처 목록</string>
+  <!--Other: Provider-->
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">온라인</string>
+  <string name="presence_busy">다른 용무 중</string>
+  <string name="presence_away">자리 비움</string>
+  <string name="presence_idle">대기</string>
+  <string name="presence_offline">오프라인</string>
+  <string name="presence_invisible">오프라인으로 표시</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>기쁨</item>
+    <item>슬픔</item>
+    <item>윙크</item>
+    <item>메롱</item>
+    <item>놀람</item>
+    <item>키스</item>
+    <item>고함</item>
+    <item>멋쟁이</item>
+    <item>돈쟁이</item>
+    <item>아차</item>
+    <item>당황</item>
+    <item>천사</item>
+    <item>으음</item>
+    <item>울음</item>
+    <item>비밀</item>
+    <item>웃음</item>
+    <item>혼란</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>기쁨</item>
+    <item>슬픔</item>
+    <item>윙크</item>
+    <item>메롱</item>
+    <item>놀람</item>
+    <item>키스</item>
+    <item>입벌림</item>
+    <item>멋쟁이</item>
+    <item>돈쟁이</item>
+    <item>아차</item>
+    <item>당황</item>
+    <item>천사</item>
+    <item>으음</item>
+    <item>울음</item>
+    <item>비밀</item>
+    <item>웃음</item>
+    <item>혼란</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+</resources>

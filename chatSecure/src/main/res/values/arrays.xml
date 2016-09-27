@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="otr_options">
+        <item>@string/otr_options_force</item>
+        <item>@string/otr_options_auto</item>
+        <item>@string/otr_options_attempt</item>
+        <item>@string/otr_options_disabled</item>
+    </string-array>
+    <string-array name="otr_options_values">
+        <item>force</item>
+        <item>auto</item>
+        <item>requested</item>
+        <item>disabled</item>
+    </string-array>
+    <string-array name="account_domains">
+        <item>dukgo.com</item>
+        <item>jabber.otr.im</item>
+        <item>jabber.calyxinstitute.org</item>
+        <item>xmpp.jp</item>
+        <item>jabberpl.org</item>
+        <item>neko.im</item>        
+    </string-array>
+
+</resources>

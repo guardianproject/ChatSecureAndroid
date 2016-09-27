@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Forcer / Exiger</item>
+    <item>Tenter automatiquement</item>
+    <item>Tel que demandé</item>
+    <item>Désactivé / Jamais</item>
+  </string-array>
+</resources>

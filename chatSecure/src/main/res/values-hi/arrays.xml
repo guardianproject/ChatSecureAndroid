@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>बल / आवश्यकता</item>
+    <item>स्वचालित रूप से प्रयास</item>
+    <item>के रूप में अनुरोध</item>
+    <item>निष्क्रिय/ कभी नहीँ</item>
+  </string-array>
+</resources>

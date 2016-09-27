@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">bere hipna sporočila</string>
+  <string name="ro_perm_desc">Dovoli aplikacijam dostop do podatkov ponudnika vsebin hipnega sporočanja.</string>
+  <string name="wo_perm_label">piše hipna sporočila</string>
+  <string name="wo_perm_desc">Dovoli aplikacijam, da zapišejo podatke pri ponudnikhu vsebin hipnega sporočanja.</string>
+  <string name="perm_label">začeni storitev hipnega sporočanja</string>
+  <string name="perm_desc">Dovoli aplikacijam, da zaženejo storitev hipnega sporočanja prek interneta.</string>
+  <!--General: Actions-->
+  <string name="confirm">Potrdi</string>
+  <string name="ok">V redu</string>
+  <string name="cancel">Prekliči</string>
+  <string name="yes">V redu</string>
+  <string name="no">Prekliči</string>
+  <string name="btn_next">Naprej</string>
+  <string name="btn_back">Nazaj</string>
+  <string name="connect">Poveži</string>
+  <!--Views-->
+  <string name="lock_screen_open">Odpri</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Izberi račun</string>
+  <string name="choose_account_title">Izberi račun</string>
+  <string name="conversations"> </string>
+  <string name="add_account"> </string>
+  <string name="menu_about">O programu</string>
+  <string name="menu_sign_out_all">Odjavi vse</string>
+  <string name="signout_all_confirm_message">Se želite odjaviti iz vseh storitev?</string>
+  <string name="signed_out_prompt"> </string>
+  <string name="welcome_first">Uporabljate ChatSecure prvič?</string>
+  <string name="welcome_skip">Ne morete počakati na začetek?</string>
+  <string name="welcome_about">Pa začnimo</string>
+  <string name="welcome_account">Nastavitve računa</string>
+  <string name="setup_passphrase_title">Nastavitev gesla</string>
+  <string name="setup_passphrase_label1">Geslo:</string>
+  <string name="setup_passphrase_label2">Geslo (ponovno):</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">O programu ChatSecure</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Kako je varnejše?</string>
+  <string name="about_otr">\'Off-the-Record Messaging\' </string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Ali so moji pogovori varni?</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Nov račun</string>
+  <string name="menu_add_account">Dodaj račun</string>
+  <string name="menu_edit_account">Uredi račun</string>
+  <string name="menu_remove_account">Odstrani račun</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Uporabnik@Gostitelj</string>
+  <string name="label_password">Geslo:</string>
+  <string name="remember_password">Zapomni si moje geslo.</string>
+  <string name="keep_me_signed_in">Samodejno me prijavi.</string>
+  <string name="sign_up">Še nimate računa?</string>
+  <string name="sign_in">Prijavi se</string>
+  <string name="check_save_password">V kolikor izgubite telefon ali vam ga ukradejo, poskrbite za svojo varnost, tako da prek spleta z vašega računalnika spremenite geslo.</string>
+  <string name="check_auto_sign_in">Ta možnost vas avtomatsko prijavi vsako krat, ko zaženete to aplikacijo. Da bi jo onemogočili, se odjavite, nato odstranite kljukico pred \"Vpiši me avtomatsko\".</string>
+  <string name="use_tor">Poveži se prek Tora (potrebuje aplikacijo Orbot)</string>
+  <string name="account_setup_example_email_address">user@domain.com</string>
+  <string name="account_setup_new_username">novo uporabniško ime</string>
+  <string name="account_setup_service_provider">ponudnik storitve (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">geslo</string>
+  <string name="account_setup_password_confirm">potrdi geslo</string>
+  <string name="account_setup_advanced_button">Napredne nastavitve računa</string>
+  <string name="account_select_type">Vrsta računa</string>
+  <string name="btn_create_new_account">Ustvari račun</string>
+  <string name="account_setup_pers_sub">Trajnost</string>
+  <string name="account_setup_pers_pw_title">Zapomni si geslo</string>
+  <string name="account_setup_pers_pw_on">Geslo zapomnjeno</string>
+  <string name="account_setup_pers_pw_off">Geslo ni zapomnjeno</string>
+  <string name="account_setup_pers_auto_title">Samodejna prijava</string>
+  <string name="account_setup_pers_now_title">Prijavi se sedaj</string>
+  <string name="account_setup_pers_now_on">Po nastavitvi računa se poveži</string>
+  <string name="account_setup_pers_now_off">Po nastavitvi računa se ne poveži</string>
+  <string name="account_setup_personal_sub">Osebno (neobvezno)</string>
+  <string name="account_setup_personal_alias_title">Vzdevek računa (vaše ime)</string>
+  <string name="account_setup_personal_alias_sub">Kako vaš račun zgleda na spletu</string>
+  <string name="account_setup_personal_profile_title">Profil</string>
+  <string name="account_setup_personal_profile_sub">Kratko besedilce o vas samih</string>
+  <string name="account_setup_advanced_enc_force">Vsili šifriranje / zavrni navadno besedilo</string>
+  <string name="account_setup_advanced_enc_auto">Ko je možno, šifriraj klepete samodejno</string>
+  <string name="account_setup_advanced_enc_req">Šifriraj pogovore, če je tako določeno</string>
+  <string name="account_setup_advanced_enc_off">Onemogoči šifriranje pogovorov</string>
+  <string name="account_setup_signin_a">Preverjanje poverilnice …</string>
+  <string name="account_setup_signin_b">Generiram par ključev …</string>
+  <string name="account_setup_signin_c">Prijavljanje …</string>
+  <string name="account_wizard_setup_title">Čarovnik za račun</string>
+  <string name="account_wizard_account_title">ID vašega računa</string>
+  <string name="account_wizard_host_title">Nastavi strežnik</string>
+  <string name="account_wizard_ready_title">Ste pripravljeni?</string>
+  <string name="account_wizard_account_body">Prosimo, vnesite ID vašega računa (uporabnik@strežnik):</string>
+  <string name="account_wizard_host_body">Vnesite ali spremenite vaše jabber/xmpp ime gostitelja in vrata (5222 so privzeta).</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="select_domain_new_account">Izberi domeno</string>
+  <string name="menu_cancel_signin">Prekini prijavo</string>
+  <string name="signing_in_wait">Prijavljanje\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="do_srv_lookup">Napravi lookup strežnika</string>
+  <string name="use_dns_srv_to_find_actual_xmpp_server_from_domain_name">Uporabi domenski strežnik za preverjanje domene trenutnega XMM strežnika</string>
+  <string name="allow_the_username_and_password_to_be_sent_as_plain_text_when_using_an_unencrypted_transport">Dovoli, da sta uporabniško ime in geslo poslana kot navadno besedilo ob uporabi nešifriranega transporta</string>
+  <string name="allow_plain_text_auth">Dovoli prijavo v navadnem besedilu</string>
+  <string name="verify_that_the_certificate_is_trusted">Preveri, da je certifikat zaupanja vreden</string>
+  <string name="tls_verification">TLS preverjanje</string>
+  <string name="require_tls_ssl_connection">Zahtevaj povezavo TLS</string>
+  <string name="transport_encryption">Šifriranje prenosa</string>
+  <string name="how_encrypted_chats_are_started">kako se šifrirani pogovori pričnejo</string>
+  <string name="the_server_to_connect_to_if_needed">Strežnika za se povezati z, če je potrebno</string>
+  <string name="connect_server">Poveži server</string>
+  <string name="tcp_port_for_xmpp_server">TCP vrata za XMPP strežnik</string>
+  <string name="server_port">Vrata strežnika</string>
+  <string name="xmpp_resource">XMPP viri</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Pogovori</string>
+  <string name="empty_account_message">Nimate nastavljenega
+nobenega računa.
+
+Dotaknite se tu in ga dodajte!</string>
+  <string name="buddy_list_title">Seznam stikov - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Dodaj stik</string>
+  <string name="menu_remove_contact">Odstrani stik</string>
+  <string name="menu_block_contact">Blokiraj stik</string>
+  <string name="menu_view_blocked">Blokiran</string>
+  <string name="confirm_delete_contact"> </string>
+  <string name="confirm_block_contact"> </string>
+  <string name="confirm_unblock_contact">  </string>
+  <string name="add_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" dodan.</string>
+  <string name="delete_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" izbrisan.</string>
+  <string name="block_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" blokiran.</string>
+  <string name="unblock_contact_success">Stik "<xliff:g id="user">%1$s</xliff:g>" odblokiran.</string>
+  <string name="menu_new_chat">Nov pogovor</string>
+  <string name="menu_search_contacts">Išči stike</string>
+  <string name="menu_start_chat">Začni pogovor</string>
+  <string name="ongoing_conversation">Trajajoči pogovori (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> povezan</string>
+  <string name="subscriptions">Povabila prijateljev</string>
+  <string name="unknown_contact">(<i>Neznano</i>) </string>
+  <string name="empty_contact_group">Prazno</string>
+  <string name="empty_conversation_group">Brez pogovoro</string>
+  <string name="search_label">Stik</string>
+  <string name="search_hint">vpiši ime stika, s katerim želiš začeti pogovor</string>
+  <string name="search_button_text">Išči</string>
+  <string name="empty_chat_list">Brez aktivnih klepetov.</string>
+  <string name="add_contact_title">Dodaj kontakt</string>
+  <string name="input_contact_label">E-poštni naslov osebe, ki jo želite povabiti:</string>
+  <string name="choose_list_label">Izberite seznam:</string>
+  <string name="invite_instruction">Vpišite ime, da bi dodali iz stikov.</string>
+  <string name="invite_label">Pošlji vabilo</string>
+  <string name="contact_profile_title">Profil kontakta</string>
+  <string name="label_status">Status:</string>
+  <string name="label_client_type">Tip odjemalca:</string>
+  <string name="client_type_computer">Računalnik</string>
+  <string name="client_type_mobile">Mobilni telefon</string>
+  <string name="blocked_list_title">Blokirani stiki - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Brez blokiranih kontaktov.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Klepetaj z <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="me">Jaz</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> je povezan</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> je odsoten</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> je zaseden</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> ni povezan</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> se je pridružil</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> je zapustil</string>
+  <string name="send">Pošlji</string>
+  <string name="menu_resend">Pošlji ponovno</string>
+  <string name="menu_end_conversation">Končaj pogovor</string>
+  <string name="menu_clear_chat">Zbriši pogovor</string>
+  <string name="menu_insert_smiley">Vstavi </string>
+  <string name="menu_switch_chats">Zamenjaj pogovore</string>
+  <string name="menu_plus">Menu+</string>
+  <string name="select_link_title">Izberi povezavo</string>
+  <string name="delete">Zbriši</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> vas je povabil, da se pridružiti skupinskemu klepetu.</string>
+  <string name="invitation_sent_prompt"> Vabilo je bilo poslano <xliff:g id="user">%1$s</xliff:g>.</string>
+  <string name="accept_invitation">Sprejmi</string>
+  <string name="decline_invitation">Zavrni</string>
+  <string name="menu_new_group_chat">Skupinski pogovor</string>
+  <string name="create_or_join_group_chat">Začni ali se pridruži skupinskemu pogovoru</string>
+  <string name="menu_invite_contact">Povabi\u2026</string>
+  <string name="contacts_picker_title">Izberite kontakt(e), ki jih želite povabiti.</string>
+  <string name="contact_filter_hint">Pišite za iskanje kontakta</string>
+  <string name="approve_subscription">Da</string>
+  <string name="decline_subscription">Ne</string>
+  <string name="approve_subscription_error">Ni bilo možno potrditi vpisa od <xliff:g id="user">%1$s</xliff:g>. Poizkusite ponovno kasneje.</string>
+  <string name="decline_subscription_error">Ni bilo možno  zavrniti vpisa od <xliff:g id="user">%1$s</xliff:g>. Poizkusite ponovno kasneje.</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Začni šifriranje</string>
+  <string name="menu_otr_stop">Končaj šifriranje</string>
+  <string name="starting_otr_chat">Začetek šifrirane pogovorne seje …</string>
+  <string name="stopping_otr_chat">Konec šifrirane pogovorne seje …</string>
+  <string name="label_fingerprint_remote">Varnostni prstni odtis</string>
+  <string name="label_fingerprint_local">Varnostni prstni odtis</string>
+  <string name="menu_sign_in">Prijavi se</string>
+  <string name="menu_gen_key">Ponovno ustvari ključ</string>
+  <string name="otr_session_status_plaintext">Šifriranje je izklopljeno</string>
+  <string name="otr_session_status_encrypted">Šifriranje je vklopljeno (preveri z dotikom)</string>
+  <string name="otr_session_status_verified">Šifrirano in preverjeno!</string>
+  <string name="otr_gen_key">Generiram nov par OTR ključev …</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">Odčitaj QR</string>
+  <string name="menu_fingerprint">Vaš prstni odtis</string>
+  <string name="menu_verify_fingerprint">Ročno</string>
+  <string name="menu_verify_secret">Vprašanje</string>
+  <string name="their_fingerprint_verified_">Varnostni prstni odtis (preverjen)</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Ali ste prepričani, da želite potrditi ta prstni odtis?</string>
+  <string name="verify_key_">Preveri prstni odtis?</string>
+  <string name="the_remote_key_fingerprint_has_been_verified_">Oddaljeni prstni odtis je bil preverjen!</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Avtentikacija</string>
+  <string name="smp_question_hint">zastavi vprašanje</string>
+  <string name="qmp_answer_hint">pričakovan odgovor</string>
+  <string name="remote_verified_us">Vaš stik vas je uspešno prepoznal. Zdaj prepoznajte še vi njega, tako da mu zastavite svoje vprašanje.</string>
+  <string name="otr_qa_send">Pošlji</string>
+  <string name="otr_qa_cancel">Prekini</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Varen klic</string>
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Nastavitve računa</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <string name="pref_group_security_title">Varnost in zasebnost</string>
+  <string name="encryption_and_anonymity_title">Šifriranje in anonimnost</string>
+  <string name="menu_view_encrypt_chat">Vklop/Izklop šifriranja</string>
+  <string name="pref_cacheword_timeout_title">Potek pomnjenja gesla</string>
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">Uporabniški vmesnik</string>
+  <string name="menu_locale">Jezik</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Jeziki</string>
+  <string name="pref_theme_dark_summary">Spremeni temo aplikacije v temno</string>
+  <string name="pref_background_title">Slika ozadja</string>
+  <string name="pref_background_summary">Nastavi pot (\"/sdcard/krneki.jpg\") do slike, ki naj se prikazuje v ozadju aplikacije</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <string name="hide_offline_contacts">Skrij nedosegljive stike</string>
+  <string name="heartbeat_interval_title">Hearthbit interval</string>
+  <string name="heartbeat_interval_summary">Uporabite višjo vrednost (v minutah), da boste varčevali z baterijo. Visoka vrednost lahko povzroči, da pride do prekinitve povezave pri ponudniku zaradi neaktivnosti.</string>
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Nastavitve obveščanja</string>
+  <string name="notification_enabled_title">Obvestilo o sporočilu</string>
+  <string name="notification_enabled_summary">Ko pride sporočilo me obvesti v statusni vrstici</string>
+  <string name="notification_vibrate_title">Vibriraj</string>
+  <string name="notification_vibrate_summary">Ko pride sporočilo tudi vibriraj </string>
+  <string name="notification_sound_title">Zvok</string>
+  <string name="notification_sound_summary">Ko pride sporočilo tudi zazvoni</string>
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_message">
+         Za prijavo je potrebna podatkovna povezava (tudi background data) .
+    </string>
+  <string name="bg_data_prompt_ok">Omogoči</string>
+  <string name="bg_data_prompt_cancel">Izhod</string>
+  <string name="signout_kill_confirm_message">Se želite odjaviti iz vseh storitev IN končati vse procese (grob izhod)?</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Nova <xliff:g id="provider">%1$s</xliff:g> sporočila</string>
+  <string name="notify_groupchat_label">Povabilo v skupinski klepet</string>
+  <string name="new_messages_notify">Novo sporočilo od</string>
+  <string name="starting_the_chatsecure_service_">ChatSecure storitev se zaganja …</string>
+  <!--Alerts: Exceptions-->
+  <string name="error">Pozor</string>
+  <string name="general_error">Koda napake <xliff:g id="code">%1$d</xliff:g></string>
+  <string name="add_list_failed">Seznam ni bil dodan.</string>
+  <string name="block_contact_failed">Kontakt ni bil blokiran.</string>
+  <string name="unblock_contact_failed">Kontakt ni bil odblokiran.</string>
+  <string name="select_contact">Najprej izberite kontakt.</string>
+  <string name="disconnected">Odklopljen!\n</string>
+  <string name="service_error">Napaka storitve!</string>
+  <string name="load_contact_list_failed">Seznam stikov se ni naložil.</string>
+  <string name="cant_connect_to_server">Povezovanje na strežnik ni uspelo. Preverite vašo povezavo.</string>
+  <string name="contact_already_exist">"<xliff:g id="user">%1$s</xliff:g>" že obstaja v vašem seznamu stikov.</string>
+  <string name="contact_blocked">Stik "<xliff:g id="user">%1$s</xliff:g>" je bil blokiran.</string>
+  <string name="contact_not_loaded">Prosimo, počakajte da se naloži seznam vaših stikov.</string>
+  <string name="network_error">Prišlo je do mrežne napake.</string>
+  <string name="service_not_support">Ta strežnik ne podpira te funkcionalnosti. </string>
+  <string name="invalid_password">Vneseno geslo ni veljavno.</string>
+  <string name="internal_server_error">Strežnik je naletel na težavo.</string>
+  <string name="not_implemented">Strežnik ne podpira te funkcionalnosti.</string>
+  <string name="service_unavaiable">Strežnik je trenutno nedosegljiv.</string>
+  <string name="timeout">Strežnik je prekoračil čas.</string>
+  <string name="version_not_supported">Strežnik ne podpira tekoče različice.</string>
+  <string name="message_queue_full">Vrsta s sporočili je polna.</string>
+  <string name="domain_not_supported">Strežnik ne podpira posredovanja tej domeni.</string>
+  <string name="unknown_user">Vpisano uporabniško ime ni prepoznano.</string>
+  <string name="recipient_blocked_the_user">Oprostite, uporabnik vas je blokiral.</string>
+  <string name="session_expired">Seja je potekla, prosim, prijavite se ponovno.</string>
+  <string name="forced_logout">vpisali ste se z drugega odjemalca.</string>
+  <string name="already_logged_in">vpisali ste se z drugega odjemalca.</string>
+  <string name="msisdn_error">Oprostite, telefonska številka ne more biti prebrana z vaše SIM kartice. Prosimo, da se po pomoč obrnete k vašemu operaterju.</string>
+  <string name="not_signed_in">Trenutno niste prijavljeni.</string>
+  <string name="account_wizard_no_domain_warning">Niste vnesli @hostname.com dela ID računa. Poizkusite ponovno!</string>
+  <string name="account_wizard_no_root_domain_warning">Ime gostitelja tvojega strežnika ni imelo .com, .net ali podobne končnice. Poizkusite ponovno!</string>
+  <string name="signin_password_prompt">Vnesite vaše geslo:</string>
+  <string name="unable_to_create_or_join_group_chat">Začenjanje ali se pridruževanje skupinskemu pogovoru ni uspelo</string>
+  <string name="sorry_we_cannot_share_that_file_type">Ne morete delite te vrste datotek</string>
+  <string name="err_otr_share_no_encryption">Morate omogočiti šifriranje, da boste lahko delili datoteke</string>
+  <string name="msg_sent_failed">To sporočilo ne more biti poslano.</string>
+  <string name="contact_offline_warning"><xliff:g id="user">%1$s</xliff:g> ni povezan. Sporočilo, ki ste ga poslali, bo dostavljeno, ko se <xliff:g id="user">%1$s</xliff:g> poveže.</string>
+  <string name="contact_not_in_list_warning"><xliff:g id="user">%1$s</xliff:g> ni na seznamu vaših stikov.</string>
+  <string name="account_settings_title">Nastavitve računa</string>
+
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Skupine</string>
+  <string name="menu_exit">Izhod</string>
+  <string name="menu_panic">Panika</string>
+  <string name="buddies">Prijatelji</string>
+  <string name="mtm_accept_cert">Želite sprejeti digitalno potrdilo strežnika?</string>
+  <string name="menu_sidebar_qr">Prstni odtis</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Seznam stikov</string>
+  <string name="menu_settings">Nastavitve</string>
+  <string name="menu_view_accounts">Računi</string>
+  <string name="menu_sign_out">Odajvi se</string>
+  <string name="menu_view_contact_list">Seznam stikov</string>
+  <!--Other: Provider-->
+  <string name="google_account">Račun Google</string>
+  <string name="default_service_provider">dukgo.com</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <string name="presence_available">Na voljo</string>
+  <string name="presence_busy">Zaseden</string>
+  <string name="presence_away">Odsoten</string>
+  <string name="presence_idle">Neaktiven</string>
+  <string name="presence_offline">Nedosegljiv</string>
+  <string name="presence_invisible">Na videz nedosegljiv</string>
+  <!--Other: Smileys-->
+  <string-array name="default_smiley_names">
+    <item>Vesel</item>
+    <item>Žalosten</item>
+    <item>Mežika</item>
+    <item>Kaže jezik</item>
+    <item>Presenečen</item>
+    <item>Poljublja</item>
+    <item>Vpije</item>
+    <item>Z očali</item>
+    <item>Pogolten na denar</item>
+    <item>Foot in mouth</item>
+    <item>V zadregi</item>
+    <item>Angelček</item>
+    <item>Neodločen</item>
+    <item>Joka</item>
+    <item>Z zaprtimi usti</item>
+    <item>Se smeji</item>
+    <item>Zmeden</item>
+  </string-array>
+  <!--[Do not localize!]-->
+  <string-array name="smiley_names">
+    <item>Vesel</item>
+    <item>Žalosten</item>
+    <item>Mežika</item>
+    <item>Kaže jezik</item>
+    <item>Presenečen</item>
+    <item>Poljublja</item>
+    <item>Vpije</item>
+    <item>Z očali</item>
+    <item>Pogolten na denar</item>
+    <item>Foot in mouth</item>
+    <item>V zadregi</item>
+    <item>Angelček</item>
+    <item>Neodločen</item>
+    <item>Joka</item>
+    <item>Z zaprtimi usti</item>
+    <item>Se smeji</item>
+    <item>Zmeden</item>
+  </string-array>
+  <string-array name="smiley_texts">
+    <item>:-)</item>
+    <item>:-(</item>
+    <item>;-)</item>
+    <item>:-P</item>
+    <item>=-O</item>
+    <item>:-*</item>
+    <item>:O</item>
+    <item>B-)</item>
+    <item>:-$</item>
+    <item>:-!</item>
+    <item>:-[</item>
+    <item>O:-)</item>
+    <item>:-\\</item>
+    <item>:\'(</item>
+    <item>:-X</item>
+    <item>:-D</item>
+    <item>o_O</item>
+  </string-array>
+  <string name="i_need_a_new_account">Nov račun</string>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Tving / Krev</item>
+    <item>Automatisk forsøk</item>
+    <item>Som forespurt</item>
+    <item>Deaktivert / Aldri</item>
+  </string-array>
+</resources>

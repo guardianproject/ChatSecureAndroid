@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Bắt buộc / Yêu cầu</item>
+    <item>Tự động thử lại</item>
+    <item>Như đã yêu cầu</item>
+    <item>Tắt / Không bao giờ</item>
+  </string-array>
+</resources>

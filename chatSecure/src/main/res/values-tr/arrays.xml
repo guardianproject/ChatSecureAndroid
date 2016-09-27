@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Kuvvet iste /</item>
+    <item>Otomatik Denemesi</item>
+    <item>Talep olarak</item>
+    <item>Engelli / Asla</item>
+  </string-array>
+</resources>

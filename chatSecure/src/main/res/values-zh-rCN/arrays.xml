@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>强制要求</item>
+    <item>自动尝试</item>
+    <item>按照要求</item>
+    <item>禁止/从不</item>
+  </string-array>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string-array name="otr_options">
+    <item>Накарай / Изискай</item>
+    <item>Опитай Автоматично</item>
+    <item>Както е поискано</item>
+    <item>Изключено / Никога</item>
+  </string-array>
+</resources>
