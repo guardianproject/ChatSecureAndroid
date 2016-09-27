@@ -1,0 +1,779 @@
+Track the source commits here:
+https://github.com/guardianproject/ChatSecureAndroid/commits/master#
+
+/** 14.2.3 / 02-Feb-2016 / 37c501bce15c3f884958c2c230dce5b3acdd6668 **/
+
+95e63a9 fixes #728 and #718 by disabling unsupport cipher suites
+9b31ce3 Merge pull request #735 from uxname/patch-1
+05991a4 Added missing translation strings
+765fe92 update to version name 14.2.2 code 1422001
+940599b Merge pull request #733 from eighthave/master
+63fe37d get keysync working again!
+790f16c OtrFileConverter is called KeySync!
+86eb67b update translations: ar bg bo ca cs da el es fa fi fr hu it ja nb pt ru sr tr zh
+6415200 add new translation: mk Macedonian
+7c16015 add more translation fixes and unified into a single script
+441cddb fix NPE crash when setting background
+b13a88d stop crashing if external storage is not available
+28a8914 do not claim .ofcaes files, there is no handler hooked up
+c66fc94 if import keystore fails, always show Toast
+2c4a5ba Merge pull request #731 from eighthave/master
+13c37e7 make "Shutdown & Lock" also clear from "Recent Apps"
+9ae2dc7 after receiving panic trigger, quit and remove from history
+c8bf278 fix crash on shutdown/lock with progress dialog
+172c10b use string resource for "Chat Encryption" preference
+4792376 Merge pull request #712 from kden/github-672-negative-xmpp-set
+a2ec464 Merge pull request #730 from eighthave/master
+66bfcbe Fixed bad comparisons for 'checkGroupElem' and 'checkExpon' basic verification methods for parameters in SMP.
+758bbd7 use symlinks to provide alternate folders for Hebrew and Indonesian
+20ce719 GitHub #672 Allowing setting negative XMPP priority
+bdd8bca Merge pull request #706 from n8fr8/master
+1cd4be5 Merge branch 'master' of github.com:n8fr8/AwesomeApp
+482daca fixes github issue #699 for multiple resend of postponed messages
+1990815 ensure the locale is properly set for the app
+03f5f89 handle errors thrown lower in the stack here
+78c66f1 handle connection being null
+f6be4d9 this is not used anymore
+5606e08 no need to clear this
+c1c18fe handle possible NPE
+c21ce30 Merge branch 'master' of github.com:guardianproject/ChatSecureAndroid
+5ca08b5 Merge pull request #698 from eighthave/master
+b094091 make-release-build: disable faketime since it is problematic
+4a83e97 update changelog for v14.2
+6761575 Merge pull request #695 from eighthave/master
+0fed76e improve regexps for linkifying and add bitcoin: for payments
+1f4bb8e too many views in the account wizard
+
+14.2.0 / 2015-07-13 / 67615753e0f87e09fa0aa3df1f6f8e0fc347c825
+
+6761575 Merge pull request #695 from eighthave/master
+0fed76e improve regexps for linkifying and add bitcoin: for payments
+1f4bb8e too many views in the account wizard
+b587ef6 this is now 14.2.0
+9af9115 add support for auto lookup of proper MUC conference server host for user
+167432b remove bam.yt
+dca3aab fixes #4679 making sure user set port is always used
+f2a33aa fixes #4652 makes sure there are no NPE
+47781b4 don't pull arrays from tx anymore, as we don't need it
+b3dddb5 otr_options_values should not be localized as they are keys all strings for arrays moved to strings.xml
+c2b2ef0 Merge pull request #693 from n8fr8/v14.2-more-bug-fixes
+7a31686 Merge branch 'v14.2-more-bug-fixes' of github.com:n8fr8/Gibberbot into v14.2-more-bug-fixes
+b32639e remove switch support
+e51728f cleanup account view layout
+334cc5b Merge pull request #684 from eighthave/master
+d1e9bdc Merge pull request #683 from n8fr8/master
+58abae2 make-release-build: use version from `git describe` in original name format
+f31b57e include app description in the app manifest
+d47ef09 fixes #677 on github: update asmack to address "sessionSupported" bug https://github.com/guardianproject/ChatSecureAndroid/is
+d72d79b fixes #677 on github: update asmack to address "sessionSupported" bug https://github.com/guardianproject/ChatSecureAndroid/is
+9f42ad9 Merge pull request #682 from n8fr8/v14.2-more-bug-fixes
+0920091 simplify the refreshSessionPresence code by merging into login logic
+c08ff61 merge updateNotification() into networkStateChange for simplicity
+5484f43 final fixes to message postpone/re-send logic
+75100c2 Merge pull request #681 from eighthave/some-small-fixes
+ea91042 partial fix #2147 if OTR is set to require/force then don't send messages without OTR Also attempts to set messages to POSTPO
+3df88f3 use java.security.SecureRandom to be sure
+f5ce7fb Fix SMP for non-ASCII chars.
+2ae6b02 fixes #5132 handles cases where there is no display name for some reason
+93c4de0 feature: add support for image preview in conversation view
+acb9bec fixes bug #2146 messages sent while offline stay in right place! previously, the sent time was being reset to -1 for offline/
+ac1ae6f fixes #3256 removes debug code that caused crash
+084f51e add new base art images
+66f4918 multiple fixes to import from content:// URIs and image resizing Apps like CameraV share images and video direclty using cont
+214e2ab reduce the size of the thumbnail cache
+860d769 make it easy to get active sessions
+467f628 only reconnect if suspended and then refresh presence of all open sessions
+9ac0b37 fix NPE if notifyBuilder is not yet instanced
+3121196 add new offline/disconnected icon
+26e4974 update manifest types supported for picker
+1b9aacd initial fixes to handle content:// URI files shared into ChatSecure
+a7c72d9 Merge pull request #678 from n8fr8/bug-fix-network-state
+767cb2a update notificaiton with proper intent
+448a7b2 simplify, clean-up handling of network connectivity state and improve notifications
+a8d8cf4 Merge pull request #676 from n8fr8/dev-14.2
+250a689 make the message view properly load form a stream instead of just a file object
+326fefe remove use of ugly background
+635f0ca remove ugly background
+790b164 update layout of avatars to make them slightly bigger 48dp
+6fc9001 make round avatars a little bigger with a smaller border
+fa01457 begin handling low memory states better
+c5bf709 only load the full roster once (don't reload it on reconnect) this saves bandwidth, battery and memory
+d696c98 never disconnect unless the user explicitly tells us to (always retry!)
+9027951 reduce memory usage in half by reducing avatars in half!
+55c5a4d resize images for sharing
+4ac1c90 Merge pull request #652 from eighthave/release-build-tweaks
+b858857 do not include BUILD.MF in debug APK, it breaks signature verification
+aa36a32 make versionName match the signed release git tag
+46444e1 include build metadata in release APK to help reproducibility
+ce48ce2 use `git describe` to name APK file
+575c684 make-release-build: include 'v' in release APK name, following convention
+0407072 remove references to non-existant Activites
+
+14.1.1-RC-5 / 2015-03-09 / abea2282eacc1975738bd643efa9e1e972eda149
+83a06fe fix presence and add contact handling logic to smooth new user experience
+
+14.1.1-RC-4 / 2015-03-08 / 126ba01d3e1966998d184e39d0c1bef7d549f11a
+
+9c1ee62 Merge pull request #643 from n8fr8/bug_4650_remoteservice_crash
+8d7cf8e fixes #4682 where presence from can somtimes be null
+5f7086d tune Google OAuth setup and presence/avatar refresh
+0cf3b1f don't use an avatar in the action/title bar
+b6a314b empty space
+a62c2d3 make sure there is an icon for the remove account menu
+9e1c954 make status warning text smaller
+6fbffb3 improve message status display
+6520c27 allow all proper jabberid strings in account setup
+e7be7cd Merge pull request #640 from n8fr8/bug_avatars_not_displayed
+29a0f87 fix view profile menu option
+9ec1b3b refresh presence when new session is created
+e3a43e0 fixes #4653 chatmanager can be null, so make sure to check
+479187c fixes #4652 roster might be null
+3d964d7 fixes #4651 handle exception throwing from problems with ChatFileStore/VFS
+daf181e fixes #4650 cacheword might be null
+461e85e make sure avatars show up in chatview as well The nickname string was being used instead of the address/JID to lookup avatars
+54af765 re-enables proper storage and retrieval of avatars
+
+14.1.1-RC-3 / 2015-03-01 / 34deffd103b9a2dfcec32f5f4b934dbe049dd921
+
+27ac3ba fixes bug with incorrect display of media transfer progress
+39f01ea small final layout cleanups, menu tuning and related fixes
+9c7ff10 handle NoSuchElement error happening due to poll(); peek() first!
+2df2d14 fix audio playback, media rendering and remove errant tap logic
+
+14.1.1-RC-1 / 2015-02-27 / 757c50144bf04975063031204250c0e755c2fef6
+
+* MultiUser Chat / Group fixes
+23454b2 fix creation of new ChatGroup/MUC sessions Previously, new chat instance was being inserted into IMPS when we created a new MU
+6e66920 UI logic for handling group vs normal contact
+a366cfd set provider default sort to unambigious column (_ID instead of name)
+672becb read the contact type to properly determine if it is a groupchat
+fe1c585 Fix handling of groupchat/MUC nickname storage and display
+
+* Usability
+b27841c make Tor bridge: links clickable always, whether on Tor or not
+cee8a3a auto-resize images taken with embedded camera for quick transfer
+3b762b4 make sure all desired accounts sign in on startup
+9c99e50 create prompt screen if chat media store or SD card is missing
+be2c6e2 Trigger message requery when file transfer is done Sometimes the message display doesn't update after you ahve received in an 
+d263292 stop delete prompt after taking audio/pictures, just delete automatically
+
+* OTR sessoon init fixes
+2062b77 OtrEngine doesn't need to set the from - the XMPP Provider will do it
+
+* Stability Improvements
+bfaa660 improved logic for handling service restart/reinit
+de92973 if VFS not mounted, redirect to WelcomeActivity for logic This can happen if user opens app from Notification and not from Lau
+693bc29 an extra check to make sure mounted() before getting image
+7a684a2 reconnect to cacheword on restart of Service after OS kills it
+f9c606f Enable Service to response to CacheWord in case of restart/kills In some cases, on devices with low memory like my Moto E, the
+11aa581 prevent NPE after ending a chat session
+18508b3 purge old code structure that launches NewChatActivity for each account
+a4ed775 prefer internal storage for ChatFileStore, unless there isn't enough space
+424f931 rename IocVfs to ChatFileStore following what it does
+db9c873 rename chat_screen_menu to new_chat_menu, its only used in NewChatActivity
+a02f05e provide single method for "Shutdown & Lock"
+26aca9b AccountWizardActivity: purge unused code to clarify "Shutdown & Exit" usage
+3885625 there is only one VFS, so if its already mounted, nothing to do
+69609ff rename IocVfs.dbFile to dbFilePath to distinguish it from the File instances
+d011614 store the location of IOCipher media store so if its missing, prompt user
+3d4c8c4 move all encrypted store password transformations to single method
+d1d357f create IocVfs.initWithoutPassword(Context) for when no password is set
+f092b41 unmount IOCipher container on "complete shutdown" to zero out stored keys
+8520b14 support new IOCipher v0.3 API
+db2405f switch to IOCipher v0.3
+
+14.1.1-BETA-1 / 2015-02-24 / b938c5b0e7c424bc0be907b78bc38d3e1eb97125
+
+* UI tweaks
+415070e re-instate chat OTR state/drop-down menu
+ad3367b make button panel scroll horizontally
+bd0068f Revert "Only linkify when it is a text message and not media"
+302904d last cleanup of groupchat dialog box
+72fdb80 small clean-up of dropdown dialog for groupchat
+cd82821 add new dark attachment icon for dark theme
+b9ba9f4 use a ScrollView for Account Wizard screens to accomodate long translations
+f57083f add new dark attachment icon for dark theme
+53227fe move share/attach to bottom of the screen popup menu This declutters the actionbar, and matches more what other popular apps 
+9cfcfa3 last cleanup of groupchat dialog box
+
+* Feature fixes
+02044de fix message address targeting for OTR setup Messages were being sent to wrong resource, and OTR init never occured
+853af9e OTR code cleanup to remove still existing issues with encryption start
+
+* Stability
+5fb1ac4 fix crash if loader is working, then ChatSecure quits
+1a3b695 launch all clicked links into a new Task
+
+* Misc
+7d6d558 explain why the SQLCipher libs are loaded at app start
+3b2530c do not translate SharedPreferences key strings
+6f10871 make-release-build: generate APK file name based on `git describe`
+df3cc88 use correct classes and casts in LinkifyHelper
+2391f76 small clean-up of dropdown dialog for groupchat
+6f70426 make MUC chat work better and persist across app instances
+0bbb908 Only linkify when it is a text message and not media Linkify code expects a Spannable which only exists if the message contai
+8d5d2c3 purge dead code from MessageView
+eddb171 add new translations
+
+14.1.0-RC1 / 2015-01-06 / 863bfec7b0881395dbaec8937f999e0c9b0b9dd7
+
+863bfec update translations
+21d18af remove duplicate packet subscribe code
+bd0c743 update to latest cacheword
+f172551 reinstate contact object instance clearing on logout
+7880bc0 this just clears objects from memory; it should be done
+bc4bbaa query or insert new contact to ensure you don't create duplicates
+cc5f8d8 don't add a contact if it already exists
+5ecf862 don't load chats until connections are init'd also re-impl subscription dialog prompts properly
+815a6ed simplify subscription prompt text
+6bb7deb just show normal contact for now in contact picker - still looking into a way to show pending/subscribe notices here
+c0ab354 clean up menu options for account and chat views
+eddfd38 Merge branch 'master' of github.com:guardianproject/ChatSecureAndroid
+6625a91 additional fixes for contact add, subscribe, presence interaction
+d476883 multiple fixes for handling subscription request in UI
+71d1c1d don't re-init timers if they already have been created
+51eb8ea Merge pull request #621 from n8fr8/bug4461-normalizeusernames
+74ccfdd fixes #4473 makes sure the roster is not null
+bf6bae2 fixes #4472 makes sure connection, view are not null
+6ee25fe fixes #4461 (and others) related to invalid username/jids This should solve cases where OTR does not init when a user creates 
+d8ce28d include the 'v' before the version number in the release file name
+063fa4b make-release-build: configure ant build after all conf files are in place
+089aaa8 update cacheword to get build fixes
+5c33aed make-release-build: always build the git tag that matches versionName
+b9dcf37 automatically name ant release builds using versionName from AndroidManifest.xml
+55be894 make-release-build: temp workaround for old cacheword that signs the jar
+de8a9be update translations: ar bg bo ca cs de es_ES fa fi it nl pl sr tr
+
+14.1.0-beta-2 / 2015-01-24 / b2fb94fa8c98b29ea922d864dff88968e57af7c1
+
+6a69d43 fixes #4448 makes sure cursor is closed
+975f1c3 fixes #4447 sometimes cursor is null if not init'd yet
+b962e20 fixes #4437 - flag should be added, not set (which overrides NEW flag) the CLEAR flag must be used in conjunction with the NEW
+63841f8 typo fix
+6d96780 fixes #4441 - networkinfo or other network info could be null
+68c532c fixes #4438 - presence might be null
+
+14.1.0-beta-1 / 2015-01-21 / 424927dfa7778bc0a9a64a9202029f15bcb4255c
+
+* Network
+3992ac2 if remote connect is offline when you send message, refresh presence
+2575942 ignore stale XMPP Connection instance, and re-init/login
+f4dc7b4 Improves the connectivity monitoring listener accuracy
+
+* Usability 
+9b9412f ensuring message notifications are cleared when chat is displayed
+905da53 let's not show a background in the account setup
+5f78377 only single background image file needed, its dynamically resized
+09e5efe don't automatically linkify in chat windows of accounts running on Tor
+9256651 add custom URI scheme linkifying to handle geo:, xmpp:, etc.
+41dfdd3 Ensure presence is updated all the way to the UI/View Also fix mismatches in int values for presence status types Small improv
+01b3562 go back to main conversation list when chat is ended this fixes the issue with chat name/titles not properly updating on some 
+9909501 remove profile menu if OTR is not init'd we need an active session/fingerprint for this to work
+8db20d9 add horizontal progress bar for otr status
+5a06cdd make sure avatars show up on medium screens
+1cbe65d Merge pull request #598 from n8fr8/master
+
+* Core Stability 
+a38da81 Don't clear list/contacts data from memory on logout
+20e262c Clearing data causes issues on network disconnect/reconnects We don't need to so aggressively clear data anymore, now that we 
+31db61f remove unneeded duplicate contact cleanup code
+6570d85 closes the settings cursor
+c3d8532 cursor needs to be closed manually
+eb76c46 Fix verify method : the 2 arrays compared were the same -> use this.xEncryptedMAC instead of xEncryptedMAC
+d9e40c4 move Orbot market: link to donottranslate.xml
+cf596a2 Merge pull request #607 from raphaelm/fix-build-scripts
+baf7842 Adjust pom.xml version of asmack to the one actually included in the project
+762651e Update update-ant-build.sh to work correctly on current build tool versions
+0b2926e simplify presence updating to make it more reliable
+92f3ba1 don't clear presence table ever, and don't load offline contacts these were causing problems with presence table being incorre
+5439b75 add ability to request an async presence refresh from roster
+3ba2a8f avoid concurrent mode problem by using idx
+c0cfa8d fix code for detecting OTR capable resource
+f6f1a91 nothing changed
+0a040b2 add new low-res versions of default background
+a44e1ad Merge branch 'eighthave-fix-crashes-related-to-large-background-bitmap'
+43e213a load background bitmaps in a custom AsyncTask
+7806e7a remove drawables targeted at android < 9 since minSdk is 9
+
+14.0.9 / 2014-12-15 / ac8027fe74409cf2afb2ad22e3a0e76118017ced
+
+* Design and usability
+2d811fd make lock, wizard screens user user background fix lookup of file path from returned URI of images
+c6c1e4b add new default material images original images generated with Tapet app
+831c7cc fixes #4277 and issue with blank frag after rotate
+f899c96 update background image to material style
+caba6fa sync up file layout with portrait version for easy comparing
+98e7533 include languageButton in landscape layout
+c0536d2 make Orbot install link a direct link to app in Google Play and F-Droid
+a8a79ab update LetterAvatar to better match Gmail material style
+a607d49 add round letter avatar for contact w/o image
+5d86664 make start OTR menu the green/verified one
+3f651c8 don't throw unhandled Exception if audio message is unplayable
+6134d31 handle "opaque" xmpp: URIs from QR scan
+51d7d3d in "New Account", only show Google option if there are Google accounts
+
+* Core fixes
+4536135 test whether pinned domains are working properly with the pins
+e397110 remove defunct XMPP server from recommended list: rkquery.de
+a2f7511 fix crash when setting presence to "not subscribed"
+e5f42c1 fix crash when timer runs XmppConnection.handlePresenceChanged()
+4942329 fix crash if logout during contacts list sync
+d875409 fix NPE
+e37adab purge defunct XMPP cert pin for dukgo.com, the main COMODO one covers this
+1c6f772 fix crash if mProviders is reset while loading
+22d0a8a fix crash when selecting "verify" from a chat
+6ae9dfc CLOSE ALL THE THINGS! aka "Resource leak: 'foo' is never closed"
+12b1545 when user selects "End chat", also send OTR FINISHED message
+b79ffbc after creating a new account, automatically sign in
+47bac15 make MessageView also guess the MIME type to display uploaded media
+113a59d strip down inline Audio Player to make it more responsive
+a62a32b send contacts that are shared to ChatSecure
+a1ab729 standardize on IocVfs.isVfsUri(Uri) for testing VFS URLs
+3c9702d show error message if shared URL is not understood
+9fc3be5 make ChatSecure claim .ofcaes files that are opened in file managers
+0227fe2 show error message if sharing data when all accounts are offline
+
+* Tests!
+6110556 port basic tests from robo-tests/ to an Android Test Project
+
+
+14.0.8 / 2014-12-05 / c5e5c38d9ffda8a19addd5ee10ff88e980a62b7f
+
+* Misc fixes
+d9c1b2d only auto-start OTR if the other person is also using chatsecure
+a2fcd17 added beautiful new background from trey ratcliff https://www.flickr.com/photos/stuckincustoms/6960953088/ https://creativeco
+aa5658c re-implemented keysync
+af4b270 improve account setup screen with left/right swipe hint
+6c6ad63 simplify connection creation code
+
+* Improve support for locale/language switching
+21e741c Merge branch 'xmpp-urls-and-languages' of https://github.com/eighthave/ChatSecureAndroid into eighthave-xmpp-urls-and-languag
+2a2e0e0 purge unused menu from WelcomeActivity
+05ff8cb add button to first launch lock screen to change language
+5893eb0 don't use android.R.string, it might not have Tibetan and others
+a012cf4 ImApp.checkLocale() removed unused return value
+75bd214 use system names for Languages preferences menu
+bb130cb check status of pref.commit() otherwise just use pref.apply()
+3111d91 remove empty translations so they don't show up in the languages list
+16f1dbe ImApp.setNewLocale uses new setLocale() method on >= android-17
+e2b3536 move all strings to resources so they can be translated
+
+* Improve presence/contact list loading
+7d8e2bf always load lists
+383bd85 always reload lists even if previously loaded
+da31c36 improve presence handling
+00d84de clean up UI lists and contact views
+
+* Standardize handler URI logic
+40b50d0 receive clicked im: URLs (syntax defined in RFC3860)
+a78ecc3 tweak displayed xmpp: URL to work on more apps and follow RFC5122
+dd16cb3 handle all incoming xmpp: URIs using XmppUriHandler.parse()
+0c566ec XmppUriHelper.parse() parses xmpp:, xmpp://, and xmpp:/// URLs
+
+
+14.0.7 / 2014-11-13 / 9914be3aad11880bbeb7616934d6056e35957b03 
+
+* Connection management improvements
+366d895 ensure logout happens fast, and reload contacts on new add
+87d016d check for state (disconnected) to ensure shutdown is complete
+551394a removing these is causing dups and confusion just because it is disconnected doesn't mean we should remove
+64aefd5 don't keep local instances of anything as they can get stale
+d6abb8f new connection instances should override the old/stale ones
+05c6985 InexactRepeating seems to be one source of delays and oddities Let's go back to "exact"!
+2a86288 Fix Presence/Subscribe handling; Improve Message sending - presence subscribe(d) requests were being lost due to trying to rel
+b2446dd always reload lists on logging to refresh presence state
+905adaa add new state to Presence so we can support retry subscribe
+
+* OTR encryption fixes
+397ee80 send OTR "FINISHED" message to all OTR sessions on logout
+0b9b591 OTRKeyMgr might be null if the user has not yet entered a passphrase
+
+* User interface updates (Material!)
+58de542 simplify lockscreen UI - we don't need a button
+14c63c0 show 2 checks now for sent and delivered like WhatsApp
+46ca027 fixing theme colors and other material tweaks
+69b445c updates for new Material design and color schemes
+9d13e05 target 21 now to ensure Material support on Android L
+a9de17a updates to support appcompat v21 and new drawerlayout/toolbar removed external SlidingMenu dependency - only appcompat now
+8ac9802 update to target android-21 to support Material
+59a5ef5 update appcompat for latest SDK/Android-L
+c343510 for lower-res devices hide the avatar icon in messages as it takes up too much space
+
+14.0.6 / 2014-11-04 / 8f8771c16513b21c03387ccc835011fe755158ef
+
+* Message sending and OTR init reliability 
+5bfaa90 set a date to the internal Message instance
+3912b95 setFrom() to full JID to address bug #3948
+f604949 guarantee a unique XMPP Resource
+89f0661 some optimizations for sha1 hashing on OTRData
+cb30014 getAddress() should return the base address with resource The Presence is updated with the latest resource value, but the addr
+80dfb94 remove SessionID.getSessionID(), it duplicates toString() and is misnamed
+0a5b47d make sure a SessionID is created, even if LocalUser is null or empty
+ef718b6 When SessionID object is used as key, make sure to be specific toString() doesn't always seem to produce the same results this
+e8dd2ff set unique resource before initConnection()
+02f71aa add a random tag to our default XMPP resource value if the user is still using our default "ChatSecure" resource, then we shou
+2ac3187 fix for #3879 NPE in some otr init cases
+e7854c7 SessionID instances must NOT be held anywhere, as they change a new SessionID can be created if the remote user /resource chan
+45e1180 don't update remote sessions; if jabberid changes, create new session
+
+* OTR keystore management
+7c3897d make the save/persist code a bit more reliable
+
+* Presence updating
+944a47a make sure roster is not null when you tried to load presence
+ce89fd2 load latest presence for all that request
+18b2278 improve logic for presence handling and parsing
+bd25922 fixes contact loading by using proper cursormanager/loadermanager fixes #3909
+79b56b0 when new roster entries are added, make sure they are on the local list
+
+* User interface
+0220d72 ensures chat title is reset on end chat. fixes #555 on github.
+1620509 add new alpha+mode sort as default for contact picking
+0a31a5f on Sign In, put indeterminite, spinning progress meter in ActionBar
+57a7f4f fixes #3909 by using proper CursorLoader/LoaderManager for contact list
+17de5a6 update to support Tibetan font if Tibetan Keyboard is installed
+a7c1b13 update to latest tibetantextlibrary
+03852ec had two tap twice to open chat the first time (fixed!)
+a5abb79 throttle and batch contact presence updates
+7fbff76 improve groupchat user interface/setup
+
+* Network management and security
+7247581 include pins for self-signed/cacert.org for people who install those certs
+0b6ce0a update pins to use the CA's certificates
+0ccdbf2 fix reconnect try from heartbeat and tune retry/relogin code
+a8cf348 slight fix for ciphers and method for setting ssl context
+d7ad0d6 Merge branch 'crypto3' of https://github.com/knoy/ChatSecureAndroid into knoy-crypto3
+b9ec7e3 Add TLSv1.1 and TLSv1.2 support
+01d6fb6 New TLS ciphersuites
+
+14.0.4 / 2014-09-24 / 0eccf0213403c74243056730d432b8d0b217b432
+    update to 14.0.4
+
+* Multiple fixes and improvements to OTR encryption session management
+	commit a9053a91e1f751aab4a70a3131e8d618bf58d1c9 fixes for OTR sessionID handling
+	commit 7b038a6fd3e1ab84c40989b2c280cacb256a2880 addt'l fixes for OTR error handling
+	commit 40826a7c0ff86c52410c9e9af8e0743c7f38bff0 fix issues with OTR session error messages and refresh
+    		as reported here: https://github.com/guardianproject/ChatSecureAndroid/issues/531
+	commit cea0b82b3c473a661780ff2cc806e0aa0860d771 more tuning of OTR session management and instantiating
+	commit 3783b4ecf26b49ef992827eb8b08beea4ea020af allow updating of remote user id, if resource changes modify OTR session handling logging
+
+* Solved an issue with using the wrong jabberid for local user (when servers appends random ID to it)
+	commit cb87b14660e738f2ccd92febbca95207a38deed4 get the actual full JID from the server some servers append info to the resource
+
+* Worked on problem related to resuming and maintaining network connections
+	commit 66c1fb67ad6a3d8fa1aba97aedaaa806f9ee208b improving connectivity management and performance
+
+14.0.1-14.0.3 / 2014-09-19 / 3fb5a43336f7fcc040de8157c070320381d731e0
+
+* Ensured when you add a new contact it is updated in local list state
+	e743f4a avoid NPE for uninit'd state and make sure to insert new contact
+	cd2454e fix management of contactlist instances and adding new
+	3e2d604 streamline add contact and add account user interface workflow
+
+* Fixes for XMPP SASL Authentication
+	dda8937 fixes in password management and Google OAuth Logic also improvements in reconnect logic to make it actually work
+	4b544d9 fix a timeout issue on first login that was happening with Google Talk servers also if ping() fails, we should only maybe() re
+	2a6b6c0 fix NPE bug with checking null password value ensure Google OAuth refresh all persists correctly
+
+* Improvements to OTR session management
+	ff0b645 another fix for otrdata handling
+	364bb7e if a user accepts all transfers for session, make that work
+	60fcae2 use the JID in the SessionID and don't append session resouce here it was causing addressing problems, and OTR was not init'in
+	194d31f use the SessionID variable here since we have it
+	8dd6b93 make the chunks smaller and the tolerance larger
+	acb7b43 update the OTR policy setting
+	dab9804 sessions are not tied to full jid, only username
+
+* Fixed inability to login to app due to CacheWord library bug
+	dc19140 update to cacheword with fix for parse() NPE
+
+* Updated localizations / translation strings
+	54568c7 big update to localizations from transifex
+
+* Update SQLCipher and added back in x86 support
+	2f74372 update binaries from SQLCipher v3.1 release
+	9418d19 updated iocipher and added back in x86 support
+
+14.0.0
+* small changes to lockscreen layout and graphic; small layout tweaks for wizard slider
+* add nickname support to groupchat/MUC dialog and methods
+* fix bug with OAuth prioritization over PLAIN/MD5 Auth if Googel OAuth is not used, it should be marked unsupported
+
+14.0.0-beta-2 / 2014-09-09 / d22207bae8ddc3f94ede1b9b9568592641cf7306
+* OTR data sharing improved with progress display and export capability
+* Add contacts can now be done via QR code and new xmpp://foo@bar.com?otr-fingerprint=blat "auto verify" URI
+* Account info screen enables display of xmpp:// URI
+* auto-start OTR chat when opened if auto/force is set
+* fix for handling expiration of Google OAuth token
+* update new tls 1.2 ciphers for API 20+ (4.4.4) only
+* Update XMPPCertPins.java
+* Updates to latet SQLCipher, IOCipher and Cacheword libraries
+* 20% reducation in appsize, removal of unneeded dependencies (ActionBarSherlock)
+
+14.0.0-alpha-1 / 2014-08-27 / 12c39dab38fb5458f01829bce2f9b659f7395647
+* fixes for network suspend / resume
+* fixes for sharing of files/media from external apps
+* efficiency improvements for presence loading
+
+13.2.0-beta-2 / 2014-08-13 / dd8d4f6fa091439f3e55217ee85a7f24e6145c6b
+
+13.1.3-beta-4 / 2014-02-26 / 24a447d0ee0807b75a45a385b870f6f532328480
+
+13.1.3-beta-3 / 2014-02-20 / 8bdd6cec55dad332c2e9a0e7458c56ad7893a770
+* small fix for getting connection
+
+13.1.2 / 2014-01-16 / 2b75704b68a7a36acaa438d7b2276bcffb34c116
+* network improvements and UI tweaks
+
+13.1.1 / 2014-01-15 / ff9bd3175768b25cfceb1b6aa474c7e24466a44f
+* a few more small testing fixes
+
+13.1.0 / 2014-01-15 / 81ba4c78013e98df3967bc7121e70a99e929a0d2
+* contact nickname change
+* major bug fixes
+
+13.0.9 / 2014-01-10 / dabbdb08496f016d0081ad797fb83a901762f7df
+* worked on issue #571 (nicknames)
+* fixed fixes order of ops errors for exit/shutdown
+* worked on account setup
+
+13.0.8 / 2014-01-07 / 4364d6a9abb7ddf421335845e32a39f344fa21bd
+* worked on contact zombies + proper exit / stop services
+
+13.0.7 / 2013-12-20 / d9d6b839393d89e1d038cf61fc2c17309e11d34a
+* worked on on media sharing viewing
+
+13.0.6 / 2013-12-14 / cfc0ca1c73c57a86f98f7f73b8ac3c170bfe819a
+
+13.0.5 / 2013-12-14 / eacb08daa4ec61a4bb9390c56e27a9d8c8ba5153
+* small tweaks for inline layout, and a bitmap cache
+* Feature: inline media
+* Service telemetry - record timestamps
+* Feature: remove emoji
+
+13.0.3 / 2013-11-17 / 4b333c8d65a0a7aeb2fd7be74b7b2e480cf6accc
+
+13.0.2 / 2013-11-07 / 6053fa6f825da7c50aaa5949f599099a872893ab
+* Design tweaks
+* Jump to new chat
+
+13.0.1 / 2013-11-04 / 27462c74ae7fd2ddd3d54fb5c28ef5b60a231f58
+* Feature: audio messaging
+* Account list tuning
+* Fix bug that forced SSL when TLS is optional
+* Ensure that connection list is in sync in ImApp and RemoteImService
+* Fix issues with OTR whitespace tag
+* Feature: menu tuning
+
+12.7.1 / 2013-10-24 / f2fd6f19cc99db31cc67d87b3ca6a23012f2c5cf
+* hotfix - updating pinned certificate list and code for pinning support
+
+12.7.0 / 2013-10-24 / 1277b61f53d9c3cbd4093f402dae5e518a532300
+* Feature: action bar
+
+12.6.5 / 2013-10-21 / 73fd3af75acf2077816eb811cf564dc05e23d1ab
+* many bug fixes
+
+12.6.4 / 2013-10-18 / a8102da0c9bf3c2f13a1e680212fd2b3d95426df
+* fixed bug: gingerbread fixes
+* fixed bug: bonjour broke
+* fixed bug: properly reorg fragment saved state on dataset change
+
+12.6.3 / 2013-10-16 / 5d3c8dfc3aa8ddfb4f45ce158ba01b2e441c168d
+* fixed bug #2095 (OTR session setup)
+* apply cacheword cleanup to ImUrlActivity
+* fixed bug: presence not updating
+* added feature: custom notify sound
+* fixed bugs: minor ui
+* fixed issue: lockscreen layout to match portrait
+
+12.6.2 / 2013-10-11 / d0eb3476e0d2427c2063906b804ca6ce43185a90
+* bug fixes
+
+12.6.1 / 2013-10-11 / af8f00f430f15d092dfb0c466e68526b38d4e3a8
+* bug fixes
+* fixes #1920 improved manual verification and OTR verify dialog
+* cacheword: simplify logic and handle unencrypted properly
+* Bug 2024 bonjour broken
+* Bug contact list cleanup
+* fixes #1916 - ensures service is shutdown/killed after provider logout
+
+12.5 / 2013-10-03 / d165ed322540055f5272464a156c962d3d1d3b2b
+* bug fixes
+** Create account fixes
+** Presence fixes
+* db upgrade (fixes #1931)
+* Improve memory behavior
+
+12.4.2 / 2013-09-25 / c6af331e3681726ca397a5aac1c2f283e30ff04e
+* fixes for contactlist view
+** re-enable filter input for large contact lists
+** ensure we can easily switch between grid avatar and text list view
+
+12.4.1 / 2013-09-23 / 3dce0f145185ddc16b06c8022347afeed2c029e3
+* Misc UI fixes
+* Improved OTR decryption error reporting
+* Jump to correct fragment, prevent NPE
+* Backwards compat with V11 DB
+
+12.4 / 2013-09-20 / 65c3147d8d998931973586a29a7be7b9d41d8c4d
+* added auto OTR refresh attempt if there is an error decrypting
+
+12.3 / 2013-09-18 / f2ae50bcba13f55d1c482ed4f22a85cc375bdb4f
+* show "ChatSecure" in the otr plaintext message. Fixes #1742.
+
+12.2.5 / 2013-09-16 / d0d2f1646f9183d0428b9f905ea2f219f9f4e628
+
+12.2.3 / 2013-09-13 / 4813f8bbc6719eaaf4a0249f7dd63160f9bba444
+
+12.2.2 / 2013-09-12 / 9d6bfc0962bdf56a0c500e1e1030ba52566ed730
+* full implementation of OTR data user interface
+
+12.2.1 / 2013-09-11 / b4149ba9bf7ee806cdb559d7b38bfd1259631042
+* bugfixes
+
+12.2.0 / 2013-09-08 / c8ec5801b7a54a6297441092b99de1a24c03db54
+* many bugfixes
+* added file transfer
+* Feature account setup
+* MUC fixes
+
+12.1.0 / 2013-08-16 / 62575a31df7bcd75d6e9709ed20e0c8262c75620
+
+12.0.7 / 2013-08-14 / aa1dfb3378419a763fda3bc7f22c15b117670538
+* bugfix release
+
+12.0.6 / 2013-08-12 / d78b2bb37bc73b7cfd0a9732d2e07f27ee2c783c
+* updated translations
+* added Feature intent launching
+* added Emoji
+
+12.0.5 / 2013-07-31 / 55099b8e134d759229f48b0c02c0c4ed58f19904
+* Feature small ui fixes
+
+12.0.4 / 2013-07-31 / 7a6abbd844f143814a4c3c7e4997242b4a8bdb25
+* changed version number shema
+* small UI fixes
+
+0.0.12-alpha-3-UI / 2013-07-19 / 47d68447b4a745be3ce3155db3740e984c3f0db5
+* Feature UI pager
+* fix loss of verification upon refresh of OTR
+* Feature MUC
+* changes on OTR
+
+0.0.12-alpha-2 / 2013-07-01 / 6bef7e6a160ba29367eac7ff1c0bc1de529f6c38
+* improved support for XEP-0198 Stream Management
+* improved OTR
+* many important UI improvements
+* the project has been renamed to ChatSecure
+
+0.0.12-alpha-1 / 2013-06-14 / 2deff3ebcf54bf8cf0fdf041b5cefb6cb4140c53
+
+0.0.11-RC3 / 2013-03-08 / 7eab09c050ab1ae7f99ca887064de4ba9c82cbab
+
+0.0.11-RC2 / 2013-03-04 / e3aeba272616193477bb67a32f9699f31d38016b
+* multiple small fixes for NPE and other crashes
+
+0.0.11-RC1 / 2013-03-04 / 24ea980f6c500d772420a43bf3155d2f3a28e1e2
+* fixes for Veracode test response on CRLF injection log issues
+* moves close chat back to menu
+* reloads contact list on roster change
+
+0.0.11-beta-4 / 2013-02-26 / 2c1c76935c2300340043bcc8a4a72aac386732da
+
+0.0.11-beta-3 / 2013-02-19 / 87619388ada1de0189fe91d72be4ffbf04223ae3
+
+0.0.11-beta-2 / 2013-02-19 / 8b028f2a42b890249ef11cd75cdda01dcd3253c9
+
+0.0.11-beta-1 / 2013-02-17 / 48c207e23bbc813dc994225d65f25d67d707e22d
+
+0.0.11-alpha-3 / 2013-02-06 / f59112f2367af59d67ff9929f72d856c384daf28
+* multiple UI improvements
+* Google Auth
+* added global setting to control start on boot
+
+0.0.11-alpha-1 / 2013-01-02 / 6b570686db3a03d63e5480ca18937b87f0c12ee8
+* changes on OTR
+* Use notification lights
+
+0.0.10-RC6 / 2012-11-05 / 8e6d80edf05ca5501a9e6201e448bf39ccf78516
+* bugfix release
+
+0.0.10-RC5 / 2012-11-02 / 5df3fcef45066c2575e5a601548d8e74856edc72
+
+0.0.10-RC3 / 2012-10-26 / bee08544505f538153cf172560339c822161d523
+
+0.0.10-RC1 / 2012-09-25 / ce71048ec0bd8045dd817750e937eef61775793a
+* Issue #232 - remove signing in page
+* Finish outgoing XEP-0198 and offline queuing
+
+0.0.9-RC5 / 2012-06-15 / b3a7433be145f7f7beff8cb8f0225b6db4addfa3
+* added support for multiple accounts
+* added support for XEP-0174 (Serverless messaging)
+* added option to context menu to resend messages
+* added XMPP resource priority to account settings
+* fixed multi-account OTR support
+* fixed contact removal and presence conversion
+* fixed issue with SSL wildcard matching to server/domain
+* many more fixes and changes
+
+0.0.8 / 2012-04-20 / e4b49ca9508477564c2cba4cfe2821b270281218
+* adding es and zh translations
+* improved german translation
+* ported SMP from javaotr to otr4j
+* added support for XEP-0184 (Message Delivery Receipts)
+* added support for XEP-0198 (Stream Management)
+* store fingerprints as hex in keystore file
+* many more fixes and changes
+
+0.0.7 / 2012-01-17 / e17dbbcf338af00466cabc5178634cd0d5ffded8
+- updated translation strings
+- major fixes to connection stability by devrandom
+- user interface clean-ness aka "turn to the light side" by n8fr8
+- removed unintentional low level debug output
+- added new sasl auth mechanism support
+- added locale selection menu option
+- improved translations for arabic, german, spanish and dutch
+
+2011-09-26
+- 0.0.5 RC3/5 release
+- updated cacerts file to include CACerts.org root
+- used correct version of asmack library for Android
+- tweaked support of Gmail and Facebook specific login/auth weirdness
+
+2011-09-20
+- 0.0.5 RC2 release
+- turning TLS verify off now also turns of domain name checking in self-signed certs
+- fixed custom port persistence issue; you can use 5223 to your hearts content
+- UI tweaks around enabling/disabling based on logged in and OTR state
+- added in matching of Root CA common name with verification against cacerts.bks
+- default now to PLAIN AUTH off
+
+2011-09-15
+- 0.0.5 RC1 release
+- Replaced Smack's TLS TrustManager with custom imp for Android / BKS keystore
+- Bundled in own cacert.bks keystore file to manage trusted Root CAs sep from device-wide version
+- Fixed support for DNS SRV record lookups
+- Stopped using Smack's reconnection manager, and now use custom Android reconn/status code
+- Changed primary contact/buddy UI to filter list mode
+- Added back in status selector and message edit text field
+- Improved support for OTR, including fingerprint display on activity screen, and auto-attempt on connect
+- Upgraded to Smack 3.2.1 release
+
+2011-02-28 
+- 0.0.3 RC1 release
+- Major overhaul of the user interface, including new setup wizard, and key verification display
+- A huge amount of small buf fixes and tweaks
+
+2010-12-14
+- tagged the source! :) 
+
+2010-11-23
+- added "General" contact list on loadContacts() call to the mContactList array
+- added notifyPresenceUpdate for "General" contacts list
+- Patches 1-3/3 by: Adrian-Ken Rueegsegger <ken@codelabs.ch>
+-- Contacts which have no assigned group are put into the default group.
+-- Rename default list to General
+-- Factor out reading of contacts into container to private fillContacts() function.
+- fixed app name and ensured build is working on Android 1.5 and up 
+- add support for scrollview in Account Activity; final button was getting squished in landscape mode 
