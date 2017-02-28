@@ -95,9 +95,9 @@
     displayed when the user long clicks on a contact in the contact list. It lets the
     user to view the contact's profile. May be overrided by the plugin.-->
     <string name="menu_view_profile">Verify</string>
-    <!-- Context/drop-down menu item for the contact list screen. The context menu is
-    displayed when the user long clicks on a conversation in the contact list. It lets the
-    user to end a chat with a contact. May be overrided by the plugin.-->
+    <!-- Context/drop-down menu item for picking an image to send. -->
+    <string name="menu_send_image">Send Image</string>
+    <string name="menu_send_file">Send File</string>
     
     
     

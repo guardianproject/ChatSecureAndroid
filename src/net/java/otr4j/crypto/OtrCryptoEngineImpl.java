@@ -264,16 +264,19 @@ public class OtrCryptoEngineImpl implements OtrCryptoEngine {
         byte[] sig = new byte[siglen];
         Boolean writeR = false;
         Boolean writeS = false;
+        int shiftR = rslen - rb.length;
+        int shiftS = rslen - sb.length;
+        
         for (int i = 0; i < siglen; i++) {
             if (i < rslen) {
                 if (!writeR)
                     writeR = rb.length >= rslen - i;
-                sig[i] = (writeR) ? rb[i] : (byte) 0x0;
+                sig[i] = (writeR) ? rb[i - shiftR] : (byte) 0x0;
             } else {
                 int j = i - rslen; // Rebase.
                 if (!writeS)
                     writeS = sb.length >= rslen - j;
-                sig[i] = (writeS) ? sb[j] : (byte) 0x0;
+                sig[i] = (writeS) ? sb[j - shiftS] : (byte) 0x0;
             }
         }
         return sig;

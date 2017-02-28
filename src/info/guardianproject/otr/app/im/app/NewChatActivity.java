@@ -30,6 +30,7 @@ import info.guardianproject.otr.app.im.service.ImServiceConstants;
 import info.guardianproject.util.LogCleaner;
 
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,11 +45,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.RemoteException;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -73,6 +76,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.collect.Maps;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 
@@ -80,6 +84,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
     private static final int MENU_RESEND = Menu.FIRST;
     private static final int REQUEST_PICK_CONTACTS = RESULT_FIRST_USER + 1;
+    private static final int REQUEST_SEND_IMAGE = REQUEST_PICK_CONTACTS + 1;
+    private static final int REQUEST_SEND_FILE = REQUEST_SEND_IMAGE + 1;
 
     private ImApp mApp;
     private ViewPager mChatPager;
@@ -108,8 +114,31 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);        
         setContentView(R.layout.chat_pager);
+        
+        mHandler = new SimpleAlertHandler(this);
 
         mChatPager = (ViewPager) findViewById(R.id.chatpager);
+        mChatPager.setOnPageChangeListener(new OnPageChangeListener ()
+                {
+
+                    @Override
+                    public void onPageScrollStateChanged(int arg0) {
+                       
+                        
+                    }
+
+                    @Override
+                    public void onPageScrolled(int arg0, float arg1, int arg2) {
+                       
+                        
+                    }
+
+                    @Override
+                    public void onPageSelected(int arg0) {
+                       
+                    }
+            
+                });
         
         mApp = (ImApp)getApplication();
         mInflater = LayoutInflater.from(this);
@@ -230,7 +259,8 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                
                 showGroupChatDialog();
                         
-                
+                if (menu.isMenuShowing())
+                    menu.toggle();
             }
             
         });
@@ -356,7 +386,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                                 
                                 if (chatId == requestedChatId)
                                 {
-                                    mChatPager.setCurrentItem(posIdx+1);
+                                    mChatPager.setCurrentItem(posIdx+2);
                                     foundChatView = true;
                                     break;
                                 }
@@ -456,6 +486,14 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
+        case R.id.menu_send_image:
+            startImagePicker();
+            return true;
+
+        case R.id.menu_send_file:
+            startFilePicker();
+            return true;
+
         case R.id.menu_secure_call:
             sendCallInvite ();
             return true;
@@ -520,7 +558,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         if (otrChatSession != null)
         {
             try {
-               // SessionStatus sessionStatus = SessionStatus.values()[otrChatSession.getChatStatus()];
                 
                 if (otrEnabled) {
                     otrChatSession.startChatEncryption();
@@ -531,8 +568,11 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 }                 
                 
              
-            } catch (RemoteException e) {
-                Log.d("Gibber", "error getting remote activity", e);
+            } catch (NullPointerException e) {
+                Log.d(ImApp.LOG_TAG, "error starting or stopping chat", e);
+            }
+             catch (RemoteException e) {
+                Log.d(ImApp.LOG_TAG, "error getting remote activity", e);
             }
             
             chatView.updateWarningView();
@@ -600,13 +640,53 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             mHandler.showServiceErrorAlert();
         }
     }*/
+    
+    void startImagePicker() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, REQUEST_SEND_IMAGE);
+    }
+    
+    void startFilePicker() {
+        Intent selectFile = new Intent(Intent.ACTION_GET_CONTENT);
+        selectFile.setType("file/*");
+        startActivityForResult(Intent.createChooser(selectFile, "Select File"), REQUEST_SEND_FILE);
+    }
+    
+    public String getRealPathFromURI(Context aContext, Uri uri) {
+        if (uri.getScheme().equals("file")) {
+            return uri.getPath();
+        }
+        
+        if (uri.toString().startsWith("content://org.openintents.filemanager/")) {
+            // Work around URI escaping brokenness
+            return uri.toString().replaceFirst("content://org.openintents.filemanager", "");
+        }
+        
+        Cursor cursor = aContext.getContentResolver().query(uri, null, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+    
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-      
-        /*
         if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_PICK_CONTACTS) {
+            if (requestCode == REQUEST_SEND_IMAGE || requestCode == REQUEST_SEND_FILE) {
+                Uri uri = data.getData() ;
+                if( uri == null ) {
+                    return ;
+                }
+                try {
+                    String localUri = getRealPathFromURI(this, uri);
+                    getCurrentChatView().getCurrentChatSession().offerData( localUri );
+                } catch (RemoteException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+/*            if (requestCode == REQUEST_PICK_CONTACTS) {
                 String username = data.getStringExtra(ContactsPickerActivity.EXTRA_RESULT_USERNAME);
                 try {
                     IChatSession chatSession =  getChatView().getCurrentChatSession();
@@ -621,7 +701,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                     mHandler.showServiceErrorAlert();
                 }
             }
-        }*/
+*/        }
     }
 
     void showInvitationHasSent(String contact) {
@@ -720,18 +800,17 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
     
 
     public class ChatViewPagerAdapter extends FragmentStatePagerAdapter {
-        
+        Map<Integer, ChatViewFragment> fragmentList;
         
         public ChatViewPagerAdapter(FragmentManager fm) {
             super(fm);
-            
-           // if (mCursorChats != null && (!mCursorChats.isClosed()))
-            //    mCursorChats.close();
-            
+            fragmentList = Maps.newHashMap();
             if (mCursorChats == null)
                 mCursorChats = getContentResolver().query(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS, ChatView.CHAT_PROJECTION, null, null, null);
             else
                 mCursorChats.requery();
+            
+            
         }
         
         
@@ -866,7 +945,25 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
             }
         }
 
+        @Override
+        public Object instantiateItem(ViewGroup container, int pos) {
+            Object item = super.instantiateItem(container, pos);
+            if (pos > 0) {
+                ChatViewFragment frag = (ChatViewFragment)item;
+                fragmentList.put(pos, frag);
+            }
+            return item;
+        }
         
+        @Override
+        public void destroyItem(ViewGroup container, int pos, Object object) {
+            fragmentList.remove(pos);
+            super.destroyItem(container, pos, object);
+        }
+        
+        public ChatView getChatViewAt(int pos) {
+            return fragmentList.get(pos).getChatView();
+        }
     }
     
     
@@ -1371,7 +1468,9 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 mChatView.startListening();
         }
         
-
+        public ChatView getChatView() {
+            return mChatView;
+        }
     }
     
     public ChatView getCurrentChatView ()
@@ -1380,7 +1479,7 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
         
         if ((cItemIdx = mChatPager.getCurrentItem()) > 0)
         {
-            return (ChatView)((ChatViewFragment)mChatPagerAdapter.getItem(cItemIdx)).getView();            
+            return mChatPagerAdapter.getChatViewAt(cItemIdx);            
         }
         else
             return null;
@@ -1462,9 +1561,6 @@ public class NewChatActivity extends FragmentActivity implements View.OnCreateCo
                 Uri data = ContentUris.withAppendedId(Imps.Chats.CONTENT_URI, id);
                 Intent i = new Intent(Intent.ACTION_VIEW, data);
                 i.addCategory(ImApp.IMPS_CATEGORY);
-            
-                if (menu.isShown())
-                    menu.toggle();
             
                 startActivity(i);
             }

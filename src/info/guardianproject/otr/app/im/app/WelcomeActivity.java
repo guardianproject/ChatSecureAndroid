@@ -104,6 +104,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
       
         mDoSignIn = getIntent().getBooleanExtra("doSignIn", true);
         
+        connectToCacheWord ();
+        
         checkForCrashes();
         
         checkForUpdates();
@@ -114,8 +116,6 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     private void connectToCacheWord ()
     {
         
-        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-
         mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
         
         ((ImApp)getApplication()).setCacheWord(mCacheWord);
@@ -189,35 +189,10 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     protected void onResume() {
         super.onResume();
 
-        if (mCacheWord == null)
-            connectToCacheWord ();
+        mCacheWord.onResume();
+        
+        
        
-        try
-        {
-            mCacheWord.onResume();
-        }
-        catch (Exception e)
-        {
-            Log.e("CacheWord","unable to bind to cacheword");
-        }
-        
-        if (!mCacheWord.isLocked())
-        {
-            String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-            
-            if (pkey != null)
-            {
-                cursorUnlocked(pkey);
-                
-                doOnResume();
-            }
-        }
-        else
-        {
-            showLockScreen();
-        }
-        
-        
     }
 
     private void doOnResume() {
@@ -546,7 +521,7 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
     @Override
     public void onCacheWordLocked() {
      
-        
+        showLockScreen();
     }
 
     @Override
@@ -566,6 +541,8 @@ public class WelcomeActivity extends ThemeableActivity implements ICacheWordSubs
        
            int defaultTimeout = Integer.parseInt(mPrefs.getString("pref_cacheword_timeout",ImApp.DEFAULT_TIMEOUT_CACHEWORD));       
            mCacheWord.setTimeoutMinutes(defaultTimeout);
+           
+           doOnResume();
        }
        
         

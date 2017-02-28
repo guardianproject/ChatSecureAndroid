@@ -15,19 +15,19 @@
         android:layout_height="wrap_content"
         
             android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_nav_preferences"
+        android:drawableLeft="@drawable/social_person"
         android:gravity="left|center_vertical"
         android:text="@string/menu_view_accounts"
                 android:textColor="#dddddd"
-        
+         android:padding="3sp"
          />
     
     
     
     <View
     android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:background="#33999999"
+    android:layout_height="2dp"
+    android:background="#33dddddd"
     
     />
     
@@ -36,19 +36,19 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_nav_preferences"
+        android:drawableLeft="@drawable/social_add_person"
         android:gravity="left|center_vertical"
         android:text="@string/add_contact_title"
                 android:textColor="#dddddd"
         
-        
+         android:padding="3sp"
          />
     
     
-     <View
+      <View
     android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:background="#33999999"
+    android:layout_height="2dp"
+    android:background="#33dddddd"
     
     />
     
@@ -57,18 +57,18 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_nav_preferences"
+        android:drawableLeft="@drawable/social_add_group"
         android:gravity="left|center_vertical"
         android:text="@string/menu_new_group_chat"
                 android:textColor="#dddddd"
-        
+         android:padding="3sp"
         
          />
     
-    <View
+   <View
     android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:background="#33999999"
+    android:layout_height="2dp"
+    android:background="#33dddddd"
     
     />
     
@@ -77,19 +77,20 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:drawableLeft="@drawable/ic_nav_media_settings"
+        android:drawableLeft="@drawable/sidebar_settings"
         android:gravity="left|center_vertical"
         android:text="@string/menu_settings"
                 android:textColor="#dddddd"
-        
+         android:padding="3sp"
         
          />
     
-    
-<View
+     <View
     android:layout_width="fill_parent"
-    android:layout_height="1dp"
-    android:background="#33999999"/>
+    android:layout_height="2dp"
+    android:background="#33dddddd"
+    
+    />
 
 <Button
         android:id="@+id/btnDrawerPanic"
@@ -100,7 +101,15 @@
         android:gravity="left|center_vertical"
         android:text="@string/menu_panic"
                 android:textColor="#dddddd"
+        android:padding="3sp"
         
         
          />
+
+ <View
+    android:layout_width="fill_parent"
+    android:layout_height="2dp"
+    android:background="#33dddddd"
+    
+    />
 </LinearLayout>

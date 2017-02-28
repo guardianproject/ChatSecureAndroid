@@ -53,8 +53,6 @@ import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 
-import net.java.otr4j.session.SessionStatus;
-
 import org.apache.harmony.javax.security.auth.callback.Callback;
 import org.apache.harmony.javax.security.auth.callback.CallbackHandler;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -351,12 +349,11 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         
     };*/
     
-    private boolean loadVCard (ContentResolver resolver, String jid, boolean forceLoad)
+    private boolean loadVCard (ContentResolver resolver, String jid, String hash)
     {
         try {
             
-            
-            if (forceLoad || (!DatabaseUtils.hasAvatarContact(resolver,  Imps.Avatars.CONTENT_URI, jid)))
+            if ((!DatabaseUtils.doesHashExist(resolver,  Imps.Avatars.CONTENT_URI, jid, hash)))
             {
                 debug(ImApp.LOG_TAG, "loading vcard for: " + jid);
                 
@@ -1448,9 +1445,15 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
         }
 
         ChatSession findSession(String address) {
+            
+            String nAddress = address.split("/")[0];
+            
             for (Iterator<ChatSession> iter = mSessions.iterator(); iter.hasNext();) {
                 ChatSession session = iter.next();
-                if (session.getParticipant().getAddress().getAddress().equals(address))
+                
+                String tAddress = session.getParticipant().getAddress().getAddress().split("/")[0];
+                
+                if (tAddress.equalsIgnoreCase(nAddress))
                     return session;
             }
             return null;
@@ -1490,7 +1493,7 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
         @Override
         public String normalizeAddress(String address) {
-            return address.split("/")[0];
+            return address.split("/")[0].toLowerCase();
         }
 
         @Override
@@ -1792,15 +1795,13 @@ public class XmppConnection extends ImConnection implements CallbackHandler {
 
             notifyContactsPresenceUpdated(contacts);
             
-         //   loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress());
-            
             PacketExtension pe = presence.getExtension("x", NameSpace.VCARD_TEMP_X_UPDATE);
             if (pe != null) {
                 DefaultPacketExtension dpe = (DefaultPacketExtension)pe;
                 String hash = dpe.getValue("photo");
                 
                 if (hash != null)
-                    loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),true);
+                    loadVCard(mContext.getContentResolver(),contact.getAddress().getAddress(),hash);
                 
             }
         }

@@ -23,6 +23,8 @@ public interface Session {
 
     public abstract OtrPolicy getSessionPolicy();
 
+    public abstract String transformReceiving(String content, List<TLV> tlvs) throws OtrException;
+
     public abstract String transformReceiving(String content) throws OtrException;
 
     public abstract String transformSending(String content, List<TLV> tlvs) throws OtrException;
@@ -46,4 +48,6 @@ public interface Session {
     public abstract BigInteger getS();
     
     public abstract void showWarning(String warning);
+    
+    public byte[] getExtraKey();
 }

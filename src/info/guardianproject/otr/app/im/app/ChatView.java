@@ -45,6 +45,7 @@ import info.guardianproject.util.LogCleaner;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -99,7 +100,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.CursorAdapter;
@@ -320,14 +320,25 @@ public class ChatView extends LinearLayout {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
+        @Override
         public void onIncomingReceipt(IChatSession ses, String packetId) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
         }
 
+        @Override
         public void onStatusChanged(IChatSession ses) throws RemoteException {
             scheduleRequery(DEFAULT_QUERY_INTERVAL);
          
             
+        };
+        
+        @Override
+        public void onIncomingData(IChatSession ses, byte[] data) {
+            try {
+                Log.i("OTR_DATA", "incoming data " + new String(data, "UTF8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         };
     };
 
@@ -551,6 +562,27 @@ public class ChatView extends LinearLayout {
             
         });
         
+        ImageButton btnSharePicture = (ImageButton)findViewById(R.id.btnSendPicture);
+        btnSharePicture.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mActivity.startImagePicker();
+            }
+            
+        });
+        
+        ImageButton btnShareFile = (ImageButton)findViewById(R.id.btnSendFile);
+        btnShareFile.setOnClickListener(new OnClickListener ()
+        {
+
+            @Override
+            public void onClick(View v) {
+                mActivity.startFilePicker();
+            }
+            
+        });
         
         
         initEmoji();
@@ -796,6 +828,7 @@ public class ChatView extends LinearLayout {
         mActivity.getContentResolver().delete(chatUri,null,null);
     }
     
+   
     public void bindChat(long contactId) {
         
         mLastChatId = contactId;
@@ -816,6 +849,7 @@ public class ChatView extends LinearLayout {
             
             mCurrentChatSession = getChatSession(mCursor);
 
+            
             updateChat();
             
             if (mCurrentChatSession != null)
@@ -1128,6 +1162,10 @@ public class ChatView extends LinearLayout {
         }
     }
 
+    public IChatSession getCurrentChatSession() {
+        return mCurrentChatSession;
+    }
+
     private IChatSessionManager getChatSessionManager(long providerId) {
         if (mChatSessionManager == null || mProviderId != providerId) {
 
@@ -1166,7 +1204,12 @@ public class ChatView extends LinearLayout {
         IChatSessionManager sessionMgr = getChatSessionManager(providerId);
         if (sessionMgr != null) {
             try {
-                return sessionMgr.getChatSession(username);
+                IChatSession session = sessionMgr.getChatSession(username);
+                
+                if (session == null)
+                    session = sessionMgr.createChatSession(username);
+              
+                return session;
             } catch (RemoteException e) {
                 
                 mHandler.showServiceErrorAlert(e.getLocalizedMessage());
@@ -1971,16 +2014,14 @@ public class ChatView extends LinearLayout {
             case Imps.MessageType.OUTGOING:
             case Imps.MessageType.POSTPONED:
                 
-                if (!isGroupChat())
-                {
-                    int errCode = cursor.getInt(mErrCodeColumn);
-                    if (errCode != 0) {
-                        messageView.bindErrorMessage(errCode);
-                    } else {
-                        messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
-                                deliveryState, encState);
-                    }
+                int errCode = cursor.getInt(mErrCodeColumn);
+                if (errCode != 0) {
+                    messageView.bindErrorMessage(errCode);
+                } else {
+                    messageView.bindOutgoingMessage(null, body, date, mMarkup, isScrolling(),
+                            deliveryState, encState);
                 }
+                
                 break;
 
             default:
