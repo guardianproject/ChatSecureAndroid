@@ -3,8 +3,9 @@ package info.guardianproject.otr.app.im.app;
 import info.guardianproject.otr.IOtrChatSession;
 import info.guardianproject.otr.OtrDebugLogger;
 import info.guardianproject.otr.app.im.IChatSession;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.engine.Address;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,9 +34,12 @@ public class SmpResponseActivity extends Activity {
 
     private void showQuestionDialog() {
 
-        new AlertDialog.Builder(this).setTitle("OTR Verification").setMessage(mQuestion)
+        String title = getString(R.string.smp_question_title);
+        String strQuestion = mSessionId + ": " + mQuestion;
+
+        new AlertDialog.Builder(this).setTitle(title).setMessage(strQuestion)
                 .setView(mInputSMP)
-                .setPositiveButton("Answer", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
 
                         String secret = mInputSMP.getText().toString();
@@ -43,7 +47,7 @@ public class SmpResponseActivity extends Activity {
 
                         SmpResponseActivity.this.finish();
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Do nothing.
                     }
@@ -52,14 +56,14 @@ public class SmpResponseActivity extends Activity {
     }
 
     private void respondSmp(String sid, String answer) {
-        
+
         ImApp app = (ImApp)getApplication();
 
-        
+
 
         IOtrChatSession iOtrSession;
         try {
-            IChatSession chatSession = app.getChatSession(mProviderId, sid);
+            IChatSession chatSession = app.getChatSession(mProviderId, Address.stripResource(sid));
             iOtrSession = chatSession.getOtrChatSession();
             if (iOtrSession == null) {
                 OtrDebugLogger.log("no session in progress for provider " + mProviderId);

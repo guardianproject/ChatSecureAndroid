@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.io.messages;
@@ -46,7 +46,7 @@ public class SignatureMessage extends AbstractEncodedMessage {
 
         byte[] xEncryptedMAC = new OtrCryptoEngineImpl().sha256Hmac160(xbEncrypted, key);
         // Verify signature.
-        return Arrays.equals(xEncryptedMAC, xEncryptedMAC);
+        return Arrays.equals(this.xEncryptedMAC, xEncryptedMAC);
     }
 
     @Override

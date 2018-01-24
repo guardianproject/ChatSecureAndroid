@@ -1,6 +1,6 @@
 === Testing ===
 
-This sub-project contains JUnit-4 tests for Gibberbot.
+This sub-project contains JUnit-4 tests for ChatSecure.
 
 Use `cd .. ; mvn test` to run the tests from the command line.
 

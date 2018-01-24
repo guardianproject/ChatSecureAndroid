@@ -1,0 +1,215 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <!--General: Actions-->
+  <string name="confirm">Підтвердити</string>
+  <string name="ok">Гаразд</string>
+  <string name="cancel">Скасувати</string>
+  <string name="yes">Гаразд</string>
+  <string name="no">Скасувати</string>
+  <string name="btn_next">Далі</string>
+  <string name="btn_back">Назад</string>
+  <string name="connect">Підключити</string>
+  <string name="play">Грати</string>
+  <!--Views-->
+  <string name="lock_screen_open">Відкрити</string>
+  <string name="title_activity_lock_screen">ChatSecure заблоковано</string>
+  <string name="lock_screen_create_passphrase">Укажіть пароль</string>
+  <string name="lock_screen_confirm_passphrase">Повторіть пароль</string>
+  <string name="lock_screen_passphrase_hint">Пароль</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Підтвердіть новий пароль</string>
+  <string name="lock_screen_passphrases_not_matching">Паролі не збігаються, спробуйте знову</string>
+  <string name="lock_screen_skip">Пропустити &gt;&gt;</string>
+  <string name="app_passphrase_view_title_dialog">Запит інформації</string>
+  <string name="app_passphrase_view_password_question">Уведіть пароль, будь ласка</string>
+  <string name="password_please">Пароль, будь ласка…</string>
+  <string name="passphrase">Фраза-ключ</string>
+  <string name="passphrase_again">Фраза-ключ (знову)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Оберіть екаунт</string>
+  <string name="choose_account_title">Оберіть екаунт</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Додати екаунт <xliff:g id="account">%1$s</xliff:g></string>
+  <string name="menu_about">Про програму</string>
+  <string name="welcome_first">Вперше користуєтесь ChatSecure?</string>
+  <string name="welcome_account">Налаштування екаунту</string>
+  <string name="setup_passphrase_label1">Фраза-ключ:</string>
+  <string name="new_pass">Вітаємо! Уведіть надійну фразу-ключ для захисту Ваших записів. Вона повинна містити принаймні одну літеру у верхньому реєстрі, одну у нижньому і одну цифру, і бути довшою за шість знаків.</string>
+  <string name="pass_err_length">Ваша фраза-ключ закоротка</string>
+  <string name="pass_err_upper">Ваша фраза-ключ не містить жодної літери у верхньому реєстрі</string>
+  <string name="pass_err_lower">Ваша фраза-ключ не містить жодної літери у нижньому регістрі</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">Про ChatSecure</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Як відбувається захист?</string>
+  <!--Views: About: Security-->
+  <!--Views: Account list-->
+  <string name="menu_new_account">Новий екаунт</string>
+  <string name="menu_add_account">Додати екаунт</string>
+  <string name="menu_edit_account">Редагувати екаунт</string>
+  <string name="menu_remove_account">Вилучити екаунт</string>
+  <string name="menu_use_existing_account">Існуючий екаунт</string>
+  <!--Views: Setup: Account-->
+  <string name="label_username">Користувач@Хост</string>
+  <string name="label_password">Пароль:</string>
+  <string name="remember_password">Запам’ятати пароль.</string>
+  <string name="keep_me_signed_in">Входити автоматично.</string>
+  <string name="sign_up">Не маєте екаунту?</string>
+  <string name="sign_in">Увійти</string>
+  <string name="account_setup_example_email_address">користувач@домен</string>
+  <string name="account_setup_new_username">новий користувач</string>
+  <string name="account_setup_service_provider">провайдер сервісу (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">пароль</string>
+  <string name="account_setup_password_confirm">повторіть пароль</string>
+  <string name="account_setup_advanced_button">Розширені налаштування екаунту</string>
+  <string name="btn_create_new_account">Реєстрація екаунту</string>
+  <string name="account_setup_pers_pw_on">Пароль закешовано</string>
+  <string name="account_setup_pers_pw_off">Пароль не закешовано</string>
+  <string name="account_setup_pers_auto_title">Автоматичний вхід</string>
+  <string name="account_setup_personal_profile_title">Профіль</string>
+  <string name="account_setup_signin_c">Триває вхід…</string>
+  <string name="account_wizard_setup_title">Майстер створення екаунту</string>
+  <string name="account_wizard_account_title">ID вашого екаунту</string>
+  <string name="account_wizard_host_title">Налаштування сервера</string>
+  <string name="account_wizard_ready_title">Ви готові?</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="registering_new_account_">Триває реєстрація нового екаунту…</string>
+  <string name="menu_cancel_signin">Скасувати вхід</string>
+  <!--Views: Settings: Account-->
+  <string name="server_port">Порт сервера</string>
+  <!--Views: Contact list-->
+  <string name="buddy_list_title">Список контактів - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Додати контакт</string>
+  <string name="menu_remove_contact">Видалити контакт</string>
+  <string name="menu_block_contact">Блокувати контакт</string>
+  <string name="menu_contact_nickname">Нік контакта</string>
+  <string name="menu_view_blocked">Заблоковано</string>
+  <string name="nickname">Нік</string>
+  <string name="confirm_delete_contact">Контакт "<xliff:g id="user">%1$s</xliff:g>" буде вилучено.</string>
+  <string name="menu_new_chat">Новий чат</string>
+  <string name="menu_search_contacts">Пошук контактів</string>
+  <string name="menu_show_grid">Показати сітку</string>
+  <string name="menu_start_chat">Розпочати чат</string>
+  <string name="menu_view_profile">Переглянути профіль</string>
+  <string name="menu_verify">Перевірка контактів</string>
+  <string name="online_count"><xliff:g id="number">%1$d</xliff:g> в мережі</string>
+  <string name="search_label">Контакт</string>
+  <string name="search_button_text">Вперед</string>
+  <string name="add_contact_title">Додати контакт</string>
+  <string name="invite_label">Надіслати запрошення</string>
+  <string name="contact_profile_title">Профіль контакта</string>
+  <string name="label_status">Статус:</string>
+  <string name="label_client_type">Тип клієнта:</string>
+  <string name="client_type_computer">Комп’ютер</string>
+  <string name="client_type_mobile">Телефон</string>
+  <!--Views: Chat: Single-->
+  <string name="me">Я</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> в мережі</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> відійшов</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> зайнятий</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> поза мережею</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> приєднався</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> покинув кімнату</string>
+  <string name="menu_send_image">Надіслати фото</string>
+  <string name="menu_send_file">Надіслати файл</string>
+  <string name="menu_send_audio">Надіслати аудіо</string>
+  <string name="menu_take_picture">Зробити фото</string>
+  <string name="file_transfer">Передача файлів</string>
+  <string name="transfer_complete">Передачу завершено</string>
+  <string name="transfer_in_progress">Передача триває</string>
+  <string name="accept_transfer_">Прийняти передачу?</string>
+  <string name="wants_to_send_you_the_file">бажає надіслати вам файл</string>
+  <string name="send">Надіслати</string>
+  <string name="compose_hint">Надіслати повідомлення</string>
+  <string name="compose_hint_secure">Надіслати захищене повідомлення</string>
+  <string name="menu_resend">Повторно  надіслати</string>
+  <string name="menu_end_conversation">Закрити чат</string>
+  <string name="menu_clear_chat">Очистити чат</string>
+  <string name="menu_insert_smiley">Вставити посмішку</string>
+  <string name="menu_switch_chats">Перемкнути чат</string>
+  <string name="menu_plus">Меню+</string>
+  <string name="select_link_title">Вставити посилання</string>
+  <string name="delete">Вилучити</string>
+  <string name="keep_files">Залити файли</string>
+  <string name="keep">Залишити</string>
+  <string name="export">Експортувати</string>
+  <string name="export_media">Експортувати медіа-файли?</string>
+  <string name="export_media_file_to">Цей медіа-файл буде експортовано до %1$s</string>
+  <string name="end_chat_title">Завершити чат?</string>
+  <string name="end_chat_and_delete">Завершити чат і видалити файли</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> запрошує вас приєднатись до групового чату.</string>
+  <string name="accept_invitation">Прийняти</string>
+  <string name="decline_invitation">Відхилити</string>
+  <string name="menu_new_group_chat">Груповий чат</string>
+  <string name="connecting_to_group_chat_">Під’єднання до групового чату…</string>
+  <string name="menu_invite_contact">Запросити\u2026</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">Почати шифрування</string>
+  <string name="menu_otr_stop">Завершити шифрування</string>
+  <string name="menu_sign_in">Увійти</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_scan">Сканувати QR</string>
+  <string name="menu_verify_secret">Питання</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="smp_question_title">Авторизація</string>
+  <string name="otr_qa_send">Надіслати</string>
+  <string name="otr_qa_cancel">Скасувати</string>
+  <!--Views: VoIP-->
+  <string name="menu_voip_title">Захищений дзвінок</string>
+  <!--Views: Settings: General-->
+  <!--Actions: Settings: General: Security and Privacy-->
+  <!--Actions: Settings: General: User Interface-->
+  <string name="pref_group_looknfeel_title">Інтерфейс</string>
+  <string name="menu_locale">Мова</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Мови</string>
+  <string name="use_system_default">Системна</string>
+  <string name="pref_theme_dark">Використовувати темну тему</string>
+  <string name="pref_theme_dark_summary">Змінити тему додатку на темну</string>
+  <string name="pref_background_title">Зображення тла</string>
+  <string name="button_yes_accept_all">Так, приймати все</string>
+  <!--Actions: Settings: General: Other Tuning-->
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_vibrate_title">Вібрація</string>
+  <string name="notification_sound_title">Звук</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Увімкнути журнали відлагодження</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_ok">Увімкнути</string>
+  <string name="bg_data_prompt_cancel">Вийти</string>
+  <string name="prompt_create_new_account_">Створити новий екаунт?</string>
+  <string name="dialog_cert_expires">Минає: </string>
+  <string name="dialog_settings_choose_background_picker">Оберіть зображення</string>
+  <!--Alerts: Notifications-->
+  <!--Alerts: Exceptions-->
+  <string name="error">Увага</string>
+  <string name="error_prefix">Помилка:</string>
+  <string name="service_error">Помилка сервісу!</string>
+  <string name="service_unavaiable">Сервер недосяжний.</string>
+  <string name="timeout">Час очікування сервера минув.</string>
+  <string name="error_suspended_connection">Мережа відсутня</string>
+  <string name="signin_password_prompt">Уведіть свій пароль:</string>
+  <string name="error_account_password_mismatch">Паролі не співпадають</string>
+  <string name="error_account_settings_port">Номер порту має бути числом</string>
+  <string name="error_chat_file_transfer_title">Помилка передачі</string>
+  <!--added 2011/09/01-->
+  <string name="menu_view_groups">Групи</string>
+  <string name="contacts">Контакти</string>
+  <string name="loading">завантаження…</string>
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <string name="menu_contact_list">Список контактів</string>
+  <string name="menu_settings">Налаштування</string>
+  <string name="menu_view_accounts">Керування екаунтом</string>
+  <string name="menu_sign_out">Вийти</string>
+  <string name="menu_view_contact_list">Список контактів</string>
+  <!--Other: Provider-->
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <!--Other: Smileys-->
+  <!--[Do not localize!]-->
+</resources>

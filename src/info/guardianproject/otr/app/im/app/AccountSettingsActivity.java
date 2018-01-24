@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,8 +17,6 @@
 
 package info.guardianproject.otr.app.im.app;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.provider.Imps;
 import info.guardianproject.otr.app.im.service.ImServiceConstants;
@@ -26,6 +24,7 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
@@ -33,7 +32,7 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-public class AccountSettingsActivity extends SherlockPreferenceActivity implements
+public class AccountSettingsActivity extends PreferenceActivity implements
         OnSharedPreferenceChangeListener {
 
     private long mProviderId;
@@ -48,7 +47,8 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
 
     private void setInitialValues() {
         ContentResolver cr = getContentResolver();
-        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(cr,
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(pCursor, cr,
                 mProviderId, false /* keep updated */, null /* no handler */);
         String text;
 
@@ -64,7 +64,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         }
         text = Integer.toString(settings.getPort());
         mPort.setText(text);
-        if (text != null && settings.getPort() != 5222 && settings.getPort() != 0) {
+        if (text != null && settings.getPort() != 0) {
             mPort.setSummary(text);
         }
         text = settings.getServer();
@@ -82,8 +82,12 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
     /* save the preferences in Imps so they are accessible everywhere */
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        final Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
-                getContentResolver(), mProviderId, false /* don't keep updated */, null /* no handler */);
+
+        ContentResolver cr = getContentResolver();
+        Cursor pCursor = cr.query(Imps.ProviderSettings.CONTENT_URI,new String[] {Imps.ProviderSettings.NAME, Imps.ProviderSettings.VALUE},Imps.ProviderSettings.PROVIDER + "=?",new String[] { Long.toString(mProviderId)},null);
+
+        Imps.ProviderSettings.QueryMap settings = new Imps.ProviderSettings.QueryMap(
+                pCursor, cr, mProviderId, true /* don't keep updated */, null /* no handler */);
         String value;
 
         if (key.equals("pref_account_xmpp_resource")) {
@@ -95,13 +99,13 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
                 mXmppResource.setText(value); // In case it was trimmed
             }
         } else if (key.equals("pref_account_xmpp_resource_prio")) {
-            
+
             value = prefs.getString(key, "20");
             try {
                 settings.setXmppResourcePrio(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
                 Toast.makeText(getBaseContext(),
-                        "Priority must be a number in the range [0 .. 127]", Toast.LENGTH_SHORT)
+                        getString(R.string.error_account_settings_priority), Toast.LENGTH_SHORT)
                         .show();
             }
             mXmppResourcePrio.setSummary(value);
@@ -110,10 +114,10 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
             try {
                 settings.setPort(Integer.parseInt(value));
             } catch (NumberFormatException nfe) {
-                Toast.makeText(getBaseContext(), "Port number must be a number", Toast.LENGTH_SHORT)
+                Toast.makeText(getBaseContext(), getString(R.string.error_account_settings_port), Toast.LENGTH_SHORT)
                         .show();
             }
-            if (settings.getPort() != 5222 && settings.getPort() != 0)
+            if (settings.getPort() != 0)
                 mPort.setSummary(value);
         } else if (key.equals("pref_account_server")) {
             value = prefs.getString(key, null);
@@ -132,9 +136,9 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         } else if (key.equals("pref_security_do_dns_srv")) {
             settings.setDoDnsSrv(prefs.getBoolean(key, true));
         }
-        
+
         settings.setShowMobileIndicator(true);
-        
+        settings.close();
     }
 
     @Override
@@ -166,6 +170,7 @@ public class AccountSettingsActivity extends SherlockPreferenceActivity implemen
         super.onResume();
 
         setInitialValues();
+
         getPreferenceScreen().getSharedPreferences().registerOnSharedPreferenceChangeListener(this);
     }
 

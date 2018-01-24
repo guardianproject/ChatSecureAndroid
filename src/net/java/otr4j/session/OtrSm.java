@@ -18,6 +18,7 @@ import net.java.otr4j.crypto.SM;
 import net.java.otr4j.crypto.SM.SMException;
 import net.java.otr4j.crypto.SM.SMState;
 import net.java.otr4j.io.OtrOutputStream;
+import net.java.otr4j.io.SerializationUtils;
 
 public class OtrSm implements OtrTlvHandler {
     public static interface OtrSmEngineHost extends OtrEngineHost {
@@ -33,7 +34,7 @@ public class OtrSm implements OtrTlvHandler {
 
     /**
      * Construct an OTR Socialist Millionaire handler object.
-     * 
+     *
      * @param authContext The encryption context for encrypting the session.
      * @param keyManager The long-term key manager.
      * @param sessionId The session ID.
@@ -79,13 +80,13 @@ public class OtrSm implements OtrTlvHandler {
 
     /**
      * Respond to or initiate an SMP negotiation
-     * 
+     *
      * @param question The question to present to the peer, if initiating. May
      *            be null for no question.
      * @param secret The secret.
      * @param initiating Whether we are initiating or responding to an initial
      *            request.
-     * 
+     *
      * @return TLVs to send to the peer
      */
     public List<TLV> initRespondSmp(String question, String secret, boolean initiating)
@@ -99,7 +100,12 @@ public class OtrSm implements OtrTlvHandler {
          * responder fingerprint (20 bytes), secure session id, input secret
          */
         byte[] our_fp = Hex.decode(keyManager.getLocalFingerprint(sessionID));
-        byte[] their_fp = Hex.decode(keyManager.getRemoteFingerprint(sessionID));
+
+        String remoteFingerprint = keyManager.getRemoteFingerprint(sessionID);
+        if (remoteFingerprint == null)
+            throw new OtrException("no fingerprint for remote user");
+
+        byte[] their_fp = Hex.decode(remoteFingerprint);
 
         byte[] sessionId;
         try {
@@ -108,7 +114,8 @@ public class OtrSm implements OtrTlvHandler {
             throw new OtrException(ex);
         }
 
-        int combined_buf_len = 41 + sessionId.length + secret.length();
+        byte[] bytes = secret.getBytes(SerializationUtils.UTF8);
+        int combined_buf_len = 41 + sessionId.length + bytes.length;
         byte[] combined_buf = new byte[combined_buf_len];
         combined_buf[0] = 1;
         if (initiating) {
@@ -119,7 +126,7 @@ public class OtrSm implements OtrTlvHandler {
             System.arraycopy(our_fp, 0, combined_buf, 21, 20);
         }
         System.arraycopy(sessionId, 0, combined_buf, 41, sessionId.length);
-        System.arraycopy(secret.getBytes(), 0, combined_buf, 41 + sessionId.length, secret.length());
+        System.arraycopy(bytes, 0, combined_buf, 41 + sessionId.length, bytes.length);
 
         MessageDigest sha256;
         try {
@@ -140,11 +147,12 @@ public class OtrSm implements OtrTlvHandler {
             throw new OtrException(ex);
         }
 
-        // If we've got a question, attach it to the smpmsg 
+        // If we've got a question, attach it to the smpmsg
         if (question != null) {
-            byte[] qsmpmsg = new byte[question.length() + 1 + smpmsg.length];
-            System.arraycopy(question.getBytes(), 0, qsmpmsg, 0, question.length());
-            System.arraycopy(smpmsg, 0, qsmpmsg, question.length() + 1, smpmsg.length);
+            bytes = question.getBytes(SerializationUtils.UTF8);
+            byte[] qsmpmsg = new byte[bytes.length + 1 + smpmsg.length];
+            System.arraycopy(bytes, 0, qsmpmsg, 0, bytes.length);
+            System.arraycopy(smpmsg, 0, qsmpmsg, bytes.length + 1, smpmsg.length);
             smpmsg = qsmpmsg;
         }
 
@@ -156,7 +164,7 @@ public class OtrSm implements OtrTlvHandler {
 
     /**
      * Create an abort TLV and reset our state.
-     * 
+     *
      * @return TLVs to send to the peer
      */
     public List<TLV> abortSmp() throws OtrException {
@@ -170,6 +178,7 @@ public class OtrSm implements OtrTlvHandler {
     }
 
     /** Process an incoming TLV and optionally send back TLVs to peer. */
+    @Override
     public void processTlv(TLV tlv) throws OtrException {
         try {
             pendingTlvs = doProcessTlv(tlv);

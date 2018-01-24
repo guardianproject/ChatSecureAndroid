@@ -27,11 +27,11 @@
     <string name="menu_view_profile" msgid="5883288134525529119">"Ver perfil"</string>
     <string name="menu_end_conversation" msgid="3556567768336552622">"Finalizar chat"</string>
     <string name="menu_view_contact_list" msgid="4630377976475003130">"Lista de contactos"</string>
-    <string name="menu_invite_contact" msgid="4669830812552484236">"Invitar a..."</string>
+    <string name="menu_invite_contact" msgid="4669830812552484236">"Invitar a…"</string>
     <string name="menu_switch_chats" msgid="5113455126377025717">"Modificar chats"</string>
     <string name="menu_insert_smiley" msgid="2555290958985391105">"Insertar ícono gestual"</string>
     <string name="menu_plus" msgid="5000617247235760106">"Menú+"</string>
-    <string name="default_input_title" msgid="6182729628894599563">"Entrada"</string>
+
     <string name="confirm" msgid="3229086014444547636">"Confirmar"</string>
     <string name="confirm_delete_contact" msgid="1364595657359357114">"El contacto \"<xliff:g id="USER">%1$s</xliff:g>\" se eliminará."</string>
     <string name="confirm_block_contact" msgid="2490910366424078491">"El contacto \"<xliff:g id="USER">%1$s</xliff:g>\" se bloqueará."</string>
@@ -51,7 +51,7 @@
     <string name="check_auto_sign_in" msgid="308461891031463647">"Esta opción inicia la sesión automáticamente cada vez que abres la aplicación. Para desactivarla, sal de la sesión y quita la marca de verificación de la casilla \"Iniciar sesión automáticamente\"."</string>
     <string name="sign_in" msgid="6204326200860136567">"Inicia sesión"</string>
     <string name="signing_in_to" msgid="2689649632858697221">"Iniciando sesión en <xliff:g id="ACCOUNT">%1$s</xliff:g>"</string>
-    <string name="signing_in_wait" msgid="987357161364666888">"Iniciando sesión..."</string>
+    <string name="signing_in_wait" msgid="987357161364666888">"Iniciando sesión…"</string>
     <string name="bg_data_prompt_title" msgid="4861800723853178111">"Datos de fondo desactivados"</string>
     <string name="bg_data_prompt_message" msgid="2343305645142823544">"<xliff:g id="PROVIDER">%1$s</xliff:g> necesita que se habiliten datos de fondo."</string>
     <string name="bg_data_prompt_ok" msgid="3443385427882751532">"Habilitar"</string>
@@ -87,7 +87,7 @@
     <string name="contact_offline" msgid="7054903259540426223">"<xliff:g id="USER">%1$s</xliff:g> está desconectado"</string>
     <string name="contact_joined" msgid="6713312815095658394">"<xliff:g id="USER">%1$s</xliff:g> se ha unido"</string>
     <string name="contact_left" msgid="3020686291216941829">"<xliff:g id="USER">%1$s</xliff:g> se ha ido"</string>
-    <string name="time_stamp" format="date" msgid="8952691401963972802">"'Enviado el '<xliff:g id="DATE">EEEE</xliff:g>' a las '<xliff:g id="HOUR">hh</xliff:g><xliff:g id="MINUTE">mm</xliff:g><xliff:g id="AMPM">a</xliff:g>"</string>
+
     <string name="send" msgid="2726588254020771734">"Enviar"</string>
     <string name="msg_sent_failed" msgid="4209970218075996979">"Este mensaje no pudo enviarse."</string>
     <string name="disconnected_warning" msgid="6798248948843269795">"Se ha perdido la conexión con el servidor. Los mensajes se enviarán cuando estés en línea."</string>
@@ -100,7 +100,7 @@
     <string name="choose_list_label" msgid="1430489448508574145">"Selecciona una lista:"</string>
     <string name="invite_instruction" msgid="8262403243657760155">"Escribe un nombre de Contactos para agregarlo."</string>
     <string name="invite_label" msgid="6229798754682424899">"Enviar invitación"</string>
-    <string name="setting_title" msgid="6676157178613673420">"Configuración general"</string>
+
     <string name="hide_offline_contacts" msgid="8017909244732772990">"Ocultar contactos desconectados"</string>
     <string name="notification_group_title" msgid="4944275706770811080">"Configuración de notificación"</string>
     <string name="notification_enabled_title" msgid="6447889693376465773">"Notific. de mensaj. instantánea"</string>

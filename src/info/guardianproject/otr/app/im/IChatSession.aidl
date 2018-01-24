@@ -18,8 +18,8 @@
 package info.guardianproject.otr.app.im;
 
 import info.guardianproject.otr.app.im.IChatListener;
+import info.guardianproject.otr.app.im.IDataListener;
 import info.guardianproject.otr.app.im.engine.Message;
-import info.guardianproject.otr.IOtrKeyManager;
 import info.guardianproject.otr.IOtrChatSession;
 
 
@@ -60,7 +60,7 @@ interface IChatSession {
      * Convert a single chat to a group chat. If the chat session is already a
      * group chat or it's converting to group chat.
      */
-    void convertToGroupChat();
+    void convertToGroupChat(String nickname);
 
     /**
      * Invites a contact to join this ChatSession. The user can only invite
@@ -85,6 +85,11 @@ interface IChatSession {
     void sendMessage(String text);
 
     /**
+     * Sends data to all participants in this ChatSession.
+     */
+    boolean offerData(String offerId, String localUri, String type);
+
+    /**
      * Mark this chat session as read.
      */
     void markAsRead();   
@@ -95,7 +100,18 @@ interface IChatSession {
     IOtrChatSession getOtrChatSession();
     
      /**
-    * Get OTR Key Manager
+    * set class for handling incoming data transfers
     */
-    IOtrKeyManager getOtrKeyManager();
+    void setDataListener (IDataListener dataListener);
+    
+    /**
+    * respond to incoming data request
+    */
+    void setIncomingFileResponse (boolean acceptThis, boolean acceptAll);
+    
+    /**
+    * reinit chatsession if we are starting a new chat
+    */
+    void reInit();
 }
+

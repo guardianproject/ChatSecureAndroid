@@ -29,6 +29,7 @@
 		android:summary="@string/xmpp_resource_prio_summary"
 		android:defaultValue="20"
 		android:numeric="integer"
+		android:inputType="numberSigned"
 		android:title="@string/xmpp_resource_prio_title" />
 	<EditTextPreference android:key="pref_account_port"
 		android:title="@string/server_port"

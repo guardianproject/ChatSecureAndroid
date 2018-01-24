@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<resources>
-    <string-array name="otr_options">
-        <item>Fuerza / Requerir</item>
-        <item>Automáticamente Ocasión</item>
-        <item>Como requerido</item>
-        <item>Nunca / personas de movilidad reducida</item>
-    </string-array>
-</resources>

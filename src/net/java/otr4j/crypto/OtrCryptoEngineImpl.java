@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.crypto;
@@ -33,6 +33,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.interfaces.DSAKey;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPrivateKey;
 import java.security.interfaces.DSAPublicKey;
@@ -264,16 +265,19 @@ public class OtrCryptoEngineImpl implements OtrCryptoEngine {
         byte[] sig = new byte[siglen];
         Boolean writeR = false;
         Boolean writeS = false;
+        int shiftR = rslen - rb.length;
+        int shiftS = rslen - sb.length;
+
         for (int i = 0; i < siglen; i++) {
             if (i < rslen) {
                 if (!writeR)
                     writeR = rb.length >= rslen - i;
-                sig[i] = (writeR) ? rb[i] : (byte) 0x0;
+                sig[i] = (writeR) ? rb[i - shiftR] : (byte) 0x0;
             } else {
                 int j = i - rslen; // Rebase.
                 if (!writeS)
                     writeS = sb.length >= rslen - j;
-                sig[i] = (writeS) ? sb[j] : (byte) 0x0;
+                sig[i] = (writeS) ? sb[j - shiftS] : (byte) 0x0;
             }
         }
         return sig;

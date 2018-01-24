@@ -1,0 +1,23 @@
+#!/bin/bash -x
+
+# Fix TypographyEllipsis programmatically
+sed -i 's/\.\.\./…/g' res/values*/*.xml
+
+# Replace "--" with an "em dash" character
+sed -i 's,\(\>[^\<]*\)--\([^\>]\),\1—\2,g' res/values*/*.xml
+
+# make sure apostrophes in strings are escaped
+sed -i "s,\(>[^<]*[^\\]\)',\1\\\\',g" res/values*/*.xml
+
+# transifex totally messes up the <xliff> tags
+sed -i \
+    -e 's,&lt;/xliff:g&gt;,</xliff:g>,g' \
+    -e 's,&lt;xliff:g\( [^&]*\)&gt;,<xliff:g\1>,g' \
+    -e 's,\(<xliff:g [^\\>]*\)\\"\([^\\>]*\)\\",\1"\2",g' \
+    -e 's,\(<xliff:g [^\\>]*\)\\",\1",g' \
+    -e 's,&gt;%1$s&lt;/xliff&gt;,>%1$s</xliff>,g' \
+    -e 's,&lt;xliff,<xliff,g' \
+    res/values*/strings.xml
+
+# OtrFileConverter is called KeySync for a long time
+sed -i 's,OtrFileConverter,KeySync,g' res/values*/strings.xml

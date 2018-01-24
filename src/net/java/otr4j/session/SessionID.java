@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.session;
@@ -10,44 +10,38 @@ import info.guardianproject.otr.app.im.engine.Address;
 /** @author George Politis */
 public final class SessionID {
 
-    private String fullUserID;
+    private String mLocalUserId;
+    private String mRemoteUserId;
+    private String mProtocolName;
 
-    public SessionID(String accountID, String fullUserID, String protocolName) {
-        this.accountID = accountID;
-        this.userID = fullUserID == null ? null : Address.stripResource(fullUserID);
-        this.fullUserID = fullUserID;
-        this.protocolName = protocolName;
-    }
-
-    private String accountID;
-    private String userID;
-    private String protocolName;
-
-    private String sessionId;
+    private String mSessionId;
 
     public static final SessionID Empty = new SessionID(null, null, null);
 
-    public String getAccountID() {
-        return accountID;
+    public SessionID(String localUserId, String remoteUserId, String protocolName) {
+       mLocalUserId = localUserId;
+       mRemoteUserId = remoteUserId;
+       mProtocolName = protocolName;
+       mSessionId = Address.stripResource(mLocalUserId) + '_' + mProtocolName + '_' + Address.stripResource(mRemoteUserId);
     }
 
-    public String getUserID() {
-        return userID;
-    }
-    
-    public String getFullUserID() {
-        return fullUserID;
+    public String getLocalUserId ()
+    {
+        return mLocalUserId;
     }
 
-    public String getProtocolName() {
-        return protocolName;
+    public String getRemoteUserId ()
+    {
+        return mRemoteUserId;
     }
 
-    public synchronized String toString() {
+    public String getProtocolName ()
+    {
+        return mProtocolName;
+    }
 
-        sessionId = getAccountID() + '_' + this.getProtocolName() + '_' + this.getFullUserID();
-
-        return sessionId;
+    public String toString() {
+        return mSessionId;
 
     }
 

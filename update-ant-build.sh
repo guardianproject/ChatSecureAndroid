@@ -1,22 +1,32 @@
 #!/bin/sh
 
-# make sure your Android SDK tools path is set in SDK_BASE
-android update project --path . --name Gibberbot --subprojects
-android update project --path external/ActionBarSherlock/actionbarsherlock -t android-17
-android update project --path external/MemorizingTrustManager --name MemorizingTrustManager -t android-17 --subprojects
-android update project --path external/OnionKit/libonionkit --name OnionKit -t android-17
-android update project --path external/AndroidPinning --name libpinning -t android-17
-android update project --path external/cacheword/cachewordlib --name cacheword -t android-17
-android update project --path external/SlidingMenu/library --name sliding -t android-17
-android update project --path external/SlideListView/library --name slidelist -t android-17
-android update project --path external/NineOldAndroids/library --name nineold -t android-17
-android update project --path external/MessageBar/library --name messagebar -t android-17
-android update project --path external/ShowcaseView/library --name showcase -t android-17
-android update project --path external/AndroidEmojiInput/library --name emoji -t android-17
+set -e
 
-cp libs/android-support-v4.jar external/OnionKit/libonionkit/libs/android-support-v4.jar
-cp libs/android-support-v4.jar external/ActionBarSherlock/actionbarsherlock/libs/android-support-v4.jar
+if ! which android > /dev/null; then
+    if [ -z $ANDROID_HOME ]; then
+        if [ -e ~/.android/bashrc ]; then
+            . ~/.android/bashrc
+        else
+            echo "'android' not found, ANDROID_HOME must be set!"
+            exit
+        fi
+    else
+        export PATH="${ANDROID_HOME}/tools:$PATH"
+    fi
+fi
+
+# fetch target from project.properties
+eval `grep '^target=' project.properties`
+
+projectname=`sed -n 's,.*name="app_name">\(.*\)<.*,\1,p' res/values/strings.xml`
+
+for lib in `sed -n 's,^android\.library\.reference\.[0-9][0-9]*=\(.*\),\1,p' project.properties`; do
+    android update lib-project --path $lib --target $target
+done
+
+android update project --path . --name $projectname --target $target --subprojects
+
 cp libs/android-support-v4.jar external/SlidingMenu/library/libs/android-support-v4.jar
 cp libs/android-support-v4.jar external/cacheword/cachewordlib/libs/android-support-v4.jar
-
-cp libs/sqlcipher.jar external/cacheword/cachewordlib/libs/sqlcipher.jar
+cp libs/android-support-v4.jar external/ViewPagerIndicator/library/libs/android-support-v4.jar
+cp libs/android-support-v4.jar external/AndroidEmojiInput/library/libs/android-support-v4.jar

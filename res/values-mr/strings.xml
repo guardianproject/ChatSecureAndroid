@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">चॅटसिक्यॉर</string>
+  <string name="im_label">चॅटसिक्यॉर</string>
+  <!--General: Permissions-->
+  <!--General: Actions-->
+  <string name="confirm">नक्की करा</string>
+  <string name="ok">ठीक आहे</string>
+  <string name="cancel">रद्द करा</string>
+  <string name="yes">ठीक आहे</string>
+  <string name="no">रद्द करा</string>
+  <string name="btn_next">पुढे</string>
+  <string name="btn_back">मागे</string>
+  <string name="setup">स्थापना</string>
+  <!--Views-->
+  <string name="lock_screen_open">उघडा</string>
+  <string name="lock_screen_passphrase_hint">परवलीचा शब्द</string>
+  <!--Views: Setup-->
+  <!--Views: About: Welcome-->
+  <!--Views: About: OTR-->
+  <!--Views: About: Security-->
+  <!--Views: Account list-->
+  <!--Views: Setup: Account-->
+  <!--Views: Settings: Account-->
+  <!--Views: Contact list-->
+  <string name="menu_new_chat">नवीन गप्पा</string>
+  <string name="menu_search_contacts">संपर्क शोधा</string>
+  <string name="empty_contact_group">रिकामे</string>
+  <string name="search_label">संपर्क</string>
+  <string name="add_contact_title">संपर्क जोडा</string>
+  <string name="client_type_computer">संगणक</string>
+  <string name="client_type_mobile">भ्रमणध्वनी</string>
+  <!--Views: Chat: Single-->
+  <string name="me">मी</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> ऑनलाइन आहेत</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> बाहेर गेले आहेत</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> व्यस्त आहेत</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> ऑफलाइन आहेत</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> आले आहेत</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> सोडून गेले</string>
+  <string name="menu_resend">पुन्हा पाठवा</string>
+  <string name="menu_end_conversation">गप्पा थांबवा</string>
+  <string name="menu_clear_chat">गप्पा पुसा</string>
+  <string name="keep">ठेवा</string>
+  <string name="export">निर्यात करा</string>
+  <!--Views: Chat: Group-->
+  <string name="accept_invitation">स्वीकार करा</string>
+  <string name="decline_invitation">नकार द्या</string>
+  <string name="menu_new_group_chat">सामूहिक गप्पा</string>
+  <string name="create_or_join_group_chat">सामूहिक गप्पा सुरू करा किंवा जोडा</string>
+  <string name="connecting_to_group_chat_">सामूहिक गप्पांशी जोडत आहोत…</string>
+  <string name="contacts_picker_title">आमंत्रित करण्याच्या संपर्कांना निवडा</string>
+  <string name="contact_filter_hint">संपर्क शोधण्यासाठी टंका</string>
+  <!--Security: OTR-->
+  <string name="menu_otr_start">एन्क्रिप्शन सुरू करा</string>
+  <string name="menu_otr_stop">एन्क्रिप्शन बंद करा</string>
+  <string name="starting_otr_chat">एन्क्रिप्टेड गप्पा सुरू करत आहोत…</string>
+  <string name="stopping_otr_chat">एन्क्रिप्टेड गप्पा बंद करत आहोत…</string>
+  <string name="label_fingerprint_remote">सुरक्षितता फिंगरप्रिंट</string>
+  <string name="label_fingerprint_local">सुरक्षितता फिंगरप्रिंट</string>
+  <string name="menu_sign_in">प्रवेश करा</string>
+  <string name="menu_gen_key">किल्ली पुन्हा बनवा</string>
+  <string name="otr_session_status_plaintext">एन्क्रिप्शन बंद आहे</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_cancel">रद्द करा</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <!--Actions: Settings: General: Security and Privacy-->
+  <!--Actions: Settings: General: User Interface-->
+  <!--Actions: Settings: General: Other Tuning-->
+  <!--Actions: Settings: General: Notifications-->
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <!--Alerts: Notifications-->
+  <!--Alerts: Exceptions-->
+  <!--added 2011/09/01-->
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <!--Other: Provider-->
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <!--Other: Smileys-->
+  <!--[Do not localize!]-->
+</resources>

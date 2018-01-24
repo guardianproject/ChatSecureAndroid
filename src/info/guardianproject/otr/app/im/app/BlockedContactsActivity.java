@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -69,7 +69,7 @@ public class BlockedContactsActivity extends ListActivity {
 
         mApp = (ImApp)getApplication();
         mApp.startImServiceIfNeed();
-        
+
         if (!resolveIntent()) {
             finish();
             return;
@@ -111,25 +111,25 @@ public class BlockedContactsActivity extends ListActivity {
                 accountCursor.close();
                 return false;
             }
-    
+
             long providerId = accountCursor.getLong(accountCursor
                     .getColumnIndexOrThrow(Imps.Account.PROVIDER));
             String username = accountCursor.getString(accountCursor
                     .getColumnIndexOrThrow(Imps.Account.USERNAME));
-    
+
             BrandingResources brandingRes = mApp.getBrandingResource(providerId);
             getWindow().setFeatureDrawable(Window.FEATURE_LEFT_ICON,
                     brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_LOGO));
-    
+
             setTitle(getResources().getString(R.string.blocked_list_title, username));
             accountCursor.close();
-    
+
             Cursor c = managedQuery(uri, PROJECTION, null, null, Imps.BlockedList.DEFAULT_SORT_ORDER);
             if (c == null) {
                 warning("Database error when query " + uri);
                 return false;
             }
-        
+
             ListAdapter adapter = new BlockedContactsAdapter(c, this);
             setListAdapter(adapter);
         }
@@ -138,7 +138,7 @@ public class BlockedContactsActivity extends ListActivity {
             //error parsing input
             Log.e(ImApp.LOG_TAG,"error parsing intent input",e);
         }
-        
+
         return true;
     }
 

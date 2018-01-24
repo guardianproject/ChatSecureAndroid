@@ -1,12 +1,12 @@
 /*
  * Copyright (C) 2007 The Android Open Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -16,14 +16,16 @@
 
 package info.guardianproject.otr.app.im.provider;
 
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.cacheword.SQLCipherOpenHelper;
 import info.guardianproject.otr.OtrAndroidKeyManagerImpl;
+import info.guardianproject.otr.app.im.app.ContactView;
 import info.guardianproject.otr.app.im.app.ImApp;
+import info.guardianproject.otr.app.im.provider.Imps.Contacts;
+import info.guardianproject.otr.app.im.provider.Imps.Provider;
+import info.guardianproject.util.Debug;
 import info.guardianproject.util.LogCleaner;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,6 +33,7 @@ import java.io.StreamCorruptedException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 import net.sqlcipher.database.SQLiteConstraintException;
@@ -44,16 +47,18 @@ import android.content.Context;
 import android.content.UriMatcher;
 import android.content.res.Configuration;
 import android.database.Cursor;
+import android.database.CursorWindow;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.text.TextUtils;
-import android.util.Log;
 
 /** A content provider for IM */
-public class ImpsProvider extends ContentProvider implements ICacheWordSubscriber {
+public class ImpsProvider extends ContentProvider {
+    private static final String PREV_DATABASE_OPEN_TRAIL_TAG = "prev_database_open";
+    private static final String EMPTY_KEY_TRAIL_TAG = "empty_key";
+    private static final String DATABASE_OPEN_TRAIL_TAG = "database_open";
     private static final String LOG_TAG = "imProvider";
-    private static final boolean DBG = false;
 
     private static final String AUTHORITY = "info.guardianproject.otr.app.im.provider.Imps";
 
@@ -82,14 +87,17 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     private static final String TABLE_LAST_RMQ_ID = "lastrmqid";
     private static final String TABLE_S2D_RMQ_IDS = "s2dRmqIds";
 
-    private static final String DATABASE_NAME = "impsenc.db";
-    private static final int DATABASE_VERSION = 102;
+    private static final String ENCRYPTED_DATABASE_NAME = "impsenc.db";
+    private static final String UNENCRYPTED_DATABASE_NAME = "imps.db";
+
+    private static final int DATABASE_VERSION = 105;
 
     protected static final int MATCH_PROVIDERS = 1;
     protected static final int MATCH_PROVIDERS_BY_ID = 2;
     protected static final int MATCH_PROVIDERS_WITH_ACCOUNT = 3;
     protected static final int MATCH_ACCOUNTS = 10;
     protected static final int MATCH_ACCOUNTS_BY_ID = 11;
+    protected static final int MATCH_ACCOUNTS_WITH_DOMAIN = 12;
     protected static final int MATCH_CONTACTS = 18;
     protected static final int MATCH_CONTACTS_JOIN_PRESENCE = 19;
     protected static final int MATCH_CONTACTS_BAREBONE = 20;
@@ -129,7 +137,8 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     protected static final int MATCH_OTR_MESSAGES_BY_ACCOUNT = 60;
     protected static final int MATCH_OTR_MESSAGE = 61;
     protected static final int MATCH_OTR_MESSAGES_BY_PACKET_ID = 62;
-
+    protected static final int MATCH_MESSAGES_BY_PACKET_ID = 63;
+    
     protected static final int MATCH_GROUP_MEMBERS = 65;
     protected static final int MATCH_GROUP_MEMBERS_BY_GROUP = 66;
     protected static final int MATCH_AVATARS = 70;
@@ -157,9 +166,10 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     protected static final int MATCH_S2D_RMQ_IDS = 204;
 
     protected final UriMatcher mUrlMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-    private final String mTransientDbName;
+    private String mTransientDbName;
 
     private static final HashMap<String, String> sProviderAccountsProjectionMap;
+    private static final HashMap<String, String> sAccountsByDomainProjectionMap;
     private static final HashMap<String, String> sContactsProjectionMap;
     private static final HashMap<String, String> sContactListProjectionMap;
     private static final HashMap<String, String> sBlockedListProjectionMap;
@@ -169,6 +179,11 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     private static final String PROVIDER_JOIN_ACCOUNT_TABLE = "providers LEFT OUTER JOIN accounts ON "
                                                               + "(providers._id = accounts.provider AND accounts.active = 1) "
                                                               + "LEFT OUTER JOIN accountStatus ON (accounts._id = accountStatus.account)";
+
+    private static final String DOMAIN_JOIN_ACCOUNT_TABLE = "providerSettings JOIN accounts ON "
+            + "(providerSettings.provider = accounts.provider AND providerSettings.name = '" + Imps.ProviderSettings.DOMAIN + "' AND accounts.active = 1) "
+            + "LEFT OUTER JOIN accountStatus ON (accounts._id = accountStatus.account)";
+
 
     private static final String CONTACT_JOIN_PRESENCE_TABLE = "contacts LEFT OUTER JOIN presence ON (contacts._id = presence.contact_id)";
 
@@ -205,9 +220,9 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                                                       + Imps.Presence.CONTACT_ID;
 
     protected static DatabaseHelper mDbHelper;
-    private final String mDatabaseName;
+    private String mDatabaseName;
     private final int mDatabaseVersion;
-    
+
 
     private final String[] BACKFILL_PROJECTION = { Imps.Chats._ID, Imps.Chats.SHORTCUT,
                                                   Imps.Chats.LAST_MESSAGE_DATE };
@@ -241,9 +256,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
     // contact id query selection args 2
     private String[] mQueryContactIdSelectionArgs2 = new String[2];
-    
-    private CacheWordActivityHandler mCacheWord;
-    
+
 
     private class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -252,10 +265,12 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
         boolean mInMemoryDB = false;
         String mKey = null;
+
+        boolean doCleanup = false;
         
         DatabaseHelper(Context context, String key, boolean inMemoryDb) throws Exception {
             super(context, mDatabaseName, null, mDatabaseVersion);
-            
+
             mInMemoryDB = inMemoryDb;
             mKey = key;
         }
@@ -271,13 +286,31 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             if (dbWrite == null)
                 dbWrite = super.getWritableDatabase(mKey);
 
+            /*
+            if (doCleanup)
+            {
+                //clean up orphaned contacts
+                dbWrite.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE " + TABLE_CONTACTS + '.' + Contacts._ID +
+                        " IN (Select " + TABLE_CONTACTS + '.' + Contacts._ID + " from " + TABLE_CONTACTS + " LEFT JOIN " + TABLE_PROVIDERS + " ON " + Contacts.PROVIDER + "=" + TABLE_PROVIDERS + "." + Provider._ID + " WHERE " + TABLE_PROVIDERS + '.' + Provider._ID + " IS NULL)");
+                
+                
+                dbWrite.execSQL("DELETE FROM " + TABLE_CONTACTS + " WHERE " + TABLE_CONTACTS + '.' + Contacts._ID + " NOT IN ("
+                        + "SELECT min(" + Contacts._ID + ") FROM " + TABLE_CONTACTS + " group by " + Contacts.USERNAME + "," + Contacts.PROVIDER + "," + Contacts.ACCOUNT                        
+                        + ")");
+                
+                
+                
+                doCleanup = false;
+            }
+            */
+            
             return dbWrite;
         }
 
         @Override
         public void onCreate(SQLiteDatabase db) {
 
-            if (DBG)
+            
                 log("DatabaseHelper.onCreate");
 
             db.execSQL("CREATE TABLE " + TABLE_PROVIDERS + " (" + "_id INTEGER PRIMARY KEY,"
@@ -332,6 +365,9 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
             db.execSQL("create TABLE " + TABLE_S2D_RMQ_IDS + " (" + "_id INTEGER PRIMARY KEY,"
                        + "rmq_id INTEGER" + ");");
+         
+            //DELETE FROM cache WHERE id IN (SELECT cache.id FROM cache LEFT JOIN main ON cache.id=main.id WHERE main.id IS NULL);
+
         }
 
         @Override
@@ -460,6 +496,52 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 }
 
                 return;
+            case 101:
+                // This was a no-op upgrade when we added the encrypted DB option
+                return;
+            case 103:
+
+                try {
+                    db.beginTransaction();
+
+                    Cursor c = db.query(TABLE_MESSAGES, null, null, null, null, null, null);
+                    if (c.getColumnIndex("mime_type")==-1)
+                    {
+                        db.execSQL("ALTER TABLE " + TABLE_MESSAGES
+                                + " ADD COLUMN mime_type TEXT;");
+                    }
+                    c.close();
+
+                    db.setTransactionSuccessful();
+                } catch (Throwable ex) {
+                    LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
+                } finally {
+                    db.endTransaction();
+                }
+
+                if (mInMemoryDB) { //this should actually be if mInMemoryDB = true, then update the table
+
+                        try {
+
+                                db.beginTransaction();
+                                db.execSQL("ALTER TABLE " + TABLE_IN_MEMORY_MESSAGES
+                                        + " ADD COLUMN mime_type TEXT;");
+                                db.setTransactionSuccessful();
+
+                        } catch (Throwable ex) {
+                            LogCleaner.error(LOG_TAG, ex.getMessage(), ex);
+                        } finally {
+                            db.endTransaction();
+                        }
+
+                }
+
+                return;
+            case 104:
+
+                db.rawExecSQL("PRAGMA cipher_migrate;");
+
+                return;
             case 1:
                 if (newVersion <= 100) {
                     return;
@@ -504,7 +586,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         }
 
         private void createContactsTables(SQLiteDatabase db) {
-            if (DBG)
+            
                 log("createContactsTables");
 
             StringBuilder buf = new StringBuilder();
@@ -587,7 +669,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
         private void createMessageChatTables(SQLiteDatabase db,
                 boolean addShowTsColumnForMessagesTable) {
-            if (DBG)
+            
                 log("createMessageChatTables");
 
             // message table
@@ -609,12 +691,13 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 buf.append(",show_ts INTEGER");
             }
             buf.append(",is_delivered INTEGER");
+            buf.append(",mime_type TEXT");
 
             buf.append(");");
 
             String sqlStatement = buf.toString();
 
-            if (DBG)
+            
                 log("create message table: " + sqlStatement);
             db.execSQL(sqlStatement);
 
@@ -633,7 +716,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             // chat sessions, including single person chats and group chats
             sqlStatement = buf.toString();
 
-            if (DBG)
+            
                 log("create chat table: " + sqlStatement);
             db.execSQL(sqlStatement);
 
@@ -647,7 +730,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
             sqlStatement = buf.toString();
 
-            if (DBG)
+            
                 log("create trigger: " + sqlStatement);
             db.execSQL(sqlStatement);
         }
@@ -663,7 +746,10 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                        + // in millisec
                        "type INTEGER," + "packet_id TEXT UNIQUE,"
                        + "err_code INTEGER NOT NULL DEFAULT 0," + "err_msg TEXT,"
-                       + "is_muc INTEGER," + "show_ts INTEGER," + "is_delivered INTEGER" + ");");
+                       + "is_muc INTEGER," + "show_ts INTEGER," +
+                       "is_delivered INTEGER," +
+                       "mime_type TEXT" +
+                       ");");
 
         }
 
@@ -675,13 +761,13 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 return;
             }
 
-            if (DBG)
+            
                 log("##### createTransientTables");
 
-            
+
             // Create transient tables
             String cpDbName;
-            
+
             if (mInMemoryDB)
             {
                 db.execSQL("ATTACH DATABASE ':memory:' AS " + mTransientDbName + ";");
@@ -691,7 +777,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             {
                cpDbName = "";
             }
-            
+
             // in-memory message table
             createInMemoryMessageTables(db, cpDbName);
 
@@ -794,6 +880,9 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         sProviderAccountsProjectionMap.put(Imps.Provider.ACCOUNT_CONNECTION_STATUS,
                 "accountStatus.connStatus AS account_connStatus");
 
+        sAccountsByDomainProjectionMap = new HashMap<String, String>();
+        sAccountsByDomainProjectionMap.put(Imps.Account._ID, "accounts._id AS _id");
+
         // contacts projection map
         sContactsProjectionMap = new HashMap<String, String>();
 
@@ -840,7 +929,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
         // Avatars columns
         sContactsProjectionMap.put(Imps.Contacts.AVATAR_HASH, "avatars.hash AS avatars_hash");
-        sContactsProjectionMap.put(Imps.Contacts.AVATAR_DATA, "avatars.data AS avatars_data");
+        sContactsProjectionMap.put(Imps.Contacts.AVATAR_DATA, "quote(avatars.data) AS avatars_data");
 
         // contactList projection map
         sContactListProjectionMap = new HashMap<String, String>();
@@ -858,7 +947,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         sBlockedListProjectionMap.put(Imps.BlockedList.NICKNAME, "nickname");
         sBlockedListProjectionMap.put(Imps.BlockedList.PROVIDER, "provider");
         sBlockedListProjectionMap.put(Imps.BlockedList.ACCOUNT, "account");
-        sBlockedListProjectionMap.put(Imps.BlockedList.AVATAR_DATA, "avatars.data AS avatars_data");
+        sBlockedListProjectionMap.put(Imps.BlockedList.AVATAR_DATA, "quote(avatars.data) AS avatars_data");
 
         // messages projection map
         sMessagesProjectionMap = new HashMap<String, String>();
@@ -876,6 +965,8 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         sMessagesProjectionMap.put(Imps.Messages.DISPLAY_SENT_TIME, "messages.show_ts AS show_ts");
         sMessagesProjectionMap.put(Imps.Messages.IS_DELIVERED,
                 "messages.is_delivered AS is_delivered");
+        sMessagesProjectionMap.put(Imps.Messages.MIME_TYPE,
+                "messages.mime_type AS mime_type");
         // contacts columns
         sMessagesProjectionMap.put(Imps.Messages.CONTACT, "contacts.username AS contact");
         sMessagesProjectionMap.put(Imps.Contacts.PROVIDER, "contacts.provider AS provider");
@@ -904,6 +995,8 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 "inMemoryMessages.show_ts AS show_ts");
         sInMemoryMessagesProjectionMap.put(Imps.Messages.IS_DELIVERED,
                 "inMemoryMessages.is_delivered AS is_delivered");
+        sInMemoryMessagesProjectionMap.put(Imps.Messages.MIME_TYPE,
+                "inMemoryMessages.mime_type AS mime_type");
         // contacts columns
         sInMemoryMessagesProjectionMap.put(Imps.Messages.CONTACT, "contacts.username AS contact");
         sInMemoryMessagesProjectionMap.put(Imps.Contacts.PROVIDER, "contacts.provider AS provider");
@@ -912,17 +1005,15 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     public ImpsProvider() {
-        this(DATABASE_NAME, DATABASE_VERSION);
+        this(DATABASE_VERSION);
 
-    
+
         setupImUrlMatchers(AUTHORITY);
         setupMcsUrlMatchers(AUTHORITY);
     }
 
-    protected ImpsProvider(String dbName, int dbVersion) {
-        mDatabaseName = dbName;
+    protected ImpsProvider(int dbVersion) {
         mDatabaseVersion = dbVersion;
-        mTransientDbName = "transient_" + dbName.replace(".", "_");
     }
 
     private void setupImUrlMatchers(String authority) {
@@ -931,6 +1022,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         mUrlMatcher.addURI(authority, "providers/account", MATCH_PROVIDERS_WITH_ACCOUNT);
 
         mUrlMatcher.addURI(authority, "accounts", MATCH_ACCOUNTS);
+        mUrlMatcher.addURI(authority, "domainAccounts", MATCH_ACCOUNTS_WITH_DOMAIN);
         mUrlMatcher.addURI(authority, "accounts/#", MATCH_ACCOUNTS_BY_ID);
 
         mUrlMatcher.addURI(authority, "contacts", MATCH_CONTACTS);
@@ -967,7 +1059,8 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         mUrlMatcher.addURI(authority, "messagesByProvider/#", MATCH_MESSAGES_BY_PROVIDER);
         mUrlMatcher.addURI(authority, "messagesByAccount/#", MATCH_MESSAGES_BY_ACCOUNT);
         mUrlMatcher.addURI(authority, "messages/#", MATCH_MESSAGE);
-
+        mUrlMatcher.addURI(authority, "messagesByPacketId/*", MATCH_MESSAGES_BY_PACKET_ID);
+        
         mUrlMatcher.addURI(authority, "otrMessages", MATCH_OTR_MESSAGES);
         mUrlMatcher.addURI(authority, "otrMessagesByAcctAndContact/#/*",
                 MATCH_OTR_MESSAGES_BY_CONTACT);
@@ -1014,23 +1107,39 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     @Override
     public boolean onCreate() {
 
-        mCacheWord = new CacheWordActivityHandler(getContext(), (ICacheWordSubscriber)this);        
-        mCacheWord.connectToService();
-
-
         return true;
     }
 
-    private synchronized DatabaseHelper initDBHelper(String pkey) throws Exception {
+    private void setDatabaseName(boolean isEncrypted) {
+        mDatabaseName = isEncrypted ? ENCRYPTED_DATABASE_NAME : UNENCRYPTED_DATABASE_NAME;
+        mTransientDbName = "transient_" + mDatabaseName.replace(".", "_");
+    }
 
+    private synchronized DatabaseHelper initDBHelper(String pkey, boolean noCreate) throws Exception {
+        if (mDbHelper == null) {
+            if (pkey != null) {
+                setDatabaseName(!pkey.isEmpty());
+                Context ctx = getContext();
+                String path = ctx.getDatabasePath(mDatabaseName).getPath();
+                if (noCreate && !new File(path).exists()) {
+                    LogCleaner.debug(ImApp.LOG_TAG, "no DB exists at " + path);
+                    return null;
+                }
 
-        
-        if (mDbHelper == null && pkey != null) {
-            Context ctx = getContext();
+                boolean inMemoryDb = false;
 
-            boolean inMemoryDb = false;
-            
-            mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
+                mDbHelper = new DatabaseHelper(ctx, pkey, inMemoryDb);
+                LogCleaner.debug(LOG_TAG, "Opened DB with key - empty=" + pkey.isEmpty());
+
+                Debug.recordTrail(getContext(), EMPTY_KEY_TRAIL_TAG, "" + pkey.isEmpty());
+                String prevOpen = Debug.getTrail(getContext(), DATABASE_OPEN_TRAIL_TAG);
+                if (prevOpen != null) {
+                    Debug.recordTrail(getContext(), PREV_DATABASE_OPEN_TRAIL_TAG, prevOpen);
+                }
+                Debug.recordTrail(getContext(), DATABASE_OPEN_TRAIL_TAG, new Date());
+            } else {
+                LogCleaner.warn(ImApp.LOG_TAG, "DB not open and no password provided");
+            }
         }
 
         return mDbHelper;
@@ -1038,19 +1147,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     private DatabaseHelper getDBHelper() {
-        
-        if (mDbHelper == null)
-        {
-            //check if cacheword is open, and then init the mDbHelper
-            if (!mCacheWord.isLocked())
-            {
-                onCacheWordOpened();
-            }
-            else
-            {
-                //we need to exit somehow
-            }
-        }
+
         return mDbHelper;
     }
 
@@ -1064,61 +1161,109 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             final String[] selectionArgs) {
 
         DatabaseHelper dbHelper = getDBHelper();
-        
-        
+
+
         int result = 0;
-        
+
         if (dbHelper != null)
         {
             SQLiteDatabase db = dbHelper.getWritableDatabase();
-            db.beginTransaction();
-            try {
-                result = updateInternal(url, values, selection, selectionArgs);
-                db.setTransactionSuccessful();
-            } finally {
-                db.endTransaction();
-            }
-            if (result > 0) {
-                getContext().getContentResolver()
-                        .notifyChange(url, null /* observer */, false /* sync */);
+
+            synchronized (db)
+            {
+                if (db.isOpen())
+                {
+                    try {
+                        db.beginTransaction();
+
+                        result = updateInternal(url, values, selection, selectionArgs);
+                        db.setTransactionSuccessful();
+                        db.endTransaction();
+                    }
+                    catch (Exception e){
+
+                        if (db.isOpen() && db.inTransaction())
+                            db.endTransaction();
+                    }
+
+
+                    if (result > 0) {
+                        getContext().getContentResolver()
+                                .notifyChange(url, null /* observer */, false /* sync */);
+                    }
+                }
             }
         }
-        
+
         return result;
     }
 
     @Override
     public final int delete(final Uri url, final String selection, final String[] selectionArgs) {
-        int result;
-        SQLiteDatabase db = getDBHelper().getWritableDatabase();
-        db.beginTransaction();
-        try {
-            result = deleteInternal(url, selection, selectionArgs);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
+
+        int result = -1;
+
+        if (getDBHelper() != null)
+        {
+            SQLiteDatabase db = getDBHelper().getWritableDatabase();
+
+            synchronized (db)
+            {
+                if (db.isOpen()) //db can be closed if service sign out takes longer than app/cacheword lock
+                {
+                    try {
+                        db.beginTransaction();
+                        result = deleteInternal(url, selection, selectionArgs);
+                        db.setTransactionSuccessful();
+                        db.endTransaction();
+                    }
+                    catch (Exception e)
+                    {
+                        //could not delete
+                    }
+
+                    if (result > 0) {
+                        getContext().getContentResolver()
+                                .notifyChange(url, null /* observer */, false /* sync */);
+                    }
+                }
+            }
         }
-        if (result > 0) {
-            getContext().getContentResolver()
-                    .notifyChange(url, null /* observer */, false /* sync */);
-        }
+
         return result;
     }
 
     @Override
     public final Uri insert(final Uri url, final ContentValues values) {
-        Uri result;
-        SQLiteDatabase db = getDBHelper().getWritableDatabase();
-        db.beginTransaction();
-        try {
-            result = insertInternal(url, values);
-            db.setTransactionSuccessful();
-        } finally {
-            db.endTransaction();
-        }
-        if (result != null) {
-            getContext().getContentResolver()
-                    .notifyChange(url, null /* observer */, false /* sync */);
+        Uri result = null;
+
+        if (getDBHelper() != null)
+        {
+            try
+            {
+                SQLiteDatabase db = getDBHelper().getWritableDatabase();
+                synchronized (db)
+                {
+                    if (db.isOpen())
+                    {
+                        db.beginTransaction();
+                        try {
+                            result = insertInternal(url, values);
+                            db.setTransactionSuccessful();
+                        } finally {
+                            db.endTransaction();
+                        }
+                        if (result != null) {
+                            getContext().getContentResolver()
+                                    .notifyChange(url, null /* observer */, false /* sync */);
+                        }
+                    }
+                }
+            }
+            catch (IllegalStateException ise)
+            {
+                log("database closed when insert attempted: " + url.toString());
+            }
         }
         return result;
     }
@@ -1130,18 +1275,18 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     boolean mLoadedLibs = false;
-    
+
     public Cursor queryInternal(Uri url, String[] projectionIn, String selection,
             String[] selectionArgs, String sort) {
-        
-      
-        
+
+        Debug.onServiceStart();
+
         if (!mLoadedLibs)
         {
             SQLiteDatabase.loadLibs(this.getContext().getApplicationContext());
             mLoadedLibs = true;
         }
-        
+
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         StringBuilder whereClause = new StringBuilder();
         if (selection != null) {
@@ -1151,20 +1296,35 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         String limit = null;
 
         String pkey = url.getQueryParameter(ImApp.CACHEWORD_PASSWORD_KEY);
-        
+        boolean noCreate = "1".equals(url.getQueryParameter(ImApp.NO_CREATE_KEY));
+        boolean clearKey = "1".equals(url.getQueryParameter(ImApp.CLEAR_PASSWORD_KEY));
+
+        if (clearKey) {
+            if (mDbHelper != null) {
+                mDbHelper.close();
+                mDbHelper = null;
+            }
+            return null;
+        }
+
         try {
-            initDBHelper(pkey);
+            initDBHelper(pkey, noCreate);
         } catch (Exception e) {
             LogCleaner.error(ImApp.LOG_TAG, e.getMessage(), e);
             return null;
         }
-        
+
+        if (mDbHelper == null) {
+            // Failed to open
+            return null;
+        }
+
         if (pkey != null)
         {
             OtrAndroidKeyManagerImpl.setKeyStorePassword(pkey);
-            
+
         }
-    
+
 
         /*
          * String dbKey = null;
@@ -1200,7 +1360,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         // Generate the body of the query
         int match = mUrlMatcher.match(url);
 
-        if (DBG) {
+         {
             //log("query " + url + ", match " + match + ", where " + selection);
             if (selectionArgs != null) {
                 for (String selectionArg : selectionArgs) {
@@ -1221,6 +1381,11 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         case MATCH_PROVIDERS_WITH_ACCOUNT:
             qb.setTables(PROVIDER_JOIN_ACCOUNT_TABLE);
             qb.setProjectionMap(sProviderAccountsProjectionMap);
+            break;
+
+        case MATCH_ACCOUNTS_WITH_DOMAIN:
+            qb.setTables(DOMAIN_JOIN_ACCOUNT_TABLE);
+            qb.setProjectionMap(sAccountsByDomainProjectionMap);
             break;
 
         case MATCH_ACCOUNTS_BY_ID:
@@ -1358,12 +1523,12 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             final SQLiteDatabase db = getDBHelper().getWritableDatabase();
             String[] doubleArgs = null;
             if (selectionArgs != null) {
-                
+
                 doubleArgs = new String[ selectionArgs.length * 2];//Arrays.copyOf(selectionArgs, selectionArgs.length * 2);
                 System.arraycopy(selectionArgs, 0, doubleArgs, 0, selectionArgs.length);
                 System.arraycopy(selectionArgs, 0, doubleArgs, selectionArgs.length, selectionArgs.length);
             }
-            
+
             Cursor c = db.rawQueryWithFactory(null, query, doubleArgs, TABLE_MESSAGES);
             if ((c != null) && !isTemporary()) {
                 c.setNotificationUri(getContext().getContentResolver(), url);
@@ -1516,10 +1681,21 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             return null;
 
         // run the query
-        final SQLiteDatabase db = getDBHelper().getReadableDatabase();
-        Cursor c = null;
+        SQLiteDatabase db;
+        try {
+            db = getDBHelper().getReadableDatabase();
+        } catch (net.sqlcipher.database.SQLiteException e) {
+            // Failed to actually open - the passphrase must have been wrong - reset the helper
+            mDbHelper = null;
+            throw e;
+        }
+        net.sqlcipher.Cursor c = null;
+
+        if (!db.isOpen())
+            return null;
 
         try {
+            qb.setDistinct(true);
             c = qb.query(db, projectionIn, whereClause.toString(), selectionArgs, groupBy, null,
                     sort, limit);
             if (c != null) {
@@ -1535,21 +1711,72 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     url = Imps.Contacts.CONTENT_URI;
                     break;
                 }
-                if (DBG)
+                
                     log("set notify url " + url);
-                
-                
+
+
                 c.setNotificationUri(getContext().getContentResolver(), url);
             }
+
+        //    c = new MyCrossProcessCursorWrapper(c);
+            return c;
+
         } catch (Exception ex) {
             LogCleaner.error(LOG_TAG, "query exc db caught ", ex);
+            return null;
         }
         catch (Error ex) {
             LogCleaner.error(LOG_TAG, "query error db caught ", ex);
+            return null;
         }
-        
 
-        return c;
+
+    }
+
+    static class MyCrossProcessCursorWrapper extends net.sqlcipher.CrossProcessCursorWrapper {
+        public MyCrossProcessCursorWrapper(net.sqlcipher.Cursor cursor) {
+            super(cursor);
+        }
+
+        @Override
+        public void fillWindow(int position, CursorWindow window) {
+            if (position < 0 || position > getCount()) {
+                return;
+            }
+            window.acquireReference();
+            try {
+                moveToPosition(position - 1);
+                window.clear();
+                window.setStartPosition(position);
+                int columnNum = getColumnCount();
+                window.setNumColumns(columnNum);
+                boolean isFull = false;
+                int numRows = 10;
+
+                while (!isFull && --numRows > 0 && moveToNext() && window.allocRow()) {
+                    for (int i = 0; i < columnNum; i++) {
+                        String field = getString(i);
+                        if (field != null) {
+                            if (!window.putString(field, getPosition(), i)) {
+                                window.freeLastRow();
+                                isFull = true;
+                                break;
+                            }
+                        } else {
+                            if (!window.putNull(getPosition(), i)) {
+                                window.freeLastRow();
+                                isFull = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            } catch (IllegalStateException e) {
+                // simply ignore it
+            } finally {
+                window.releaseReference();
+            }
+        }
     }
 
     private void buildQueryContactsByProvider(SQLiteQueryBuilder qb, StringBuilder whereClause,
@@ -1665,7 +1892,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
     // package scope for testing.
     boolean insertBulkContacts(ContentValues values) {
-        //if (DBG) log("insertBulkContacts: begin");
+        // log("insertBulkContacts: begin");
 
         ArrayList<String> usernames = getStringArrayList(values, Imps.Contacts.USERNAME);
         ArrayList<String> nicknames = getStringArrayList(values, Imps.Contacts.NICKNAME);
@@ -1703,6 +1930,13 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             ContentValues presenceValues = new ContentValues();
             presenceValues.put(Imps.Presence.PRESENCE_STATUS, Imps.Presence.OFFLINE);
 
+            StringBuffer whereClause = new StringBuffer();
+            whereClause.append(Contacts.USERNAME);
+            whereClause.append("=?");
+            whereClause.append(" AND ");
+            whereClause.append(Contacts.ACCOUNT);
+            whereClause.append("=?");
+            
             for (int i = 0; i < usernameCount; i++) {
                 String username = usernames.get(i);
                 String nickname = nicknames.get(i);
@@ -1731,7 +1965,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 }
 
                 /*
-                if (DBG) log("insertBulkContacts[" + i + "] username=" +
+                 log("insertBulkContacts[" + i + "] username=" +
                         username + ", nickname=" + nickname + ", type=" + type +
                         ", subscriptionStatus=" + subscriptionStatus + ", subscriptionType=" +
                         subscriptionType + ", qc=" + quickContact);
@@ -1760,7 +1994,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 try {
                     rowId = db.insertOrThrow(TABLE_CONTACTS, USERNAME, contactValues);
                 } catch (android.database.sqlite.SQLiteConstraintException ex) {
-                    if (DBG) log("insertBulkContacts: insert " + username + " caught " + ex);
+                     log("insertBulkContacts: insert " + username + " caught " + ex);
 
                     // append username to the selection clause
                     updateSelection.delete(0, updateSelection.length());
@@ -1776,23 +2010,37 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     }
                 }
                 */
-
-                rowId = db.insert(TABLE_CONTACTS, USERNAME, contactValues);
-                if (rowId > 0) {
-                    sum++;
-
-                    // seed the presence for the new contact
-                    if (DBG)
-                        log("### seedPresence for contact id " + rowId);
-                    presenceValues.put(Imps.Presence.CONTACT_ID, rowId);
-
-                    try {
-                        db.insert(TABLE_PRESENCE, null, presenceValues);
-                    } catch (android.database.sqlite.SQLiteConstraintException ex) {
-                        LogCleaner.warn(LOG_TAG, "insertBulkContacts: seeding presence caught " + ex);
+                
+                String[] columns = {"_id, username"};
+                String[] whereArgs = {username,account+""};
+                
+                Cursor c = db.query(TABLE_CONTACTS,  columns, whereClause.toString(), whereArgs, null,null,null,null);
+                boolean contactExists = (c != null && c.getCount() > 0);
+                if (c != null) c.close();
+                
+                if (contactExists) 
+                {
+                    int rowsUpdated = db.update(TABLE_CONTACTS, contactValues, whereClause.toString(), whereArgs);
+                }
+                else
+                {
+                    rowId = db.insert(TABLE_CONTACTS, USERNAME, contactValues);
+                    if (rowId > 0) {
+                        sum++;
+    
+                        // seed the presence for the new contact
+                        
+                            log("### seedPresence for contact id " + rowId);
+                        presenceValues.put(Imps.Presence.CONTACT_ID, rowId);
+    
+                        try {
+                            db.insert(TABLE_PRESENCE, null, presenceValues);
+                        } catch (android.database.sqlite.SQLiteConstraintException ex) {
+                            LogCleaner.warn(LOG_TAG, "insertBulkContacts: seeding presence caught " + ex);
+                        }
                     }
                 }
-
+                
                 // yield the lock if anyone else is trying to
                 // perform a db operation here.
                 db.yieldIfContended();
@@ -1804,7 +2052,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         }
 
         // We know that we succeeded becuase endTransaction throws if the transaction failed.
-        if (DBG)
+        
             log("insertBulkContacts: added " + sum + " contacts!");
         return true;
     }
@@ -1885,7 +2133,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     LogCleaner.error(LOG_TAG, "insertBulkContacts: caught ",ex);
                 }
 
-                if (DBG)
+                
                     log("updateBulkContacts[" + i + "] username=" + username + ", nickname="
                         + nickname + ", type=" + type + ", subscriptionStatus="
                         + subscriptionStatus + ", subscriptionType=" + subscriptionType + ", qc="
@@ -1927,7 +2175,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             db.endTransaction();
         }
 
-        if (DBG)
+        
             log("updateBulkContacts: " + sum + " entries updated");
         return sum;
     }
@@ -1938,11 +2186,11 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
      * this method does not remove presences for which the corresponding
      * contacts no longer exist. That's probably ok since presence is kept in
      * memory, so it won't stay around for too long. Here is the algorithm.
-     * 
+     *
      * 1. for all presence that have a corresponding contact, make it OFFLINE.
      * This is one sqlite call. 2. query for all the contacts that don't have a
      * presence, and add a presence row for them.
-     * 
+     *
      * TODO simplify the presence management! The desire is to have a presence
      * row for each TODO contact in the database, so later we can just call
      * update() on the presence rows TODO instead of checking for the existence
@@ -1951,7 +2199,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
      * complicated. One possible solution is to use insert_or_replace the
      * presence rows TODO when updating the presence. That way we don't always
      * need to maintain an empty presence TODO row for each contact.
-     * 
+     *
      * @param account the account of the contacts for which we want to create
      *            seed presence rows.
      */
@@ -1984,19 +2232,19 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             buf.append("=?) ");
 
             String selection = buf.toString();
-            if (DBG)
+            
                 log("seedInitialPresence: reset presence selection=" + selection);
 
             int count = db.update(TABLE_PRESENCE, presenceValues, selection,
                     mQueryContactIdSelectionArgs1);
-            if (DBG)
+            
                 log("seedInitialPresence: reset " + count + " presence rows to OFFLINE");
 
             // for in-memory presence table, add a presence row for each contact that
             // doesn't have a presence. in-memory presence table isn't reliable, and goes away
             // when device reboot or IMProvider process dies, so we can't rely on each contact
             // have a corresponding presence.
-            if (DBG) {
+             {
                 log("seedInitialPresence: contacts_with_no_presence_selection => "
                     + CONTACTS_WITH_NO_PRESENCE_SELECTION);
             }
@@ -2004,7 +2252,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             c = qb.query(db, CONTACT_ID_PROJECTION, CONTACTS_WITH_NO_PRESENCE_SELECTION,
                     mQueryContactIdSelectionArgs1, null, null, null, null);
 
-            if (DBG)
+            
                 log("seedInitialPresence: found " + c.getCount() + " contacts w/o presence");
 
             count = 0;
@@ -2020,13 +2268,13 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 } catch (SQLiteConstraintException ex) {
                     // we could possibly catch this exception, since there could be a presence
                     // row with the same contact_id. That's fine, just ignore the error
-                    if (DBG)
+                    
                         log("seedInitialPresence: insert presence for contact_id " + id
                             + " failed, caught " + ex);
                 }
             }
 
-            if (DBG)
+            
                 log("seedInitialPresence: added " + count + " new presence rows");
 
             db.setTransactionSuccessful();
@@ -2038,7 +2286,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         }
     }
 
-    private int updateBulkPresence(ContentValues values, String userWhere, String[] whereArgs) {
+    private int updateBulkPresence(ContentValues values, SQLiteDatabase db, String userWhere, String[] whereArgs) {
         ArrayList<String> usernames = getStringArrayList(values, Imps.Contacts.USERNAME);
         int count = usernames.size();
         Long account = values.getAsLong(Imps.Contacts.ACCOUNT);
@@ -2050,6 +2298,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         ArrayList<String> clientTypeArray = getStringArrayList(values, Imps.Presence.CLIENT_TYPE);
         ArrayList<String> resourceArray = getStringArrayList(values, Imps.Presence.JID_RESOURCE);
 
+        
         // append username to the selection clause
         StringBuilder buf = new StringBuilder();
 
@@ -2069,7 +2318,10 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
         // use username LIKE ? for case insensitive comparison
         buf.append(Imps.Contacts.USERNAME);
-        buf.append(" LIKE ?) AND (");
+        buf.append(" LIKE ?)");
+        
+        /*
+        AND (");
 
         buf.append(Imps.Presence.PRIORITY);
         buf.append("<=? OR ");
@@ -2077,13 +2329,14 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         buf.append(" IS NULL OR ");
         buf.append(Imps.Presence.JID_RESOURCE);
         buf.append("=?)");
+        */
 
         String selection = buf.toString();
 
-        if (DBG)
+        
             log("updateBulkPresence: selection => " + selection);
 
-        int numArgs = (whereArgs != null ? whereArgs.length + 4 : 4);
+        int numArgs = (whereArgs != null ? whereArgs.length + 2 : 2);
         String[] selectionArgs = new String[numArgs];
         int selArgsIndex = 0;
 
@@ -2092,8 +2345,6 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 selectionArgs[selArgsIndex] = whereArgs[selArgsIndex];
             }
         }
-
-        final SQLiteDatabase db = getDBHelper().getWritableDatabase();
 
         db.beginTransaction();
         int sum = 0;
@@ -2122,44 +2373,37 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                 } catch (NumberFormatException ex) {
                     LogCleaner.error(LOG_TAG, "[ImProvider] updateBulkPresence: caught",ex);
                 }
+ 
+                log("updateBulkPresence[" + i + "] account=" + account + " username=" + username + ", priority="
+                    + priority + ", mode=" + mode + ", status=" + status + ", resource="
+                    + jidResource + ", clientType=" + clientType);
 
-                if (DBG) {
-                    log("updateBulkPresence[" + i + "] username=" + username + ", priority="
-                        + priority + ", mode=" + mode + ", status=" + status + ", resource="
-                        + jidResource + ", clientType=" + clientType);
-                }
-
-                if (modeArray != null) {
-                    presenceValues.put(Imps.Presence.PRESENCE_STATUS, mode);
-                }
-                if (priorityArray != null) {
-                    presenceValues.put(Imps.Presence.PRIORITY, priority);
-                }
+                presenceValues.put(Imps.Presence.PRESENCE_STATUS, mode);
+                presenceValues.put(Imps.Presence.PRIORITY, priority);                                
                 presenceValues.put(Imps.Presence.PRESENCE_CUSTOM_STATUS, status);
-                if (clientTypeArray != null) {
-                    presenceValues.put(Imps.Presence.CLIENT_TYPE, clientType);
-                }
-
-                if (!TextUtils.isEmpty(jidResource)) {
-                    presenceValues.put(Imps.Presence.JID_RESOURCE, jidResource);
-                }
+                presenceValues.put(Imps.Presence.CLIENT_TYPE, clientType);
+                presenceValues.put(Imps.Presence.JID_RESOURCE, jidResource);
 
                 // fill in the selection args
                 int idx = selArgsIndex;
                 selectionArgs[idx++] = String.valueOf(account);
                 selectionArgs[idx++] = username;
-                selectionArgs[idx++] = String.valueOf(priority);
-                selectionArgs[idx] = jidResource;
-
+                
+                //selectionArgs[idx++] = String.valueOf(priority);
+                //selectionArgs[idx] = jidResource;
+            
                 int numUpdated = db
                         .update(TABLE_PRESENCE, presenceValues, selection, selectionArgs);
-                if (numUpdated == 0) {
-                    // this is really generating a lot of log output that doesn't seem necessary
-                   // LogCleaner.warn(LOG_TAG, "[ImProvider] updateBulkPresence: failed for " + username);
-                } else {
+                
+                if (numUpdated == 0)
+                {
+                    LogCleaner.debug(LOG_TAG, "[ImProvider] updateBulkPresence: " + username + " updated " + numUpdated);
+                }
+                else
+                {            
                     sum += numUpdated;
                 }
-
+                
                 // yield the lock if anyone else is trying to
                 // perform a db operation here.
                 db.yieldIfContended();
@@ -2170,8 +2414,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             db.endTransaction();
         }
 
-        if (DBG)
-            log("updateBulkPresence: " + sum + " entries updated");
+        log("updateBulkPresence: " + sum + " entries updated");
         return sum;
     }
 
@@ -2192,7 +2435,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         final SQLiteDatabase db = getDBHelper().getWritableDatabase();
         int match = mUrlMatcher.match(url);
 
-        if (DBG)
+        
             log("insert to " + url + ", match " + match);
         switch (match) {
         case MATCH_PROVIDERS:
@@ -2219,7 +2462,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
         case MATCH_CONTACTS:
         case MATCH_CONTACTS_BAREBONE:
             // Insert into the contacts table
-            rowID = db.insert(TABLE_CONTACTS, "username", initialValues);
+            rowID = db.insert(TABLE_CONTACTS, USERNAME, initialValues);
             if (rowID > 0) {
                 resultUri = Uri.parse(Imps.Contacts.CONTENT_URI + "/" + rowID);
             }
@@ -2501,7 +2744,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             }
 
             if (notifyProviderAccountContentUri) {
-                if (DBG)
+                
                     log("notify insert for " + Imps.Provider.CONTENT_URI_WITH_ACCOUNT);
                 resolver.notifyChange(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, null);
             }
@@ -2708,10 +2951,10 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
     private void deleteWithSelection(SQLiteDatabase db, String tableName, String selection,
             String[] selectionArgs) {
-        if (DBG)
+        
             log("deleteWithSelection: table " + tableName + ", selection => " + selection);
         int count = db.delete(tableName, selection, selectionArgs);
-        if (DBG)
+        
             log("deleteWithSelection: deleted " + count + " rows");
     }
 
@@ -2956,7 +3199,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     buildContactIdSelection(Imps.Messages.THREAD_ID, Imps.Contacts.PROVIDER + "='"
                                                                      + provider + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_OTR_MESSAGES_BY_PROVIDER) sel => " + whereClause);
             notifyMessagesContentUri = true;
             break;
@@ -2970,7 +3213,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     buildContactIdSelection(Imps.Messages.THREAD_ID, Imps.Contacts.ACCOUNT + "='"
                                                                      + accountStr + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_OTR_MESSAGES_BY_ACCOUNT) sel => " + whereClause);
             notifyMessagesContentUri = true;
             break;
@@ -3029,7 +3272,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     buildContactIdSelection(Imps.Chats.CONTACT_ID, Imps.Contacts.ACCOUNT + "='"
                                                                    + accountStr + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_CHATS_BY_ACCOUNT) sel => " + whereClause);
 
             changedItemId = null;
@@ -3062,7 +3305,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
                     buildContactIdSelection(Imps.Presence.CONTACT_ID, Imps.Contacts.ACCOUNT + "='"
                                                                       + accountStr + "'"));
 
-            if (DBG)
+            
                 log("delete (MATCH_PRESENCE_BY_ACCOUNT): sel => " + whereClause);
             changedItemId = null;
             break;
@@ -3122,7 +3365,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             appendWhere(whereClause, idColumnName, "=", changedItemId);
         }
 
-        if (DBG)
+        
             log("delete from " + url + " WHERE  " + whereClause);
 
         int count = db.delete(tableToChange, whereClause.toString(), whereArgs);
@@ -3167,7 +3410,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             }
 
             if (notifyProviderAccountContentUri) {
-                if (DBG)
+                
                     log("notify delete for " + Imps.Provider.CONTENT_URI_WITH_ACCOUNT);
                 resolver.notifyChange(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, null);
             }
@@ -3348,12 +3591,22 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
 
         case MATCH_OTR_MESSAGES_BY_PACKET_ID:
             packetId = decodeURLSegment(url.getPathSegments().get(1));
-            tableToChange = TABLE_MESSAGES; // FIXME these should be going to memory but they do not
+            tableToChange = TABLE_IN_MEMORY_MESSAGES; // FIXME these should be going to memory but they do not
             appendWhere(whereClause, Imps.Messages.PACKET_ID, "=", packetId);
             notifyMessagesContentUri = true;
 
             // Try updating OTR message
             count += db.update(TABLE_IN_MEMORY_MESSAGES, values, whereClause.toString(), whereArgs);
+            break;
+            
+        case MATCH_MESSAGES_BY_PACKET_ID:
+            packetId = decodeURLSegment(url.getPathSegments().get(1));
+            tableToChange = TABLE_MESSAGES; // FIXME these should be going to memory but they do not
+            appendWhere(whereClause, Imps.Messages.PACKET_ID, "=", packetId);
+            notifyMessagesContentUri = true;
+
+            // Try updating OTR message
+            count += db.update(TABLE_MESSAGES, values, whereClause.toString(), whereArgs);
             break;
 
         case MATCH_OTR_MESSAGE:
@@ -3390,7 +3643,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             break;
 
         case MATCH_PRESENCE:
-            //if (DBG) log("update presence: where='" + userWhere + "'");
+            log("update presence: where='" + userWhere + "'");
             tableToChange = TABLE_PRESENCE;
             break;
 
@@ -3401,15 +3654,21 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             break;
 
         case MATCH_PRESENCE_BULK:
-            count = updateBulkPresence(values, userWhere, whereArgs);
+            
+            tableToChange = null;
+            
+            count = updateBulkPresence(values, db, userWhere, whereArgs);
             // notify change using the "content://im/contacts" url,
             // so the change will be observed by listeners interested
             // in contacts changes.
-            if (count > 0) {
+            
+            if (count > 0)
+            {
+                getContext().getContentResolver().notifyChange(Imps.Contacts.CONTENT_URI_CHAT_CONTACTS_BY, null);
                 getContext().getContentResolver().notifyChange(Imps.Contacts.CONTENT_URI, null);
+                notifyContactListContentUri = true;
             }
-
-            return count;
+            break;
 
         case MATCH_INVITATION:
             tableToChange = TABLE_INVITATIONS;
@@ -3459,23 +3718,23 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             appendWhere(whereClause, idColumnName, "=", changedItemId);
         }
 
-        if (DBG)
-            log("update " + url + " WHERE " + whereClause);
+        log("update " + url + " WHERE " + whereClause);
 
-        count += db.update(tableToChange, values, whereClause.toString(), whereArgs);
+        if (tableToChange != null)
+            count += db.update(tableToChange, values, whereClause.toString(), whereArgs);
 
         if (count > 0) {
             ContentResolver resolver = getContext().getContentResolver();
 
             // In most case, we query contacts with presence and chats joined, thus
             // we should also notify that contacts changes when presence or chats changed.
-            if (match == MATCH_CHATS || match == MATCH_CHATS_ID || match == MATCH_PRESENCE
+            if (match == MATCH_CHATS || match == MATCH_CHATS_ID || match == MATCH_PRESENCE || match == MATCH_PRESENCE_BULK
                 || match == MATCH_PRESENCE_ID || match == MATCH_CONTACTS_BAREBONE) {
                 resolver.notifyChange(Imps.Contacts.CONTENT_URI, null);
             }
 
             if (notifyMessagesContentUri) {
-                if (DBG)
+                
                     log("notify change for " + Imps.Messages.CONTENT_URI);
                 resolver.notifyChange(Imps.Messages.CONTENT_URI, null);
             }
@@ -3495,7 +3754,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
             }
 
             if (notifyProviderAccountContentUri) {
-                if (DBG)
+                
                     log("notify change for " + Imps.Provider.CONTENT_URI_WITH_ACCOUNT);
                 resolver.notifyChange(Imps.Provider.CONTENT_URI_WITH_ACCOUNT, null);
             }
@@ -3537,37 +3796,7 @@ public class ImpsProvider extends ContentProvider implements ICacheWordSubscribe
     }
 
     static void log(String message) {
-           LogCleaner.debug(LOG_TAG, message);
+        LogCleaner.debug(LOG_TAG, message);
     }
 
-    @Override
-    public void onCacheWordUninitialized() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onCacheWordLocked() {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void onCacheWordOpened() {
-
-        String pkey = SQLCipherOpenHelper.encodeRawKey(mCacheWord.getEncryptionKey());
-        
-        if (pkey != null)
-        {
-           
-            try {
-                this.initDBHelper(pkey);
-            } catch (Exception e) {
-               Log.e(ImApp.LOG_TAG,"unable to init cacheword in IMPSprovider",e);
-            }
-        
-           
-        }
-        
-    }
 }

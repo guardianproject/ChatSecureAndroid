@@ -19,30 +19,27 @@
 -->
 <info.guardianproject.otr.app.im.app.ContactListFilterView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/contactFilterView"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    
-     <Spinner
-        android:id="@+id/spinnerAccounts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+     android:padding="0dp"
+     android:background="?listBackground"
+     >
    
+    <!-- 
    <info.guardianproject.otr.app.im.app.UserPresenceView
         android:id="@+id/userPresence"
         android:layout_width="fill_parent"
-        android:layout_height="40dip"
+        android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:orientation="horizontal"
         android:padding="3dip"
-         android:background="#00000000"
-        android:cacheColorHint="#00000000" 
+        android:background="#aaaaaaaa"
         >
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical" 
             >
 
@@ -67,60 +64,54 @@
             android:id="@+id/statusEdit"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:layout_weight="1"
+            android:paddingLeft="1dip"
+            android:paddingTop="1dip"
             android:inputType="textCapSentences|textAutoCorrect"
             android:selectAllOnFocus="true"
-            android:singleLine="true"
-            
+            android:singleLine="true"            
                 android:fontFamily="sans-serif-light"
-            android:textAppearance="?android:attr/textAppearanceSmallInverse" />
+            android:layout_marginTop="3dp"
+            
+            android:textAppearance="?android:attr/textAppearanceMedium"
+             />
 
         <TextView
             android:id="@+id/statusView"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#55999999"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"            
             android:paddingLeft="1dip"
             android:paddingTop="1dip"
             android:singleLine="true"
-            
                 android:fontFamily="sans-serif-light"
-            android:textAppearance="?android:attr/textAppearanceLargeInverse"
-            android:visibility="gone" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            android:layout_marginTop="3dp"
+             />
     </info.guardianproject.otr.app.im.app.UserPresenceView>
-    
-   
-          <EditText
-            android:id="@+id/contactSearch"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-             android:fontFamily="sans-serif-light" />
+     -->
 
-        <com.tjerkw.slideexpandable.library.ActionSlideExpandableListView
-            
-        android:id="@+id/filteredList"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:background="@drawable/bgcolor2"
-        />
-	<TextView
+    <ListView  android:id="@+id/filteredList"
+        android:layout_width="match_parent"
+        android:layout_height="0dip"
+        android:layout_weight="1"                        
+        android:stackFromBottom="false"               
+  		android:layout_margin="0dp"
+        android:padding="0dp"
+        android:layout_marginTop="6dp"
+         />
+   
+   <TextView
 	    android:id="@+id/empty"
-	    android:text="@string/empty_contact_list"
+	    android:text="@string/loading"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:gravity="center"
 	    android:layout_gravity="center_vertical"
 	    android:textSize="24dp"
-	     android:layout_weight="1"
 	    		            android:fontFamily="sans-serif-light"
 
 	    />
+             
 
 </info.guardianproject.otr.app.im.app.ContactListFilterView>

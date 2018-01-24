@@ -6,10 +6,4 @@
     <item>هرطور که درخواست شده</item>
     <item>غیرفعال / هرگز</item>
   </string-array>
-  <string-array name="otr_options_values">
-    <item>اجباری</item>
-    <item>اتوماتیک</item>
-    <item>بصورت درخواست شده</item>
-    <item>غیرفعال</item>
-  </string-array>
 </resources>

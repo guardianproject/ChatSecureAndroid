@@ -1,0 +1,256 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <!--General: Actions-->
+  <string name="confirm">Потврди</string>
+  <string name="ok">Во ред</string>
+  <string name="cancel">Откажи</string>
+  <string name="yes">Во ред</string>
+  <string name="no">Откажи</string>
+  <string name="btn_next">Понатаму</string>
+  <string name="btn_back">Назад</string>
+  <string name="connect">Поврзи</string>
+  <string name="play">Играј</string>
+  <string name="setup">Уредување</string>
+  <!--Views-->
+  <string name="lock_screen_open">Отвори</string>
+  <string name="lock_screen_confirm_passphrase">Потврди ја лозинката</string>
+  <string name="lock_screen_passphrase_hint">Лозинка</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Потврди ја новата лозинка</string>
+  <string name="lock_screen_passphrases_not_matching">Неточна лозинка, ве молиме пробајте повторно.</string>
+  <string name="lock_screen_skip">Прескокни &gt;&gt;</string>
+  <string name="app_passphrase_view_password_question">Ве молиме внесете ја лозинката</string>
+  <string name="password_please">Ве молиме лозинката</string>
+  <string name="passphrase">Лозинка</string>
+  <string name="passphrase_again">Лозинка (повторно)</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Избери сметка</string>
+  <string name="choose_account_title">Избери сметка</string>
+  <string name="conversations">(<xliff:g id="number" example="27">%1$d</xliff:g>)</string>
+  <string name="add_account">Додај <xliff:g id="account">%1$s</xliff:g> сметка</string>
+  <string name="menu_about">Повеќе</string>
+  <string name="menu_sign_out_all">Одјави ги сите</string>
+  <string name="signed_out_prompt">Се одјавивте од <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Се одјавивте од <xliff:g id="account">%1$s</xliff:g> бидејќи <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">За прв пат го користете ChatSecure?</string>
+  <string name="welcome_account">Поставување на сметка</string>
+  <string name="setup_passphrase_title">Поставување на лозинка</string>
+  <string name="setup_passphrase">Пред да започнете, Ве молиме изберете безбедна лозинка за заштита на вашите ChatSecure податоци од неовластен пристап.</string>
+  <string name="setup_passphrase_label1">Лозинка:</string>
+  <string name="setup_passphrase_label2">Лозинка (повторете ја):</string>
+  <string name="rekey_message">Внесете *нова* лозинка. Таа мора да содржи најмалку една голема буква, една мала буква и еден број, и да биде подолга од шест знаци.</string>
+  <string name="do_rekey">Дешифрирање на Вашите постоечки белешки со нова лозинка (ве молиме почекајте…)</string>
+  <string name="enter_pass">Внесете ја Вашата лозинка:</string>
+  <string name="new_pass">Добредојдовте! Внесете силна лозинка за да ги  вашите белешки. Таа мора да создржи една голема буква, една мала буква и еден број, и да биде поголема од шест знаци.</string>
+  <string name="pass_err_length">Вашата лозинка не е доволно долго</string>
+  <string name="pass_err_upper">Вашата лозинка не содржи големи букви</string>
+  <string name="pass_err_lower">Вашата лозинка не содржи мали букви</string>
+  <string name="pass_err_num">Вашата лозинка не содржи бројки</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">За ChatSecure</string>
+  <!--Views: About: OTR-->
+  <!--Views: About: Security-->
+  <string name="about_security_title">Дали моите разговори се осигурани?</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Нова сметка</string>
+  <string name="menu_add_account">Додај сметка</string>
+  <string name="menu_edit_account">Измени сметка</string>
+  <string name="menu_remove_account">Избриши сметка</string>
+  <string name="menu_use_existing_account">Постоечка сметка</string>
+  <!--Views: Setup: Account-->
+  <string name="label_password">Лозинка:</string>
+  <string name="remember_password">Запамети ја мојата лозинка.</string>
+  <string name="keep_me_signed_in">Најави ме автоматски.</string>
+  <string name="sign_in">Најави се</string>
+  <string name="use_tor">Поврзи ме преку Tor (потребна е Orbot апликацијата)</string>
+  <string name="account_setup_new_username">Ново корисничко име</string>
+  <string name="account_setup_service_provider">Испорачувач на услуги (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">Лозинка</string>
+  <string name="account_setup_password_confirm">Потврди ја лозинката</string>
+  <string name="account_select_type">Поставување на сметка</string>
+  <string name="btn_create_new_account">Регистрирај сметка</string>
+  <string name="account_setup_pers_pw_title">Запамети ја лозинката</string>
+  <string name="account_setup_pers_auto_title">Автоматско најавување</string>
+  <string name="account_setup_pers_now_title">Најави се сега</string>
+  <string name="account_setup_personal_sub">Лични информации (опционално)</string>
+  <string name="account_setup_personal_alias_title">Сметка Alias (вашето име)</string>
+  <string name="account_setup_personal_profile_title">Профил</string>
+  <string name="account_setup_signin_c">Најавување …</string>
+  <string name="account_wizard_ready_title">Дали сте спремни?</string>
+  <string name="_via_orbot">Orbot (Tor)</string>
+  <string name="registering_new_account_">Регистрирање на нова сметка…</string>
+  <string name="menu_cancel_signin">Откажи најавување</string>
+  <string name="signing_in_wait">Најавување\u2026</string>
+  <string name="signing_out_wait">Одјавување\u2026</string>
+  <!--Views: Settings: Account-->
+  <string name="require_tls_ssl_connection">Потребно е TLS поврзување</string>
+  <string name="connect_server">Поврзување со серверот</string>
+  <string name="tcp_port_for_xmpp_server">TCP порти за XMPP сервер</string>
+  <!--Views: Contact list-->
+  <string name="title_chats">Разговори</string>
+  <string name="no_messages">Нема разговори.\n\nДопри овде за нов разговор!</string>
+  <string name="buddy_list_title">Контакти - <xliff:g id="username">%1$s</xliff:g></string>
+  <string name="menu_add_contact">Додај контакт</string>
+  <string name="menu_remove_contact">Избриши контакт</string>
+  <string name="menu_block_contact">Блокирај контакт</string>
+  <string name="menu_contact_nickname">Прекар на контактот</string>
+  <string name="menu_view_blocked">Блокирано</string>
+  <string name="nickname">Прекар</string>
+  <string name="confirm_delete_contact">Контактот "<xliff:g id="user">%1$s</xliff:g>" ќе биде избришан.</string>
+  <string name="confirm_block_contact">Контактот "<xliff:g id="user">%1$s</xliff:g>" ќе биде блокиран.</string>
+  <string name="confirm_unblock_contact">Контактот "<xliff:g id="user">%1$s</xliff:g>" ќе биде одблокиран.</string>
+  <string name="add_contact_success">Контактот "<xliff:g id="user">%1$s</xliff:g>" е додаден.</string>
+  <string name="delete_contact_success">Контактот "<xliff:g id="user">%1$s</xliff:g>" е избришан.</string>
+  <string name="block_contact_success">Контактот "<xliff:g id="user">%1$s</xliff:g>" е блокиран.</string>
+  <string name="unblock_contact_success">Контактот "<xliff:g id="user">%1$s</xliff:g>" е одблокиран.</string>
+  <string name="menu_new_chat">Нов разговор</string>
+  <string name="menu_search_contacts">Барај контакти</string>
+  <string name="menu_show_grid">Прикажи мрежа</string>
+  <string name="menu_start_chat">Започни разговор</string>
+  <string name="menu_view_profile">Види профил</string>
+  <string name="ongoing_conversation">Тековни разговори (<xliff:g id="number">%1$d</xliff:g>)</string>
+  <string name="subscriptions">Покани пријател</string>
+  <string name="unknown_contact">(<i>Непознат</i>) </string>
+  <string name="empty_contact_group">Празно</string>
+  <string name="empty_conversation_group">Нема сè уште разговори. \n\nДопрете за да започнете да разговарате!</string>
+  <string name="search_label">Контакт</string>
+  <string name="search_hint">Внесете го името на контактот со кого сакате да разговарате.</string>
+  <string name="search_button_text">Ајде</string>
+  <string name="empty_chat_list">Нема активни разговори.</string>
+  <string name="add_contact_title">Додај контакт</string>
+  <string name="choose_list_label">Додај сметка на:</string>
+  <string name="invite_label">Испрати покана</string>
+  <string name="label_status">Статус:</string>
+  <string name="label_client_type">Вид на клиент:</string>
+  <string name="client_type_computer">Компјутер</string>
+  <string name="client_type_mobile">Мобилен</string>
+  <string name="blocked_list_title">Блокирани контакти - <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="no_blocked_contact">Нема блокирани контакти.</string>
+  <!--Views: Chat: Single-->
+  <string name="chat_with">Разговарај со <xliff:g id="user">%1$s</xliff:g></string>
+  <string name="me">Јас</string>
+  <string name="contact_online"><xliff:g id="user">%1$s</xliff:g> е вклучен</string>
+  <string name="contact_away"><xliff:g id="user">%1$s</xliff:g> не е тука</string>
+  <string name="contact_busy"><xliff:g id="user">%1$s</xliff:g> е зафатен/а</string>
+  <string name="contact_offline"><xliff:g id="user">%1$s</xliff:g> е исклучен</string>
+  <string name="contact_joined"><xliff:g id="user">%1$s</xliff:g> се придружи</string>
+  <string name="contact_left"><xliff:g id="user">%1$s</xliff:g> го напушти разговорот</string>
+  <string name="menu_send_image">Испрати слика</string>
+  <string name="menu_send_file">Испрати датотека</string>
+  <string name="menu_send_audio">Испрати звук</string>
+  <string name="file_transfer">пренос на датотека</string>
+  <string name="transfer_complete">Испраќањето е завршено</string>
+  <string name="transfer_in_progress">Испраќањето е во тек</string>
+  <string name="accept_transfer_">Прифати го преносот?</string>
+  <string name="wants_to_send_you_the_file">сака да ви испрати датотека</string>
+  <string name="no_connection_for_sending">Не сте поврзани за да ја испратите вашата порака!</string>
+  <string name="send">Испрати</string>
+  <string name="compose_hint">Испрати порака</string>
+  <string name="compose_hint_secure">Испрати безбедна порака</string>
+  <string name="menu_resend">Испрати повторно</string>
+  <string name="menu_end_conversation">Крај на разговорот</string>
+  <string name="menu_clear_chat">Избриши го разговорот</string>
+  <string name="menu_plus">Мени+</string>
+  <string name="select_link_title">Избери врска</string>
+  <string name="delete">Избриши</string>
+  <string name="keep_files">Чувај датотеки</string>
+  <string name="delete_original">Избриши го оригиналот?</string>
+  <string name="keep">Чувај</string>
+  <string name="export">Извези</string>
+  <string name="end_chat_title">Крај на разговорот?</string>
+  <string name="end_chat_and_delete">Крај на разговорот и избриши датотеки?</string>
+  <!--Views: Chat: Group-->
+  <string name="invitation_prompt"><xliff:g id="user">%1$s</xliff:g> Ве покани да се придружите во групниот разговор.</string>
+  <string name="invitation_sent_prompt">Поканата е испратена на <xliff:g id="user">%1$s</xliff:g>.</string>
+  <string name="accept_invitation">Прифати</string>
+  <string name="decline_invitation">Одби</string>
+  <string name="menu_new_group_chat">Групен разговор</string>
+  <string name="create_or_join_group_chat">Создај или придружи се на групен разговор</string>
+  <string name="connecting_to_group_chat_">Поврзување на групен разговор…</string>
+  <string name="menu_invite_contact">Покани\u2026</string>
+  <string name="contacts_picker_title">Избери контакт(и) за да го/и поканиш</string>
+  <string name="subscription_prompt">Додај <xliff:g id="USER">%1$s</xliff:g>?</string>
+  <string name="approve_subscription">Да</string>
+  <string name="decline_subscription">Не</string>
+  <!--Security: OTR-->
+  <string name="label_fingerprint_remote">Безбедносен отпечаток на прст</string>
+  <string name="label_fingerprint_local">Безбедносен отпечаток на прст</string>
+  <string name="menu_sign_in">Најави се</string>
+  <string name="menu_gen_key">Обнови го клучот</string>
+  <string name="otr_session_status_plaintext">Шифрирањето е исклучено</string>
+  <string name="otr_session_status_encrypted">Шифрирањето е уклучено (допри за потврда)</string>
+  <string name="otr_session_status_verified">Шифрирано и потврдено!</string>
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <string name="menu_fingerprint">Вашиот отпечаток од прст</string>
+  <string name="menu_verify_fingerprint">Мануелно</string>
+  <string name="menu_verify_secret">Прашање</string>
+  <string name="are_you_sure_you_want_to_confirm_this_key_">Дали сте сигурни дека сакате да се потврди овој отпечаток од прст?</string>
+  <string name="verify_key_">Потврди го отпечатокот од прст?</string>
+  <string name="fingerprint_for_">Отпечаток од прст за</string>
+  <!--Security: OTR: Verification: QA-->
+  <string name="qmp_answer_hint">Очекуваниот одговор</string>
+  <string name="otr_qa_send">Испрати</string>
+  <string name="otr_qa_cancel">Откажи</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Поставување на сметка</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <!--Actions: Settings: General: User Interface-->
+  <string name="menu_locale">Јазик</string>
+  <string name="KEY_PREF_LANGUAGE_TITLE">Јазици</string>
+  <string name="pref_theme_dark">Користи темна позадина</string>
+  <string name="button_yes_accept_all">Да, прифати ги сите</string>
+  <!--Prompt user to resolve missing External Storage media store-->
+  <!--Actions: Settings: General: Other Tuning-->
+  <!--Actions: Settings: General: Notifications-->
+  <string name="notification_group_title">Нагодувања за известување</string>
+  <string name="notification_sound_title">Звук</string>
+  <!--Actions: Settings: General: Developer-->
+  <string name="pref_debug_title">Овозможи листа на грешки</string>
+  <!--Alerts: Dialogs-->
+  <string name="bg_data_prompt_ok">Овозможи</string>
+  <string name="prompt_create_new_account_">Создади нова сметка?</string>
+  <string name="dialog_settings_choose_background_picker">Избери слика</string>
+  <!--Alerts: Notifications-->
+  <string name="newMessages_label">Нови <xliff:g id="provider">%1$s</xliff:g> пораки</string>
+  <string name="num_unread_chats"><xliff:g id="number">%1$d</xliff:g> непрочитани разговори</string>
+  <string name="subscription_notify_text">Нова покана за пријателство од <xliff:g id="user">%s</xliff:g></string>
+  <string name="file_notify_text">Нова датотека <xliff:g id="filename">%1$s</xliff:g> од <xliff:g id="user">%2$s</xliff:g></string>
+  <string name="new_messages_notify">Нова/и порака/и од</string>
+  <!--Alerts: Exceptions-->
+  <string name="error_prefix">Грешка:</string>
+  <string name="block_contact_failed">Контактот не е блокиран.</string>
+  <string name="unblock_contact_failed">Контактот не е одблокиран.</string>
+  <string name="select_contact">Ве молиме прво изберето го контактот.</string>
+  <string name="cant_connect_to_server">Не може да се поврзе на серверот. Ве молиме проверете ја вашата врска.</string>
+  <string name="contact_blocked">Контактот "<xliff:g id="user">%1$s</xliff:g>" е блокиран.</string>
+  <string name="invalid_password">Внесената лозинка не е точна.</string>
+  <string name="version_not_supported">Серверот не ја поддржува моменталната верзија.</string>
+  <string name="forced_logout">Се најавивте од друг клиент.</string>
+  <string name="already_logged_in">Се најавивте од друг клиент.</string>
+  <string name="not_signed_in">Во моментот не сте најавени.</string>
+  <string name="signin_password_prompt">Внесете ја вашата лозинка:</string>
+  <string name="msg_sent_failed">Оваа порака не може да се испрати.</string>
+  <string name="error_account_password_mismatch">Вашата лозинка е неточна</string>
+  <!--added 2011/09/01-->
+  <string name="contacts">Контакти</string>
+  <string name="loading">Вчитување…</string>
+  <!--Other-->
+  <string name="about_link">За ChatSecure\nhttps://guardianproject.info/apps/chatsecure/</string>
+  <!--Other: Slide Menu-->
+  <string name="menu_settings">Нагодувања</string>
+  <string name="menu_sign_out">Одјави се</string>
+  <!--Other: Provider-->
+  <string name="google_account">Google сметка</string>
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <!--Other: Smileys-->
+  <!--[Do not localize!]-->
+  <string name="i_have_an_existing_xmpp_account">Постоечка сметка</string>
+  <string name="i_want_to_chat_using_my_google_account">Google сметка</string>
+  <string name="i_need_a_new_account">Нова сметка</string>
+</resources>

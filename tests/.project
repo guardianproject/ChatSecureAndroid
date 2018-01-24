@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>GibberbotTests</name>
+	<name>ChatSecureTest</name>
 	<comment></comment>
 	<projects>
-		<project>Gibberbot</project>
+		<project>ChatSecure</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

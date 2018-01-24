@@ -17,16 +17,29 @@
  * limitations under the License.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    
     <item android:id="@+id/menu_invite_user"
         android:title="@string/menu_add_contact" 
         android:icon="@drawable/ic_menu_add_contact"
-        		        android:showAsAction="never"
-        
+        		        app:showAsAction="always"        
          />
+     <item
+    android:id="@+id/menu_search"
+    app:actionViewClass="android.support.v7.widget.SearchView"
+    android:icon="@drawable/ic_menu_search"
+    app:showAsAction="ifRoom|collapseActionView"
+    android:title="@string/menu_search_contacts"/>
+    <!-- 
+
+	<item android:id="@+id/action_search"
+		android:title="@string/menu_search_contacts"
+		android:icon="@android:drawable/ic_menu_search"
+				        android:showAsAction="always"
+		android:actionViewClass="android.widget.SearchView"
+		 /> -->
 
     <!-- 
     <item android:id="@+id/menu_settings"
@@ -39,15 +52,7 @@
     <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_view_accounts" />
 
-
-	<item android:id="@+id/action_search"
-		android:title="@string/menu_search_contacts"
-		android:icon="@android:drawable/ic_menu_search"
-				        android:showAsAction="always"
-		android:actionViewClass="android.widget.SearchView"
-		 />
   
-         -->
          
  <item android:id="@+id/menu_view_groups"
         android:title="@string/menu_view_groups"
@@ -55,6 +60,8 @@
         		        android:showAsAction="never"
         
          />
+         -->
+         
  
  <!-- 
     <item android:id="@+id/menu_quit"

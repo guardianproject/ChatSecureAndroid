@@ -62,6 +62,12 @@ interface IImConnection {
     long getProviderId();
     long getAccountId();
 
+    /**
+     * Whether this connection is going over Tor or not.
+     * @return boolean
+     */
+    boolean isUsingTor();
+
     void acceptInvitation(long id);
     void rejectInvitation(long id);
     void sendHeartbeat();

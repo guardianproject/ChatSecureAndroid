@@ -18,17 +18,19 @@
  */
 -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     >
 
+    <item android:id="@+id/menu_account_delete" 
+        
+    android:drawable="@drawable/ic_menu_trash"
+    android:title="@string/menu_remove_account"
+    app:showAsAction="ifRoom"
+     />
     <!--
     <item android:id="@+id/menu_account_settings" 
     android:title="@string/account_settings_title" />
     -->
 
-    <item
-        android:id="@+id/menu_gen_key"
-        android:icon="@drawable/ic_menu_key"
-        android:title="@string/menu_gen_key"
-        android:showAsAction="never|withText"
-        />
 </menu>

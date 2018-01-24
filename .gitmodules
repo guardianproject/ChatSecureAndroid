@@ -1,15 +1,9 @@
-[submodule "external/ActionBarSherlock"]
-	path = external/ActionBarSherlock
-	url = https://github.com/JakeWharton/ActionBarSherlock.git
 [submodule "external/asmack"]
 	path = external/asmack
 	url = https://github.com/guardianproject/asmack.git
 [submodule "external/MemorizingTrustManager"]
 	path = external/MemorizingTrustManager
-	url = https://github.com/devrandom/MemorizingTrustManager.git
-[submodule "external/OnionKit"]
-	path = external/OnionKit
-	url = https://github.com/guardianproject/OnionKit.git
+	url = https://github.com/ge0rg/MemorizingTrustManager.git
 [submodule "external/SlidingMenu"]
 	path = external/SlidingMenu
 	url = https://github.com/jfeinstein10/SlidingMenu.git
@@ -19,18 +13,12 @@
 [submodule "external/AndroidPinning"]
 	path = external/AndroidPinning
 	url = https://github.com/moxie0/AndroidPinning.git
-[submodule "external/SlideListView"]
-	path = external/SlideListView
-	url = https://github.com/guardianproject/Android-SlideExpandableListView.git
-[submodule "external/MessageBar"]
-	path = external/MessageBar
-	url = https://github.com/SimonVT/MessageBar.git
-[submodule "external/ShowcaseView"]
-	path = external/ShowcaseView
-	url = https://github.com/Espiandev/ShowcaseView.git
-[submodule "external/NineOldAndroids"]
-	path = external/NineOldAndroids
-	url = https://github.com/JakeWharton/NineOldAndroids.git
 [submodule "external/AndroidEmojiInput"]
 	path = external/AndroidEmojiInput
 	url = https://github.com/n8fr8/AndroidEmojiInput.git
+[submodule "external/ViewPagerIndicator"]
+	path = external/ViewPagerIndicator
+	url = https://github.com/JakeWharton/Android-ViewPagerIndicator.git
+[submodule "external/bho"]
+	path = external/bho
+	url = https://github.com/iamironrabbit/bho

@@ -1,135 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-/*
- * Copyright (C) 2007-2008 Esmertec AG.
- * Copyright (C) 2007-2008 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
--->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" 
+    android:padding="10dp"
+    >
 
-        	<ScrollView 
-          xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/helpscrollview" 
-		android:orientation="vertical"
-		android:layout_width="fill_parent" 
-		android:layout_height="fill_parent"> 
-    <LinearLayout
-      
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         android:padding="10dip"
-        android:orientation="vertical" >   
-
-        <ImageView android:id="@+id/imgAvatar"
+ <TextView android:id="@+id/txtAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="2dip"
-            android:background="@drawable/avatar_unknown" />
-            <!-- 
-        <TextView android:id="@+id/labelName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dip"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_username" /> -->
-
-        <TextView android:id="@+id/txtName"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-           />
-
-           <LinearLayout
-      
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-         android:padding="0dip"
-         
-            android:layout_marginTop="8dip"
-        android:orientation="horizontal" >   
-        <TextView android:id="@+id/labelStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_status" />
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            
+                android:fontFamily="sans-serif-light"
+           />  
 
         <TextView android:id="@+id/txtStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
              android:textAppearance="?android:attr/textAppearanceMedium"
-             android:textSize="10pt"
+           
+                android:fontFamily="sans-serif-light"
              />
+        
+        
 
-        </LinearLayout>
-        <TextView android:id="@+id/txtStatusText"
+            <TextView android:id="@+id/labelFingerprintRemote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="8dip"
-            android:layout_marginTop="4dip"
-            android:maxLines="4"
-            android:textStyle="italic"
-            android:textSize="10pt"
-             />
-<!-- 
-        <TextView android:id="@+id/labelClientType"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="8dip"                
-            android:textStyle="bold"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_client_type" />
-
-        <TextView android:id="@+id/txtClientType"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
-             -->
+            android:text="@string/label_fingerprint_remote"
             
-            <TextView android:id="@+id/labelFingerprintRemote"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dip"                
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_fingerprint_remote" />
+                android:fontFamily="sans-serif-light"
+             />
 
         <TextView android:id="@+id/txtFingerprintRemote"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="10pt"
-            android:text="" />
-        
-       <TextView android:id="@+id/labelFingerprintLocal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_marginTop="8dip"                
-            android:textStyle="bold"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/label_fingerprint_local" />
-
-        <TextView android:id="@+id/txtFingerprintLocal"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
+                        android:textStyle="bold"
             
-            android:textSize="10pt"
-            android:text="" />
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+            android:padding="6dp"
+                android:fontFamily="sans-serif-light"
+             />
         
         
+        	    <!-- 
+        
+        <TextView android:id="@+id/labelFingerprintActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dip"                
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/verify_key_"
+            
+                android:fontFamily="sans-serif-light"
+             />
+        
+        
+        	<LinearLayout
+        	    android:layout_width="match_parent"
+        	    android:layout_height="wrap_content"
+        	    android:layout_gravity="bottom"
+        	    android:orientation="horizontal"
+        	    android:padding="3dp" >
+		
+        <Button
+        	    android:id="@+id/btnVerifyManual"
+        	    android:layout_height="wrap_content"
+        	    android:layout_width="wrap_content"
+        	    
+        	    android:text="@string/menu_verify_fingerprint" />
+        
+        	<Button
+        	    android:id="@+id/btnVerifyScan"
+        	    android:layout_height="wrap_content"
+        	    android:layout_width="wrap_content"
+        	    
+        	    android:text="@string/menu_scan" />
+        	
+        		<Button
+        		    android:id="@+id/btnVerifyQuestion"
+        		    android:layout_height="wrap_content"
+        	    android:layout_width="wrap_content"
+        	    
+        		    android:text="@string/menu_verify_secret" />
 
+        </LinearLayout>
+        		-->
+        		
     </LinearLayout>
-
-   </ScrollView>

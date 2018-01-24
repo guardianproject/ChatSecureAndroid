@@ -2,12 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Gibberbot"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ChatSecure"/>
 	<classpathentry kind="lib" path="lib/cglib-nodep-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/easymock-3.0.jar"/>
 	<classpathentry kind="lib" path="lib/robolectric-1.1-jar-with-dependencies.jar" sourcepath="lib/robolectric-1.1-sources.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Android"/>
-	<classpathentry kind="lib" path="/Gibberbot/libs/asmack-android-7.jar" sourcepath="/Gibberbot/asmack/build/src/trunk"/>
+	<classpathentry kind="lib" path="/ChatSecure/libs/asmack-android-7.jar" sourcepath="/ChatSecure/asmack/build/src/trunk"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

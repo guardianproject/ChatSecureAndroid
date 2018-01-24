@@ -30,15 +30,19 @@ interface IChatSessionManager {
      *
      * @param contactAddress the address of the contact.
      */
-    IChatSession createChatSession(String contactAddress);
+    IChatSession createChatSession(String contactAddress, boolean isNewSession);
 
     /**
      * Create a MultiUserChatSession with the specified room. 
      *
      * @param contactAddress the address of the contact.
      */
-    IChatSession createMultiUserChatSession(String roomAddress);
+    IChatSession createMultiUserChatSession(String roomAddress, String nickname, boolean isNewSession);
 
+	/**
+	* Get the default MUC server so we can show it to the user
+	*/
+	String getDefaultMultiUserChatServer();
 
     /**
      * Get the ChatSession that is associated with the specified contact or group.

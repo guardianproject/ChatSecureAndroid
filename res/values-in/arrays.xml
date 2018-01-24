@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>Harus / Wajib</item>
+    <item>Coba Otomatis</item>
+    <item>Sesuai Permintaan</item>
+    <item>Non Aktif / Tidak Pernah</item>
+  </string-array>
+</resources>

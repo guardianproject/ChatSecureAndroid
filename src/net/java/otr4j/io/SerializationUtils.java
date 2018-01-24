@@ -1,11 +1,12 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.io;
 
-import info.guardianproject.bouncycastle.util.encoders.Base64;
+import android.util.Base64;
+
 import info.guardianproject.otr.OtrConstants;
 
 import java.io.ByteArrayInputStream;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.math.BigInteger;
+import java.nio.charset.Charset;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.Vector;
@@ -38,6 +40,17 @@ import net.java.otr4j.io.messages.SignatureX;
 
 /** @author George Politis */
 public class SerializationUtils {
+
+    /**
+     * Charset for base64-encoded content.
+     */
+    public static Charset ASCII = Charset.forName("US-ASCII");
+
+    /**
+     * Charset for message content according to OTR spec.
+     */
+    public static Charset UTF8 = Charset.forName("UTF-8");
+
     // Mysterious X IO.
     public static SignatureX toMysteriousX(byte[] b) throws IOException {
         ByteArrayInputStream in = new ByteArrayInputStream(b);
@@ -73,6 +86,7 @@ public class SerializationUtils {
         oos.writeMysteriousT(t);
         byte[] b = out.toByteArray();
         out.close();
+        oos.close();
         return b;
     }
 
@@ -83,6 +97,7 @@ public class SerializationUtils {
         oos.writeData(b);
         byte[] otrb = out.toByteArray();
         out.close();
+        oos.close();
         return otrb;
     }
 
@@ -138,6 +153,7 @@ public class SerializationUtils {
                         writer.write(" \\t \\t  \\t ");
                 }
             }
+
             break;
         case AbstractMessage.MESSAGE_QUERY:
             QueryMessage query = (QueryMessage) m;
@@ -205,7 +221,7 @@ public class SerializationUtils {
             }
 
             writer.write(SerializationConstants.HEAD_ENCODED);
-            writer.write(new String(Base64.encode(o.toByteArray())));
+            writer.write(Base64.encodeToString(o.toByteArray(),Base64.NO_WRAP));
             writer.write(".");
             break;
         default:
@@ -216,7 +232,7 @@ public class SerializationUtils {
     }
 
     static final Pattern patternWhitespace = Pattern
-            .compile("( \\t  \\t\\t\\t\\t \\t \\t \\t  )(  \\t\\t  \\t )?( \\t \\t  \\t )?");
+            .compile("( \\t  \\t\\t\\t\\t \\t \\t \\t  )( \\t \\t  \\t )?(  \\t\\t  \\t )?");
 
     public static AbstractMessage toMessage(String s) throws IOException {
         if (s == null || s.length() <= 1)
@@ -261,8 +277,7 @@ public class SerializationUtils {
             String content = s.substring(SerializationConstants.HEAD.length() + 1);
             switch (contentType) {
             case SerializationConstants.HEAD_ENCODED:
-                ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(content
-                        .getBytes()));
+                ByteArrayInputStream bin = new ByteArrayInputStream(Base64.decode(content,Base64.NO_WRAP));
                 OtrInputStream otr = new OtrInputStream(bin);
                 // We have an encoded message.
                 int protocolVersion = otr.readShort();
@@ -327,7 +342,7 @@ public class SerializationUtils {
                 QueryMessage query = new QueryMessage(versions);
                 return query;
             default:
-                throw new IOException("Uknown message type.");
+                throw new IOException("Unknown message type.");
             }
         }
     }

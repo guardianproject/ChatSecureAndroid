@@ -12,6 +12,7 @@ import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImException;
 import info.guardianproject.otr.app.im.engine.Message;
 import info.guardianproject.otr.app.im.engine.Presence;
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
 import info.guardianproject.otr.app.im.provider.Imps;
 
 import java.util.ArrayList;
@@ -53,6 +54,18 @@ public class LoopbackConnection extends ImConnection {
         Contact[] contacts_array = new Contact[contacts.size()];
         contacts.toArray(contacts_array);
         mContactListManager.doPresence(contacts_array);
+    }
+
+    @Override
+    public void initUser(long providerId, long accountId)
+    {
+
+        mUser = makeUser();
+    }
+
+    private Contact makeUser() {
+
+        return new Contact(new XmppAddress("test@foo"), "test");
     }
 
     @Override
@@ -104,6 +117,11 @@ public class LoopbackConnection extends ImConnection {
     public int[] getSupportedPresenceStatus() {
         return new int[] { Presence.AVAILABLE, Presence.AWAY, Presence.IDLE, Presence.OFFLINE,
                           Presence.DO_NOT_DISTURB, };
+    }
+
+    @Override
+    public boolean isUsingTor() {
+        return false; // loopback will never use Tor
     }
 
     @Override
@@ -202,8 +220,7 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        protected void doAddContactToListAsync(String address, ContactList list) throws ImException {
-            Contact contact = new Contact(new LoopbackAddress(address, address, null), address);
+        protected void doAddContactToListAsync(Contact contact, ContactList list) throws ImException {
             contact.setPresence(new Presence(Presence.AVAILABLE, "available", null, null,
                     Presence.CLIENT_TYPE_DEFAULT));
             notifyContactListUpdated(list, ContactListListener.LIST_CONTACT_ADDED, contact);
@@ -212,21 +229,26 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        public void declineSubscriptionRequest(String contact) {
+        public void declineSubscriptionRequest(Contact contact) {
             // TODO Auto-generated method stub
 
         }
 
         @Override
-        public Contact createTemporaryContact(String address) {
+        public Contact[] createTemporaryContacts(String[] address) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public void approveSubscriptionRequest(String contact) {
+        public void approveSubscriptionRequest(Contact contact) {
             // TODO Auto-generated method stub
             return;
+        }
+
+        @Override
+        protected void doSetContactName(String address, String name) throws ImException {
+            // stub - no server
         }
     }
 
@@ -235,7 +257,7 @@ public class LoopbackConnection extends ImConnection {
         private String address;
         private String name;
         private String resource;
-        
+
         public LoopbackAddress() {
         }
 
@@ -246,15 +268,20 @@ public class LoopbackConnection extends ImConnection {
         }
 
         @Override
-        public String getAddress() {
-            return name;
+        public String getBareAddress() {
+            return address;
         }
 
         @Override
-        public String getScreenName() {
+        public String getAddress() {
             return address;
         }
-        
+
+        @Override
+        public String getUser() {
+            return name;
+        }
+
         @Override
         public String getResource() {
             return null;
@@ -274,11 +301,14 @@ public class LoopbackConnection extends ImConnection {
             dest.writeString(resource);
         }
 
+
     }
 
+    @Override
     public void sendHeartbeat(long heartbeatInterval) {
     }
 
+    @Override
     public void setProxy(String type, String host, int port) {
     }
 

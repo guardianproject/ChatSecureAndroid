@@ -10,10 +10,10 @@ public class ChatViewPager extends ViewPager {
 
     public ChatViewPager(Context context) {
         super(context);
-        
+
     }
 
-    
+
     public ChatViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
     }

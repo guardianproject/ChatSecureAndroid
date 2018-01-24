@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -64,7 +64,7 @@ public class ImErrorInfo implements Parcelable, Serializable {
 
     /**
      * Creates a new error with specified code and description.
-     * 
+     *
      * @param code the error code.
      * @param description the description of the error.
      */
@@ -80,7 +80,7 @@ public class ImErrorInfo implements Parcelable, Serializable {
 
     /**
      * Gets the error code.
-     * 
+     *
      * @return the error code.
      */
     public int getCode() {
@@ -89,7 +89,7 @@ public class ImErrorInfo implements Parcelable, Serializable {
 
     /**
      * Gets the description of the error.
-     * 
+     *
      * @return the description of the error.
      */
     public String getDescription() {

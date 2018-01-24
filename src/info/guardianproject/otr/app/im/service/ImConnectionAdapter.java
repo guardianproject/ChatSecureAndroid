@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,6 +17,7 @@
 
 package info.guardianproject.otr.app.im.service;
 
+import info.guardianproject.otr.OtrChatManager;
 import info.guardianproject.otr.app.im.IChatSessionManager;
 import info.guardianproject.otr.app.im.IConnectionListener;
 import info.guardianproject.otr.app.im.IContactListManager;
@@ -25,7 +26,6 @@ import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.ChatGroupManager;
 import info.guardianproject.otr.app.im.engine.ConnectionListener;
 import info.guardianproject.otr.app.im.engine.Contact;
-import info.guardianproject.otr.app.im.engine.ContactListManager;
 import info.guardianproject.otr.app.im.engine.ImConnection;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
 import info.guardianproject.otr.app.im.engine.ImException;
@@ -33,6 +33,7 @@ import info.guardianproject.otr.app.im.engine.Invitation;
 import info.guardianproject.otr.app.im.engine.InvitationListener;
 import info.guardianproject.otr.app.im.engine.Presence;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.Debug;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -96,14 +97,22 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return mService;
     }
 
+    @Override
     public long getProviderId() {
         return mProviderId;
     }
 
+    @Override
     public long getAccountId() {
         return mAccountId;
     }
 
+    @Override
+    public boolean isUsingTor() {
+        return mConnection.isUsingTor();
+    }
+
+    @Override
     public int[] getSupportedPresenceStatus() {
         return mConnection.getSupportedPresenceStatus();
     }
@@ -112,7 +121,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         mConnection.networkTypeChanged();
     }
 
-    void reestablishSession() {
+    boolean reestablishSession() {
         mConnectionState = ImConnection.LOGGING_IN;
 
         ContentResolver cr = mService.getContentResolver();
@@ -122,12 +131,15 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 RemoteImService.debug("re-establish session");
                 try {
                     mConnection.reestablishSessionAsync(cookie);
+                    return true;
                 } catch (IllegalArgumentException e) {
                     RemoteImService.debug("Invalid session cookie, probably modified by others.");
                     clearSessionCookie(cr);
                 }
             }
         }
+
+        return false;
     }
 
     private Uri getSessionCookiesUri() {
@@ -138,15 +150,28 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return builder.build();
     }
 
-    public void login(String passwordTemp, boolean autoLoadContacts, boolean retry) {
-        
+    @Override
+    public void login(final String passwordTemp, final boolean autoLoadContacts, final boolean retry) {
+        Debug.wrapExceptions(new Runnable() {
+            @Override
+            public void run() {
+                do_login(passwordTemp, autoLoadContacts, retry);
+            }
+        });
+    }
+
+    public void do_login(String passwordTemp, boolean autoLoadContacts, boolean retry) {
+
         mAutoLoadContacts = autoLoadContacts;
         mConnectionState = ImConnection.LOGGING_IN;
 
         mConnection.loginAsync(mAccountId, passwordTemp, mProviderId, retry);
-        
-      
+
+
     }
+
+   
+    
     
     private void loadSavedPresence ()
     {
@@ -170,7 +195,10 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
     @Override
     public void sendHeartbeat() throws RemoteException {
-        mConnection.sendHeartbeat(mService.getHeartbeatInterval());
+
+        if (mConnection != null)
+            mConnection.sendHeartbeat(mService.getHeartbeatInterval());
+
     }
 
     @Override
@@ -197,11 +225,14 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return cookie;
     }
 
+    @Override
     public void logout() {
+        OtrChatManager.endSessionsForAccount(mConnection.getLoginUser());
         mConnectionState = ImConnection.LOGGING_OUT;
-        mConnection.logoutAsync();
+        mConnection.logout();
     }
 
+    @Override
     public synchronized void cancelLogin() {
         if (mConnectionState >= ImConnection.LOGGED_IN) {
             // too late
@@ -216,34 +247,40 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         mConnection.suspend();
     }
 
+    @Override
     public void registerConnectionListener(IConnectionListener listener) {
         if (listener != null) {
             mRemoteConnListeners.register(listener);
         }
     }
 
+    @Override
     public void unregisterConnectionListener(IConnectionListener listener) {
         if (listener != null) {
             mRemoteConnListeners.unregister(listener);
         }
     }
 
+    @Override
     public void setInvitationListener(IInvitationListener listener) {
         if (mInvitationListener != null) {
             mInvitationListener.mRemoteListener = listener;
         }
     }
 
-    
-    
+
+
+    @Override
     public IChatSessionManager getChatSessionManager() {
         return mChatSessionManager;
     }
 
+    @Override
     public IContactListManager getContactListManager() {
         return mContactListManager;
     }
 
+    @Override
     public int getChatSessionCount() {
         if (mChatSessionManager == null) {
             return 0;
@@ -255,17 +292,19 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return mConnection.getLoginUser();
     }
 
+    @Override
     public Presence getUserPresence() {
         return mConnection.getUserPresence();
     }
 
+    @Override
     public int updateUserPresence(Presence newPresence) {
         try {
-            
-            
+
+
             mConnection.updateUserPresenceAsync(newPresence);
-            
-            
+
+
         } catch (ImException e) {
             return e.getImError().getCode();
         }
@@ -273,14 +312,17 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
         return ImErrorInfo.NO_ERROR;
     }
 
+    @Override
     public int getState() {
         return mConnectionState;
     }
 
+    @Override
     public void rejectInvitation(long id) {
         handleInvitation(id, false);
     }
 
+    @Override
     public void acceptInvitation(long id) {
         handleInvitation(id, true);
     }
@@ -375,6 +417,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     }
 
     final class ConnectionListenerAdapter implements ConnectionListener {
+        @Override
         public void onStateChanged(final int state, final ImErrorInfo error) {
 
             synchronized (this) {
@@ -399,8 +442,8 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                     saveSessionCookie(cr);
                 }
 
-                if (mAutoLoadContacts
-                    && mContactListManager.getState() != ContactListManager.LISTS_LOADED) {
+                if (mAutoLoadContacts)
+                {
                     mContactListManager.loadContactLists();
                 }
 
@@ -410,21 +453,16 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
                 }
 
                 //                mService.getStatusBarNotifier().notifyLoggedIn(mProviderId, mAccountId);
-                
+
                 loadSavedPresence();
+                
 
-            } else if (state == ImConnection.LOGGING_OUT) {
-                // The engine has started to logout the connection, remove it
-                // from the active connection list.
-                mService.removeConnection(ImConnectionAdapter.this);
             } else if (state == ImConnection.DISCONNECTED) {
-                mService.removeConnection(ImConnectionAdapter.this);
-
                 clearSessionCookie(cr);
                 // mContactListManager might still be null if we fail
                 // immediately in loginAsync (say, an invalid host URL)
-                if (mContactListManager != null) {
-                    mContactListManager.clearOnLogout();
+                if (mContactListManager != null) { // n8fr8 2015-01-21 Why are we clearing this?
+                  mContactListManager.clearOnLogout();
                 }
 
                 mConnectionState = state;
@@ -437,19 +475,29 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
 
             updateAccountStatusInDb();
 
-            final int N = mRemoteConnListeners.beginBroadcast();
-            for (int i = 0; i < N; i++) {
-                IConnectionListener listener = mRemoteConnListeners.getBroadcastItem(i);
-                try {
-                    listener.onStateChanged(ImConnectionAdapter.this, state, error);
-                } catch (RemoteException e) {
-                    // The RemoteCallbackList will take care of removing the
-                    // dead listeners.
+            synchronized (mRemoteConnListeners) {
+
+                final int N = mRemoteConnListeners.beginBroadcast();
+                for (int i = 0; i < N; i++) {
+                    IConnectionListener listener = mRemoteConnListeners.getBroadcastItem(i);
+                    try {
+                        listener.onStateChanged(ImConnectionAdapter.this, state, error);
+                    } catch (RemoteException e) {
+                        // The RemoteCallbackList will take care of removing the
+                        // dead listeners.
+                    }
                 }
+                mRemoteConnListeners.finishBroadcast();
             }
-            mRemoteConnListeners.finishBroadcast();
+
+            if (state == ImConnection.DISCONNECTED) {
+                // NOTE: if this logic is changed, the logic in ImApp.MyConnListener must be changed to match
+                mService.removeConnection(ImConnectionAdapter.this);
+
+            }
         }
 
+        @Override
         public void onUserPresenceUpdated() {
             updateAccountStatusInDb();
 
@@ -466,6 +514,7 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
             mRemoteConnListeners.finishBroadcast();
         }
 
+        @Override
         public void onUpdatePresenceError(final ImErrorInfo error) {
             final int N = mRemoteConnListeners.beginBroadcast();
             for (int i = 0; i < N; i++) {
@@ -484,14 +533,15 @@ public class ImConnectionAdapter extends info.guardianproject.otr.app.im.IImConn
     final class InvitationListenerAdapter implements InvitationListener {
         IInvitationListener mRemoteListener;
 
+        @Override
         public void onGroupInvitation(Invitation invitation) {
-            String sender = invitation.getSender().getScreenName();
+            String sender = invitation.getSender().getUser();
             ContentValues values = new ContentValues(7);
             values.put(Imps.Invitation.PROVIDER, mProviderId);
             values.put(Imps.Invitation.ACCOUNT, mAccountId);
             values.put(Imps.Invitation.INVITE_ID, invitation.getInviteID());
             values.put(Imps.Invitation.SENDER, sender);
-            values.put(Imps.Invitation.GROUP_NAME, invitation.getGroupAddress().getScreenName());
+            values.put(Imps.Invitation.GROUP_NAME, invitation.getGroupAddress().getUser());
             values.put(Imps.Invitation.NOTE, invitation.getReason());
             values.put(Imps.Invitation.STATUS, Imps.Invitation.STATUS_PENDING);
             ContentResolver resolver = mService.getContentResolver();

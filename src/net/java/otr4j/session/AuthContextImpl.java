@@ -1,17 +1,19 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j.session;
+
+import info.guardianproject.otr.AndroidLogHandler;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.KeyPair;
 import java.security.PublicKey;
+import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -37,11 +39,14 @@ class AuthContextImpl implements AuthContext {
     public AuthContextImpl(Session session) {
         this.setSession(session);
         this.reset();
+        logger.addHandler(new AndroidLogHandler());
+
     }
 
     private Session session;
 
     private int authenticationState;
+    SecureRandom secureRandom;
     private byte[] r;
 
     private DHPublicKey remoteDHPublicKey;
@@ -66,6 +71,8 @@ class AuthContextImpl implements AuthContext {
     private Boolean isSecure = false;
     private int protocolVersion;
 
+    private static Logger logger = Logger.getLogger(AuthContextImpl.class.getName());
+
     private int getProtocolVersion() {
         return this.protocolVersion;
     }
@@ -73,8 +80,6 @@ class AuthContextImpl implements AuthContext {
     private void setProtocolVersion(int protoVersion) {
         this.protocolVersion = protoVersion;
     }
-
-    private static Logger logger = Logger.getLogger(AuthContextImpl.class.getName());
 
     class MessageFactory {
 
@@ -194,10 +199,12 @@ class AuthContextImpl implements AuthContext {
     }
 
     private byte[] getR() {
+        if (secureRandom == null)
+            secureRandom = new java.security.SecureRandom();
         if (r == null) {
             logger.finest("Picking random key r.");
             r = new byte[OtrCryptoEngine.AES_KEY_BYTE_LENGTH];
-            new Random().nextBytes(r);
+            secureRandom.nextBytes(r);
         }
         return r;
     }
@@ -272,6 +279,10 @@ class AuthContextImpl implements AuthContext {
             logger.finest("Generated shared secret.");
         }
         return s;
+    }
+
+    public byte[] getExtraSymmetricKey() throws OtrException {
+        return h2(EXTRA_SYMMETRIC_KEY);
     }
 
     private byte[] getC() throws OtrException {
@@ -413,8 +424,8 @@ class AuthContextImpl implements AuthContext {
     private void handleSignatureMessage(SignatureMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a signature message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+       logger.finest(sessionID.getLocalUserId() + " received a signature message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("Policy does not allow OTRv2, ignoring message.");
             return;
@@ -467,8 +478,8 @@ class AuthContextImpl implements AuthContext {
     private void handleRevealSignatureMessage(RevealSignatureMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a reveal signature message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+        logger.finest(sessionID.getLocalUserId() + " received a reveal signature message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
 
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("Policy does not allow OTRv2, ignoring message.");
@@ -566,8 +577,8 @@ class AuthContextImpl implements AuthContext {
     private void handleDHKeyMessage(DHKeyMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a D-H key message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+        logger.finest(sessionID.getLocalUserId() + " received a D-H key message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
 
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("If ALLOW_V2 is not set, ignore this message.");
@@ -607,8 +618,8 @@ class AuthContextImpl implements AuthContext {
     private void handleDHCommitMessage(DHCommitMessage m) throws OtrException {
         Session session = getSession();
         SessionID sessionID = session.getSessionID();
-        logger.finest(sessionID.getAccountID() + " received a D-H commit message from "
-                      + sessionID.getUserID() + " throught " + sessionID.getProtocolName() + ".");
+        logger.finest(sessionID.getLocalUserId() + " received a D-H commit message from "
+                      + sessionID.getRemoteUserId() + " throught " + sessionID.getProtocolName() + ".");
 
         if (!session.getSessionPolicy().getAllowV2()) {
             logger.finest("ALLOW_V2 is not set, ignore this message.");

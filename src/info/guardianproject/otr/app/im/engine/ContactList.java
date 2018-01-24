@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,11 +17,14 @@
 
 package info.guardianproject.otr.app.im.engine;
 
+import info.guardianproject.otr.app.im.plugin.xmpp.XmppAddress;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 public class ContactList extends ImEntity {
+
     protected Address mAddress;
     protected String mName;
     protected boolean mDefault;
@@ -39,7 +42,9 @@ public class ContactList extends ImEntity {
         mContactsCache = new HashMap<String, Contact>();
         if (contacts != null) {
             for (Contact c : contacts) {
-                mContactsCache.put(manager.normalizeAddress(c.getAddress().getAddress()), c);
+                String aKey = mManager.normalizeAddress(address.getAddress());
+                if (!mContactsCache.containsKey(aKey))
+                    mContactsCache.put(aKey, c);
             }
         }
     }
@@ -72,14 +77,13 @@ public class ContactList extends ImEntity {
     /**
      * Add a contact to the list. The contact is specified by its address
      * string.
-     * 
+     *
      * @param address the address string specifies the contact.
      * @throws IllegalArgumentException if the address is invalid.
      * @throws NullPointerException if the address string is null
      * @throws ImException if the contact is not allowed to be added
      */
-    public void addContact(String address) throws ImException {
-        address = mManager.normalizeAddress(address);
+    public void addContact(final String address) throws ImException {
 
         if (null == address) {
             throw new NullPointerException();
@@ -92,19 +96,61 @@ public class ContactList extends ImEntity {
             }
         }
 
-        if (containsContact(address)) {
+        new Thread ()
+        {
+            
+            public void run ()
+            {
+                Contact contact = getContact(address);
+        
+                if (contact == null)
+                {
+                    contact = new Contact (new XmppAddress(address),address);
+                }
+        
+                try {
+                    mManager.addContactToListAsync(contact, ContactList.this);
+                } catch (ImException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
+
+    /**
+     * Add a contact to the list. The contact is specified by its address
+     * string.
+     *
+     * @param address the address string specifies the contact.
+     * @throws IllegalArgumentException if the address is invalid.
+     * @throws NullPointerException if the address string is null
+     * @throws ImException if the contact is not allowed to be added
+     */
+    public void addExistingContact(Contact contact) throws ImException {
+
+        String aKey = mManager.normalizeAddress(contact.getAddress().getAddress());
+
+        if (mManager.getState() == ContactListManager.BLOCKED_LIST_LOADED) {
+            if (mManager.isBlocked(aKey)) {
+                throw new ImException(ImErrorInfo.CANT_ADD_BLOCKED_CONTACT,
+                        "Contact has been blocked");
+            }
+        }
+
+        if (containsContact(aKey)) {
             throw new ImException(ImErrorInfo.CONTACT_EXISTS_IN_LIST,
                     "Contact already exists in the list");
         }
 
-        mManager.addContactToListAsync(address, this);
+        mContactsCache.put(aKey, contact);
     }
 
     /**
      * Remove a contact from the list. If the contact is not in the list,
      * nothing will happen. Otherwise, the contact will be removed from the list
      * on the server asynchronously.
-     * 
+     *
      * @param address the address of the contact to be removed from the list
      * @throws NullPointerException If the address is null
      */
@@ -122,7 +168,7 @@ public class ContactList extends ImEntity {
      * Remove a contact from the list. If the contact is not in the list,
      * nothing will happen. Otherwise, the contact will be removed from the list
      * on the server asynchronously.
-     * 
+     *
      * @param contact the contact to be removed from the list
      * @throws NullPointerException If the contact is null
      */
@@ -133,30 +179,31 @@ public class ContactList extends ImEntity {
 
         if (containsContact(contact)) {
             mManager.removeContactFromListAsync(contact, this);
+            mContactsCache.remove(mManager.normalizeAddress(contact.getAddress().getAddress()));
         }
     }
 
-    public synchronized Contact getContact(Address address) {
-        return mContactsCache.get(mManager.normalizeAddress(address.getAddress()));
+    public Contact getContact(Address address) {
+        return getContact(mManager.normalizeAddress(address.getAddress()));
     }
 
-    public synchronized Contact getContact(String address) {
-        return mContactsCache.get(mManager.normalizeAddress(address));
+    public Contact getContact(String address) {
+        return mContactsCache.get(address);
     }
 
-    public synchronized int getContactsCount() {
+    public int getContactsCount() {
         return mContactsCache.size();
     }
 
-    public synchronized Collection<Contact> getContacts() {
+    public Collection<Contact> getContacts() {
         return new ArrayList<Contact>(mContactsCache.values());
     }
 
-    public synchronized boolean containsContact(String address) {
+    public boolean containsContact(String address) {
         return mContactsCache.containsKey(mManager.normalizeAddress(address));
     }
 
-    public synchronized boolean containsContact(Address address) {
+    public boolean containsContact(Address address) {
         return address == null ? false : mContactsCache.containsKey(mManager
                 .normalizeAddress(address.getAddress()));
     }

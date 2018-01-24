@@ -1,0 +1,136 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <!--General: Names-->
+  <string name="app_name">ChatSecure</string>
+  <string name="im_label">ChatSecure</string>
+  <!--General: Permissions-->
+  <string name="ro_perm_label">Прачытаць паведамленні</string>
+  <string name="ro_perm_desc">Дазволіць прыладзе чатаць інфармацыю з сервіса імгненных паведамленняў</string>
+  <string name="wo_perm_label">Напісаць паведамленні</string>
+  <string name="wo_perm_desc">Дазволіць прыладзе запісваць інфармацыю ў сервіс імгненных паведамленняў</string>
+  <string name="perm_label">Пачаць сервіс імгненных паведамленняў</string>
+  <string name="perm_desc">Дазволіць прыладзе пачынаць сервіс імгненных паведамленняў праз інтэрнэт</string>
+  <!--General: Actions-->
+  <string name="confirm">Пацвердзіць</string>
+  <string name="ok">Згода</string>
+  <string name="cancel">Адмена</string>
+  <string name="yes">Згода</string>
+  <string name="no">Адмена</string>
+  <string name="btn_next">Далей</string>
+  <string name="btn_back">Назад</string>
+  <string name="connect">Падлучыцца</string>
+  <!--Views-->
+  <string name="lock_screen_open">Адкрыць</string>
+  <string name="title_activity_lock_screen">ChatSecure заблакаваны</string>
+  <string name="lock_screen_create_passphrase">Задаць пароль</string>
+  <string name="lock_screen_confirm_passphrase">Пацвердзіць пароль</string>
+  <string name="lock_screen_passphrase_hint">Пароль</string>
+  <string name="lock_screen_passphrase_not_set_enter">Пры жаданні можна задаць майстар-пароль для ChatSecure каб прадухіліць доступ да вашых кантактаў і паведамленнях без пароля:</string>
+  <string name="lock_screen_passphrase_not_set_confirm">Пацвердзіць новы пароль</string>
+  <string name="lock_screen_passphrases_not_matching">Пасворд не супадае, калі ласка праспрабуйце яшчэ раз</string>
+  <string name="lock_screen_skip">Прапусціць</string>
+  <string name="app_passphrase_view_title_dialog">Інфармацыя прадастаўлена</string>
+  <string name="app_passphrase_view_password_question">Увядзіце пароль</string>
+  <!--Views: Setup-->
+  <string name="landing_page_title">Абярыце акаўнт</string>
+  <string name="choose_account_title">Абярыце акаўнт</string>
+  <string name="add_account">Дадаць <xliff:g id="account">%1$s</xliff:g> акаўнт</string>
+  <string name="menu_about">Пра прыладу</string>
+  <string name="menu_sign_out_all">Выйсці адусюль</string>
+  <string name="signout_all_confirm_message">Вы жадаеце выйсці з усіх сервісаў</string>
+  <string name="signed_out_prompt">Вы выйшлі з <xliff:g id="account">%1$s</xliff:g>.</string>
+  <string name="signed_out_prompt_with_error">Вы выйшлі з <xliff:g id="account">%1$s</xliff:g> бо <xliff:g id="reason">%2$s</xliff:g></string>
+  <string name="welcome_first">Першы раз карыстаецеся ChatSecure?</string>
+  <string name="welcome_skip">Ня можаце дачакацца каб пачаць?</string>
+  <string name="welcome_about">Пачаць</string>
+  <string name="welcome_account">Налады акаўнта</string>
+  <string name="setup_passphrase_title">Налады пароля</string>
+  <string name="setup_passphrase">Перад тым як пачаць, калі ласка абярыце бяспечны пароль для абароны вашых дадзеных у ChatSecure ад несанкцыянаванага доступу.</string>
+  <string name="setup_passphrase_label1">Пароль:</string>
+  <string name="setup_passphrase_label2">Пароль (яшчэ раз):</string>
+  <string name="rekey_message">Увядзіце новы пароль. Ён мусіць утрымліваць як мінімум адну вялікую, адну маленькую літару, адну лічбу, і быць ня меньш за 6 сімвалаў</string>
+  <string name="do_rekey">Шыфраванне вашых існуючых нататак з новай парольнай фразай (трошкі цярпення …)</string>
+  <string name="enter_pass">Увядзіце ваш пароль:</string>
+  <string name="new_pass">Запрашаем! Калі ласка, увядзіце пароль, каб абараніць свае нататкі. Ён мусіць ўтрымліваць як мінімум адну вялікую літару, адну маленькую і адну лічбу, і быць больш за 6 сімвалаў.</string>
+  <string name="pass_err_length">Ваш пароль не дастаткова доўгі</string>
+  <string name="pass_err_upper">Ваш пароль не ўтрымлівае ніводнай вялікай літары</string>
+  <string name="pass_err_lower">Ваш пароль не ўтрымлівае ніводнай маленькай літары</string>
+  <string name="pass_err_num">Ваш пароль не ўтрымлівае ніводнай лічбы</string>
+  <!--Views: About: Welcome-->
+  <string name="about_welcome_title">Пра ChatSecure</string>
+  <string name="about_welcome">ChatSecure гэта мабільная прылада для імгненных паведамленняў, з дапамогай якой вы абароніце сябе ад сачэнне іншых людзей за вашымі размовамі ды паведамленняў. \n\nПрылада падтрымлівае любыя сэрвіс імгненных паведамленняў, які выкарыстоўвае пратакол Jabber ці XMPP, напрыклад, Google Talk ці Jabber.org.</string>
+  <!--Views: About: OTR-->
+  <string name="about_otr_title">Як праграма абараняе нас?</string>
+  <string name="about_otr">\"Off-The-Record Messaging\" - гэта сістэма, якая забяспечвае прыватнасць, імітуючы характарыстыкі прыватнай гутаркі ў рэальным свеце, у тым ліку шыфраванне, аўтэнтыфікацыю і прамую бяспеку.\n\nOTR-пратакол сумяшчальны з кліентамі для кампутараў, такімі як Adium або Pidgin.</string>
+  <!--Views: About: Security-->
+  <string name="about_security_title">Ці бяспечны мой чат?</string>
+  <string name="about_security">Функцыяй шыфравання ChatSecure працуе толькі тады, калі Вы абменьваецеся паведамленнямі з вашым суразмоўцам і ён таксама выкарыстоўваючы ChatSecure для смартфонаў ці Adium або Pidgin для кампутараў. Вы можаце дакладна наладзіць, як менавіта і калі ChatSecure спрабуе зашыфраваць вашыя гутаркі ў наладах акаўнта.\n\nДавайце пачнем!</string>
+  <!--Views: Account list-->
+  <string name="menu_new_account">Новы акаўнт</string>
+  <string name="menu_add_account">Дадаць акаўнт</string>
+  <string name="menu_edit_account">Рэдагаваць акаўнт</string>
+  <string name="menu_remove_account">Выдаліць акаўнт</string>
+  <string name="menu_use_existing_account">Існуючы акаўнт</string>
+  <!--Views: Setup: Account-->
+  <string name="label_password">Пароль:</string>
+  <string name="remember_password">Запомніць мой пароль.</string>
+  <string name="keep_me_signed_in">Уваходзіць аўтаматычна</string>
+  <string name="sign_up">Ці маецеn\u2019t акаўнт?</string>
+  <string name="sign_in">Увайсці</string>
+  <string name="check_save_password">Калі Вы раптам згубілі тэлефон, ці ён быў скрадзены, то ў мэтах Вашай бяспекі, зайдзіце на сайт з кампутара і змяніце свой пароль.</string>
+  <string name="check_auto_sign_in">Гэта опцыя для аўтаматычнага ўваходу пры кожным запуску прылады. Каб адключыць яе, выйдзеце з гэтага акаўнта і прыбярыце птушку \"Уваходзіць аўтаматычна\"</string>
+  <string name="use_tor">Падлучыцца праз TOR (неабходна прылада Orbot)</string>
+  <string name="account_setup_new_username">Новае імя карыстальніка</string>
+  <string name="account_setup_service_provider">Сэрвіс правайдэр (dukgo.com, jabber.ccc.de)</string>
+  <string name="account_setup_password">пароль</string>
+  <string name="account_setup_password_confirm">пацвердзіць пароль</string>
+  <string name="account_setup_advanced_button">Дадатковыя налады акаўнта</string>
+  <string name="account_select_type">Налады акаўнта</string>
+  <string name="btn_create_new_account">Рэгістрацыя акаўнта</string>
+  <string name="account_setup_pers_sub">Persistence</string>
+  <string name="account_setup_pers_pw_title">Запомніць пароль</string>
+  <string name="account_setup_pers_pw_on">Пароль захаваны</string>
+  <string name="account_setup_pers_pw_off">Пароль не захаваны</string>
+  <string name="account_setup_pers_auto_title">Уваходзіць аўтаматычна</string>
+  <string name="account_setup_pers_auto_on">Падлучаць ChatSecure пры старце</string>
+  <string name="account_setup_pers_auto_off">Не падлучаць ChatSecure пры старце</string>
+  <string name="account_setup_pers_now_title">Падлучыцца зараз</string>
+  <string name="account_setup_pers_now_on">Падлучыць наступныя налады акаўнта</string>
+  <string name="account_setup_pers_now_off">Не падлучаць наступныя налады акаўнта</string>
+  <string name="account_setup_personal_sub">Асоба (апцыянальна)</string>
+  <string name="account_setup_personal_alias_title">Мянушка акаўнта (Вашае імя)</string>
+  <string name="account_setup_personal_alias_sub">Як Ваш акаўнт з\'яўляецца онлайн</string>
+  <string name="account_setup_personal_profile_title">Профіль</string>
+  <string name="account_setup_personal_profile_sub">Кароткая інфармацыя пра сябе</string>
+  <string name="account_setup_advanced_enc_force">Прымусовае шыфраванне / забараніць адкрыты тэкст</string>
+  <!--Views: Settings: Account-->
+  <!--Views: Contact list-->
+  <!--Views: Chat: Single-->
+  <!--Views: Chat: Group-->
+  <!--Security: OTR-->
+  <!--Security: OTR: Keyring-->
+  <!--Security: OTR: Verification-->
+  <!--Security: OTR: Verification: QA-->
+  <string name="otr_qa_cancel">Адмена</string>
+  <!--Views: VoIP-->
+  <!--Views: Settings: General-->
+  <string name="account_setup_title">Налады акаўнта</string>
+  <!--Actions: Settings: General: Security and Privacy-->
+  <!--Actions: Settings: General: User Interface-->
+  <!--Actions: Settings: General: Other Tuning-->
+  <!--Actions: Settings: General: Notifications-->
+  <!--Actions: Settings: General: Developer-->
+  <!--Alerts: Dialogs-->
+  <!--Alerts: Notifications-->
+  <!--Alerts: Exceptions-->
+  <!--added 2011/09/01-->
+  <!--Other-->
+  <!--Other: Slide Menu-->
+  <!--Other: Provider-->
+  <!--Other: Development Strings [Do not localize!]-->
+  <!--Other: Presence States-->
+  <!--Other: Smileys-->
+  <!--[Do not localize!]-->
+  <string name="i_have_an_existing_xmpp_account">Існуючы акаўнт</string>
+  <string name="i_need_a_new_account">Новы акаўнт</string>
+</resources>

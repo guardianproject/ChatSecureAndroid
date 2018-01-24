@@ -17,32 +17,34 @@
  * limitations under the License.
  */
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:app="http://schemas.android.com/apk/res-auto">
 
      <item android:id="@+id/menu_new_chat"
         android:title="@string/menu_new_chat" 
-              android:icon="@drawable/ic_menu_msg_compose"
-                android:showAsAction="always|withText"
+              android:icon="@drawable/ic_action_new"
+                app:showAsAction="always"
         
         />
      
   <item android:id="@+id/menu_view_accounts"
         android:title="@string/menu_view_accounts"
         android:icon="@drawable/ic_menu_sign_in"
-                android:showAsAction="never"
+                app:showAsAction="never"
         />
+  
       <item android:id="@+id/menu_new_group_chat"
         android:title="@string/menu_new_group_chat" 
               android:icon="@drawable/ic_menu_msg_compose"
-                android:showAsAction="never"
+                app:showAsAction="never"
         
         />
  
     <item android:id="@+id/menu_settings"
         android:title="@string/menu_settings" 
         android:icon="@drawable/ic_menu_settings"
-                android:showAsAction="never"
+                app:showAsAction="never"
         
          />
 
@@ -51,7 +53,7 @@
 	<item android:id="@+id/menu_search_contacts"
 		android:title="@string/menu_search_contacts"
 		android:icon="@drawable/ic_menu_search" 
-		        android:showAsAction="never"
+		        app:showAsAction="never"
 		
 		/>
   -->

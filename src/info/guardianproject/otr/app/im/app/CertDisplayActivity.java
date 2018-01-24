@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Bundle;
+import info.guardianproject.otr.app.im.R;
 
 public class CertDisplayActivity extends Activity {
 
@@ -20,33 +21,33 @@ public class CertDisplayActivity extends Activity {
         String issuedOn = getIntent().getStringExtra("issued");
         String expiresOn = getIntent().getStringExtra("expires");
         String msg = getIntent().getStringExtra("msg");
-        
+
         StringBuilder sb = new StringBuilder();
-        
+
         if (msg != null)
             sb.append(msg).append("\n\n");
-        
+
         if (subject != null)
-            sb.append("Certificate: ").append(subject).append("\n\n");
-        
+            sb.append(getString(R.string.dialog_cert_subject)).append(subject).append("\n\n");
+
         if (issuer != null)
-            sb.append("Issued by: ").append(issuer).append("\n\n");
-        
+            sb.append(getString(R.string.dialog_cert_issuer)).append(issuer).append("\n\n");
+
         if (fingerprint != null)
-            sb.append("SHA1 Fingerprint: ").append(fingerprint).append("\n\n");
-        
+            sb.append(getString(R.string.dialog_cert_fingerprint)).append(fingerprint).append("\n\n");
+
         if (issuedOn != null)
-            sb.append("Issued: ").append(issuedOn).append("\n\n");
-        
+            sb.append(getString(R.string.dialog_cert_issue_date)).append(issuedOn).append("\n\n");
+
         if (expiresOn != null)
-            sb.append("Expires: ").append(expiresOn).append("\n\n");
-        
+            sb.append(getString(R.string.dialog_cert_expires)).append(expiresOn).append("\n\n");
+
         showDialog(sb.toString());
     }
 
     private void showDialog(String msg) {
 
-        ad = new AlertDialog.Builder(this).setTitle("Certificate Info").setMessage(msg).show();
+        ad = new AlertDialog.Builder(this).setTitle(R.string.dialog_cert_title).setMessage(msg).show();
 
         ad.setOnDismissListener(new OnDismissListener() {
 

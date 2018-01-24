@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Copyright (C) 2008 Esmertec AG.
+ * Copyright (C) 2008 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    class="info.guardianproject.otr.app.im.app.MessageView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+	android:padding="3dp"    
+    android:layout_margin="6dp"
+        android:descendantFocusability="blocksDescendants"
+    
+     >
+        
+    <LinearLayout
+        android:id="@+id/message_container" 
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"        
+       	android:background="@drawable/message_view_rounded_light"
+       	android:layout_gravity="right"
+    	android:gravity="right"      
+    	android:orientation="vertical"             
+        >
+        
+        
+          <org.ironrabbit.type.CustomTypefaceTextView
+                    android:id="@+id/message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:padding="6dp"
+                    android:layout_gravity="top|right"
+                    android:gravity="right"                          
+                    android:textAlignment="gravity"
+            	   android:color="?messageTextPrimary"                                                       
+                     />
+          
+          <ImageView
+            android:id="@+id/media_thumbnail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"                      
+           
+             android:scaleType="centerCrop"     
+              android:visibility="gone"  
+                       android:focusableInTouchMode="true"
+                  
+             />
+        
+	 	        
+      
+       
+                  <TextView
+                android:id="@+id/messagets"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:padding="6dp"
+            	android:textSize="10sp"
+            	android:gravity="bottom|right"
+        		android:layout_gravity="right"
+        		    android:textAlignment="gravity"                                   
+			android:color="?messageTextSecondary"
+                />
+             
+                  
+        
+                         
+          	</LinearLayout>
+          	 
+   
+		<ImageView
+            android:id="@+id/avatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:scaleType="centerCrop" 
+            android:visibility="gone"
+            android:layout_marginRight="0dip"
+            />
+		
+    
+	    
+</view>

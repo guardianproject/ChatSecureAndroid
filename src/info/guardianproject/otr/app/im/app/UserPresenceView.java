@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -76,13 +76,14 @@ public class UserPresenceView extends LinearLayout {
 
         if (isInEditMode())
             return;
-        mStatusDialogButton = (ImageButton) findViewById(R.id.statusDropDownButton);
+        /**
+        mStatusDialogButton =  (ImageButton) findViewById(R.id.statusDropDownButton);
         mStatusDialogButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 showStatusListDialog();
             }
         });
-        
+        */
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
     }
 
@@ -115,7 +116,7 @@ public class UserPresenceView extends LinearLayout {
                 }
                 ImApp app = (ImApp)((Activity)mContext).getApplication();
 
-                
+
                 BrandingResources brandingRes = app.getBrandingResource(mProviderId);
                 Drawable icon = brandingRes.getDrawable(PresenceUtils.getStatusIconId(s));
                 String text = brandingRes.getString(PresenceUtils.getStatusStringRes(s));
@@ -160,7 +161,7 @@ public class UserPresenceView extends LinearLayout {
 
     private void updateView() {
         ImApp app = (ImApp)((Activity)mContext).getApplication();
-        
+
         BrandingResources brandingRes = app.getBrandingResource(mProviderId);
         int status = PresenceUtils.convertStatus(mPresence.getStatus());
         mStatusDialogButton.setImageDrawable(brandingRes.getDrawable(PresenceUtils
@@ -189,6 +190,7 @@ public class UserPresenceView extends LinearLayout {
 
     private TextView initStatusBar(long providerId, boolean showEdit) {
 
+        /**
         EditText statusEdit = (EditText) findViewById(R.id.statusEdit);
         statusEdit.setVisibility(View.GONE);
         TextView statusView = (TextView) findViewById(R.id.statusView);
@@ -240,6 +242,10 @@ public class UserPresenceView extends LinearLayout {
             return statusView;
         }
 
+        */
+
+        return null;
+
     }
 
     void updatePresence(int status, String statusText) {
@@ -253,7 +259,7 @@ public class UserPresenceView extends LinearLayout {
         if (status != -1) {
             newPresence.setStatus(status);
         }
-        
+
         if (statusText != null)
             newPresence.setStatusText(statusText);
 
@@ -264,11 +270,11 @@ public class UserPresenceView extends LinearLayout {
             } else {
                 mPresence = newPresence;
                 updateView();
-                
+
                 ContentResolver cr =  mContext.getContentResolver();
                 Imps.ProviderSettings.setPresence(cr, mProviderId, status, statusText);
-             
-                
+
+
             }
         } catch (RemoteException e) {
          //   mHandler.showServiceErrorAlert();
@@ -315,9 +321,9 @@ public class UserPresenceView extends LinearLayout {
             View view = super.getView(position, convertView, parent);
             return view;
         }
-        
+
     }
-    
+
     public void refreshLogginInStatus ()
     {
         if (mConn != null)
@@ -325,7 +331,7 @@ public class UserPresenceView extends LinearLayout {
             try {
                 loggingIn(mConn.getState() == ImConnection.LOGGING_IN);
             } catch (RemoteException e) {
-                
+
                loggingIn(false);
             //    mHandler.showServiceErrorAlert();
             }
@@ -343,6 +349,6 @@ public class UserPresenceView extends LinearLayout {
         }
         updateView();
     }
-    
+
 
 }

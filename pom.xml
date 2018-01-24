@@ -2,10 +2,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.google</groupId>
-  <artifactId>Gibberbot</artifactId>
+  <artifactId>ChatSecure</artifactId>
   <version>0.4-SNAPSHOT</version>
   <packaging>apk</packaging>
-  <name>Gibberbot</name>
+  <name>ChatSecure</name>
   <description></description>
   <url></url>
 
@@ -87,7 +87,7 @@
       <artifactId>asmack</artifactId>
       <version>4-SNAPSHOT</version>
       <scope>system</scope>
-      <systemPath>${basedir}/libs/asmack-android-7.jar</systemPath>
+      <systemPath>${basedir}/libs/asmack-android-8.jar</systemPath>
     </dependency>
     <dependency>
       <groupId>gp-bcc-lib</groupId>

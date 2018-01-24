@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="messageRoundBackground" format="reference" />
+  <attr name="messageTextPrimary" format="color" />
+  <attr name="messageTextSecondary" format="color" />
+  <attr name="contactTextPrimary" format="color" />
+  <attr name="contactTextSecondary" format="color" />
+    <attr name="chatBackground" format="color" />
+      <attr name="listBackground" format="color" />
+      <attr name="toolbarBackground" format="color" />
+      <attr name="inputBackground" format="color"/>      
+      <attr name="attachIcon" format="reference"/>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>Присили/захтевај</item>
+    <item>Покушај аутоматски</item>
+    <item>На захтев</item>
+    <item>Онемогућено/никад</item>
+  </string-array>
+</resources>

@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <string-array name="otr_options">
+    <item>Примусово / вимагається</item>
+    <item>Автоматичний дозвіл</item>
+    <item>За запитом</item>
+    <item>Вимкнено / Ніколи</item>
+  </string-array>
+</resources>

@@ -1,6 +1,5 @@
 package info.guardianproject.otr.app.im.app;
 
-import info.guardianproject.otr.TorProxyInfo;
 import info.guardianproject.otr.app.im.IImConnection;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.adapter.ConnectionListenerAdapter;
@@ -21,19 +20,22 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
+import android.os.DeadObjectException;
 import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * Handle sign-in process for activities.
- * 
+ *
  * @author devrandom
- * 
+ *
  * <p>Users of this helper must call {@link SignInHelper#stop()} to clean up callbacks
  * in their onDestroy() or onPause() lifecycle methods.
- * 
+ *
  * <p>The helper listens to connection events.  It automatically stops listening when the
  * connection state is logged-in or disconnected (failed).
  */
@@ -43,15 +45,15 @@ public class SignInHelper {
     private ImApp mApp;
     private MyConnectionListener mListener;
     private Collection<IImConnection> connections;
-    private Listener mSignInListener;
+    private SignInListener mSignInListener;
 
     // This can be used to be informed of signin events
-    public interface Listener {
+    public interface SignInListener {
         void connectedToService();
         void stateChanged(int state, long accountId);
     }
-    
-    public SignInHelper(Activity context, Listener listener) {
+
+    public SignInHelper(Activity context, SignInListener listener) {
         this.mContext = context;
         mHandler = new SimpleAlertHandler(context);
         mListener = new MyConnectionListener(mHandler);
@@ -60,18 +62,18 @@ public class SignInHelper {
 
             mApp = (ImApp)mContext.getApplication();
         }
-        
+
         connections = new HashSet<IImConnection>();
     }
-    
+
     public SignInHelper(Activity context) {
         this(context, null);
     }
-    
-    public void setSignInListener(Listener listener) {
+
+    public void setSignInListener(SignInListener listener) {
         mSignInListener = listener;
     }
-    
+
     public void stop() {
         for (IImConnection connection : connections) {
             try {
@@ -120,27 +122,31 @@ public class SignInHelper {
                 LogCleaner.error(ImApp.LOG_TAG, "handle connection error",e);
             }
         }
-        
+
         if (state == ImConnection.DISCONNECTED) {
             // sign in failed
             final ProviderDef provider = mApp.getProvider(providerId);
-            String providerName = provider.mName;
+
+            if (provider != null) //a provider might have been deleted
+            {
+                String providerName = provider.mName;
 
 
-            Resources r = mContext.getResources();
-            String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
-                    error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
-            
-            Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
-            /*
-            new AlertDialog.Builder(mContext).setTitle(R.string.error)
-                    .setMessage()
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            // FIXME
-                        }
-                    }).setCancelable(false).show();
-                    */
+                Resources r = mContext.getResources();
+                String errMsg = r.getString(R.string.login_service_failed, providerName, // FIXME
+                        error == null ? "" : ErrorResUtils.getErrorRes(r, error.getCode()));
+
+               // Toast.makeText(mContext, errMsg, Toast.LENGTH_LONG).show();
+                /*
+                new AlertDialog.Builder(mContext).setTitle(R.string.error)
+                        .setMessage()
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                // FIXME
+                            }
+                        }).setCancelable(false).show();
+                        */
+            }
         }
     }
 
@@ -159,34 +165,65 @@ public class SignInHelper {
             final boolean isActive) {
 
         final ProviderDef provider = mApp.getProvider(providerId);
-        final String providerName = provider.mName;
 
-        mApp.callWhenServiceConnected(mHandler, new Runnable() {
-            public void run() {
-                if (mApp.serviceConnected()) {
-                    if (mSignInListener != null)
-                        mSignInListener.connectedToService();
-                    if (!isActive) {
-                        activateAccount(providerId, accountId);
-                    }
-                    signInAccount(password, providerId, providerName, accountId);
+        if (provider != null) //provider may be null if deleted, or db not updated yet
+        {
+            final String providerName = provider.mName;
+
+            if (mApp.serviceConnected()) {
+                if (mSignInListener != null)
+                    mSignInListener.connectedToService();
+                if (!isActive) {
+                    activateAccount(providerId, accountId);
                 }
+                signInAccount(password, providerId, providerName, accountId);
             }
-        });
+            else
+            {
+                mApp.callWhenServiceConnected(mHandler, new Runnable() {
+                    public void run() {
+                        if (mApp.serviceConnected()) {
+                            if (mSignInListener != null)
+                                mSignInListener.connectedToService();
+                            if (!isActive) {
+                                activateAccount(providerId, accountId);
+                            }
+                            signInAccount(password, providerId, providerName, accountId);
+                        }
+                    }
+                });
+            }
+        }
     }
 
-    private void signInAccount(String password, long providerId, String providerName, long accountId) {
-        boolean autoLoadContacts = true;
-        boolean autoRetryLogin = true;
+    private void signInAccount(final String password, final long providerId, final String providerName, final long accountId) {
+
 
         try {
-            IImConnection conn = mApp.getConnection(providerId);
+            signInAccountAsync(password, providerId, providerName, accountId);
+        } catch (RemoteException e) {
+            Log.d(ImApp.LOG_TAG,"error signing in",e);
+        }
+
+
+
+    }
+
+    private void signInAccountAsync(String password, long providerId, String providerName, long accountId) throws RemoteException {
+        boolean autoLoadContacts = true;
+        boolean autoRetryLogin = true;
+        IImConnection conn = null;
+
+
+            conn = mApp.getConnection(providerId);
+
             if (conn != null) {
                 connections.add(conn);
                 conn.registerConnectionListener(mListener);
                 int state = conn.getState();
                 if (mSignInListener != null)
                     mSignInListener.stateChanged(state, accountId);
+
                 if (state != ImConnection.DISCONNECTED) {
                     // already signed in or in the process
                     if (state == ImConnection.LOGGED_IN) {
@@ -196,6 +233,7 @@ public class SignInHelper {
                     handleConnectionEvent(conn, state, null);
                     return;
                 }
+
             } else {
                 conn = mApp.createConnection(providerId, accountId);
                 if (conn == null) {
@@ -207,22 +245,17 @@ public class SignInHelper {
                 conn.registerConnectionListener(mListener);
             }
 
+            conn.login(password, autoLoadContacts, autoRetryLogin);
+
+            /*
             if (mApp.isNetworkAvailableAndConnected()) {
-               
-                conn.login(password, autoLoadContacts, autoRetryLogin);
+
             } else {
-                promptForBackgroundDataSetting(providerName);
+             //   promptForBackgroundDataSetting(providerName);
                 return;
-            }
-        } catch (RemoteException e) {
+            }*/
 
-            mHandler.showServiceErrorAlert(e.getLocalizedMessage());
-            LogCleaner.error(ImApp.LOG_TAG, "sign in account",e);
-        }
     }
-
-    private static final String SYNC_SETTINGS_ACTION = "android.settings.SYNC_SETTINGS";
-    private static final String SYNC_SETTINGS_CATEGORY = "android.intent.category.DEFAULT";
 
     /**
      * Popup a dialog to ask the user whether he/she wants to enable background
@@ -230,23 +263,10 @@ public class SignInHelper {
      * change. Otherwise, quit the signing in window immediately.
      */
     private void promptForBackgroundDataSetting(String providerName) {
-        new AlertDialog.Builder(mContext)
-                .setTitle(R.string.bg_data_prompt_title)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .setMessage(mContext.getString(R.string.bg_data_prompt_message, providerName))
-                .setPositiveButton(R.string.bg_data_prompt_ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                Intent intent = new Intent(SYNC_SETTINGS_ACTION);
-                                intent.addCategory(SYNC_SETTINGS_CATEGORY);
-                                mContext.startActivity(intent);
-                            }
-                        })
-                .setNegativeButton(R.string.bg_data_prompt_cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                            }
-                        }).show();
+
+        Toast.makeText(mContext, mContext.getString(R.string.bg_data_prompt_message, providerName), Toast.LENGTH_LONG).show();
+
+
     }
 
     public void activateAccount(long providerId, long accountId) {

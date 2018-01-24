@@ -1,6 +1,6 @@
 /*
  * otr4j, the open source java otr library.
- * 
+ *
  * Distributable under LGPL license. See terms of license at gnu.org.
  */
 package net.java.otr4j;
@@ -12,7 +12,7 @@ import net.java.otr4j.session.SessionID;
 /**
  * This interface should be implemented by the host application. It is required
  * for otr4j to work properly.
- * 
+ *
  * @author George Politis
  */
 public abstract interface OtrEngineHost {

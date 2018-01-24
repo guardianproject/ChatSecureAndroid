@@ -1,6 +1,5 @@
 package info.guardianproject.otr;
 
-import info.guardianproject.bouncycastle.util.encoders.Hex;
 import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.app.ImApp;
 import info.guardianproject.otr.app.im.engine.Address;
@@ -27,6 +26,7 @@ import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
@@ -39,9 +39,6 @@ import net.java.otr4j.OtrKeyManagerStore;
 import net.java.otr4j.crypto.OtrCryptoEngineImpl;
 import net.java.otr4j.crypto.OtrCryptoException;
 import net.java.otr4j.session.SessionID;
-
-import org.jivesoftware.smack.util.Base64;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -52,16 +49,16 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.common.collect.Sets;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
-
-    private static final boolean REGENERATE_LOCAL_PUBLIC_KEY = false;
+public class OtrAndroidKeyManagerImpl extends IOtrKeyManager.Stub implements OtrKeyManager {
+    public static final String TAG = "OtrAndroidKeyManagerImpl";
 
     private SimplePropertiesStore store;
 
@@ -69,45 +66,79 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     private final static String KEY_ALG = "DSA";
     private final static int KEY_SIZE = 1024;
-    private final static Version CURRENT_VERSION = new Version("1.0.0");
+    private final static Version CURRENT_VERSION = new Version("2.0.0");
 
     private static OtrAndroidKeyManagerImpl _instance;
 
-    private static final String FILENAME = "otr_keystore.ofc";
-    
+    private static final String FILE_KEYSTORE_ENCRYPTED = "otr_keystore.ofc";
+    private static final String FILE_KEYSTORE_UNENCRYPTED = "otr_keystore";
+
+
     private final static String STORE_ALGORITHM = "PBEWITHMD5AND256BITAES-CBC-OPENSSL";
-    
+
     private static String mKeyStorePassword = null;
-    
+
     public static void setKeyStorePassword (String keyStorePassword)
     {
         mKeyStorePassword = keyStorePassword;
-    }
-    
-    public static synchronized OtrAndroidKeyManagerImpl getInstance(Context context)
-            throws IOException {
-        
-        if (_instance == null && mKeyStorePassword != null) {
-            File f = new File(context.getApplicationContext().getFilesDir(), FILENAME);
-            _instance = new OtrAndroidKeyManagerImpl(f,mKeyStorePassword);
-        }
 
-        return _instance;
+        if (_instance != null)
+        {
+            _instance = null;
+
+        }
+    }
+
+    public static synchronized OtrAndroidKeyManagerImpl getInstance(Context context)
+    {
+
+        try
+        {
+            if (_instance == null && mKeyStorePassword != null) {
+                File fKeyStore;
+
+                fKeyStore = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_UNENCRYPTED);
+                if (fKeyStore.exists())
+                {
+                    _instance = new OtrAndroidKeyManagerImpl(fKeyStore,null);
+                }
+                else
+                {
+                    fKeyStore = new File(context.getApplicationContext().getFilesDir(), FILE_KEYSTORE_ENCRYPTED);
+                    _instance = new OtrAndroidKeyManagerImpl(fKeyStore,mKeyStorePassword);
+                }
+            }
+
+            return _instance;
+        }
+        catch (IOException ioe)
+        {
+            Toast.makeText(context, R.string.your_keystore_is_corrupted_please_re_install_chatsecure_or_clear_data_for_the_app, Toast.LENGTH_LONG).show();
+            throw new RuntimeException("Could not open keystore",ioe);
+        }
     }
 
     private OtrAndroidKeyManagerImpl(File filepath, String password) throws IOException {
-        this.store = new SimplePropertiesStore(filepath, password, false);
-        upgradeStore();
+
+        if (password == null)
+            store = new SimplePropertiesStore(filepath);
+        else
+            store = new SimplePropertiesStore(filepath, password, false);
 
         cryptoEngine = new OtrCryptoEngineImpl();
+
     }
-    
+
+    /*
     private void upgradeStore() {
+
+        LogCleaner.warn(ImApp.LOG_TAG, "upgrading keystore");
+
         String version = store.getPropertyString("version");
 
         if (version == null || new Version(version).compareTo(new Version("1.0.0")) < 0) {
             // Add verified=false entries for TOFU sync purposes
-            Set<Object> keys = Sets.newHashSet(store.getKeySet()); 
+            Set<Object> keys = Sets.newHashSet(store.getKeySet());
             for (Object keyObject : keys) {
                 String key = (String)keyObject;
                 if (key.endsWith(".fingerprint")) {
@@ -120,176 +151,235 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
                     }
                 }
             }
+
             // This will save
             store.setProperty("version", CURRENT_VERSION.toString());
         }
+
+
+        File fileOldKeystore = new File(FILE_KEYSTORE_UNENCRYPTED);
+        if (fileOldKeystore.exists())
+        {
+            LogCleaner.warn(ImApp.LOG_TAG, "upgrading unencrypted keystore");
+            try {
+                SimplePropertiesStore storeOldKeystore = new SimplePropertiesStore(fileOldKeystore);
+
+                Enumeration<Object> enumKeys = storeOldKeystore.getKeys();
+
+                while(enumKeys.hasMoreElements())
+                {
+                    String key = (String)enumKeys.nextElement();
+                    LogCleaner.warn(ImApp.LOG_TAG, "importing key: " + key);
+                    store.setProperty(key, storeOldKeystore.getPropertyString(key));
+
+                }
+
+                store.save();
+
+                fileOldKeystore.delete();
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            LogCleaner.warn(ImApp.LOG_TAG, "unencrypted keystore not found");
+
+        }
+
     }
+    */
 
     static class SimplePropertiesStore implements OtrKeyManagerStore {
-        
+
         private Properties mProperties = new Properties();
         private File mStoreFile;
         private String mPassword;
 
-        /*
-        public SimplePropertiesStore(File storeFile) {
+        public SimplePropertiesStore(File storeFile) throws IOException {
             mStoreFile = storeFile;
-            mProperties.clear();
 
-            load();
-        }*/
+            if (storeFile.exists())
+                mProperties.load(new FileInputStream(mStoreFile));
+            
+
+        }
 
         public SimplePropertiesStore(File storeFile, final String password, boolean isImportFromKeySync) throws IOException {
-            
+
             OtrDebugLogger.log("Loading store from encrypted file");
             mStoreFile = storeFile;
-            mProperties.clear();
-            
+
             if (password == null)
                 throw new IOException ("invalid password");
-             
+
             mPassword = password;
 
-            if (isImportFromKeySync)
-                loadAES(password);
-            else
-                loadOpenSSL(password);
+            if (mStoreFile.exists())
+                if (isImportFromKeySync)
+                    loadAES(mPassword);
+                else
+                    loadOpenSSL(mPassword);
+            
         }
 
-        private void loadAES(final String password) {
+        private void loadAES(final String password) throws IOException
+        {
             String decoded;
-            try {
                 decoded = AES_256_CBC.decrypt(mStoreFile, password);
                 mProperties.load(new ByteArrayInputStream(decoded.getBytes()));
-            } catch (IOException ioe) {
-                OtrDebugLogger.log("Properties store error", ioe);
-            }
         }
-        
-        /*
-        public Properties getProperties ()
-        {
-            return mProperties;
-        }*/
 
         public void setProperty(String id, String value) {
             mProperties.setProperty(id, value);
+            persist();
             
-            save();
         }
-        
+
 
         public void setProperty(String id, boolean value) {
             mProperties.setProperty(id, Boolean.toString(value));
+            persist();
             
-
-            save();
         }
-
-        
-        public boolean save ()
+       
+        public synchronized boolean persist ()
         {
+        
             try {
-                saveOpenSSL (mPassword);
+                if (mPassword != null)
+                    saveOpenSSL(mPassword, mStoreFile);
+                else
+                    savePlain(mStoreFile);
+                
+                
+                
                 return true;
             } catch (IOException e) {
                 LogCleaner.error(ImApp.LOG_TAG, "error saving keystore", e);
                 return false;
             }
         }
-        
-        private void saveOpenSSL (String password) throws IOException
+
+        public boolean export (String password, File storeFile)
+        {
+            try {
+                saveOpenSSL (password, storeFile);
+                return true;
+            } catch (IOException e) {
+                LogCleaner.error(ImApp.LOG_TAG, "error saving keystore", e);
+                return false;
+            }
+        }
+
+        private void saveOpenSSL (String password, File fileStore) throws IOException
         {
             // Encrypt these bytes
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, password.toCharArray());
-            mProperties.store(encOS, null);
-            encOS.flush();
-            
-            FileOutputStream fos = new FileOutputStream(mStoreFile);
+
+            try
+            {
+                OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, password.toCharArray());
+                mProperties.store(encOS, null);
+                encOS.flush();
+            }
+            catch (IllegalArgumentException iae)
+            {
+
+                //might be a unicode character in the password
+                OpenSSLPBEOutputStream encOS = new OpenSSLPBEOutputStream(baos, STORE_ALGORITHM, 1, Base64.encodeToString(password.getBytes(),Base64.NO_WRAP).toCharArray());
+                mProperties.store(encOS, null);
+                encOS.flush();
+
+
+            }
+
+            FileOutputStream fos = new FileOutputStream(fileStore);
             fos.write(baos.toByteArray());
             fos.flush();
             fos.close();
 
         }
-        
-        private void loadOpenSSL(String password) {
-            
+
+        private void savePlain(File fileStore) throws IOException
+        {
+            // Encrypt these bytes
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            mProperties.store(baos, null);
+            baos.flush();
+
+            FileOutputStream fos = new FileOutputStream(fileStore);
+            fos.write(baos.toByteArray());
+            fos.flush();
+            fos.close();
+
+        }
+
+        private void loadOpenSSL(String password) throws IOException
+        {
+
             if (!mStoreFile.exists())
                 return;
-            
+
+            if (mStoreFile.length() == 0)
+                return;
+
             FileInputStream fis = null;
-            
+            OpenSSLPBEInputStream encIS = null;
             try {
 
                 fis = new FileInputStream(mStoreFile);
 
                 // Decrypt the bytes
-                OpenSSLPBEInputStream encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());
-                
-                    mProperties.load(encIS);
-                
+                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, password.toCharArray());
+                mProperties.load(encIS);
+            }
+            catch (IllegalArgumentException iae)
+            {
+                //might be a unicode character in the password
+                encIS = new OpenSSLPBEInputStream(fis, STORE_ALGORITHM, 1, (Base64.encodeToString(password.getBytes(),Base64.NO_WRAP)).toCharArray());
+                mProperties.load(encIS);
+
             } catch (FileNotFoundException fnfe) {
                 OtrDebugLogger.log("Properties store file not found: First time?");
                 mStoreFile.getParentFile().mkdirs();
-
-
-            } catch (Exception ioe) {
-                OtrDebugLogger.log("Properties store error", ioe);
-            }
-            finally
-            {
-               try
-               {
-                   if (fis != null)
-                       fis.close();
-               }
-               catch (IOException ioe)
-               {
-                   OtrDebugLogger.log("Properties store error", ioe);
-
-               }
+            } finally {
+                encIS.close();
+                fis.close();
             }
         }
-        
+
         public void setProperty(String id, byte[] value) {
-            mProperties.setProperty(id, new String(Base64.encodeBytes(value)));
-
-            save();
+            mProperties.setProperty(id, (Base64.encodeToString(value,Base64.NO_WRAP)));
+            persist();
+            
         }
 
-        // Store as hex bytes
-        public void setPropertyHex(String id, byte[] value) {
-            mProperties.setProperty(id, new String(Hex.encode(value)));
-
-
-            save();
-        }
 
         public void removeProperty(String id) {
             mProperties.remove(id);
+            persist();
+            
 
         }
 
         public String getPropertyString(String id) {
             return mProperties.getProperty(id);
         }
-        
+
         public byte[] getPropertyBytes(String id) {
             String value = mProperties.getProperty(id);
 
             if (value != null)
-                return Base64.decode(value);
+                return Base64.decode(value.getBytes(),Base64.NO_WRAP);
             return null;
         }
 
-        // Load from hex bytes
-        public byte[] getPropertyHexBytes(String id) {
-            String value = mProperties.getProperty(id);
-
-            if (value != null)
-                return Hex.decode(value);
-            return null;
+        public String getProperty (String id)
+        {
+            return mProperties.getProperty(id);
         }
 
         public boolean getPropertyBoolean(String id, boolean defaultValue) {
@@ -303,12 +393,12 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         public boolean hasProperty(String id) {
             return mProperties.containsKey(id);
         }
-        
+
         public Enumeration<Object> getKeys ()
         {
             return mProperties.keys();
         }
-        
+
         public Set<Object> getKeySet ()
         {
             return mProperties.keySet();
@@ -334,12 +424,13 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         if (sessionID == null)
             return;
 
-        String accountID = sessionID.getAccountID();
-
-        generateLocalKeyPair(accountID);
+        generateLocalKeyPair(sessionID.getLocalUserId());
     }
 
-    public void regenerateLocalPublicKey(KeyFactory factory, String accountID, DSAPrivateKey privKey) {
+    public void regenerateLocalPublicKey(KeyFactory factory, String fullUserId, DSAPrivateKey privKey) {
+
+        String userId = Address.stripResource(fullUserId);
+
         BigInteger x = privKey.getX();
         DSAParams params = privKey.getParams();
         BigInteger y = params.getG().modPow(x, params.getP());
@@ -347,15 +438,19 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         PublicKey pubKey;
         try {
             pubKey = factory.generatePublic(keySpec);
-        } catch (InvalidKeySpecException e) {
+            storeLocalPublicKey(userId, pubKey);
+
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        storeLocalPublicKey(accountID, pubKey);
-    }
-    
-    public void generateLocalKeyPair(String accountID) {
 
-        OtrDebugLogger.log("generating local key pair for: " + accountID);
+    }
+
+    public void generateLocalKeyPair(String fullUserId) {
+
+        String userId = Address.stripResource(fullUserId);
+
+        OtrDebugLogger.log("generating local key pair for: " + userId);
 
         KeyPair keyPair;
         try {
@@ -369,69 +464,95 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             return;
         }
 
-        OtrDebugLogger.log("SUCCESS! generating local key pair for: " + accountID);
+        OtrDebugLogger.log("SUCCESS! generating local key pair for: " + userId);
 
         // Store Private Key.
         PrivateKey privKey = keyPair.getPrivate();
         PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(privKey.getEncoded());
 
-        this.store.setProperty(accountID + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
+        this.store.setProperty(userId + ".privateKey", pkcs8EncodedKeySpec.getEncoded());
 
-        // Store Public Key.
-        PublicKey pubKey = keyPair.getPublic();
-        storeLocalPublicKey(accountID, pubKey);
-    }
+        try
+        {
+            // Store Public Key.
+            PublicKey pubKey = keyPair.getPublic();
+            storeLocalPublicKey(userId, pubKey); //this will do saving
 
-    private void storeLocalPublicKey(String accountID, PublicKey pubKey) {
-        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
-
-        this.store.setProperty(accountID + ".publicKey", x509EncodedKeySpec.getEncoded());
-
-        // Stash fingerprint for consistency.
-        try {
-            String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            this.store.setPropertyHex(accountID + ".fingerprint", Hex.decode(fingerprintString));
-        } catch (OtrCryptoException e) {
-            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+            throw new RuntimeException ("Error init local keypair");
         }
     }
-    
-    public void importKeyStore(File filePath, String password, boolean overWriteExisting, boolean deleteImportedFile) throws IOException
+
+    private void storeLocalPublicKey(String fullUserId, PublicKey pubKey) throws OtrCryptoException {
+
+        String userId = Address.stripResource(fullUserId);
+
+        String fingerprintString = cryptoEngine.getFingerprint(pubKey);
+        String fingerprintKey = userId + ".fingerprint";
+
+        //check if we already have this
+        if ((!store.hasProperty(fingerprintKey)) ||
+                (!store.getProperty(fingerprintKey).equals(fingerprintString)))
+        {
+            X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
+            this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
+            this.store.setProperty(fingerprintKey, fingerprintString);
+     
+
+        }
+        
+        Log.i(ImApp.LOG_TAG, "New public key generated: " + fingerprintString);
+
+    }
+
+    public boolean importKeyStore(String filePath, String password, boolean overWriteExisting, boolean deleteImportedFile) throws IOException
     {
         SimplePropertiesStore storeNew = null;
 
-        if (filePath.getName().endsWith(".ofcaes")) {
+        File fileOtrKeystore = new File(filePath);
+
+        if (fileOtrKeystore.getName().endsWith(".ofcaes")) {
             //TODO implement GUI to get password via QR Code, and handle wrong password
-            storeNew = new SimplePropertiesStore(filePath, password, true);
+            storeNew = new SimplePropertiesStore(fileOtrKeystore, password, true);
             deleteImportedFile = true; // once its imported, its no longer needed
-        } 
-        
-        
+        }
+        else
+        {
+            return false;
+        }
+
         Enumeration<Object> enumKeys = storeNew.getKeys();
-        
-        
+
+
         String key;
-        
+
         while (enumKeys.hasMoreElements())
         {
             key = (String)enumKeys.nextElement();
-            
+
             boolean hasKey = store.hasProperty(key);
-            
+
             if (!hasKey || overWriteExisting)
                 store.setProperty(key, storeNew.getPropertyString(key));
-            
+
         }
 
         if (deleteImportedFile)
-            filePath.delete();
+            fileOtrKeystore.delete();
+
+        return true;
     }
 
     public String getLocalFingerprint(SessionID sessionID) {
-        return getLocalFingerprint(sessionID.getAccountID());
+        return getLocalFingerprint(sessionID.getLocalUserId());
     }
 
-    public String getLocalFingerprint(String userId) {
+    public String getLocalFingerprint(String fullUserId) {
+
+        String userId = Address.stripResource(fullUserId);
+
         KeyPair keyPair = loadLocalKeyPair(userId);
 
         if (keyPair == null)
@@ -441,9 +562,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         try {
             String fingerprint = cryptoEngine.getFingerprint(pubKey);
-
-            OtrDebugLogger.log("got fingerprint for: " + userId + "=" + fingerprint);
-
+          //  OtrDebugLogger.log("got fingerprint for: " + userId + "=" + fingerprint);
             return fingerprint;
 
         } catch (OtrCryptoException e) {
@@ -453,49 +572,75 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
     }
 
     public String getRemoteFingerprint(SessionID sessionID) {
-        return getRemoteFingerprint(sessionID.getFullUserID());
+        return getRemoteFingerprint(sessionID.getRemoteUserId());
     }
 
-    public String getRemoteFingerprint(String userId) {
-        if (!Address.hasResource(userId))
-            return null;
-        byte[] fingerprint = this.store.getPropertyHexBytes(userId + ".fingerprint");
+    public String getRemoteFingerprint(String fullUserId) {
+
+        if (!Address.hasResource(fullUserId))
+          return null;
+
+        String fingerprint = this.store.getProperty(fullUserId + ".fingerprint");
         if (fingerprint != null) {
             // If we have a fingerprint stashed, assume it is correct.
-            return new String(Hex.encode(fingerprint, 0, fingerprint.length));
+            return fingerprint;
         }
-        PublicKey remotePublicKey = loadRemotePublicKeyFromStore(userId);
+
+        PublicKey remotePublicKey = loadRemotePublicKeyFromStore(fullUserId);
         if (remotePublicKey == null)
             return null;
+
         try {
             // Store the fingerprint, for posterity.
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(remotePublicKey);
-            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+            this.store.setProperty(fullUserId + ".fingerprint", fingerprintString);
+            
             return fingerprintString;
         } catch (OtrCryptoException e) {
-            OtrDebugLogger.log("OtrCryptoException getting remote fingerprint",e);
-            return null;
+            throw new RuntimeException("OtrCryptoException getting remote fingerprint",e);
+
         }
+    }
+
+    public String[] getRemoteFingerprints(String userId) {
+
+        Enumeration<Object> keys = store.getKeys();
+
+        ArrayList<String> results = new ArrayList<String>();
+
+        String baseUserId = Address.stripResource(userId);
+
+        while (keys.hasMoreElements())
+        {
+            String key = (String)keys.nextElement();
+
+            if (key.startsWith(baseUserId + '/') && key.endsWith(".fingerprint"))
+            {
+
+                String fingerprint = this.store.getProperty(userId + ".fingerprint");
+                if (fingerprint != null) {
+                    // If we have a fingerprint stashed, assume it is correct.
+                    results.add(fingerprint);
+                }
+
+            }
+
+        }
+
+        String[] resultsString = new String[results.size()];
+        return results.toArray(resultsString);
     }
 
     public boolean isVerified(SessionID sessionID) {
         if (sessionID == null)
             return false;
-        
-        String userId = sessionID.getUserID();
-        String fullUserID = sessionID.getFullUserID();
-        
-        if (Address.hasResource(userId))
-            return false;
 
-        if (!Address.hasResource(fullUserID))
-            return false;
-        
-        String remoteFingerprint =getRemoteFingerprint(fullUserID);
-        
+        String remoteFingerprint =getRemoteFingerprint(sessionID.getRemoteUserId());
+
         if (remoteFingerprint != null)
         {
-            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, remoteFingerprint);
+            String username = Address.stripResource(sessionID.getRemoteUserId());
+            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(username, remoteFingerprint);
             return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
         }
         else
@@ -505,32 +650,38 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
     }
 
     public boolean isVerifiedUser(String fullUserId) {
-        if (fullUserId == null)
-            return false;
 
         String userId = Address.stripResource(fullUserId);
-        String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, getRemoteFingerprint(fullUserId));
+        String remoteFingerprint = getRemoteFingerprint(fullUserId);
 
-        return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
+        if (remoteFingerprint != null)
+        {
+            String pubKeyVerifiedToken = buildPublicKeyVerifiedId(userId, remoteFingerprint);
+
+            return this.store.getPropertyBoolean(pubKeyVerifiedToken, false);
+        }
+        else
+            return false;
     }
 
     public KeyPair loadLocalKeyPair(SessionID sessionID) {
         if (sessionID == null)
             return null;
 
-        String accountID = sessionID.getAccountID();
-        return loadLocalKeyPair(accountID);
+        return loadLocalKeyPair(sessionID.getLocalUserId());
     }
 
-    private KeyPair loadLocalKeyPair(String accountID) {
+    private KeyPair loadLocalKeyPair(String fullUserId) {
         PublicKey publicKey;
         PrivateKey privateKey;
+
+        String userId = Address.stripResource(fullUserId);
 
 
         try {
             // Load Private Key.
 
-            byte[] b64PrivKey = this.store.getPropertyBytes(accountID + ".privateKey");
+            byte[] b64PrivKey = this.store.getPropertyBytes(userId + ".privateKey");
             if (b64PrivKey == null)
                 return null;
 
@@ -541,23 +692,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
             keyFactory = KeyFactory.getInstance(KEY_ALG);
             privateKey = keyFactory.generatePrivate(privateKeySpec);
 
-            if (REGENERATE_LOCAL_PUBLIC_KEY) {
-                regenerateLocalPublicKey(keyFactory, accountID, (DSAPrivateKey)privateKey);
-            }
-            
             // Load Public Key.
-            byte[] b64PubKey = this.store.getPropertyBytes(accountID + ".publicKey");
+            byte[] b64PubKey = this.store.getPropertyBytes(userId + ".publicKey");
             if (b64PubKey == null)
                 return null;
 
             X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(b64PubKey);
             publicKey = keyFactory.generatePublic(publicKeySpec);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        } catch (InvalidKeySpecException e) {
-            e.printStackTrace();
-            return null;
+        } catch (Exception e) {
+           throw new RuntimeException(e);
         }
 
         return new KeyPair(publicKey, privateKey);
@@ -565,14 +708,15 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
     public PublicKey loadRemotePublicKey(SessionID sessionID) {
 
-        return loadRemotePublicKeyFromStore(sessionID.getFullUserID());
+        return loadRemotePublicKeyFromStore(sessionID.getRemoteUserId());
     }
 
-    private PublicKey loadRemotePublicKeyFromStore(String userId) {
-        if (!Address.hasResource(userId))
-           return null;
-        
-        byte[] b64PubKey = this.store.getPropertyBytes(userId + ".publicKey");
+    private PublicKey loadRemotePublicKeyFromStore(String fullUserId) {
+
+        if (!Address.hasResource(fullUserId))
+          return null;
+
+        byte[] b64PubKey = this.store.getPropertyBytes(fullUserId + ".publicKey");
         if (b64PubKey == null) {
             return null;
 
@@ -601,19 +745,22 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
         X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(pubKey.getEncoded());
 
-        String userId = sessionID.getFullUserID();
-        if (!Address.hasResource(userId))
+        if (!Address.hasResource(sessionID.getRemoteUserId()))
             return;
-        
-        this.store.setProperty(userId + ".publicKey", x509EncodedKeySpec.getEncoded());
+
+        String fullUserId = sessionID.getRemoteUserId();
+
+        this.store.setProperty(fullUserId + ".publicKey", x509EncodedKeySpec.getEncoded());
         // Stash the associated fingerprint.  This saves calculating it in the future
         // and is useful for transferring rosters to other apps.
         try {
             String fingerprintString = new OtrCryptoEngineImpl().getFingerprint(pubKey);
-            String verifiedToken = buildPublicKeyVerifiedId(userId, fingerprintString.toLowerCase());
+            String verifiedToken = buildPublicKeyVerifiedId(sessionID.getRemoteUserId(), fingerprintString);
             if (!this.store.hasProperty(verifiedToken))
                 this.store.setProperty(verifiedToken, false);
-            this.store.setPropertyHex(userId + ".fingerprint", Hex.decode(fingerprintString));
+
+            this.store.setProperty(fullUserId + ".fingerprint", fingerprintString);
+            
         } catch (OtrCryptoException e) {
             e.printStackTrace();
         }
@@ -626,26 +773,20 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         if (!isVerified(sessionID))
             return;
 
-        String userId = sessionID.getUserID();
-
-        this.store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(sessionID)), false);
+        unverifyUser(sessionID.getRemoteUserId());
 
         for (OtrKeyManagerListener l : listeners)
             l.verificationStatusChanged(sessionID);
 
     }
 
-    public void unverifyUser(String userId) {
-        if (userId == null)
+    public void unverifyUser(String fullUserId) {
+
+        if (!isVerifiedUser(fullUserId))
             return;
 
-        if (!isVerifiedUser(userId))
-            return;
-
-        this.store.setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), false);
-
-        //	for (OtrKeyManagerListener l : listeners)
-        //	l.verificationStatusChanged(sessionID);
+        store.setProperty(buildPublicKeyVerifiedId(fullUserId, getRemoteFingerprint(fullUserId)), false);
+  
 
     }
 
@@ -656,13 +797,8 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         if (this.isVerified(sessionID))
             return;
 
-        String userId = sessionID.getUserID();
+        verifyUser(sessionID.getRemoteUserId());
 
-        this.store
-                .setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(sessionID)), true);
-
-        for (OtrKeyManagerListener l : listeners)
-            l.verificationStatusChanged(sessionID);
     }
 
     public void remoteVerifiedUs(SessionID sessionID) {
@@ -677,7 +813,7 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         if (fingerprint == null)
             return null;
 
-        return Address.stripResource(userId) + "." + fingerprint + ".publicKey.verified";
+        return (Address.stripResource(userId) + "." + fingerprint + ".publicKey.verified");
     }
 
     public void verifyUser(String userId) {
@@ -690,52 +826,66 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
         this.store
                 .setProperty(buildPublicKeyVerifiedId(userId, getRemoteFingerprint(userId)), true);
 
-        //for (OtrKeyManagerListener l : listeners)
-        //l.verificationStatusChanged(userId);
-
     }
 
-    public static boolean checkForKeyImport (Intent intent, Activity activity)
+    public void verifyUser(String userId, String fingerprint) {
+        if (userId == null)
+            return;
+
+        if (this.isVerifiedUser(userId))
+            return;
+
+        this.store
+                .setProperty(buildPublicKeyVerifiedId(userId, fingerprint), true);
+      }
+
+    public boolean doKeyStoreExport (String password)
     {
-        boolean doKeyStoreImport = false;
-        
+
+
+        // if otr_keystore.ofcaes is in the SDCard root, import it
+        File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
+                "otr_keystore.ofcaes");
+
+
+        return store.export(password, otrKeystoreAES);
+    }
+    public static void checkForKeyImport (Intent intent, Activity activity)
+    {
         // if otr_keystore.ofcaes is in the SDCard root, import it
         File otrKeystoreAES = new File(Environment.getExternalStorageDirectory(),
                 "otr_keystore.ofcaes");
         if (otrKeystoreAES.exists()) {
             //Log.i(TAG, "found " + otrKeystoreAES + "to import");
-            doKeyStoreImport = true;
             importOtrKeyStore(otrKeystoreAES, activity);
+            return;
         }
-        else if (intent.getData() != null)
+        else if (intent != null && intent.getData() != null)
         {
             Uri uriData = intent.getData();
             String path = null;
-            
+
             if(uriData.getScheme() != null && uriData.getScheme().equals("file"))
             {
                 path = uriData.toString().replace("file://", "");
-            
+
                 File file = new File(path);
-                
-                doKeyStoreImport = true;
-                
                 importOtrKeyStore(file, activity);
+                return;
             }
         }
-        
-        return doKeyStoreImport;
+        Toast.makeText(activity, R.string.otr_keysync_warning_message, Toast.LENGTH_LONG).show();
     }
-    
-    
+
+
     public static void importOtrKeyStore (final File fileOtrKeyStore, final Activity activity)
     {
-     
+
         try
         {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
 
-            prefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).commit();
+            prefs.edit().putString("keystoreimport", fileOtrKeyStore.getCanonicalPath()).apply();
         }
         catch (IOException ioe)
         {
@@ -748,77 +898,64 @@ public class OtrAndroidKeyManagerImpl implements OtrKeyManager {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                
+
                 //launch QR code intent
-                IntentIntegrator.initiateScan(activity);
-                
+                new IntentIntegrator(activity).initiateScan();
+
             }
         };
-        
+
 
         new AlertDialog.Builder(activity).setTitle(R.string.confirm)
                   .setMessage(R.string.detected_Otr_keystore_import)
                   .setPositiveButton(R.string.yes, ocl) // default button
                   .setNegativeButton(R.string.no, null).setCancelable(true).show();
-      
-      
+
+
     }
-    
-    public void importOtrKeyStoreWithPassword (final File fileOtrKeyStore, String importPassword, String keyStorePassword, Activity activity) throws IOException
+
+    public boolean importOtrKeyStoreWithPassword (String fileOtrKeyStore, String importPassword)
     {
 
-       
         boolean overWriteExisting = true;
         boolean deleteImportedFile = true;
-        importKeyStore(fileOtrKeyStore, importPassword, overWriteExisting, deleteImportedFile);
-        
-    
-    }
-    
-    public boolean handleKeyScanResult (int requestCode, int resultCode, Intent data, Activity activity, String keyStorePassword)
-    {
-        IntentResult scanResult =
-                IntentIntegrator.parseActivityResult(requestCode, resultCode, data); 
-        
-        if  (scanResult != null) 
-        { 
-            
-            String otrKeyPassword = scanResult.getContents();
-            
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity.getApplicationContext());
+        try {
+            return importKeyStore(fileOtrKeyStore, importPassword, overWriteExisting, deleteImportedFile);
+        } catch (IOException e) {
+           OtrDebugLogger.log("error importing key store",e);
+            return false;
+        }
 
-            String otrKeyStorePath = prefs.getString("keystoreimport", null);
-            
-            Log.d("OTR","got password: " + otrKeyPassword + " for path: " + otrKeyStorePath);
-            
-            if (otrKeyPassword != null && otrKeyStorePath != null)
-            {
-                
-                otrKeyPassword = otrKeyPassword.replace("\n","").replace("\r", ""); //remove any padding, newlines, etc
-                
-                try
-                {
-                    File otrKeystoreAES = new File(otrKeyStorePath);
-                    if (otrKeystoreAES.exists()) {
-                        importOtrKeyStoreWithPassword(otrKeystoreAES, otrKeyPassword,  keyStorePassword, activity);
-                        return true;
-                    }
-                }
-                catch (IOException e)
-                {
-                    Toast.makeText(activity, "unable to open keystore for import", Toast.LENGTH_LONG).show();
-                    return false;
-                }
-            }
-            else
-            {
-                Log.d("OTR","no key store path saved");
-                return false;
-            }
-            
-        } 
-        
-        return false;
     }
+
+    public static void handleKeyScanResult (String otrKeyPassword, Activity activity) {
+
+        if (TextUtils.isEmpty(otrKeyPassword)) {
+            Toast.makeText(activity, "Scanned password is empty!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(activity);
+        File otrKeyStoreFile = new File(prefs.getString("keystoreimport", "/sdcard/otr_keystore.ofcaes"));
+        if (!otrKeyStoreFile.exists()) {
+            Toast.makeText(activity, otrKeyStoreFile + " does not exist!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        //remove any padding, newlines, etc
+        otrKeyPassword = otrKeyPassword.replace("\n","").replace("\r", "").replace(" ", "");
+        try {
+            IOtrKeyManager keyMan = ((ImApp)activity.getApplication()).getRemoteImService().getOtrKeyManager();
+            if (keyMan.importOtrKeyStoreWithPassword(otrKeyStoreFile.getCanonicalPath(), otrKeyPassword)) {
+                Toast.makeText(activity, R.string.successfully_imported_otr_keyring, Toast.LENGTH_SHORT).show();
+                return;
+            }
+        } catch (Exception e) {
+            Toast.makeText(activity, "Exception on keystore import", Toast.LENGTH_LONG).show();
+            OtrDebugLogger.log("error getting keyman",e);
+        }
+        Toast.makeText(activity, R.string.otr_keyring_not_imported_please_check_the_file_exists_in_the_proper_format_and_location, Toast.LENGTH_SHORT).show();
+    }
+
 
 }

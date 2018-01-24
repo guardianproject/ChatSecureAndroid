@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2008 Esmertec AG. Copyright (C) 2008 The Android Open Source
  * Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -19,8 +19,13 @@ package info.guardianproject.otr.app.im.app;
 
 import info.guardianproject.otr.app.im.plugin.ImConfigNames;
 import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.otr.app.im.ui.RoundedAvatarDrawable;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Map;
+
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -28,8 +33,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.util.Log;
 
@@ -52,13 +55,44 @@ public class DatabaseUtils {
         return c;
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) {
-        byte[] rawData = cursor.getBlob(dataColumn);
-        if (rawData == null) {
+    public static RoundedAvatarDrawable getAvatarFromCursor(Cursor cursor, int dataColumn, int width, int height) throws DecoderException {
+        String hexData = cursor.getString(dataColumn);
+        if (hexData.equals("NULL")) {
             return null;
         }
-        return decodeAvatar(rawData, width, height);
+
+        byte[] data = Hex.decodeHex(hexData.substring(2, hexData.length() - 1).toCharArray());
+        return decodeAvatar(data, width, height);
     }
+
+    public static RoundedAvatarDrawable getAvatarFromAddress(ContentResolver cr, String address, int width, int height) throws DecoderException {
+
+        String[] projection =  {Imps.Contacts.AVATAR_DATA};
+        String[] args = {address};
+        String query = Imps.Contacts.USERNAME + " LIKE ?";
+        Cursor cursor = cr.query(Imps.Contacts.CONTENT_URI,projection,
+             query, args, Imps.Contacts.DEFAULT_SORT_ORDER);
+
+        if (cursor.moveToFirst())
+        {
+            String hexData = cursor.getString(0);
+            cursor.close();
+            if (hexData.equals("NULL")) {
+                return null;
+            }
+
+            byte[] data = Hex.decodeHex(hexData.substring(2, hexData.length() - 1).toCharArray());
+
+            return decodeAvatar(data, width, height);
+        }
+        else
+        {
+
+            cursor.close();
+            return null;
+        }
+    }
+
 
     public static Uri getAvatarUri(Uri baseUri, long providerId, long accountId) {
         Uri.Builder builder = baseUri.buildUpon();
@@ -67,43 +101,7 @@ public class DatabaseUtils {
         return builder.build();
     }
 
-    public static Drawable getAvatarFromCursor(Cursor cursor, int dataColumn,
-            int encodedDataColumn, String username, boolean updateBlobUseCursor,
-            ContentResolver resolver, Uri updateBlobUri, int width, int height) {
-        /**
-         * Optimization: the avatar table in IM content provider have two
-         * columns, one for the raw blob data, another for the base64 encoded
-         * data. The reason for this is when the avatars are initially
-         * downloaded, they are in the base64 encoded form, and instead of
-         * base64 decode the avatars for all the buddies up front, we can just
-         * simply store the encoded data in the table, and decode them on demand
-         * when displaying them. Once we decode the avatar, we store the decoded
-         * data as a blob, and null out the encoded column in the avatars table.
-         * query the raw blob data first, if present, great; if not, query the
-         * encoded data, decode it and store as the blob, and null out the
-         * encoded column.
-         */
-        byte[] rawData = cursor.getBlob(dataColumn);
-
-        if (rawData == null) {
-            String encodedData = cursor.getString(encodedDataColumn);
-            if (encodedData == null) {
-                // Log.e(LogTag.LOG_TAG, "getAvatarFromCursor for " + username +
-                // ", no raw or encoded data!");
-                return null;
-            }
-
-            if (updateBlobUseCursor) {
-            } 
-            else {
-                updateAvatarBlob(resolver, updateBlobUri, rawData, username);
-            }
-        }
-
-        return decodeAvatar(rawData, width, height);
-    }
-
-    public static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data, 
+    public static void updateAvatarBlob(ContentResolver resolver, Uri updateUri, byte[] data,
             String username) {
         ContentValues values = new ContentValues(3);
         values.put(Imps.Avatars.DATA, data);
@@ -114,10 +112,10 @@ public class DatabaseUtils {
         String[] selectionArgs = new String[] { username };
 
         resolver.update(updateUri, values, buf.toString(), selectionArgs);
-        
+
     }
-    
-    public static boolean hasAvatarContact(ContentResolver resolver, Uri updateUri, 
+
+    public static boolean hasAvatarContact(ContentResolver resolver, Uri updateUri,
             String username) {
         ContentValues values = new ContentValues(3);
         values.put(Imps.Avatars.CONTACT, username);
@@ -128,12 +126,33 @@ public class DatabaseUtils {
         String[] selectionArgs = new String[] { username };
 
         return resolver.update(updateUri, values, buf.toString(), selectionArgs) > 0;
-        
+
     }
-    
+
+    public static boolean doesAvatarHashExist(ContentResolver resolver, Uri queryUri,
+            String jid, String hash) {
+
+        StringBuilder buf = new StringBuilder(Imps.Avatars.CONTACT);
+        buf.append("=?");
+        buf.append(" AND ");
+        buf.append(Imps.Avatars.HASH);
+        buf.append("=?");
+
+        String[] selectionArgs = new String[] { jid, hash };
+
+        Cursor cursor = resolver.query(queryUri, null, buf.toString(), selectionArgs, null);
+        if (cursor == null)
+            return false;
+        try {
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
     public static void insertAvatarBlob(ContentResolver resolver, Uri updateUri, long providerId, long accountId, byte[] data, String hash,
             String contact) {
-        
+
         ContentValues values = new ContentValues(3);
         values.put(Imps.Avatars.DATA, data);
         values.put(Imps.Avatars.CONTACT, contact);
@@ -142,21 +161,28 @@ public class DatabaseUtils {
         values.put(Imps.Avatars.HASH, hash);
         resolver.insert(updateUri, values);
         
-    }
-    
-
-    private static Drawable decodeAvatar(byte[] data, int width, int height) {
         
+
+    }
+
+
+    private static RoundedAvatarDrawable decodeAvatar(byte[] data, int width, int height) {
+
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
-        BitmapFactory.decodeByteArray(data, 0, data.length,options);               
+        BitmapFactory.decodeByteArray(data, 0, data.length,options);
         options.inSampleSize = calculateInSampleSize(options, width, height);
         options.inJustDecodeBounds = false;
-        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);        
-        Drawable avatar = new BitmapDrawable(b);
-        return avatar;
+        Bitmap b = BitmapFactory.decodeByteArray(data, 0, data.length,options);
+        if (b != null)
+        {
+            RoundedAvatarDrawable avatar = new RoundedAvatarDrawable(b);
+            return avatar;
+        }
+        else
+            return null;
     }
-    
+
     public static int calculateInSampleSize(
             BitmapFactory.Options options, int reqWidth, int reqHeight) {
     // Raw height and width of image
@@ -181,7 +207,7 @@ public class DatabaseUtils {
 
     /**
      * Update IM provider database for a plugin using newly loaded information.
-     * 
+     *
      * @param cr the resolver
      * @param providerName the plugin provider name
      * @param providerFullName the full name

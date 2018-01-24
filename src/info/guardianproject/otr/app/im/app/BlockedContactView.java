@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -45,7 +45,7 @@ public class BlockedContactView extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
 
-        mAvatar = (ImageView) findViewById(R.id.expandable_toggle_button);
+        mAvatar = (ImageView) findViewById(R.id.avatar);
         mBlockedIcon = (ImageView) findViewById(R.id.blocked);
         mLine1 = (TextView) findViewById(R.id.line1);
         mLine2 = (TextView) findViewById(R.id.line2);
@@ -56,18 +56,21 @@ public class BlockedContactView extends LinearLayout {
         String username = cursor.getString(BlockedContactsActivity.USERNAME_COLUMN);
         String nickname = cursor.getString(BlockedContactsActivity.NICKNAME_COLUMN);
 
-        Drawable avatar = DatabaseUtils.getAvatarFromCursor(cursor,
-                BlockedContactsActivity.AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);
+        Drawable avatar = null;
+
+        try { avatar = DatabaseUtils.getAvatarFromCursor(cursor,
+                BlockedContactsActivity.AVATAR_COLUMN, ImApp.DEFAULT_AVATAR_WIDTH,ImApp.DEFAULT_AVATAR_HEIGHT);}
+        catch(Exception e){}
 
         if (avatar != null) {
             mAvatar.setImageDrawable(avatar);
         } else {
             mAvatar.setImageResource(R.drawable.avatar_unknown);
         }
-        
+
         /*
         ImApp app = ImApp.getApplication((Activity) mContext);
-        
+
         BrandingResources brandingRes = app.getBrandingResource(providerId);
         mBlockedIcon.setImageDrawable(brandingRes.getDrawable(BrandingResourceIDs.DRAWABLE_BLOCK));
         */

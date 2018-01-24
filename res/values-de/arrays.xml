@@ -1,15 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
   <string-array name="otr_options">
-    <item>Vorraussetzen</item>
-    <item>Automatisch</item>
-    <item>Manuell</item>
-    <item>Nie</item>
-  </string-array>
-  <string-array name="otr_options_values">
-    <item>Vorraussetzen</item>
-    <item>Automatisch</item>
-    <item>Manuell</item>
-    <item>Nie</item>
+    <item>Erzwingen</item>
+    <item>Automatisch versuchen</item>
+    <item>Wie angefordert</item>
+    <item>Deaktiviert</item>
   </string-array>
 </resources>

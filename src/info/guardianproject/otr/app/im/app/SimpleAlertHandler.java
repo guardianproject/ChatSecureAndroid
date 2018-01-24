@@ -1,13 +1,13 @@
 /*
  * Copyright (C) 2007-2008 Esmertec AG. Copyright (C) 2007-2008 The Android Open
  * Source Project
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
  * the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
@@ -17,18 +17,15 @@
 
 package info.guardianproject.otr.app.im.app;
 
+import info.guardianproject.otr.app.im.R;
 import info.guardianproject.otr.app.im.engine.Contact;
 import info.guardianproject.otr.app.im.engine.ContactListListener;
 import info.guardianproject.otr.app.im.engine.ImErrorInfo;
-
-import info.guardianproject.otr.app.im.R;
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.res.Resources;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
+import android.util.Log;
 import android.widget.Toast;
 
 public class SimpleAlertHandler extends Handler {
@@ -46,14 +43,18 @@ public class SimpleAlertHandler extends Handler {
         ImApp app = (ImApp)mActivity.getApplication();
         ProviderDef provider = app.getProvider(providerId);
         ImErrorInfo error = (ImErrorInfo) msg.obj;
-        String promptMsg;
-        if (error != null) {
+        String promptMsg = null;
+        if (error != null && provider != null) {
             promptMsg = mActivity.getString(R.string.signed_out_prompt_with_error, provider.mName,
                     ErrorResUtils.getErrorRes(mRes, error.getCode()));
-        } else {
-            promptMsg = mActivity.getString(R.string.signed_out_prompt, provider.mName);
         }
-     //   showAlert(R.string.error, promptMsg); //TODO debug issue
+        else
+        {
+            promptMsg = mActivity.getString(R.string.error);
+        }
+
+        if (promptMsg != null)
+            showAlert(R.string.error, promptMsg);
     }
 
     public void registerForBroadcastEvents() {
@@ -83,23 +84,21 @@ public class SimpleAlertHandler extends Handler {
     }
 
     public void showAlert(final CharSequence title, final CharSequence message) {
-        if (Looper.myLooper() == getLooper()) {
-            new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                    .setPositiveButton(R.string.ok, null).show();
-        } else {
-            post(new Runnable() {
-                public void run() {
-                    new AlertDialog.Builder(mActivity).setTitle(title).setMessage(message)
-                            .setPositiveButton(R.string.ok, null).show();
-                }
-            });
+
+        if (title == null || message == null)
+            return;
+
+        if (!title.equals(message)) //sometimes this reads Attention: Attention!
+        {
+            Toast.makeText(mActivity, title + ": " + message, Toast.LENGTH_SHORT).show();
         }
+
     }
 
     public void showServiceErrorAlert(String msg) {
         showAlert(R.string.error, msg);
     }
-    
+
     public void showContactError(int errorType, ImErrorInfo error, String listName, Contact contact) {
         int id = 0;
         switch (errorType) {

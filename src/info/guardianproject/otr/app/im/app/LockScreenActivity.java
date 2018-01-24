@@ -1,12 +1,9 @@
 package info.guardianproject.otr.app.im.app;
 
 
-import info.guardianproject.cacheword.CacheWordActivityHandler;
-import info.guardianproject.cacheword.ICacheWordSubscriber;
-import info.guardianproject.otr.app.im.R;
-
-import java.security.GeneralSecurityException;
-
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,17 +16,26 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import info.guardianproject.cacheword.CacheWordActivityHandler;
+import info.guardianproject.cacheword.ICacheWordSubscriber;
+import info.guardianproject.otr.app.im.R;
+import info.guardianproject.otr.app.im.provider.Imps;
+import info.guardianproject.util.BackgroundBitmapLoaderTask;
+import info.guardianproject.util.Languages;
 
-public class LockScreenActivity extends SherlockActivity implements ICacheWordSubscriber {
+import java.security.GeneralSecurityException;
+
+public class LockScreenActivity extends ThemeableActivity implements ICacheWordSubscriber {
     private static final String TAG = "LockScreenActivity";
 
     private final static int MIN_PASS_LENGTH = 4;
@@ -41,26 +47,35 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
     private EditText mConfirmNewPassphrase;
     private View mViewCreatePassphrase;
     private View mViewEnterPassphrase;
-    private Button mBtnOpen;
+    private ImageButton mLanguageButton;
+
     private CacheWordActivityHandler mCacheWord;
     private String mPasswordError;
     private TwoViewSlider mSlider;
+
+    private ImApp mApp;
+    private Button mBtnCreate;
+    private Button mBtnSkip;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        
-        getSherlock().getActionBar().hide();
-        
+
+        mApp = (ImApp)getApplication();
+
+        getSupportActionBar().hide();
+
         setContentView(R.layout.activity_lock_screen);
-        
-        mCacheWord = new CacheWordActivityHandler(this, (ICacheWordSubscriber)this);
-        
+
+        mCacheWord = new CacheWordActivityHandler(mApp, (ICacheWordSubscriber)this);
+
         mViewCreatePassphrase = findViewById(R.id.llCreatePassphrase);
         mViewEnterPassphrase = findViewById(R.id.llEnterPassphrase);
 
         mEnterPassphrase = (EditText) findViewById(R.id.editEnterPassphrase);
+
         mNewPassphrase = (EditText) findViewById(R.id.editNewPassphrase);
         mConfirmNewPassphrase = (EditText) findViewById(R.id.editConfirmNewPassphrase);
         ViewFlipper vf = (ViewFlipper) findViewById(R.id.viewFlipper1);
@@ -69,29 +84,56 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
 
         mSlider = new TwoViewSlider(vf, flipView1, flipView2, mNewPassphrase, mConfirmNewPassphrase);
 
+        // set up language chooser button
+        mLanguageButton = (ImageButton) findViewById(R.id.languageButton);
+        mLanguageButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = LockScreenActivity.this;
+                final Languages languages = Languages.get(activity);
+                final ArrayAdapter<String> languagesAdapter = new ArrayAdapter<String>(activity,
+                        android.R.layout.simple_list_item_single_choice, languages.getAllNames());
+                AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                builder.setIcon(R.drawable.ic_settings_language);
+                builder.setTitle(R.string.KEY_PREF_LANGUAGE_TITLE);
+                builder.setAdapter(languagesAdapter, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int position) {
+                        Log.i(TAG, "onItemClick: " + dialog + " " + position);
+                        String[] languageCodes = languages.getSupportedLocales();
+                        resetLanguage(languageCodes[position]);
+                        dialog.dismiss();
+                    }
+                });
+                builder.show();
+            }
+        });
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        try { mCacheWord.onPause();}
-        catch (Exception e){}
+        mCacheWord.onPause();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-      
-        try
-        {
-            mCacheWord.onResume();
-        }
-        catch (Exception e){}
+        mCacheWord.onResume();
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mCacheWord.disconnect();
     }
 
     @Override
     public void onBackPressed() {
-      
+
         //do nothing!
     }
 
@@ -121,8 +163,45 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         return validatePassword(mNewPassphrase.getText().toString().toCharArray());
     }
 
+    private boolean isPasswordFieldEmpty() {
+        return mNewPassphrase.getText().toString().length() == 0;
+    }
+
     private boolean isConfirmationFieldEmpty() {
         return mConfirmNewPassphrase.getText().toString().length() == 0;
+    }
+
+    private void initializeWithPassphrase() {
+        try {
+            String passphrase = mNewPassphrase.getText().toString();
+            if (passphrase.isEmpty()) {
+                // Create DB with empty passphrase
+                if (Imps.setEmptyPassphrase(this, false)) {
+                    
+                    try
+                    {
+                        ChatFileStore.initWithoutPassword(this);
+
+                        // Simulate cacheword opening
+                        afterCacheWordOpened();
+                    }
+                    catch (Exception e)
+                    {
+                        Log.d(ImApp.LOG_TAG,"unable to mount VFS store"); //but let's not crash the whole app right now
+                    }
+                    
+                    ChatFileStore.initWithoutPassword(this);
+                    
+                }  else {
+                    // TODO failed
+                }
+            } else {
+                mCacheWord.setPassphrase(passphrase.toCharArray());
+            }
+        } catch (Exception e) {
+            // TODO initialization failed
+            Log.e(TAG, "Cacheword pass initialization failed: " + e.getMessage());
+        }
     }
 
     private void initializePassphrase() {
@@ -141,7 +220,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                 {
                     if (!isPasswordValid())
                         showValidationError();
-                    else
+                    else if (isPasswordFieldEmpty()) {
+                        initializeWithPassphrase();
+                    } else
                         mSlider.showConfirmationField();
                 }
                 return false;
@@ -164,28 +245,42 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
             }
         });
 
-        Button btnCreate = (Button) findViewById(R.id.btnCreate);
-        btnCreate.setOnClickListener(new OnClickListener()
+        mBtnCreate = (Button) findViewById(R.id.btnCreate);
+        mBtnCreate.setOnClickListener(new OnClickListener()
         {
+            @Override
             public void onClick(View v)
             {
                 // validate
                 if (!isPasswordValid()) {
                     showValidationError();
                     mSlider.showNewPasswordField();
-                } else if (isConfirmationFieldEmpty()) {
+                } else if (isConfirmationFieldEmpty() && !isPasswordFieldEmpty()) {
+                    mBtnSkip.setVisibility(View.GONE);
                     mSlider.showConfirmationField();
-                } else if (!newEqualsConfirmation()) {
-                    showInequalityError();
-                    mSlider.showNewPasswordField();
-                } else {
-                    try {
-                        mCacheWord.setPassphrase(mNewPassphrase.getText().toString().toCharArray());
-                    } catch (GeneralSecurityException e) {
-                        // TODO initialization failed
-                        Log.e(TAG, "Cacheword pass initialization failed: " + e.getMessage());
-                    }
+                    mBtnCreate.setText(R.string.lock_screen_confirm_passphrase);
                 }
+                else if (!newEqualsConfirmation()) {
+                    showInequalityError();
+                }
+               else if (!isConfirmationFieldEmpty() && !isPasswordFieldEmpty())
+               {
+                    initializeWithPassphrase();
+                }
+            }
+        });
+
+
+
+        mBtnSkip = (Button)findViewById(R.id.btnSkip);
+        mBtnSkip.setOnClickListener(new OnClickListener(){
+
+            @Override
+            public void onClick(View v)
+            {
+                if (isPasswordFieldEmpty())
+                    initializeWithPassphrase();
+
             }
         });
     }
@@ -194,27 +289,9 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
         mViewCreatePassphrase.setVisibility(View.GONE);
         mViewEnterPassphrase.setVisibility(View.VISIBLE);
 
-        mBtnOpen = (Button) findViewById(R.id.btnOpen);
-        mBtnOpen.setOnClickListener(new OnClickListener()
-        {
-            public void onClick(View v)
-            {
-                if (mEnterPassphrase.getText().toString().length() == 0)
-                    return;
-                // Check passphrase
-                try {
-                    mCacheWord.setPassphrase(mEnterPassphrase.getText().toString().toCharArray());
-                } catch (GeneralSecurityException e) {
-                    mEnterPassphrase.setText("");
-                    // TODO implement try again and wipe if fail
-                    Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
-                    return;
-                }
-            }
-        });
-
         mEnterPassphrase.setOnEditorActionListener(new OnEditorActionListener()
         {
+            @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
             {
                 if (actionId == EditorInfo.IME_NULL || actionId == EditorInfo.IME_ACTION_GO)
@@ -228,7 +305,22 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
                         protected void onReceiveResult(int resultCode, Bundle resultData)
                         {
                             super.onReceiveResult(resultCode, resultData);
-                            mBtnOpen.performClick();
+
+                            if (mEnterPassphrase.getText().toString().length() == 0)
+                                return;
+                            // Check passphrase
+                            try {
+                                char[] passphrase = mEnterPassphrase.getText().toString().toCharArray();
+
+                                mCacheWord.setPassphrase(passphrase);
+                                ImApp.mUsingCacheword = true;
+                            } catch (Exception e) {
+                                mEnterPassphrase.setText("");
+                                // TODO implement try again and wipe if fail
+                                Log.e(TAG, "Cacheword pass verification failed: " + e.getMessage());
+                                return;
+                            }
+
                         }
                     });
                     return true;
@@ -240,44 +332,14 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
 
     private boolean validatePassword(char[] pass)
     {
-        boolean upper = false;
-        boolean lower = false;
-        boolean number = false;
-        for (char c : pass) {
-            if (Character.isUpperCase(c)) {
-                upper = true;
-            } else if (Character.isLowerCase(c)) {
-                lower = true;
-            } else if (Character.isDigit(c)) {
-                number = true;
-            }
-        }
 
-        if (pass.length < MIN_PASS_LENGTH)
+        if (pass.length < MIN_PASS_LENGTH && pass.length != 0)
         {
             // should we support some user string message here?
             mPasswordError = getString(R.string.pass_err_length);
             return false;
         }
-        //only enforce password length
-        /*
-        else if (!upper)
-        {
-            mPasswordError = getString(R.string.pass_err_upper);
-            return false;
-        }
-        else if (!lower)
-        {
-            mPasswordError = getString(R.string.pass_err_lower);
-            return false;
-        }
-        else if (!number)
-        {
-            mPasswordError = getString(R.string.pass_err_num);
-            return false;
-        }*/
-        // if it got here, then must be okay
-        // hopefully the user can remember it
+
         return true;
     }
 
@@ -343,29 +405,64 @@ public class LockScreenActivity extends SherlockActivity implements ICacheWordSu
 
     @Override
     public void onCacheWordUninitialized() {
+
+        Intent intentOrig;
+
+        if ((intentOrig = getIntent().getParcelableExtra("originalIntent"))!=null)
+        {
+            if (intentOrig.getData() != null)
+            {
+                if (intentOrig.getData().getScheme().equals("immu")||
+                intentOrig.getData().getScheme().equals("ima"))
+                {
+
+                    initializeWithPassphrase();
+                    return;
+                }
+            }
+        }
+
+
         initializePassphrase();
-        
+
     }
 
     @Override
     public void onCacheWordLocked() {
         promptPassphrase();
-        
     }
 
     @Override
     public void onCacheWordOpened() {
+        afterCacheWordOpened();
+        ChatFileStore.init(this, mCacheWord.getEncryptionKey());
+    }
+
+    /**
+     *
+     */
+    private void afterCacheWordOpened() {
         Intent intent = (Intent) getIntent().getParcelableExtra("originalIntent");
-        
+
         if (intent != null)
         {
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
-            startActivity(intent);
+            getIntent().removeExtra("originalIntent");
             finish();
-            LockScreenActivity.this.overridePendingTransition(0, 0);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+           // LockScreenActivity.this.overridePendingTransition(0, 0);
         }
     }
-    
 
+    private void resetLanguage(String language) {
+        ((ImApp) getApplication()).setNewLocale(this, language);
+        Intent intent = getIntent();
+        intent.setClass(LockScreenActivity.this, LockScreenActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+    }
 }

@@ -5,19 +5,21 @@
     android:layout_height="200px">
    <TextView android:layout_width="fill_parent"
    android:layout_height="wrap_content"
-   android:text="Password please..."
+   android:text="@string/password_please"
    android:textStyle="bold"/>
    <EditText android:id="@+id/user"
+       android:inputType="textNoSuggestions"
    android:layout_width="fill_parent"
    android:layout_height="wrap_content"
    android:layout_weight="1">
    <requestFocus/>
    </EditText>
     <EditText android:id="@+id/pwd"
+        android:inputType="textPassword"
    android:layout_width="fill_parent"
    android:layout_height="wrap_content"
    android:layout_weight="1"/>
-   <Button android:id="@+id/ok" android:text="Okay">
+   <Button android:id="@+id/ok" android:text="@string/ok">
    
-   </Button>"
+   </Button>
  </LinearLayout>
