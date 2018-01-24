@@ -1,3 +1,15 @@
+## This Repository is Retired
+
+ChatSecure for Android has been renamed and is continuing under the name Zom.
+
+Learn more about Zom here: https://zom.im
+
+Head to the new repo here: https://github.com/zom/Zom-Android
+
+---
+Everything below is considered archived.
+---
+
 ChatSecure for Android (previously known as Gibberbot) is a secure messaging
 app built on open standards like XMPP/Jabber and OTR encryption:
 https://guardianproject.info/apps/chatsecure
